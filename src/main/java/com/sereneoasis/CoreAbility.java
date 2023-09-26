@@ -13,6 +13,10 @@ public abstract class CoreAbility implements Ability{
     private static final Map<Class<? extends CoreAbility>, Set<CoreAbility>> INSTANCES_BY_CLASS = new ConcurrentHashMap<>();
     protected Player player;
 
+    protected SerenityPlayer sPlayer;
+
+    protected Element element;
+
     private int id;
 
     private static int idCounter = Integer.MIN_VALUE;
@@ -20,6 +24,7 @@ public abstract class CoreAbility implements Ability{
     public CoreAbility(final Player player)
     {
         this.player = player;
+        this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
     }
 
     public void start()
@@ -81,6 +86,7 @@ public abstract class CoreAbility implements Ability{
         }
 
         INSTANCES.remove(this);
+        sPlayer.addCooldown(this.getName(), this.getCooldown());
     }
 
     public static void removeAll() {

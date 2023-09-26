@@ -3,6 +3,7 @@ package com.sereneoasis.airbending;
 import com.sereneoasis.CoreAbility;
 import com.sereneoasis.Element;
 import com.sereneoasis.Methods;
+import com.sereneoasis.SerenityPlayer;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
@@ -20,12 +21,13 @@ public class AirBlast extends AirAbility {
 
     public AirBlast(Player player) {
         super(player);
-        if (CoreAbility.hasAbility(player, this.getClass()))
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.canBend(this))
         {
             return;
         }
         setFields();
         start();
+
     }
 
     private void setFields()
@@ -51,7 +53,7 @@ public class AirBlast extends AirAbility {
                 this.remove();
             }
         }
-        player.sendMessage("running");
+
     }
 
     public void setHasClicked()
@@ -59,14 +61,13 @@ public class AirBlast extends AirAbility {
         if (!hasClicked) {
             hasClicked = true;
             dir = player.getLocation().getDirection().normalize();
-            player.sendMessage("clicked");
+
         }
     }
 
     @Override
     public void remove() {
         super.remove();
-        player.sendMessage("stopped");
     }
 
     @Override

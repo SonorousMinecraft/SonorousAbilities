@@ -5,5 +5,6 @@ public enum Element {
     CHI,
     EARTH,
     FIRE,
+    NONBENDER,
     WATER
 }
