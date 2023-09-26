@@ -17,6 +17,7 @@ public class SerenityCommand implements CommandExecutor {
             if (sPlayer != null) {
                 if (strings.length == 2) {
                     if (strings[0].equals("bind")) {
+                        Bukkit.broadcastMessage("bound");
                         sPlayer.setAbility(player.getInventory().getHeldItemSlot(), strings[1]);
                         return true;
                     }

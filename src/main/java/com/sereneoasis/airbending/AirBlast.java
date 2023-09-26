@@ -4,6 +4,7 @@ import com.sereneoasis.CoreAbility;
 import com.sereneoasis.Element;
 import com.sereneoasis.Methods;
 import com.sereneoasis.SerenityPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
@@ -21,10 +22,20 @@ public class AirBlast extends AirAbility {
 
     public AirBlast(Player player) {
         super(player);
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.canBend(this))
+        Bukkit.broadcastMessage("airblast started");
+        if (CoreAbility.hasAbility(player, this.getClass()))
         {
+            Bukkit.broadcastMessage("airblast fails hasability checks");
             return;
         }
+        if (!sPlayer.canBend(this))
+        {
+            Bukkit.broadcastMessage("airblast fails canbend checks");
+            return;
+        }
+
+
+        Bukkit.broadcastMessage("airblast gotten past checks");
         setFields();
         start();
 
@@ -33,17 +44,19 @@ public class AirBlast extends AirAbility {
     private void setFields()
     {
         hasClicked = false;
-        loc = player.getLocation();
+        loc = player.getEyeLocation();
         origin = loc.clone();
     }
 
     @Override
     public void progress() {
+        Bukkit.broadcastMessage("progress is happening");
+        loc.getWorld().spawnParticle(Particle.CLOUD,loc.getX(),loc.getY(),loc.getZ(),5);
         if (hasClicked)
         {
+            Bukkit.broadcastMessage("progress is happening after click");
             loc.add(dir.clone().multiply(0.5));
-            loc.getWorld().spawnParticle(Particle.CLOUD,loc.getX(),loc.getY(),loc.getZ(),5);
-            Entity hit = Methods.getAffected(loc, 1);
+            Entity hit = Methods.getAffected(loc, 1, player);
             if (hit != null)
             {
                 hit.setVelocity(dir.clone());
@@ -59,6 +72,7 @@ public class AirBlast extends AirAbility {
     public void setHasClicked()
     {
         if (!hasClicked) {
+            Bukkit.broadcastMessage("set has clicked");
             hasClicked = true;
             dir = player.getLocation().getDirection().normalize();
 

@@ -29,7 +29,7 @@ public class SerenityPlayer {
 
     public void setAbility(int slot, String ability)
     {
-        this.abilities.put(slot, ability);
+        this.getAbilities().put(slot, ability);
     }
 
     public String getHeldAbility()
@@ -92,6 +92,7 @@ public class SerenityPlayer {
                 serenityPlayer.setName(PlayerData.getName());
 
                 serenityPlayer.setAbilities(PlayerData.getAbilities().getAbilities());
+                Bukkit.broadcastMessage("this occurs");
 
                 serenityPlayer.setElement(Element.valueOf(PlayerData.getElement()));
                 serenityPlayer.setPlayer(player);
@@ -143,10 +144,13 @@ public class SerenityPlayer {
 
     public boolean canBend(CoreAbility ability)
     {
+        Bukkit.broadcastMessage("canbend check");
         if (this.isOnCooldown(ability.getName()))
         {
+            Bukkit.broadcastMessage("on cd");
             return false;
         }
+        Bukkit.broadcastMessage("not on cd");
         return true;
     }
 
