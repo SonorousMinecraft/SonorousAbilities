@@ -1,8 +1,6 @@
 package com.sereneoasis.listeners;
 
-import com.sereneoasis.CoreAbility;
-import com.sereneoasis.PlayerData;
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.*;
 import com.sereneoasis.airbending.AirBlast;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
@@ -12,16 +10,38 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+
+import java.util.HashMap;
 
 
 public class SerenityListener implements Listener {
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e)
-    {
+    public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         SerenityPlayer.loadAsync(player.getUniqueId(), player);
+
+        Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                SerenityBoard board = SerenityBoard.createScore(player);
+                board.setTitle("&aSerenity");
+
+                SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+                HashMap<Integer, String> abilities = sPlayer.getAbilities();
+                for (int i : abilities.keySet()) {
+                    board.setSlot(i, abilities.get(i));
+                }
+            }
+        }, 50L);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Player player = e.getPlayer();
+        SerenityBoard.removeScore(player);
     }
 
     @EventHandler
@@ -35,15 +55,15 @@ public class SerenityListener implements Listener {
         }
         String ability = sPlayer.getHeldAbility();
 
+
         switch(ability)
         {
             case "AirBlast":
-                Bukkit.broadcastMessage("on click case check");
                 if (CoreAbility.hasAbility(e.getPlayer(), AirBlast.class)) {
-                    Bukkit.broadcastMessage("player has selected source");
                     CoreAbility.getAbility(e.getPlayer(), AirBlast.class).setHasClicked();
                 }
                 break;
+
         }
 
     }
@@ -60,7 +80,6 @@ public class SerenityListener implements Listener {
         switch(ability)
         {
             case "AirBlast":
-                Bukkit.broadcastMessage("on shift case check");
                 new AirBlast(player);
                 break;
         }

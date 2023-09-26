@@ -74,13 +74,13 @@ public class SerenityPlayer {
             return;
         }
 
-        Serenity.repository.getAsync(uuid).thenAsync( (PlayerData,exception) -> {
+        Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData,exception) -> {
             if (exception != null)
             {
                 HashMap<Integer, String>emptyabilities = new HashMap<>();
-                for (int i = 1; i<9; i++)
+                for (int i = 1; i<10; i++)
                 {
-                    emptyabilities.put(i,"");
+                    emptyabilities.put(i,"unbound");
                 }
                 insertPlayer(uuid, player.getName(), emptyabilities, Element.NONBENDER);
                 loadAsync(uuid, player);
@@ -91,11 +91,14 @@ public class SerenityPlayer {
                 SERENITY_PLAYER_MAP.put(uuid, serenityPlayer);
                 serenityPlayer.setName(PlayerData.getName());
 
-                serenityPlayer.setAbilities(PlayerData.getAbilities().getAbilities());
-                Bukkit.broadcastMessage("this occurs");
+                HashMap<Integer, String> abilities = PlayerData.getAbilities().getAbilities();
+
+                serenityPlayer.setAbilities(abilities);
 
                 serenityPlayer.setElement(Element.valueOf(PlayerData.getElement()));
                 serenityPlayer.setPlayer(player);
+
+
             }
         });
     }
@@ -112,7 +115,7 @@ public class SerenityPlayer {
 
         playerData.setElement(String.valueOf(element));
 
-        Serenity.repository.insert(playerData);
+        Serenity.getRepository().insert(playerData);
     }
 
     protected final Map<String, Long> cooldowns = new HashMap<>();
@@ -144,13 +147,10 @@ public class SerenityPlayer {
 
     public boolean canBend(CoreAbility ability)
     {
-        Bukkit.broadcastMessage("canbend check");
         if (this.isOnCooldown(ability.getName()))
         {
-            Bukkit.broadcastMessage("on cd");
             return false;
         }
-        Bukkit.broadcastMessage("not on cd");
         return true;
     }
 

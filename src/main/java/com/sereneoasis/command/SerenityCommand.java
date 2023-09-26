@@ -1,5 +1,6 @@
 package com.sereneoasis.command;
 
+import com.sereneoasis.SerenityBoard;
 import com.sereneoasis.SerenityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,7 +19,9 @@ public class SerenityCommand implements CommandExecutor {
                 if (strings.length == 2) {
                     if (strings[0].equals("bind")) {
                         Bukkit.broadcastMessage("bound");
-                        sPlayer.setAbility(player.getInventory().getHeldItemSlot(), strings[1]);
+                        int slot = player.getInventory().getHeldItemSlot();
+                        sPlayer.setAbility(slot , strings[1]);
+                        SerenityBoard.getByPlayer(player).setSlot(slot, strings[1]);
                         return true;
                     }
                 }
