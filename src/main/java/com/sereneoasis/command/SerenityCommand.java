@@ -16,15 +16,29 @@ public class SerenityCommand implements CommandExecutor {
             SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
             Bukkit.broadcastMessage(player.getUniqueId().toString());
             if (sPlayer != null) {
-                if (strings.length == 2) {
-                    if (strings[0].equals("bind")) {
-                        Bukkit.broadcastMessage("bound");
-                        int slot = player.getInventory().getHeldItemSlot();
-                        sPlayer.setAbility(slot , strings[1]);
-                        SerenityBoard.getByPlayer(player).setSlot(slot, strings[1]);
-                        return true;
+                    switch (strings[0])
+                    {
+                        case "bind":
+                            if (strings.length != 2) {
+                                return false;
+                            }
+                            String potentialAbility = strings[1];
+
+                            Bukkit.broadcastMessage("bound");
+                            int slot = player.getInventory().getHeldItemSlot();
+                            sPlayer.setAbility(slot, strings[1]);
+                            SerenityBoard.getByPlayer(player).setSlot(slot, strings[1]);
+
+                            break;
+
+                        case "display":
+                            player.sendMessage();
+                            break;
+
+                        case "help":
+
                     }
-                }
+
             }
         }
         return false;

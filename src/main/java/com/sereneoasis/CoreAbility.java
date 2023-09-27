@@ -11,6 +11,8 @@ public abstract class CoreAbility implements Ability{
     private static final Map<Class<? extends CoreAbility>, Map<UUID, Map<Integer, CoreAbility>>> INSTANCES_BY_PLAYER = new ConcurrentHashMap<>();
 
     private static final Map<Class<? extends CoreAbility>, Set<CoreAbility>> INSTANCES_BY_CLASS = new ConcurrentHashMap<>();
+
+    private static final List<Class<? extends CoreAbility>> ABILITY_LIST = new ArrayList<>();
     protected Player player;
 
     protected SerenityPlayer sPlayer;
@@ -20,6 +22,12 @@ public abstract class CoreAbility implements Ability{
     private int id;
 
     private static int idCounter = Integer.MIN_VALUE;
+
+    //Fake abilities created using reflection
+    public CoreAbility()
+    {
+        ABILITY_LIST.add(this.getClass());
+    }
 
     public CoreAbility(final Player player)
     {
@@ -42,7 +50,6 @@ public abstract class CoreAbility implements Ability{
         if (!INSTANCES_BY_CLASS.containsKey(clazz)) {
             INSTANCES_BY_CLASS.put(clazz, Collections.newSetFromMap(new ConcurrentHashMap<CoreAbility, Boolean>()));
         }
-
 
         this.id = CoreAbility.idCounter;
 
@@ -147,5 +154,7 @@ public abstract class CoreAbility implements Ability{
     public static <T extends CoreAbility> boolean hasAbility(final Player player, final Class<T> clazz) {
         return getAbility(player, clazz) != null;
     }
+
+
 
 }
