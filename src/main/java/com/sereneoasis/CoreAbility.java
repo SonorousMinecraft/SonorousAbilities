@@ -1,38 +1,74 @@
 package com.sereneoasis;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.sereneoasis.airbending.AirBlast;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
-public abstract class CoreAbility implements Ability{
+import static java.util.stream.Collectors.toList;
+
+public abstract class CoreAbility implements Ability {
 
     private static final Set<CoreAbility> INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<CoreAbility, Boolean>());
     private static final Map<Class<? extends CoreAbility>, Map<UUID, Map<Integer, CoreAbility>>> INSTANCES_BY_PLAYER = new ConcurrentHashMap<>();
 
     private static final Map<Class<? extends CoreAbility>, Set<CoreAbility>> INSTANCES_BY_CLASS = new ConcurrentHashMap<>();
 
-    private static final List<Class<? extends CoreAbility>> ABILITY_LIST = new ArrayList<>();
+    private static final Map<Class<? extends CoreAbility>, CoreAbility> ABILITIES_BY_CLASS = new ConcurrentHashMap<>();
+
+    private static final Map<String, CoreAbility> ABILITIES_BY_NAME = new ConcurrentSkipListMap<>();
+
+    private static final Multimap<Element, CoreAbility> ABILITIES_BY_ELEMENT = ArrayListMultimap.create();
+
     protected Player player;
 
     protected SerenityPlayer sPlayer;
 
     protected Element element;
 
+
     private int id;
 
     private static int idCounter = Integer.MIN_VALUE;
 
     //Fake abilities created using reflection
-    public CoreAbility()
-    {
-        ABILITY_LIST.add(this.getClass());
+    public CoreAbility() {
+        ABILITIES_BY_CLASS.put(this.getClass(), this);
+        ABILITIES_BY_NAME.put(this.getName(), this);
+        ABILITIES_BY_ELEMENT.put(this.getElement(), this);
     }
 
-    public CoreAbility(final Player player)
-    {
+    public CoreAbility(final Player player) {
         this.player = player;
         this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+    }
+
+    public static boolean isAbility(String ability) {
+        if (ABILITIES_BY_NAME.containsKey(ability)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static CoreAbility getAbilityFromString(String ability)
+    {
+        if (ability != null) {
+            return ABILITIES_BY_NAME.get(ability);
+        }
+        return null;
+    }
+
+    public static List<CoreAbility> getElementAbilities(Element element)
+    {
+        if (element != null)
+        {
+            return new ArrayList<>(ABILITIES_BY_ELEMENT.get(element));
+        }
+        return null;
     }
 
     public void start()
@@ -156,5 +192,9 @@ public abstract class CoreAbility implements Ability{
     }
 
 
+    public static void registerPluginAbilities()
+    {
+        new AirBlast();
+    }
 
 }

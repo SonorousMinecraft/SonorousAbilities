@@ -68,6 +68,7 @@ public class SerenityBoard {
         text = ChatColor.translateAlternateColorCodes('&', text);
         String pre = getFirstSplit(text);
         String suf = getFirstSplit(ChatColor.getLastColors(pre) + getSecondSplit(text));
+
         team.setPrefix(pre);
         team.setSuffix(suf);
     }

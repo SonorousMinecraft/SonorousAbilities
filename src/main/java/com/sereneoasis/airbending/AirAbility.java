@@ -6,7 +6,15 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public abstract class AirAbility extends CoreAbility {
+
+    public AirAbility()
+    {
+
+    }
+
     public AirAbility(Player player) {
         super(player);
         this.element = Element.AIR;

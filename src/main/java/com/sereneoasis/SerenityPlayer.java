@@ -17,6 +17,11 @@ public class SerenityPlayer {
         return SERENITY_PLAYER_MAP;
     }
 
+    public static SerenityPlayer getSerenityPlayer(Player player)
+    {
+        return SERENITY_PLAYER_MAP.get(player.getUniqueId());
+    }
+
     private HashMap<Integer, String> abilities;
 
     public HashMap<Integer, String> getAbilities() {
@@ -34,7 +39,7 @@ public class SerenityPlayer {
 
     public String getHeldAbility()
     {
-        return abilities.get(player.getInventory().getHeldItemSlot());
+        return abilities.get(player.getInventory().getHeldItemSlot() + 1);
     }
 
     private String name;
@@ -71,36 +76,44 @@ public class SerenityPlayer {
     {
         if (SERENITY_PLAYER_MAP.containsKey(uuid))
         {
+            Bukkit.broadcastMessage("stupid shit");
             return;
         }
 
         Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData,exception) -> {
             if (exception != null)
             {
-                HashMap<Integer, String>emptyabilities = new HashMap<>();
-                for (int i = 1; i<10; i++)
+                HashMap<Integer, String>abilities = new HashMap<>();
+                for (int i = 1; i<=9; i++)
                 {
-                    emptyabilities.put(i,"unbound");
+                    abilities.put(i,"unbound");
                 }
-                insertPlayer(uuid, player.getName(), emptyabilities, Element.NONBENDER);
-                loadAsync(uuid, player);
-            }
-            else {
+                insertPlayer(uuid, player.getName(), abilities, Element.NONBENDER);
 
                 SerenityPlayer serenityPlayer = new SerenityPlayer();
-                SERENITY_PLAYER_MAP.put(uuid, serenityPlayer);
+                getSerenityPlayerMap().put(uuid, serenityPlayer);
+                serenityPlayer.setName(player.getName());
+
+
+                serenityPlayer.setAbilities(abilities);
+
+                serenityPlayer.setElement(Element.NONBENDER);
+                serenityPlayer.setPlayer(player);
+            }
+            else {
+                SerenityPlayer serenityPlayer = new SerenityPlayer();
+                getSerenityPlayerMap().put(uuid, serenityPlayer);
                 serenityPlayer.setName(PlayerData.getName());
 
-                HashMap<Integer, String> abilities = PlayerData.getAbilities().getAbilities();
+                HashMap<Integer, String> abilities = PlayerData.getAbilities();
 
                 serenityPlayer.setAbilities(abilities);
 
                 serenityPlayer.setElement(Element.valueOf(PlayerData.getElement()));
                 serenityPlayer.setPlayer(player);
-
-
             }
         });
+
     }
 
     public static void insertPlayer(UUID uuid, String name, HashMap<Integer,String> abilities, Element element)
@@ -109,9 +122,7 @@ public class SerenityPlayer {
         playerData.setKey(uuid);
         playerData.setName(name);
 
-        PlayerDataAbilities playerDataAbilities = new PlayerDataAbilities();
-        playerDataAbilities.setAbilities(abilities);
-        playerData.setAbilities(playerDataAbilities);
+        playerData.setAbilities(abilities);
 
         playerData.setElement(String.valueOf(element));
 

@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 
 public class SerenityListener implements Listener {
@@ -23,25 +24,32 @@ public class SerenityListener implements Listener {
         Player player = e.getPlayer();
         SerenityPlayer.loadAsync(player.getUniqueId(), player);
 
-        Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                SerenityBoard board = SerenityBoard.createScore(player);
-                board.setTitle("&aSerenity");
-
-                SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
-                HashMap<Integer, String> abilities = sPlayer.getAbilities();
-                for (int i : abilities.keySet()) {
-                    board.setSlot(i, abilities.get(i));
-                }
+        Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), () -> {
+            SerenityBoard board = SerenityBoard.createScore(player);
+            board.setTitle("&aSerenity");
+            SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+            for (int i : serenityPlayer.getAbilities().keySet()) {
+                board.setSlot(i, serenityPlayer.getAbilities().get(i));
             }
-        }, 50L);
+
+        }, 150L);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
+        UUID uuid = player.getUniqueId();
+
         SerenityBoard.removeScore(player);
+
+        SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+
+        PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
+        oldPlayerData.setAbilities(serenityPlayer.getAbilities());
+        oldPlayerData.setElement(serenityPlayer.getElement().toString());
+        Serenity.getRepository().upsert(oldPlayerData);
+
+        SerenityPlayer.getSerenityPlayerMap().remove(player.getUniqueId());
     }
 
     @EventHandler

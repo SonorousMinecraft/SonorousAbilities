@@ -7,6 +7,7 @@ import com.nivixx.ndatabase.api.annotation.NTable;
 import com.nivixx.ndatabase.api.model.NEntity;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 @NTable(name = "player_data", schema = "", catalog = "")
@@ -28,14 +29,14 @@ public class PlayerData extends NEntity<UUID> {
     }
 
     @JsonProperty("abilities")
-    private PlayerDataAbilities abilities;
+    private HashMap<Integer, String> abilities;
 
-    public void setAbilities(PlayerDataAbilities playerDataAbilities)
+    public void setAbilities(HashMap<Integer, String> abilities)
     {
-        this.abilities = playerDataAbilities;
+        this.abilities = abilities;
     }
 
-    public PlayerDataAbilities getAbilities()
+    public HashMap<Integer, String> getAbilities()
     {
         return this.abilities;
     }
@@ -52,7 +53,5 @@ public class PlayerData extends NEntity<UUID> {
     {
         return this.element;
     }
-
-
 
 }

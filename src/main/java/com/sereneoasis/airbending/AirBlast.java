@@ -19,6 +19,9 @@ public class AirBlast extends AirAbility {
 
     private boolean hasClicked;
 
+public AirBlast() {
+
+}
 
     public AirBlast(Player player) {
         super(player);
@@ -100,12 +103,12 @@ public class AirBlast extends AirAbility {
 
     @Override
     public String getInstructions() {
-        return null;
+        return "instructions";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "descriptions";
     }
 
     @Override

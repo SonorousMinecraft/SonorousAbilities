@@ -52,6 +52,7 @@ public class Serenity extends JavaPlugin {
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
 
         this.getCommand("serenity").setExecutor(new SerenityCommand());
+        CoreAbility.registerPluginAbilities();
     }
 
     @Override
