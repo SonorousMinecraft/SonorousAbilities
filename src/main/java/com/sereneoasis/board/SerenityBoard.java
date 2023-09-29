@@ -1,4 +1,4 @@
-package com.sereneoasis;
+package com.sereneoasis.board;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,12 +1,9 @@
 package com.sereneoasis.command;
 
-import com.sereneoasis.CoreAbility;
+import com.sereneoasis.ability.CoreAbility;
 import com.sereneoasis.Element;
-import com.sereneoasis.SerenityBoard;
+import com.sereneoasis.board.SerenityBoard;
 import com.sereneoasis.SerenityPlayer;
-import com.sereneoasis.airbending.AirAbility;
-import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

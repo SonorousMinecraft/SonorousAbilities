@@ -3,8 +3,11 @@ package com.sereneoasis;
 
 import com.nivixx.ndatabase.api.NDatabase;
 import com.nivixx.ndatabase.api.repository.Repository;
+import com.sereneoasis.ability.BendingManager;
+import com.sereneoasis.ability.CoreAbility;
 import com.sereneoasis.command.SerenityCommand;
 import com.sereneoasis.listeners.SerenityListener;
+import com.sereneoasis.storage.PlayerData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 

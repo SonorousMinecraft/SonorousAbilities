@@ -1,7 +1,9 @@
-package com.sereneoasis;
+package com.sereneoasis.ability;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.sereneoasis.Element;
+import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.airbending.AirBlast;
 import org.bukkit.entity.Player;
 
@@ -9,16 +11,12 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import static java.util.stream.Collectors.toList;
-
 public abstract class CoreAbility implements Ability {
 
-    private static final Set<CoreAbility> INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<CoreAbility, Boolean>());
+    private static final Set<CoreAbility> INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private static final Map<Class<? extends CoreAbility>, Map<UUID, Map<Integer, CoreAbility>>> INSTANCES_BY_PLAYER = new ConcurrentHashMap<>();
 
     private static final Map<Class<? extends CoreAbility>, Set<CoreAbility>> INSTANCES_BY_CLASS = new ConcurrentHashMap<>();
-
-    private static final Map<Class<? extends CoreAbility>, CoreAbility> ABILITIES_BY_CLASS = new ConcurrentHashMap<>();
 
     private static final Map<String, CoreAbility> ABILITIES_BY_NAME = new ConcurrentSkipListMap<>();
 
@@ -35,9 +33,8 @@ public abstract class CoreAbility implements Ability {
 
     private static int idCounter = Integer.MIN_VALUE;
 
-    //Fake abilities created using reflection
+
     public CoreAbility() {
-        ABILITIES_BY_CLASS.put(this.getClass(), this);
         ABILITIES_BY_NAME.put(this.getName(), this);
         ABILITIES_BY_ELEMENT.put(this.getElement(), this);
     }
@@ -78,13 +75,13 @@ public abstract class CoreAbility implements Ability {
         final Class<? extends CoreAbility> clazz = this.getClass();
         final UUID uuid = this.player.getUniqueId();
         if (!INSTANCES_BY_PLAYER.containsKey(clazz)) {
-            INSTANCES_BY_PLAYER.put(clazz, new ConcurrentHashMap<UUID, Map<Integer, CoreAbility>>());
+            INSTANCES_BY_PLAYER.put(clazz, new ConcurrentHashMap<>());
         }
         if (!INSTANCES_BY_PLAYER.get(clazz).containsKey(uuid)) {
-            INSTANCES_BY_PLAYER.get(clazz).put(uuid, new ConcurrentHashMap<Integer, CoreAbility>());
+            INSTANCES_BY_PLAYER.get(clazz).put(uuid, new ConcurrentHashMap<>());
         }
         if (!INSTANCES_BY_CLASS.containsKey(clazz)) {
-            INSTANCES_BY_CLASS.put(clazz, Collections.newSetFromMap(new ConcurrentHashMap<CoreAbility, Boolean>()));
+            INSTANCES_BY_CLASS.put(clazz, Collections.newSetFromMap(new ConcurrentHashMap<>()));
         }
 
         this.id = CoreAbility.idCounter;
@@ -115,12 +112,12 @@ public abstract class CoreAbility implements Ability {
             final Map<Integer, CoreAbility> playerMap = classMap.get(this.player.getUniqueId());
             if (playerMap != null) {
                 playerMap.remove(this.id);
-                if (playerMap.size() == 0) {
+                if (playerMap.isEmpty()) {
                     classMap.remove(this.player.getUniqueId());
                 }
             }
 
-            if (classMap.size() == 0) {
+            if (classMap.isEmpty()) {
                 INSTANCES_BY_PLAYER.remove(this.getClass());
             }
         }
@@ -152,13 +149,6 @@ public abstract class CoreAbility implements Ability {
         return null;
     }
 
-    /**
-     * Returns a Collection of all of the player created instances for a
-     * specific type of CoreAbility.
-     *
-     * @param clazz the class for the type of CoreAbilities
-     * @return a Collection of real instances
-     */
     public static <T extends CoreAbility> Collection<T> getAbilities(final Class<T> clazz) {
         if (clazz == null || INSTANCES_BY_CLASS.get(clazz) == null || INSTANCES_BY_CLASS.get(clazz).size() == 0) {
             return Collections.emptySet();

@@ -1,12 +1,10 @@
 package com.sereneoasis.airbending;
 
-import com.sereneoasis.CoreAbility;
+import com.sereneoasis.ability.CoreAbility;
 import com.sereneoasis.Element;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 
 public abstract class AirAbility extends CoreAbility {
 

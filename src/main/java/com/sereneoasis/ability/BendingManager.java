@@ -1,4 +1,6 @@
-package com.sereneoasis;
+package com.sereneoasis.ability;
+
+import com.sereneoasis.SerenityPlayer;
 
 import java.util.Map;
 import java.util.UUID;

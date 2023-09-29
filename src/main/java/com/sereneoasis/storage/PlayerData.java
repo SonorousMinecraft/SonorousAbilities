@@ -1,4 +1,4 @@
-package com.sereneoasis;
+package com.sereneoasis.storage;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,5 +1,7 @@
 package com.sereneoasis;
 
+import com.sereneoasis.ability.CoreAbility;
+import com.sereneoasis.storage.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

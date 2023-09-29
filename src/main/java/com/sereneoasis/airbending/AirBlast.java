@@ -1,9 +1,8 @@
 package com.sereneoasis.airbending;
 
-import com.sereneoasis.CoreAbility;
+import com.sereneoasis.ability.CoreAbility;
 import com.sereneoasis.Element;
 import com.sereneoasis.Methods;
-import com.sereneoasis.SerenityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
