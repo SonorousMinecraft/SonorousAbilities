@@ -18,55 +18,38 @@ public abstract class CoreAbility implements Ability {
 
     private static final Map<Class<? extends CoreAbility>, Set<CoreAbility>> INSTANCES_BY_CLASS = new ConcurrentHashMap<>();
 
-    private static final Map<String, CoreAbility> ABILITIES_BY_NAME = new ConcurrentSkipListMap<>();
-
-    private static final Multimap<Element, CoreAbility> ABILITIES_BY_ELEMENT = ArrayListMultimap.create();
-
     protected Player player;
 
     protected SerenityPlayer sPlayer;
 
     protected Element element;
 
+    protected long chargetime, cooldown, duration;
+
+    protected double damage, radius, range, speed;
 
     private int id;
 
     private static int idCounter = Integer.MIN_VALUE;
 
-
-    public CoreAbility() {
-        ABILITIES_BY_NAME.put(this.getName(), this);
-        ABILITIES_BY_ELEMENT.put(this.getElement(), this);
-    }
-
     public CoreAbility(final Player player) {
         this.player = player;
         this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+
+        AbilityData abilityData = AbilityDataManager.getAbilityData(this.getName());
+
+        this.chargetime = abilityData.getChargetime();
+        this.cooldown = abilityData.getCooldown();
+        this.duration = abilityData.getDuration();
+
+        this.damage = abilityData.getDamage();
+        this.radius = abilityData.getRadius();
+        this.range = abilityData.getRange();
+        this.speed = abilityData.getSpeed();
     }
 
-    public static boolean isAbility(String ability) {
-        if (ABILITIES_BY_NAME.containsKey(ability)) {
-            return true;
-        }
-        return false;
-    }
 
-    public static CoreAbility getAbilityFromString(String ability)
-    {
-        if (ability != null) {
-            return ABILITIES_BY_NAME.get(ability);
-        }
-        return null;
-    }
 
-    public static List<CoreAbility> getElementAbilities(Element element)
-    {
-        if (element != null)
-        {
-            return new ArrayList<>(ABILITIES_BY_ELEMENT.get(element));
-        }
-        return null;
-    }
 
     public void start()
     {
@@ -126,7 +109,7 @@ public abstract class CoreAbility implements Ability {
         }
 
         INSTANCES.remove(this);
-        sPlayer.addCooldown(this.getName(), this.getCooldown());
+        sPlayer.addCooldown(this.getName(), this.cooldown);
     }
 
     public static void removeAll() {
@@ -181,10 +164,5 @@ public abstract class CoreAbility implements Ability {
         return getAbility(player, clazz) != null;
     }
 
-
-    public static void registerPluginAbilities()
-    {
-        new AirBlast();
-    }
 
 }

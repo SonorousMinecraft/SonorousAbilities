@@ -8,11 +8,6 @@ import org.bukkit.entity.Player;
 
 public abstract class AirAbility extends CoreAbility {
 
-    public AirAbility()
-    {
-
-    }
-
     public AirAbility(Player player) {
         super(player);
         this.element = Element.AIR;

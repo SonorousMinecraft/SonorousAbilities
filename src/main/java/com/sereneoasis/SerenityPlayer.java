@@ -133,7 +133,7 @@ public class SerenityPlayer {
 
     protected final Map<String, Long> cooldowns = new HashMap<>();
 
-    protected void removeOldCooldowns() {
+    public void removeOldCooldowns() {
         Iterator<Map.Entry<String, Long>> iterator = this.cooldowns.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Long> entry = iterator.next();

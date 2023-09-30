@@ -18,10 +18,6 @@ public class AirBlast extends AirAbility {
 
     private boolean hasClicked;
 
-public AirBlast() {
-
-}
-
     public AirBlast(Player player) {
         super(player);
         if (CoreAbility.hasAbility(player, this.getClass()) || !sPlayer.canBend(this))
@@ -46,13 +42,13 @@ public AirBlast() {
         loc.getWorld().spawnParticle(Particle.CLOUD,loc.getX(),loc.getY(),loc.getZ(),5);
         if (hasClicked)
         {
-            loc.add(dir.clone().multiply(0.5));
-            Entity hit = Methods.getAffected(loc, 1, player);
+            loc.add(dir.clone().multiply(speed));
+            Entity hit = Methods.getAffected(loc, radius, player);
             if (hit != null)
             {
                 hit.setVelocity(dir.clone());
             }
-            if (loc.distance(origin) > 20)
+            if (loc.distance(origin) > range)
             {
                 this.remove();
             }
@@ -63,7 +59,6 @@ public AirBlast() {
     public void setHasClicked()
     {
         if (!hasClicked) {
-            Bukkit.broadcastMessage("set has clicked");
             hasClicked = true;
             dir = player.getLocation().getDirection().normalize();
 
@@ -75,20 +70,6 @@ public AirBlast() {
         super.remove();
     }
 
-    @Override
-    public boolean isSneakAbility() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
-    @Override
-    public long getCooldown() {
-        return 10000;
-    }
 
     @Override
     public Player getPlayer() {
@@ -100,18 +81,4 @@ public AirBlast() {
         return "AirBlast";
     }
 
-    @Override
-    public String getInstructions() {
-        return "instructions";
-    }
-
-    @Override
-    public String getDescription() {
-        return "descriptions";
-    }
-
-    @Override
-    public Element getElement() {
-        return Element.AIR;
-    }
 }

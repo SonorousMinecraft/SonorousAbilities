@@ -1,5 +1,7 @@
 package com.sereneoasis.command;
 
+import com.sereneoasis.ability.AbilityData;
+import com.sereneoasis.ability.AbilityDataManager;
 import com.sereneoasis.ability.CoreAbility;
 import com.sereneoasis.Element;
 import com.sereneoasis.board.SerenityBoard;
@@ -33,7 +35,7 @@ public class SerenityCommand implements CommandExecutor {
                             }
                             else {
                                 String ability = strings[1];
-                                if (!CoreAbility.isAbility(ability)) {
+                                if (!AbilityDataManager.isAbility(ability)) {
                                     player.sendMessage("This isn't an ability.");
                                     return false;
                                 }
@@ -64,9 +66,9 @@ public class SerenityCommand implements CommandExecutor {
                                     return false;
                                 }
                                 Element element = Element.valueOf(elementString);
-                                for(CoreAbility abil : CoreAbility.getElementAbilities(element))
+                                for(String abil : AbilityDataManager.getElementAbilities(element))
                                 {
-                                    player.sendMessage(abil.getName());
+                                    player.sendMessage(abil);
                                 }
                                 return true;
                             }
@@ -84,12 +86,12 @@ public class SerenityCommand implements CommandExecutor {
                             }
                             else {
                                 String ability = strings[1];
-                                if (!CoreAbility.isAbility(ability)) {
+                                if (!AbilityDataManager.isAbility(ability)) {
                                     player.sendMessage("This isn't an ability.");
                                     return false;
                                 }
-                                CoreAbility abil = CoreAbility.getAbilityFromString(ability);
-                                player.sendMessage(abil.getName() + "\n" + abil.getDescription() + "\n" + abil.getInstructions());
+                                AbilityData abilityData = AbilityDataManager.getAbilityData(ability);
+                                player.sendMessage(ability + "\n" + abilityData.getDescription() + "\n" + abilityData.getInstructions());
                                 return true;
                             }
                     }
