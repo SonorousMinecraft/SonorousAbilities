@@ -12,9 +12,10 @@ public class DamageHandler {
 
     public static void damageEntity( Entity entity, Player source, CoreAbility ability, double damage)
     {
-        if (entity instanceof LivingEntity livingEntity)
-        {
-            livingEntity.damage(damage, source);
+        if (entity != null) {
+            if (entity instanceof LivingEntity livingEntity) {
+                livingEntity.damage(damage, source);
+            }
         }
     }
 }

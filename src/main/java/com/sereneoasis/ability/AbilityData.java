@@ -2,10 +2,10 @@ package com.sereneoasis.ability;
 
 public class AbilityData {
 
-    private String element, description, instructions;
-    private long chargetime, cooldown,  duration;
+    protected String element, description, instructions;
+    protected long chargetime, cooldown,  duration;
 
-    private double damage, radius, range, speed;
+    protected double damage, radius, range, speed;
 
     public AbilityData(String description, String instructions,
                        long chargetime, long cooldown, long duration,

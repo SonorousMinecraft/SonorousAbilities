@@ -1,14 +1,16 @@
 package com.sereneoasis.listeners;
 
 import com.sereneoasis.*;
+import com.sereneoasis.ability.ComboManager;
 import com.sereneoasis.ability.CoreAbility;
-import com.sereneoasis.airbending.AirBlast;
 import com.sereneoasis.board.SerenityBoard;
+import com.sereneoasis.classes.ocean.Torrent;
 import com.sereneoasis.storage.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -31,8 +33,8 @@ public class SerenityListener implements Listener {
             for (int i : serenityPlayer.getAbilities().keySet()) {
                 board.setSlot(i, serenityPlayer.getAbilities().get(i));
             }
-
         }, 150L);
+
     }
 
     @EventHandler
@@ -44,12 +46,14 @@ public class SerenityListener implements Listener {
 
         SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
 
+        Serenity.getComboManager().removePlayer(player);
         PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
         oldPlayerData.setAbilities(serenityPlayer.getAbilities());
         oldPlayerData.setElement(serenityPlayer.getElement().toString());
         Serenity.getRepository().upsert(oldPlayerData);
 
         SerenityPlayer.getSerenityPlayerMap().remove(player.getUniqueId());
+
     }
 
     @EventHandler
@@ -63,12 +67,18 @@ public class SerenityListener implements Listener {
         }
         String ability = sPlayer.getHeldAbility();
 
-
+        if (ability != null)
+        {
+            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+        }
         switch(ability)
         {
-            case "AirBlast":
-                if (CoreAbility.hasAbility(e.getPlayer(), AirBlast.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), AirBlast.class).setHasClicked();
+            case "Torrent":
+                if (CoreAbility.hasAbility(e.getPlayer(), Torrent.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Torrent.class).setHasClicked();
+                }
+                else{
+                    new Torrent(player);
                 }
                 break;
 
@@ -85,11 +95,15 @@ public class SerenityListener implements Listener {
             return;
         }
         String ability = sPlayer.getHeldAbility();
+        if (ability != null)
+        {
+            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.SHIFT_LEFT);
+        }
         switch(ability)
         {
-            case "AirBlast":
-                new AirBlast(player);
-                break;
+//            case "Torrent":
+//                new Torrent(player);
+//                break;
         }
     }
 }

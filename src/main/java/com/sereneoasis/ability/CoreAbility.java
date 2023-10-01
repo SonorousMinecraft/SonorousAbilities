@@ -4,7 +4,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.sereneoasis.Element;
 import com.sereneoasis.SerenityPlayer;
-import com.sereneoasis.airbending.AirBlast;
 import org.bukkit.entity.Player;
 
 import java.util.*;

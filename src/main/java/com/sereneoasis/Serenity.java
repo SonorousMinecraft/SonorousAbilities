@@ -1,11 +1,8 @@
 package com.sereneoasis;
 
-
 import com.nivixx.ndatabase.api.NDatabase;
 import com.nivixx.ndatabase.api.repository.Repository;
-import com.sereneoasis.ability.AbilityDataManager;
-import com.sereneoasis.ability.BendingManager;
-import com.sereneoasis.ability.CoreAbility;
+import com.sereneoasis.ability.*;
 import com.sereneoasis.command.SerenityCommand;
 import com.sereneoasis.config.ConfigManager;
 import com.sereneoasis.listeners.SerenityListener;
@@ -43,7 +40,15 @@ public class Serenity extends JavaPlugin {
         return scoreBoardManager;
     }
 
+    private static ComboManager comboManager;
+
+    public static ComboManager getComboManager() {
+        return comboManager;
+    }
+
     private static ConfigManager configManager;
+
+
 
 
     public static void main(String[] args) {
@@ -63,6 +68,7 @@ public class Serenity extends JavaPlugin {
 
         configManager = new ConfigManager();
         abilityDataManager = new AbilityDataManager();
+        comboManager = new ComboManager();
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
 
         this.getCommand("serenity").setExecutor(new SerenityCommand());
