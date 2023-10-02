@@ -2,15 +2,13 @@ package com.sereneoasis.abilityuilities;
 
 import com.sereneoasis.Methods;
 import com.sereneoasis.ability.CoreAbility;
-import com.sereneoasis.util.SourceStatus;
 import com.sereneoasis.util.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class RingAroundPlayer extends CoreAbility {
+public class BlockRingAroundPlayer extends CoreAbility {
 
     private Location loc;
 
@@ -20,22 +18,32 @@ public class RingAroundPlayer extends CoreAbility {
 
     private Material type;
 
-    public RingAroundPlayer(Player player, CoreAbility user, Location startLoc, Material type, double ringSize) {
+    private int orientation;
+
+    private Vector dir;
+
+    public BlockRingAroundPlayer(Player player, CoreAbility user, Location startLoc, Material type, double ringSize, int orientation) {
         super(player);
 
         this.user = user;
         this.type = type;
         this.ringSize = ringSize;
+        this.orientation = orientation;
         loc = startLoc;
+        this.dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation()).setY(0).normalize();
         start();
     }
 
     @Override
     public void progress() {
 
-        Vector dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation());
-        loc = player.getEyeLocation().add(dir.clone().multiply(ringSize));
+        loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).
+                rotateAroundY(Math.toRadians(15)).rotateAroundAxis(player.getEyeLocation().getDirection(), orientation));
         new TempBlock(loc.getBlock(), type.createBlockData(), 2000);
+    }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
     }
 
     public Location getLoc() {

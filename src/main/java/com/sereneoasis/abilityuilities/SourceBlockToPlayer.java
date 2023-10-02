@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class SourceToPlayer extends CoreAbility {
+public class SourceBlockToPlayer extends CoreAbility {
 
     private SourceStatus sourceStatus;
 
@@ -22,7 +22,7 @@ public class SourceToPlayer extends CoreAbility {
 
     private Material type;
 
-    public SourceToPlayer(Player player, CoreAbility user, Material type, double distanceToStop) {
+    public SourceBlockToPlayer(Player player, CoreAbility user, Material type, double distanceToStop) {
         super(player);
 
         sourceStatus = SourceStatus.NO_SOURCE;

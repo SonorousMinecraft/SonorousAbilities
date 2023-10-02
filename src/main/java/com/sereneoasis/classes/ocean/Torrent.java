@@ -2,8 +2,9 @@ package com.sereneoasis.classes.ocean;
 
 import com.sereneoasis.Methods;
 import com.sereneoasis.ability.CoreAbility;
-import com.sereneoasis.abilityuilities.RingAroundPlayer;
-import com.sereneoasis.abilityuilities.SourceToPlayer;
+import com.sereneoasis.abilityuilities.BlockRingAroundPlayer;
+import com.sereneoasis.abilityuilities.ShootBlockFromPlayer;
+import com.sereneoasis.abilityuilities.SourceBlockToPlayer;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.SourceStatus;
 import com.sereneoasis.util.TempBlock;
@@ -14,9 +15,11 @@ import org.bukkit.util.Vector;
 
 public class Torrent extends CoreAbility {
 
-    private SourceToPlayer sourceToPlayer;
+    private SourceBlockToPlayer sourceBlockToPlayer;
 
-    private RingAroundPlayer ringAroundPlayer;
+    private BlockRingAroundPlayer blockRingAroundPlayer;
+
+    private ShootBlockFromPlayer shootBlockFromPlayer;
 
     private boolean hasSourced;
 
@@ -28,8 +31,8 @@ public class Torrent extends CoreAbility {
     public Torrent(Player player) {
         super(player);
 
-        sourceToPlayer = new SourceToPlayer(player, this, Material.WATER, 4);
-        if (! (sourceToPlayer.getSourceStatus() == SourceStatus.NO_SOURCE))
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, this, Material.WATER, 4);
+        if (! (sourceBlockToPlayer.getSourceStatus() == SourceStatus.NO_SOURCE))
         {
             start();
         }
@@ -42,29 +45,27 @@ public class Torrent extends CoreAbility {
             this.remove();
         }
 
-        if (sourceToPlayer.getSourceStatus() == SourceStatus.SOURCED)
+        if (sourceBlockToPlayer.getSourceStatus() == SourceStatus.SOURCED)
         {
             hasSourced = true;
-            sourceToPlayer.remove();
+            sourceBlockToPlayer.remove();
         }
 
         if (hasSourced) {
             if (hasShot) {
-                loc = ringAroundPlayer.getLoc();
-                ringAroundPlayer.remove();
-                tb = new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 1000);
-                dir = player.getEyeLocation().getDirection().normalize();
-                loc.add(dir.clone().multiply(speed));
-                DamageHandler.damageEntity(Methods.getAffected(loc, radius, player), player, this, damage);
+                loc = blockRingAroundPlayer.getLoc();
+                blockRingAroundPlayer.remove();
 
-                if (loc.distance(player.getEyeLocation()) > range) {
+                if (shootBlockFromPlayer == null)
+                {
                     this.remove();
                 }
+
             }
             else{
-                if (ringAroundPlayer == null)
+                if (blockRingAroundPlayer == null)
                 {
-                    ringAroundPlayer = new RingAroundPlayer(player, this, loc, Material.WATER, 3);
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, this, loc, Material.WATER, 3, 0);
                 }
             }
         }
@@ -77,14 +78,15 @@ public class Torrent extends CoreAbility {
         if (hasSourced)
         {
             hasShot = true;
+            shootBlockFromPlayer = new ShootBlockFromPlayer(player, this, loc, Material.WATER, true);
         }
     }
 
     @Override
     public void remove() {
         super.remove();
-        ringAroundPlayer.remove();
-        sourceToPlayer.remove();
+        blockRingAroundPlayer.remove();
+        sourceBlockToPlayer.remove();
     }
 
     @Override
