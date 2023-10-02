@@ -29,6 +29,9 @@ public class BendingManager implements Runnable{
             if (tempBlock.getRevertTime() < System.currentTimeMillis()) {
                 tempBlock.revertBlock();
             }
+            else{
+                break;
+            }
         }
     }
 

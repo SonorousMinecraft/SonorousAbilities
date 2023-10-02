@@ -22,7 +22,7 @@ public class ConfigManager {
     }
 
     private void saveConfigValuesAbility(FileConfiguration config, String name, String element, String description, String instructions,
-                                  long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed)
+                                  long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed, double sourceRange)
     {
         String directory = element + ".ability." + name;
         config.addDefault(directory + ".description", description);
@@ -49,10 +49,13 @@ public class ConfigManager {
         if (speed != 0) {
             config.addDefault(directory + ".speed", speed);
         }
+        if (sourceRange != 0) {
+            config.addDefault(directory + ".sourcerange", speed);
+        }
     }
 
     private void saveConfigValuesCombo(FileConfiguration config, String name, String element, String description, String instructions,
-                                       long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed,
+                                       long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed, double sourceRange,
                                        ArrayList<ComboManager.AbilityInformation> abilities)
     {
         String directory = element + ".combo." + name;
@@ -80,6 +83,9 @@ public class ConfigManager {
         if (speed != 0) {
             config.addDefault(directory + ".speed", speed);
         }
+        if (sourceRange != 0) {
+            config.addDefault(directory + ".sourcerange", speed);
+        }
         for (ComboManager.AbilityInformation abilityInformation : abilities)
         {
             config.addDefault(directory + ".usage",abilityInformation.getName() + ":" + abilityInformation.getClickType().name());
@@ -92,7 +98,7 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(config, "Torrent", Element.OCEAN.name(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.5, 20, 1 );
+                2, 0.5, 20, 1, 10 );
 
         config.options().copyDefaults(true);
         ocean.saveConfig();

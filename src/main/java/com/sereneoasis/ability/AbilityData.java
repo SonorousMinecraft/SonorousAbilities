@@ -5,11 +5,11 @@ public class AbilityData {
     protected String element, description, instructions;
     protected long chargetime, cooldown,  duration;
 
-    protected double damage, radius, range, speed;
+    protected double damage, radius, range, speed, sourceRange;
 
     public AbilityData(String description, String instructions,
                        long chargetime, long cooldown, long duration,
-                       double damage, double radius, double range, double speed) {
+                       double damage, double radius, double range, double speed, double sourceRange) {
 
         this.description = description;
         this.instructions = instructions;
@@ -22,6 +22,7 @@ public class AbilityData {
         this.radius = radius;
         this.range = range;
         this.speed = speed;
+        this.sourceRange = sourceRange;
     }
 
     public String getElement() {
@@ -62,5 +63,9 @@ public class AbilityData {
 
     public double getSpeed() {
         return speed;
+    }
+
+    public double getSourceRange() {
+        return sourceRange;
     }
 }

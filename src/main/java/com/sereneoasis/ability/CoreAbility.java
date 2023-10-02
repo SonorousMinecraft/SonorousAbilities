@@ -25,7 +25,7 @@ public abstract class CoreAbility implements Ability {
 
     protected long chargetime, cooldown, duration;
 
-    protected double damage, radius, range, speed;
+    protected double damage, radius, range, speed, sourceRange;
 
     private int id;
 
@@ -45,6 +45,7 @@ public abstract class CoreAbility implements Ability {
         this.radius = abilityData.getRadius();
         this.range = abilityData.getRange();
         this.speed = abilityData.getSpeed();
+        this.sourceRange = abilityData.getSourceRange();
     }
 
 
