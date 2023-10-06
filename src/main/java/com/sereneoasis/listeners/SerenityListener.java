@@ -4,6 +4,8 @@ import com.sereneoasis.*;
 import com.sereneoasis.ability.ComboManager;
 import com.sereneoasis.ability.CoreAbility;
 import com.sereneoasis.board.SerenityBoard;
+import com.sereneoasis.classes.ocean.Gimbal;
+import com.sereneoasis.classes.ocean.Spikes;
 import com.sereneoasis.classes.ocean.Torrent;
 import com.sereneoasis.storage.PlayerData;
 import org.bukkit.Bukkit;
@@ -77,11 +79,17 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), Torrent.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Torrent.class).setHasClicked();
                 }
-                else{
-                    new Torrent(player);
+                break;
+            case "Gimbal":
+                if (CoreAbility.hasAbility(e.getPlayer(), Gimbal.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasClicked();
                 }
                 break;
-
+            case "Spikes":
+                if (CoreAbility.hasAbility(e.getPlayer(), Gimbal.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -101,9 +109,15 @@ public class SerenityListener implements Listener {
         }
         switch(ability)
         {
-//            case "Torrent":
-//                new Torrent(player);
-//                break;
+            case "Torrent":
+                new Torrent(player);
+                break;
+            case "Gimbal":
+                new Gimbal(player);
+                break;
+            case "Spikes":
+                new Spikes(player);
+                break;
         }
     }
 }

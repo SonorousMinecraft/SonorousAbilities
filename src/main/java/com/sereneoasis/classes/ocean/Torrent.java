@@ -21,12 +21,10 @@ public class Torrent extends CoreAbility {
 
     private ShootBlockFromPlayer shootBlockFromPlayer;
 
-    private boolean hasSourced;
+    private boolean hasSourced = false;
 
-    private boolean hasShot;
+    private boolean hasShot = false;
     private Location loc;
-    private Vector dir;
-    private TempBlock tb;
 
     public Torrent(Player player) {
         super(player);

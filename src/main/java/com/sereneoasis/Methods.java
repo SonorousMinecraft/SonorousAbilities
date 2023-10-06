@@ -1,9 +1,6 @@
 package com.sereneoasis;
 
-import org.bukkit.Bukkit;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -82,4 +79,45 @@ public class Methods {
         return end.subtract(start).toVector().normalize();
     }
 
+    public static List<Block>getBlocksAroundPoint(Location loc, double radius)
+    {
+        List<Block>blocks = new ArrayList<Block>();
+        radius -= radius/2;
+        for (double y = -radius ; y < radius ; y++)
+        {
+            for (double x = -radius ; x < radius ; x++)
+            {
+                for (double z = -radius ; z < radius ; z++)
+                {
+                    Block block = loc.clone().add(x,y,z).getBlock();
+                    if (block.getLocation().distanceSquared(loc) <  ( (radius*2) * (radius*2)))
+                    {
+                        blocks.add(block);
+                    }
+                }
+            }
+        }
+        return blocks;
+    }
+
+    public static List<Block>getBlocksAroundPoint(Location loc, double radius, Material type)
+    {
+        List<Block>blocks = new ArrayList<Block>();
+        radius -= radius/2;
+        for (double y = -radius ; y < radius ; y++)
+        {
+            for (double x = -radius ; x < radius ; x++)
+            {
+                for (double z = -radius ; z < radius ; z++)
+                {
+                    Block block = loc.clone().add(x,y,z).getBlock();
+                    if (block.getType() == type && block.getLocation().distanceSquared(loc) <  ( (radius*2) * (radius*2)))
+                    {
+                        blocks.add(block);
+                    }
+                }
+            }
+        }
+        return blocks;
+    }
 }

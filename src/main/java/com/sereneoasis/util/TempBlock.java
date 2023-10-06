@@ -41,6 +41,14 @@ public class TempBlock {
         }
     }
 
+    public static boolean isTempBlock(Block block)
+    {
+        if (INSTANCES.containsKey(block))
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void revertBlock()
     {
