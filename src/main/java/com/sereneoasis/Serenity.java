@@ -7,6 +7,7 @@ import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.ComboManager;
 import com.sereneoasis.archetypes.ArchetypeDataManager;
 import com.sereneoasis.command.SerenityCommand;
+import com.sereneoasis.command.TabAutoCompletion;
 import com.sereneoasis.config.ConfigManager;
 import com.sereneoasis.listeners.SerenityListener;
 import com.sereneoasis.storage.PlayerData;
@@ -82,6 +83,7 @@ public class Serenity extends JavaPlugin {
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
 
         this.getCommand("serenity").setExecutor(new SerenityCommand());
+        this.getCommand("serenity").setTabCompleter(new TabAutoCompletion());
     }
 
     @Override

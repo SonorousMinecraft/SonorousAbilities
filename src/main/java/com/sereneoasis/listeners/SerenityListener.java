@@ -3,7 +3,7 @@ package com.sereneoasis.listeners;
 import com.sereneoasis.*;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.ArchetypeDataManager;
-import com.sereneoasis.board.SerenityBoard;
+import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.archetypes.ocean.Gimbal;
 import com.sereneoasis.archetypes.ocean.Spikes;
 import com.sereneoasis.archetypes.ocean.Torrent;

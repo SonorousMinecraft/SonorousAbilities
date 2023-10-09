@@ -3,7 +3,7 @@ package com.sereneoasis.command;
 import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetypes;
-import com.sereneoasis.board.SerenityBoard;
+import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.SerenityPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +17,7 @@ public class SerenityCommand implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player player)
         {
-            SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+            SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
             if (sPlayer != null) {
                     switch (strings[0])
                     {

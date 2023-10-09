@@ -1,4 +1,4 @@
-package com.sereneoasis.board;
+package com.sereneoasis.displays;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,16 +7,8 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.*;
 
-/**
- *
- * @author crisdev333
- *
- */
 public class SerenityBoard {
 
     private static HashMap<UUID, SerenityBoard> players = new HashMap<>();
@@ -42,7 +34,8 @@ public class SerenityBoard {
 
     private SerenityBoard(Player player) {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        sidebar = scoreboard.registerNewObjective("sidebar", "dummy");
+        sidebar = scoreboard.registerNewObjective("Serenity", Criteria.DUMMY,
+                ChatColor.translateAlternateColorCodes('&', "&l&uSerenity"));
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
         // Create Teams
         for(int i=1; i<=15; i++) {
