@@ -1,9 +1,10 @@
 package com.sereneoasis.abilityuilities.blocks;
 
-import com.sereneoasis.util.Methods;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.TempBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,7 +13,7 @@ import org.bukkit.util.Vector;
 public class ShootBlockFromPlayer extends CoreAbility {
 
     private Location loc;
-    private CoreAbility user;
+    private String user;
 
     private Material type;
 
@@ -22,17 +23,19 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
     private Vector dir;
 
-    public ShootBlockFromPlayer(Player player, CoreAbility user, Location startLoc, Material type, boolean directable) {
-        super(player);
+    public ShootBlockFromPlayer(Player player, String user, Location startLoc, Material type, boolean directable) {
+        super(player, user);
         this.user = user;
         this.type = type;
         this.loc = startLoc;
         this.directable = directable;
         this.dir = player.getEyeLocation().getDirection().normalize();
+        start();
     }
 
     @Override
     public void progress() {
+
 
         if (loc.distance(player.getEyeLocation()) > range) {
             this.remove();
@@ -44,7 +47,7 @@ public class ShootBlockFromPlayer extends CoreAbility {
         }
 
         loc.add(dir.clone().multiply(speed));
-        DamageHandler.damageEntity(Methods.getAffected(loc, radius, player), player, user, damage);
+        DamageHandler.damageEntity(Methods.getAffected(loc, radius, player), player, this, damage);
     }
 
     @Override
@@ -54,6 +57,6 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
     @Override
     public String getName() {
-        return user.getName();
+        return user;
     }
 }

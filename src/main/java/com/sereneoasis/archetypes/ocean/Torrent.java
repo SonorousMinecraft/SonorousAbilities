@@ -1,6 +1,8 @@
 package com.sereneoasis.archetypes.ocean;
 
+
 import com.sereneoasis.ability.superclasses.CoreAbility;
+
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromPlayer;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
@@ -25,7 +27,8 @@ public class Torrent extends CoreAbility {
     public Torrent(Player player) {
         super(player);
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, this, Material.WATER, 4);
+
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.WATER, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == SourceStatus.NO_SOURCE))
         {
             start();
@@ -42,13 +45,13 @@ public class Torrent extends CoreAbility {
         if (sourceBlockToPlayer.getSourceStatus() == SourceStatus.SOURCED)
         {
             hasSourced = true;
+            loc = sourceBlockToPlayer.getLocation();
             sourceBlockToPlayer.remove();
         }
 
         if (hasSourced) {
             if (hasShot) {
-                loc = blockRingAroundPlayer.getLoc();
-                blockRingAroundPlayer.remove();
+
 
                 if (shootBlockFromPlayer == null)
                 {
@@ -59,7 +62,7 @@ public class Torrent extends CoreAbility {
             else{
                 if (blockRingAroundPlayer == null)
                 {
-                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, this, loc, Material.WATER, 3, 0);
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.WATER, 3, 0);
                 }
             }
         }
@@ -72,15 +75,20 @@ public class Torrent extends CoreAbility {
         if (hasSourced)
         {
             hasShot = true;
-            shootBlockFromPlayer = new ShootBlockFromPlayer(player, this, loc, Material.WATER, true);
+            shootBlockFromPlayer = new ShootBlockFromPlayer(player, "Torrent", blockRingAroundPlayer.getLocation(), Material.WATER, true);
+            blockRingAroundPlayer.remove();
         }
     }
 
     @Override
     public void remove() {
         super.remove();
-        blockRingAroundPlayer.remove();
-        sourceBlockToPlayer.remove();
+        if (hasSourced) {
+            blockRingAroundPlayer.remove();
+        }
+        else {
+            sourceBlockToPlayer.remove();
+        }
     }
 
     @Override

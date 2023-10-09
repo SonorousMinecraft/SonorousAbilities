@@ -1,7 +1,7 @@
 package com.sereneoasis.abilityuilities.blocks;
 
-import com.sereneoasis.util.Methods;
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,7 +12,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private Location loc;
 
-    private CoreAbility user;
+    private String user;
 
     private double ringSize;
 
@@ -22,8 +22,10 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private Vector dir;
 
-    public BlockRingAroundPlayer(Player player, CoreAbility user, Location startLoc, Material type, double ringSize, int orientation) {
-        super(player);
+    private int rotation;
+
+    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation) {
+        super(player, user);
 
         this.user = user;
         this.type = type;
@@ -31,22 +33,22 @@ public class BlockRingAroundPlayer extends CoreAbility {
         this.orientation = orientation;
         loc = startLoc;
         this.dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation()).setY(0).normalize();
+        rotation = 0;
         start();
     }
 
     @Override
     public void progress() {
-
-        loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).
-                rotateAroundY(Math.toRadians(15)).rotateAroundAxis(player.getEyeLocation().getDirection(), orientation));
-        new TempBlock(loc.getBlock(), type.createBlockData(), 2000);
+        rotation += 15;
+        loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).rotateAroundY(Math.toRadians(rotation)).rotateAroundAxis(player.getEyeLocation().getDirection(), orientation));
+        new TempBlock(loc.getBlock(), type.createBlockData(), 500);
     }
 
     public void setOrientation(int orientation) {
         this.orientation = orientation;
     }
 
-    public Location getLoc() {
+    public Location getLocation() {
         return loc;
     }
 
@@ -57,6 +59,6 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     @Override
     public String getName() {
-        return user.getName();
+        return user;
     }
 }

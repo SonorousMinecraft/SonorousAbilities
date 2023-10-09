@@ -1,7 +1,8 @@
 package com.sereneoasis.abilityuilities.blocks;
 
-import com.sereneoasis.util.Methods;
+
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.SourceStatus;
 import com.sereneoasis.util.TempBlock;
 import org.bukkit.Location;
@@ -16,18 +17,18 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     private Location loc;
 
-    private CoreAbility user;
+    private String user;
 
     private double distanceToStop;
 
     private Material type;
 
-    public SourceBlockToPlayer(Player player, CoreAbility user, Material type, double distanceToStop) {
-        super(player);
+    public SourceBlockToPlayer(Player player, String user, Material type, double distanceToStop) {
+        super(player,user);
 
         sourceStatus = SourceStatus.NO_SOURCE;
         Block source = Methods.getFacingBlockOrLiquid(player, sourceRange);
-        if (source.getType().equals(type))
+        if (source != null && source.getType().equals(type))
         {
             this.user = user;
             this.type = type;
@@ -41,6 +42,10 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     public SourceStatus getSourceStatus() {
         return sourceStatus;
+    }
+
+    public Location getLocation() {
+        return loc;
     }
 
     @Override
@@ -72,6 +77,6 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     @Override
     public String getName() {
-        return user.getName();
+        return user;
     }
 }
