@@ -1,6 +1,5 @@
-package com.sereneoasis.ability;
+package com.sereneoasis.ability.superclasses;
 
-import com.sereneoasis.Element;
 import org.bukkit.entity.Player;
 
 public interface Ability {

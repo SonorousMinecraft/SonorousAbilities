@@ -1,17 +1,13 @@
-package com.sereneoasis.classes.ocean;
+package com.sereneoasis.archetypes.ocean;
 
-import com.sereneoasis.Methods;
-import com.sereneoasis.ability.CoreAbility;
-import com.sereneoasis.abilityuilities.BlockRingAroundPlayer;
-import com.sereneoasis.abilityuilities.ShootBlockFromPlayer;
-import com.sereneoasis.abilityuilities.SourceBlockToPlayer;
-import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockFromPlayer;
+import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
 import com.sereneoasis.util.SourceStatus;
-import com.sereneoasis.util.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class Torrent extends CoreAbility {
 

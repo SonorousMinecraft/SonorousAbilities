@@ -1,14 +1,13 @@
-package com.sereneoasis.ability;
+package com.sereneoasis.ability.superclasses;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import com.sereneoasis.Element;
+import com.sereneoasis.ability.data.AbilityData;
+import com.sereneoasis.ability.data.AbilityDataManager;
+import com.sereneoasis.archetypes.Archetypes;
 import com.sereneoasis.SerenityPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class CoreAbility implements Ability {
 
@@ -21,7 +20,7 @@ public abstract class CoreAbility implements Ability {
 
     protected SerenityPlayer sPlayer;
 
-    protected Element element;
+    protected Archetypes archetypes;
 
     protected long chargetime, cooldown, duration;
 

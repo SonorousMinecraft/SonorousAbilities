@@ -1,7 +1,7 @@
-package com.sereneoasis.abilityuilities;
+package com.sereneoasis.abilityuilities.blocks;
 
-import com.sereneoasis.Methods;
-import com.sereneoasis.ability.CoreAbility;
+import com.sereneoasis.util.Methods;
+import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;

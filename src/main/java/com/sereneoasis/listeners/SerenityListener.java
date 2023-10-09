@@ -1,14 +1,16 @@
 package com.sereneoasis.listeners;
 
 import com.sereneoasis.*;
-import com.sereneoasis.ability.ComboManager;
-import com.sereneoasis.ability.CoreAbility;
+import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.ArchetypeDataManager;
 import com.sereneoasis.board.SerenityBoard;
-import com.sereneoasis.classes.ocean.Gimbal;
-import com.sereneoasis.classes.ocean.Spikes;
-import com.sereneoasis.classes.ocean.Torrent;
+import com.sereneoasis.archetypes.ocean.Gimbal;
+import com.sereneoasis.archetypes.ocean.Spikes;
+import com.sereneoasis.archetypes.ocean.Torrent;
 import com.sereneoasis.storage.PlayerData;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,10 +20,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SerenityListener implements Listener {
+
+    private static final Map<Player, Map<Attribute,AttributeModifier>>ATTRIBUTE_TRACKER = new ConcurrentHashMap<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -35,6 +42,17 @@ public class SerenityListener implements Listener {
             for (int i : serenityPlayer.getAbilities().keySet()) {
                 board.setSlot(i, serenityPlayer.getAbilities().get(i));
             }
+            ArchetypeDataManager.getArchetypeAttributes(serenityPlayer.getArchetype()).forEach((attribute, value) ->
+            {
+                AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(),"Serenity." + attribute.toString(),value,
+                    AttributeModifier.Operation.ADD_NUMBER);
+                HashMap<Attribute, AttributeModifier> map = new HashMap<>();
+                map.put(attribute,attributeModifier);
+                ATTRIBUTE_TRACKER.put(player, map);
+
+                player.getAttribute(attribute).addModifier(attributeModifier);
+            });
+
         }, 150L);
 
     }
@@ -51,8 +69,13 @@ public class SerenityListener implements Listener {
         Serenity.getComboManager().removePlayer(player);
         PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
         oldPlayerData.setAbilities(serenityPlayer.getAbilities());
-        oldPlayerData.setElement(serenityPlayer.getElement().toString());
+        oldPlayerData.setElement(serenityPlayer.getArchetype().toString());
         Serenity.getRepository().upsert(oldPlayerData);
+
+        for (Attribute attribute : Attribute.values())
+        {
+            player.getAttribute(attribute).removeModifier(ATTRIBUTE_TRACKER.get(player).get(attribute));
+        }
 
         SerenityPlayer.getSerenityPlayerMap().remove(player.getUniqueId());
 

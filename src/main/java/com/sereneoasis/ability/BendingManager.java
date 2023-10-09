@@ -1,6 +1,7 @@
 package com.sereneoasis.ability;
 
 import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.TempBlock;
 
 import java.util.Map;

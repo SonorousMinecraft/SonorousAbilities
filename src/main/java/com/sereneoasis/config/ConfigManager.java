@@ -1,24 +1,31 @@
 package com.sereneoasis.config;
 
 
-import com.sereneoasis.Element;
+import com.sereneoasis.archetypes.Archetypes;
 import com.sereneoasis.ability.ComboManager;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigManager {
 
-    private static ConfigFile ocean, nature, sun, war, moon, aether, underworld, time, earth;
+    private static final Map<Archetypes, ConfigFile> configs = new HashMap<>();
 
     public ConfigManager() {
-        ocean = new ConfigFile("Ocean");
+        for (Archetypes archetype : Archetypes.values())
+        {
+            ConfigFile config = new ConfigFile(archetype.toString());
+            configs.put(archetype, config);
+        }
 
         loadConfig();
     }
 
-    public static FileConfiguration getOceanConfig() {
-        return ocean.getConfig();
+    public static ConfigFile getConfig(Archetypes archetypes) {
+        return configs.get(archetypes);
     }
 
     private void saveConfigValuesAbility(FileConfiguration config, String name, String element, String description, String instructions,
@@ -54,11 +61,11 @@ public class ConfigManager {
         }
     }
 
-    private void saveConfigValuesCombo(FileConfiguration config, String name, String element, String description, String instructions,
+    private void saveConfigValuesCombo(FileConfiguration config, String name, Archetypes archetype, String description, String instructions,
                                        long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed, double sourceRange,
                                        ArrayList<ComboManager.AbilityInformation> abilities)
     {
-        String directory = element + ".combo." + name;
+        String directory = archetype.toString() + ".combo." + name;
         config.addDefault(directory + ".description", description);
         config.addDefault(directory + ".instructions", instructions);
         if (chargetime != 0) {
@@ -88,20 +95,61 @@ public class ConfigManager {
         }
         for (ComboManager.AbilityInformation abilityInformation : abilities)
         {
-            config.addDefault(directory + ".usage",abilityInformation.getName() + ":" + abilityInformation.getClickType().name());
+            config.addDefault(directory + ".usage",abilityInformation.getName() + ":" + abilityInformation.getClickType().toString());
         }
     }
 
+    private void saveConfigValuesArchetype(FileConfiguration config, Archetypes archetype, double armor, double toughness, double damage,
+                                           double kb, double attackspeed, double flyspeed, double kbres,
+                                           double health, double speed)
+    {
+        String dir = archetype.toString() + ".attribute.";
+        config.addDefault(dir + Attribute.GENERIC_ARMOR.toString(), armor);
+        config.addDefault(dir + Attribute.GENERIC_ARMOR_TOUGHNESS.toString(), toughness);
+        config.addDefault(dir + Attribute.GENERIC_ATTACK_DAMAGE.toString(), damage);
+        config.addDefault(dir + Attribute.GENERIC_ATTACK_KNOCKBACK.toString(), kb);
+        config.addDefault(dir + Attribute.GENERIC_ATTACK_SPEED.toString(), attackspeed);
+        config.addDefault(dir + Attribute.GENERIC_FLYING_SPEED.toString(), flyspeed);
+        config.addDefault(dir + Attribute.GENERIC_KNOCKBACK_RESISTANCE.toString(), kbres);
+        config.addDefault(dir + Attribute.GENERIC_MAX_HEALTH.toString(), health);
+        config.addDefault(dir + Attribute.GENERIC_MOVEMENT_SPEED.toString(), speed);
+
+    }
+
     public void loadConfig() {
-        FileConfiguration config = ocean.getConfig();
+        FileConfiguration ocean = getConfig(Archetypes.OCEAN).getConfig();
+
+        //Archetype config values are added on top of base values (which are below)
+        /*
+        saveConfigValuesArchetype(ocean, Archetypes.NONE, 0, 0, 2, 0, 4, 0.4,0.0, 20, 0.13);
+
+         */
 
         //Ability configuration
-        saveConfigValuesAbility(config, "Torrent", Element.OCEAN.name(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "Torrent", Archetypes.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
                 2, 0.5, 20, 1, 10 );
 
-        config.options().copyDefaults(true);
-        ocean.saveConfig();
+
+        //Below are the defaults, if you are going to change then comment it out and copy and paste
+        saveConfigValuesArchetype(ocean, Archetypes.OCEAN, 0, 0, 2, 0, 4, 0.4,
+                0.0, 20, 0.13);
+
+        ocean.options().copyDefaults(true);
+        getConfig(Archetypes.OCEAN).saveConfig();
+
+
+        FileConfiguration none = getConfig(Archetypes.NONE).getConfig();
+
+        //Ability configuration
+
+
+        //Below are the defaults, if you are going to change then comment it out and copy and paste
+        saveConfigValuesArchetype(ocean, Archetypes.NONE, 0, 0, 0, 0, 0, 0.0,
+                0.0, 0, 0);
+
+        ocean.options().copyDefaults(true);
+        getConfig(Archetypes.NONE).saveConfig();
     }
 
 

@@ -1,4 +1,4 @@
-package com.sereneoasis.ability;
+package com.sereneoasis.ability.data;
 
 public class AbilityData {
 

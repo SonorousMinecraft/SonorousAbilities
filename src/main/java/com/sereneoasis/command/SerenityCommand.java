@@ -1,9 +1,8 @@
 package com.sereneoasis.command;
 
-import com.sereneoasis.ability.AbilityData;
-import com.sereneoasis.ability.AbilityDataManager;
-import com.sereneoasis.ability.CoreAbility;
-import com.sereneoasis.Element;
+import com.sereneoasis.ability.data.AbilityData;
+import com.sereneoasis.ability.data.AbilityDataManager;
+import com.sereneoasis.archetypes.Archetypes;
 import com.sereneoasis.board.SerenityBoard;
 import com.sereneoasis.SerenityPlayer;
 import org.bukkit.command.Command;
@@ -22,6 +21,36 @@ public class SerenityCommand implements CommandExecutor {
             if (sPlayer != null) {
                     switch (strings[0])
                     {
+                        case "choose":
+                            if (strings.length == 1)
+                            {
+                                player.sendMessage("What archetype do you want to choose?");
+                                return false;
+                            }
+                            if (strings.length > 2)
+                            {
+                                player.sendMessage("Too many arguments");
+                                return false;
+                            }
+                            else{
+                                Archetypes archetype = null;
+                                for (Archetypes archetypes : Archetypes.values())
+                                {
+                                    if (strings[1].equalsIgnoreCase(archetypes.toString()))
+                                    {
+                                        archetype = archetypes;
+                                    }
+                                }
+                                if (archetype == null)
+                                {
+                                    player.sendMessage("This is not an archetype!");
+                                    return false;
+                                }
+                                else{
+                                    sPlayer.setArchetype(archetype);
+                                }
+                            }
+
                         case "bind":
                             if (strings.length == 1)
                             {
@@ -60,13 +89,13 @@ public class SerenityCommand implements CommandExecutor {
                             else {
                                 String elementString = strings[1].toUpperCase();
 
-                                if (! Arrays.stream(Element.values()).anyMatch(element -> element.toString().equalsIgnoreCase(elementString)))
+                                if (! Arrays.stream(Archetypes.values()).anyMatch(element -> element.toString().equalsIgnoreCase(elementString)))
                                 {
                                     player.sendMessage("This isn't an element.");
                                     return false;
                                 }
-                                Element element = Element.valueOf(elementString);
-                                for(String abil : AbilityDataManager.getElementAbilities(element))
+                                Archetypes archetypes = Archetypes.valueOf(elementString);
+                                for(String abil : AbilityDataManager.getElementAbilities(archetypes))
                                 {
                                     player.sendMessage(abil);
                                 }

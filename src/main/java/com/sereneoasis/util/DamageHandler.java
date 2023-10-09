@@ -1,8 +1,6 @@
 package com.sereneoasis.util;
 
-import com.sereneoasis.ability.CoreAbility;
-import com.sereneoasis.events.AbilityDamageEntityEvent;
-import org.bukkit.Bukkit;
+import com.sereneoasis.ability.superclasses.CoreAbility;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

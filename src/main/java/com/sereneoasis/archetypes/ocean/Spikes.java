@@ -1,9 +1,7 @@
-package com.sereneoasis.classes.ocean;
+package com.sereneoasis.archetypes.ocean;
 
-import com.sereneoasis.Methods;
-import com.sereneoasis.ability.CoreAbility;
-import com.sereneoasis.abilityuilities.ShootBlockFromPlayer;
-import com.sereneoasis.abilityuilities.SourceBlockToPlayer;
+import com.sereneoasis.util.Methods;
+import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.TempBlock;
 import org.bukkit.Location;

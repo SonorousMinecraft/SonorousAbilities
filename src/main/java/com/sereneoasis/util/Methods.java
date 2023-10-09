@@ -1,4 +1,4 @@
-package com.sereneoasis;
+package com.sereneoasis.util;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;

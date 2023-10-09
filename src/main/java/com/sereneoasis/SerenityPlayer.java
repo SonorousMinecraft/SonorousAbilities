@@ -1,7 +1,8 @@
 package com.sereneoasis;
 
-import com.sereneoasis.ability.CoreAbility;
+import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.storage.PlayerData;
+import com.sereneoasis.archetypes.Archetypes;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -54,14 +55,14 @@ public class SerenityPlayer {
         this.name = name;
     }
 
-    private Element element;
+    private Archetypes archetypes;
 
-    public Element getElement() {
-        return element;
+    public Archetypes getArchetype() {
+        return archetypes;
     }
 
-    public void setElement(Element element) {
-        this.element = element;
+    public void setArchetype(Archetypes archetypes) {
+        this.archetypes = archetypes;
     }
 
     public Player getPlayer() {
@@ -90,7 +91,7 @@ public class SerenityPlayer {
                 {
                     abilities.put(i,"unbound");
                 }
-                insertPlayer(uuid, player.getName(), abilities, Element.NONBENDER);
+                insertPlayer(uuid, player.getName(), abilities, Archetypes.NONE);
 
                 SerenityPlayer serenityPlayer = new SerenityPlayer();
                 getSerenityPlayerMap().put(uuid, serenityPlayer);
@@ -99,7 +100,7 @@ public class SerenityPlayer {
 
                 serenityPlayer.setAbilities(abilities);
 
-                serenityPlayer.setElement(Element.NONBENDER);
+                serenityPlayer.setArchetype(Archetypes.NONE);
                 serenityPlayer.setPlayer(player);
             }
             else {
@@ -111,14 +112,14 @@ public class SerenityPlayer {
 
                 serenityPlayer.setAbilities(abilities);
 
-                serenityPlayer.setElement(Element.valueOf(PlayerData.getElement()));
+                serenityPlayer.setArchetype(Archetypes.valueOf(PlayerData.getElement()));
                 serenityPlayer.setPlayer(player);
             }
         });
 
     }
 
-    public static void insertPlayer(UUID uuid, String name, HashMap<Integer,String> abilities, Element element)
+    public static void insertPlayer(UUID uuid, String name, HashMap<Integer,String> abilities, Archetypes archetypes)
     {
         PlayerData playerData = new PlayerData();
         playerData.setKey(uuid);
@@ -126,7 +127,7 @@ public class SerenityPlayer {
 
         playerData.setAbilities(abilities);
 
-        playerData.setElement(String.valueOf(element));
+        playerData.setElement(String.valueOf(archetypes));
 
         Serenity.getRepository().insert(playerData);
     }

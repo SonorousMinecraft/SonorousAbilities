@@ -3,6 +3,9 @@ package com.sereneoasis;
 import com.nivixx.ndatabase.api.NDatabase;
 import com.nivixx.ndatabase.api.repository.Repository;
 import com.sereneoasis.ability.*;
+import com.sereneoasis.ability.data.AbilityDataManager;
+import com.sereneoasis.ability.ComboManager;
+import com.sereneoasis.archetypes.ArchetypeDataManager;
 import com.sereneoasis.command.SerenityCommand;
 import com.sereneoasis.config.ConfigManager;
 import com.sereneoasis.listeners.SerenityListener;
@@ -32,6 +35,12 @@ public class Serenity extends JavaPlugin {
 
     public static AbilityDataManager getAbilityDataManager() {
         return abilityDataManager;
+    }
+
+    private static ArchetypeDataManager archetypeDataManager;
+
+    public static ArchetypeDataManager getArchetypeDataManager() {
+        return archetypeDataManager;
     }
 
     private static ScoreboardManager scoreBoardManager;
@@ -68,6 +77,7 @@ public class Serenity extends JavaPlugin {
 
         configManager = new ConfigManager();
         abilityDataManager = new AbilityDataManager();
+        archetypeDataManager = new ArchetypeDataManager();
         comboManager = new ComboManager();
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
 
