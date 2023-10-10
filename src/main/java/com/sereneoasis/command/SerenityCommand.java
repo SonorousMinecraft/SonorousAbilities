@@ -48,6 +48,8 @@ public class SerenityCommand implements CommandExecutor {
                                 }
                                 else{
                                     sPlayer.setArchetype(archetype);
+                                    SerenityBoard.getByPlayer(player).setSlot(10, archetype.toString());
+                                    return true;
                                 }
                             }
 
@@ -70,7 +72,7 @@ public class SerenityCommand implements CommandExecutor {
                                 }
                                 int slot = player.getInventory().getHeldItemSlot()+1;
                                 sPlayer.setAbility(slot, ability);
-                                SerenityBoard.getByPlayer(player).setSlot(slot, ability);
+                                SerenityBoard.getByPlayer(player).setAbilitySlot(slot, ability);
                                 player.sendMessage("Successfully bound " + ability + " to slot " + slot + "." );
                                 return true;
                             }
@@ -78,7 +80,7 @@ public class SerenityCommand implements CommandExecutor {
                         case "display":
                             if (strings.length == 1)
                             {
-                                player.sendMessage("What element do you want to show abilities for?");
+                                player.sendMessage("What archetype do you want to show abilities for?");
                                 return false;
                             }
                             if (strings.length > 2)
@@ -87,15 +89,15 @@ public class SerenityCommand implements CommandExecutor {
                                 return false;
                             }
                             else {
-                                String elementString = strings[1].toUpperCase();
+                                String archetypeString = strings[1].toUpperCase();
 
-                                if (! Arrays.stream(Archetypes.values()).anyMatch(element -> element.toString().equalsIgnoreCase(elementString)))
+                                if (! Arrays.stream(Archetypes.values()).anyMatch(archetype -> archetype.toString().equalsIgnoreCase(archetypeString)))
                                 {
-                                    player.sendMessage("This isn't an element.");
+                                    player.sendMessage("This isn't an archetype.");
                                     return false;
                                 }
-                                Archetypes archetypes = Archetypes.valueOf(elementString);
-                                for(String abil : AbilityDataManager.getElementAbilities(archetypes))
+                                Archetypes archetypes = Archetypes.valueOf(archetypeString);
+                                for(String abil : AbilityDataManager.getArchetypeAbilities(archetypes))
                                 {
                                     player.sendMessage(abil);
                                 }

@@ -26,11 +26,13 @@ public class ArchetypeDataManager {
 
             ConfigurationSection section = config.getConfigurationSection(archetype.toString() + ".attribute");
             HashMap<Attribute, Double> attributeValues = new HashMap<>();
-            for (Attribute attribute : Attribute.values())
+            for (String att : section.getKeys(false) )
             {
+                Attribute attribute = Attribute.valueOf(att);
                 attributeValues.put(attribute, section.getDouble(attribute.toString()));
             }
             ARCHETYPE_DATA_MAP.put(archetype, attributeValues);
+
         }
     }
 }

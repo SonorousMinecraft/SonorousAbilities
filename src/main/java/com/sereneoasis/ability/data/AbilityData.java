@@ -2,7 +2,7 @@ package com.sereneoasis.ability.data;
 
 public class AbilityData {
 
-    protected String element, description, instructions;
+    protected String archetype, description, instructions;
     protected long chargetime, cooldown,  duration;
 
     protected double damage, radius, range, speed, sourceRange;
@@ -25,8 +25,8 @@ public class AbilityData {
         this.sourceRange = sourceRange;
     }
 
-    public String getElement() {
-        return element;
+    public String getArchetype() {
+        return archetype;
     }
 
     public String getDescription() {

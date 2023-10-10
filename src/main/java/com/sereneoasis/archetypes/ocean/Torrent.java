@@ -6,7 +6,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromPlayer;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
-import com.sereneoasis.util.SourceStatus;
+import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,9 +27,8 @@ public class Torrent extends CoreAbility {
     public Torrent(Player player) {
         super(player);
 
-
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.WATER, 4);
-        if (! (sourceBlockToPlayer.getSourceStatus() == SourceStatus.NO_SOURCE))
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.WATER, 3);
+        if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             start();
         }
@@ -42,7 +41,7 @@ public class Torrent extends CoreAbility {
             this.remove();
         }
 
-        if (sourceBlockToPlayer.getSourceStatus() == SourceStatus.SOURCED)
+        if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED)
         {
             hasSourced = true;
             loc = sourceBlockToPlayer.getLocation();
@@ -51,13 +50,12 @@ public class Torrent extends CoreAbility {
 
         if (hasSourced) {
             if (hasShot) {
-
-
-                if (shootBlockFromPlayer == null)
+                if (shootBlockFromPlayer.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
+                    shootBlockFromPlayer.remove();
+                    sPlayer.addCooldown(this.getName(), this.cooldown);
                     this.remove();
                 }
-
             }
             else{
                 if (blockRingAroundPlayer == null)
@@ -83,6 +81,7 @@ public class Torrent extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
+
         if (hasSourced) {
             blockRingAroundPlayer.remove();
         }

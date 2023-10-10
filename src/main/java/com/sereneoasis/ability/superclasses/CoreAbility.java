@@ -4,6 +4,7 @@ import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetypes;
 import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.displays.SerenityBoard;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -124,7 +125,6 @@ public abstract class CoreAbility implements Ability {
         }
 
         INSTANCES.remove(this);
-        sPlayer.addCooldown(this.getName(), this.cooldown);
     }
 
     public static void removeAll() {

@@ -1,9 +1,9 @@
 package com.sereneoasis.util;
 
-public enum SourceStatus {
+public enum AbilityStatus {
     NO_SOURCE,
-    SOURCE_SELECTED,
     SOURCING,
     SOURCED,
-    SHOT
+    SHOT,
+    COMPLETE
 }

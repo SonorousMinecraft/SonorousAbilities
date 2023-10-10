@@ -8,12 +8,14 @@ import com.sereneoasis.archetypes.ocean.Gimbal;
 import com.sereneoasis.archetypes.ocean.Spikes;
 import com.sereneoasis.archetypes.ocean.Torrent;
 import com.sereneoasis.storage.PlayerData;
+import com.sereneoasis.util.TempBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -24,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.sereneoasis.displays.SerenityBoard.hex;
 
 
 public class SerenityListener implements Listener {
@@ -37,10 +41,11 @@ public class SerenityListener implements Listener {
 
         Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), () -> {
             SerenityBoard board = SerenityBoard.createScore(player);
-            board.setTitle("&aSerenity");
+            board.setTitle(hex("#d99856 Serenity"));
             SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+            board.setSlot(10, serenityPlayer.getArchetype().toString());
             for (int i : serenityPlayer.getAbilities().keySet()) {
-                board.setSlot(i, serenityPlayer.getAbilities().get(i));
+                board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
             }
             ArchetypeDataManager.getArchetypeAttributes(serenityPlayer.getArchetype()).forEach((attribute, value) ->
             {
@@ -69,10 +74,10 @@ public class SerenityListener implements Listener {
         Serenity.getComboManager().removePlayer(player);
         PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
         oldPlayerData.setAbilities(serenityPlayer.getAbilities());
-        oldPlayerData.setElement(serenityPlayer.getArchetype().toString());
+        oldPlayerData.setArchetype(serenityPlayer.getArchetype().toString());
         Serenity.getRepository().upsert(oldPlayerData);
 
-        for (Attribute attribute : Attribute.values())
+        for (Attribute attribute : ATTRIBUTE_TRACKER.get(player).keySet())
         {
             player.getAttribute(attribute).removeModifier(ATTRIBUTE_TRACKER.get(player).get(attribute));
         }
@@ -85,7 +90,11 @@ public class SerenityListener implements Listener {
     public void onSwing(PlayerInteractEvent e)
     {
         Player player = e.getPlayer();
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+        if (player == null)
+        {
+            return;
+        }
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
         if (sPlayer == null)
         {
             return;
@@ -120,7 +129,11 @@ public class SerenityListener implements Listener {
     public void onShift(PlayerToggleSneakEvent e)
     {
         Player player = e.getPlayer();
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+        if (player == null)
+        {
+            return;
+        }
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
         if (sPlayer == null)
         {
             return;
@@ -141,6 +154,15 @@ public class SerenityListener implements Listener {
             case "Spikes":
                 new Spikes(player);
                 break;
+        }
+    }
+
+    @EventHandler
+    public void stopTempLiquidFlow(BlockFromToEvent event)
+    {
+        if (event.getBlock().isLiquid() && TempBlock.isTempBlock(event.getBlock()))
+        {
+            event.setCancelled(true);
         }
     }
 }

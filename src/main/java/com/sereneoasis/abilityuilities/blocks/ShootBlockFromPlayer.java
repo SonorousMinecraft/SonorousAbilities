@@ -1,6 +1,7 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.TempBlock;
@@ -23,6 +24,8 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
     private Vector dir;
 
+    private AbilityStatus abilityStatus;
+
     public ShootBlockFromPlayer(Player player, String user, Location startLoc, Material type, boolean directable) {
         super(player, user);
         this.user = user;
@@ -30,6 +33,7 @@ public class ShootBlockFromPlayer extends CoreAbility {
         this.loc = startLoc;
         this.directable = directable;
         this.dir = player.getEyeLocation().getDirection().normalize();
+        this.abilityStatus = AbilityStatus.SHOT;
         start();
     }
 
@@ -38,16 +42,22 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
 
         if (loc.distance(player.getEyeLocation()) > range) {
-            this.remove();
+            abilityStatus = AbilityStatus.COMPLETE;
+            return;
         }
 
-        tb = new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 1000);
+
+        tb = new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 500);
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
         }
 
         loc.add(dir.clone().multiply(speed));
         DamageHandler.damageEntity(Methods.getAffected(loc, radius, player), player, this, damage);
+    }
+
+    public AbilityStatus getAbilityStatus() {
+        return abilityStatus;
     }
 
     @Override

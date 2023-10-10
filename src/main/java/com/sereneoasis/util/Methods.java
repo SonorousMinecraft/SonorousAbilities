@@ -61,16 +61,24 @@ public class Methods {
 
     public static Block getFacingBlock(Player player, double distance)
     {
-        Location loc = player.getLocation();
-        Block block = Objects.requireNonNull(Objects.requireNonNull(loc.getWorld()).rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER)).getHitBlock();
+        Location loc = player.getEyeLocation();
+        Block block = null;
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER) != null)
+        {
+            block = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER).getHitBlock();
+        }
         return block;
     }
 
     public static Block getFacingBlockOrLiquid(Player player, double distance)
     {
         Location loc = player.getEyeLocation();
-        Block block = Objects.requireNonNull(Objects.requireNonNull(loc.getWorld()).rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS)).getHitBlock();
-        Bukkit.broadcastMessage("block is " + block.getType().toString());
+        Block block = null;
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS) != null)
+        {
+            Bukkit.broadcastMessage("not null");
+            block = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS).getHitBlock();
+        }
         return block;
     }
 
@@ -120,4 +128,6 @@ public class Methods {
         }
         return blocks;
     }
+
+
 }

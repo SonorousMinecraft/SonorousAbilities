@@ -5,12 +5,10 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromPlayer;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
-import com.sereneoasis.util.SourceStatus;
-import com.sereneoasis.util.TempBlock;
+import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class Gimbal extends CoreAbility
 {
@@ -36,7 +34,7 @@ public class Gimbal extends CoreAbility
         super(player);
 
         sourceBlockToPlayer = new SourceBlockToPlayer(player, this.getName(), Material.WATER, 4);
-        if (! (sourceBlockToPlayer.getSourceStatus() == SourceStatus.NO_SOURCE))
+        if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             blockRingAroundPlayer1 = new BlockRingAroundPlayer(player, "Gimbal", player.getEyeLocation(),
                     Material.WATER, 3, 45);

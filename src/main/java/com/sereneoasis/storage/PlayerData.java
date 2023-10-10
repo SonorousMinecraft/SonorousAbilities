@@ -41,17 +41,17 @@ public class PlayerData extends NEntity<UUID> {
         return this.abilities;
     }
 
-    @JsonProperty("element")
-    private String element;
+    @JsonProperty("archetype")
+    private String archetype;
 
-    public void setElement(String element)
+    public void setArchetype(String archetype)
     {
-        this.element = element;
+        this.archetype = archetype;
     }
 
-    public String getElement()
+    public String getArchetype()
     {
-        return this.element;
+        return this.archetype;
     }
 
 }

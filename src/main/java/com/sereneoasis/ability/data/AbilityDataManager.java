@@ -26,8 +26,9 @@ public class AbilityDataManager {
     public AbilityDataManager()
     {
 
-        for (Archetypes archetype : Archetypes.values())
-        {
+//        for (Archetypes archetype : Archetypes.values())
+//        {
+        Archetypes archetype = Archetypes.OCEAN;
             config = ConfigManager.getConfig(archetype).getConfig();
 
             for (String ability : config.getConfigurationSection(archetype.toString() + ".ability").getKeys(false))
@@ -38,12 +39,12 @@ public class AbilityDataManager {
                         abil.getDouble("radius") , abil.getDouble("range") , abil.getDouble("speed"), abil.getDouble("sourcerange"));
                 abilityDataMap.put(ability, abilityData);
             }
-            //        for (String combo : config.getConfigurationSection(Element.OCEAN.toString() + ".combo").getKeys(false))
+            //        for (String combo : config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo").getKeys(false))
 //        {
-//            ConfigurationSection abil = config.getConfigurationSection(Element.OCEAN.toString() + ".combo" + "." + combo);
+//            ConfigurationSection abil = config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo" + "." + combo);
 //
 //            ArrayList<ComboManager.AbilityInformation> abilities = new ArrayList<>();
-//            for (String ability : config.getConfigurationSection(Element.OCEAN.toString() + ".combo" + "." + combo + ".usage").getKeys(false))
+//            for (String ability : config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo" + "." + combo + ".usage").getKeys(false))
 //            {
 //                abilities.add(new ComboManager.AbilityInformation(ability.split(":")[0], ClickType.valueOf(ability.split(":")[1])));
 //            }
@@ -55,7 +56,7 @@ public class AbilityDataManager {
 //            comboDataMap.put(combo, comboData);
 //            abilityDataMap.put(combo, comboData);
 //        }
-        }
+//        }
 
 
 
@@ -74,18 +75,18 @@ public class AbilityDataManager {
     }
 
 
-    public static List<String> getElementAbilities(Archetypes archetypes)
+    public static List<String> getArchetypeAbilities(Archetypes archetypes)
     {
         if (archetypes != null) {
-            List<String> elementAbilities = new ArrayList<>();
+            List<String> archetypeAbilities = new ArrayList<>();
             for (String ability : abilityDataMap.keySet())
             {
-                if (abilityDataMap.get(ability).getElement().equals(archetypes.toString()))
+                if (abilityDataMap.get(ability).getArchetype().equals(archetypes.toString()))
                 {
-                    elementAbilities.add(ability);
+                    archetypeAbilities.add(ability);
                 }
             }
-            return elementAbilities;
+            return archetypeAbilities;
         }
         return null;
     }

@@ -1,9 +1,11 @@
 package com.sereneoasis;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
 import com.sereneoasis.archetypes.Archetypes;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -42,7 +44,7 @@ public class SerenityPlayer {
 
     public String getHeldAbility()
     {
-        return abilities.get(player.getInventory().getHeldItemSlot() + 1);
+        return getAbilities().get(player.getInventory().getHeldItemSlot() + 1);
     }
 
     private String name;
@@ -77,11 +79,6 @@ public class SerenityPlayer {
 
     public static void loadAsync(UUID uuid, Player player)
     {
-        if (SERENITY_PLAYER_MAP.containsKey(uuid))
-        {
-            Bukkit.broadcastMessage("stupid shit");
-            return;
-        }
 
         Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData,exception) -> {
             if (exception != null)
@@ -89,14 +86,13 @@ public class SerenityPlayer {
                 HashMap<Integer, String>abilities = new HashMap<>();
                 for (int i = 1; i<=9; i++)
                 {
-                    abilities.put(i,"unbound");
+                    abilities.put(i,"-----");
                 }
                 insertPlayer(uuid, player.getName(), abilities, Archetypes.NONE);
 
                 SerenityPlayer serenityPlayer = new SerenityPlayer();
                 getSerenityPlayerMap().put(uuid, serenityPlayer);
                 serenityPlayer.setName(player.getName());
-
 
                 serenityPlayer.setAbilities(abilities);
 
@@ -112,7 +108,7 @@ public class SerenityPlayer {
 
                 serenityPlayer.setAbilities(abilities);
 
-                serenityPlayer.setArchetype(Archetypes.valueOf(PlayerData.getElement()));
+                serenityPlayer.setArchetype(Archetypes.valueOf(PlayerData.getArchetype()));
                 serenityPlayer.setPlayer(player);
             }
         });
@@ -127,9 +123,9 @@ public class SerenityPlayer {
 
         playerData.setAbilities(abilities);
 
-        playerData.setElement(String.valueOf(archetypes));
+        playerData.setArchetype(archetypes.toString());
 
-        Serenity.getRepository().insert(playerData);
+        Serenity.getRepository().upsert(playerData);
     }
 
     protected final Map<String, Long> cooldowns = new HashMap<>();
@@ -139,6 +135,14 @@ public class SerenityPlayer {
         while (iterator.hasNext()) {
             Map.Entry<String, Long> entry = iterator.next();
             if (System.currentTimeMillis() >= entry.getValue()) {
+                SerenityBoard board = SerenityBoard.getByPlayer(player);
+                for (int i = 1; i<=9; i++)
+                {
+                    if (abilities.get(i).equals(entry.getKey()))
+                    {
+                        board.setAbilitySlot(i, entry.getKey());
+                    }
+                }
                     iterator.remove();
             }
         }
@@ -148,6 +152,15 @@ public class SerenityPlayer {
         if (cooldown <= 0) {
             return;
         }
+        SerenityBoard board = SerenityBoard.getByPlayer(player);
+        for (int i = 1; i<=9; i++)
+        {
+            if (abilities.get(i).equals(ability))
+            {
+                board.setAbilitySlot(i, ChatColor.STRIKETHROUGH + ability);
+            }
+        }
+
         this.cooldowns.put(ability, cooldown + System.currentTimeMillis());
     }
 

@@ -1,8 +1,9 @@
 package com.sereneoasis.displays;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,10 +13,6 @@ import org.bukkit.scoreboard.*;
 public class SerenityBoard {
 
     private static HashMap<UUID, SerenityBoard> players = new HashMap<>();
-
-    public static boolean hasScore(Player player) {
-        return players.containsKey(player.getUniqueId());
-    }
 
     public static SerenityBoard createScore(Player player) {
         return new SerenityBoard(player);
@@ -35,10 +32,15 @@ public class SerenityBoard {
     private SerenityBoard(Player player) {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         sidebar = scoreboard.registerNewObjective("Serenity", Criteria.DUMMY,
-                ChatColor.translateAlternateColorCodes('&', "&l&uSerenity"));
+                "Serenity");
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
         // Create Teams
-        for(int i=1; i<=15; i++) {
+        for (int i = 1; i <= 9; i++) {
+            Team team = scoreboard.registerNewTeam("SLOT_" + -i);
+            team.addEntry(genEntry(i));
+        }
+        for (int i = 10; i <= 10; i++)
+        {
             Team team = scoreboard.registerNewTeam("SLOT_" + i);
             team.addEntry(genEntry(i));
         }
@@ -51,7 +53,23 @@ public class SerenityBoard {
         sidebar.setDisplayName(title.length()>32 ? title.substring(0, 32) : title);
     }
 
-    public void setSlot(int slot, String text) {
+    public void setAbilitySlot(int slot, String text) {
+        Team team = scoreboard.getTeam("SLOT_" +- slot);
+        String entry = genEntry(slot);
+        if(!scoreboard.getEntries().contains(entry)) {
+            sidebar.getScore(entry).setScore(-slot);
+        }
+
+        text = ChatColor.translateAlternateColorCodes('&', text);
+        String pre = getFirstSplit(text);
+        String suf = getFirstSplit(ChatColor.getLastColors(pre) + getSecondSplit(text));
+
+        team.setPrefix(pre);
+        team.setSuffix(suf);
+    }
+
+    public void setSlot(int slot, String text)
+    {
         Team team = scoreboard.getTeam("SLOT_" + slot);
         String entry = genEntry(slot);
         if(!scoreboard.getEntries().contains(entry)) {
@@ -64,6 +82,7 @@ public class SerenityBoard {
 
         team.setPrefix(pre);
         team.setSuffix(suf);
+
     }
 
     public void removeSlot(int slot) {
@@ -73,24 +92,6 @@ public class SerenityBoard {
         }
     }
 
-    public void setSlotsFromList(List<String> list) {
-        while(list.size()>15) {
-            list.remove(list.size()-1);
-        }
-
-        int slot = list.size();
-
-        if(slot<15) {
-            for(int i=(slot +1); i<=15; i++) {
-                removeSlot(i);
-            }
-        }
-
-        for(String line : list) {
-            setSlot(slot, line);
-            slot--;
-        }
-    }
 
     private String genEntry(int slot) {
         return ChatColor.values()[slot].toString();
@@ -107,4 +108,23 @@ public class SerenityBoard {
         return s.length()>16 ? s.substring(16) : "";
     }
 
+
+    public static String hex(String message) {
+        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            String hexCode = message.substring(matcher.start(), matcher.end());
+            String replaceSharp = hexCode.replace('#', 'x');
+
+            char[] ch = replaceSharp.toCharArray();
+            StringBuilder builder = new StringBuilder("");
+            for (char c : ch) {
+                builder.append("&" + c);
+            }
+
+            message = message.replace(hexCode, builder.toString());
+            matcher = pattern.matcher(message);
+        }
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
 }

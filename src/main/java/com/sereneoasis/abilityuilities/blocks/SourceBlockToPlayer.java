@@ -3,7 +3,7 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.Methods;
-import com.sereneoasis.util.SourceStatus;
+import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,7 +13,7 @@ import org.bukkit.util.Vector;
 
 public class SourceBlockToPlayer extends CoreAbility {
 
-    private SourceStatus sourceStatus;
+    private AbilityStatus abilityStatus;
 
     private Location loc;
 
@@ -26,22 +26,21 @@ public class SourceBlockToPlayer extends CoreAbility {
     public SourceBlockToPlayer(Player player, String user, Material type, double distanceToStop) {
         super(player,user);
 
-        sourceStatus = SourceStatus.NO_SOURCE;
+        abilityStatus = AbilityStatus.NO_SOURCE;
         Block source = Methods.getFacingBlockOrLiquid(player, sourceRange);
         if (source != null && source.getType().equals(type))
         {
             this.user = user;
             this.type = type;
-            this.range = range;
             this.distanceToStop = distanceToStop;
-            sourceStatus = SourceStatus.SOURCING;
+            abilityStatus = AbilityStatus.SOURCING;
             loc = source.getLocation();
             start();
         }
     }
 
-    public SourceStatus getSourceStatus() {
-        return sourceStatus;
+    public AbilityStatus getSourceStatus() {
+        return abilityStatus;
     }
 
     public Location getLocation() {
@@ -55,17 +54,17 @@ public class SourceBlockToPlayer extends CoreAbility {
             this.remove();
         }
 
-        new TempBlock(loc.getBlock(), type.createBlockData(), 1000);
+        new TempBlock(loc.getBlock(), type.createBlockData(), 500);
         //loc.getBlock().setBlockData(Material.DIRT.createBlockData());
         //loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5);
 
-        if (sourceStatus == SourceStatus.SOURCING)
+        if (abilityStatus == AbilityStatus.SOURCING)
         {
             Vector dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation());
             loc.add(dir.clone().multiply(speed));
             if (loc.distance(player.getLocation()) <= distanceToStop)
             {
-                sourceStatus = SourceStatus.SOURCED;
+                abilityStatus = AbilityStatus.SOURCED;
             }
         }
     }

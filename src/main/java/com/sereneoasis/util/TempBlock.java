@@ -52,7 +52,6 @@ public class TempBlock {
 
     public void revertBlock()
     {
-        Bukkit.broadcastMessage(" revertTime" + revertTime + "<" +  System.currentTimeMillis());
         block.setBlockData(oldData);
         REVERT_QUEUE.remove();
         INSTANCES.remove(block,this);

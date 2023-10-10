@@ -2,12 +2,12 @@ package com.sereneoasis.archetypes;
 
 public enum Archetypes {
     NONE("none"),
-    OCEAN("ocean"),
-    SUN("sun"),
-    WAR("war"),
-    NETHER("nether"),
-    EARTH("earth"),
-    NATURE("nature");
+    OCEAN("ocean");
+    //SUN("sun"),
+    //WAR("war"),
+    //NETHER("nether"),
+    //EARTH("earth"),
+    //NATURE("nature");
 
     private String name;
 

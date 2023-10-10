@@ -83,7 +83,7 @@ public class Serenity extends JavaPlugin {
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
 
         this.getCommand("serenity").setExecutor(new SerenityCommand());
-        this.getCommand("serenity").setTabCompleter(new TabAutoCompletion());
+        //this.getCommand("serenity").setTabCompleter(new TabAutoCompletion());
     }
 
     @Override

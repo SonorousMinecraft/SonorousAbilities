@@ -28,10 +28,10 @@ public class ConfigManager {
         return configs.get(archetypes);
     }
 
-    private void saveConfigValuesAbility(FileConfiguration config, String name, String element, String description, String instructions,
+    private void saveConfigValuesAbility(FileConfiguration config, String name, String archetype, String description, String instructions,
                                   long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed, double sourceRange)
     {
-        String directory = element + ".ability." + name;
+        String directory = archetype + ".ability." + name;
         config.addDefault(directory + ".description", description);
         config.addDefault(directory + ".instructions", instructions);
         if (chargetime != 0) {
@@ -57,7 +57,7 @@ public class ConfigManager {
             config.addDefault(directory + ".speed", speed);
         }
         if (sourceRange != 0) {
-            config.addDefault(directory + ".sourcerange", speed);
+            config.addDefault(directory + ".sourcerange", sourceRange);
         }
     }
 
@@ -91,7 +91,7 @@ public class ConfigManager {
             config.addDefault(directory + ".speed", speed);
         }
         if (sourceRange != 0) {
-            config.addDefault(directory + ".sourcerange", speed);
+            config.addDefault(directory + ".sourcerange", sourceRange);
         }
         for (ComboManager.AbilityInformation abilityInformation : abilities)
         {
@@ -100,16 +100,14 @@ public class ConfigManager {
     }
 
     private void saveConfigValuesArchetype(FileConfiguration config, Archetypes archetype, double armor, double toughness, double damage,
-                                           double kb, double attackspeed, double flyspeed, double kbres,
+                                           double attackspeed, double kbres,
                                            double health, double speed)
     {
         String dir = archetype.toString() + ".attribute.";
         config.addDefault(dir + Attribute.GENERIC_ARMOR.toString(), armor);
         config.addDefault(dir + Attribute.GENERIC_ARMOR_TOUGHNESS.toString(), toughness);
         config.addDefault(dir + Attribute.GENERIC_ATTACK_DAMAGE.toString(), damage);
-        config.addDefault(dir + Attribute.GENERIC_ATTACK_KNOCKBACK.toString(), kb);
         config.addDefault(dir + Attribute.GENERIC_ATTACK_SPEED.toString(), attackspeed);
-        config.addDefault(dir + Attribute.GENERIC_FLYING_SPEED.toString(), flyspeed);
         config.addDefault(dir + Attribute.GENERIC_KNOCKBACK_RESISTANCE.toString(), kbres);
         config.addDefault(dir + Attribute.GENERIC_MAX_HEALTH.toString(), health);
         config.addDefault(dir + Attribute.GENERIC_MOVEMENT_SPEED.toString(), speed);
@@ -128,11 +126,11 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(ocean, "Torrent", Archetypes.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.5, 20, 1, 10 );
+                2, 0.5, 20, 1, 10);
 
 
         //Below are the defaults, if you are going to change then comment it out and copy and paste
-        saveConfigValuesArchetype(ocean, Archetypes.OCEAN, 0, 0, 2, 0, 4, 0.4,
+        saveConfigValuesArchetype(ocean, Archetypes.OCEAN, 0, 0, 2, 4,
                 0.0, 20, 0.13);
 
         ocean.options().copyDefaults(true);
@@ -145,7 +143,7 @@ public class ConfigManager {
 
 
         //Below are the defaults, if you are going to change then comment it out and copy and paste
-        saveConfigValuesArchetype(ocean, Archetypes.NONE, 0, 0, 0, 0, 0, 0.0,
+        saveConfigValuesArchetype(none, Archetypes.NONE, 0, 0, 0, 0,
                 0.0, 0, 0);
 
         ocean.options().copyDefaults(true);
