@@ -2,7 +2,7 @@ package com.sereneoasis.listeners;
 
 import com.sereneoasis.*;
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.ArchetypeDataManager;
+import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.archetypes.ocean.Gimbal;
 import com.sereneoasis.archetypes.ocean.Spikes;
@@ -27,8 +27,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.sereneoasis.displays.SerenityBoard.hex;
-
 
 public class SerenityListener implements Listener {
 
@@ -41,7 +39,6 @@ public class SerenityListener implements Listener {
 
         Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), () -> {
             SerenityBoard board = SerenityBoard.createScore(player);
-            board.setTitle(hex("#d99856 Serenity"));
             SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
             board.setSlot(10, serenityPlayer.getArchetype().toString());
             for (int i : serenityPlayer.getAbilities().keySet()) {

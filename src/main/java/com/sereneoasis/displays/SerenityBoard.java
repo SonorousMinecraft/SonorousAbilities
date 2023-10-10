@@ -31,9 +31,9 @@ public class SerenityBoard {
 
     private SerenityBoard(Player player) {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        sidebar = scoreboard.registerNewObjective("Serenity", Criteria.DUMMY,
-                "Serenity");
+        sidebar = scoreboard.registerNewObjective("Serenity", Criteria.DUMMY, "Serenity");
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
+        sidebar.setDisplayName(hex("#d99856 Serenity"));
         // Create Teams
         for (int i = 1; i <= 9; i++) {
             Team team = scoreboard.registerNewTeam("SLOT_" + -i);
@@ -48,10 +48,10 @@ public class SerenityBoard {
         players.put(player.getUniqueId(), this);
     }
 
-    public void setTitle(String title) {
-        title = ChatColor.translateAlternateColorCodes('&', title);
-        sidebar.setDisplayName(title.length()>32 ? title.substring(0, 32) : title);
-    }
+//    public void setTitle(String title) {
+//        title = ChatColor.translateAlternateColorCodes('&', title);
+//        sidebar.setDisplayName(title.length()>32 ? title.substring(0, 32) : title);
+//    }
 
     public void setAbilitySlot(int slot, String text) {
         Team team = scoreboard.getTeam("SLOT_" +- slot);
@@ -59,8 +59,7 @@ public class SerenityBoard {
         if(!scoreboard.getEntries().contains(entry)) {
             sidebar.getScore(entry).setScore(-slot);
         }
-
-        text = ChatColor.translateAlternateColorCodes('&', text);
+        text = hex(text);
         String pre = getFirstSplit(text);
         String suf = getFirstSplit(ChatColor.getLastColors(pre) + getSecondSplit(text));
 
@@ -76,7 +75,7 @@ public class SerenityBoard {
             sidebar.getScore(entry).setScore(slot);
         }
 
-        text = ChatColor.translateAlternateColorCodes('&', text);
+        text = hex(text);
         String pre = getFirstSplit(text);
         String suf = getFirstSplit(ChatColor.getLastColors(pre) + getSecondSplit(text));
 

@@ -8,10 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Methods {
 
@@ -127,6 +124,20 @@ public class Methods {
             }
         }
         return blocks;
+    }
+
+    public static void addTags(Set<String> outputSet, List<String> configList) {
+        ListIterator<String> iterator = new ArrayList<String>(configList).listIterator();
+        iterator.forEachRemaining(next -> {
+            if (next.startsWith("#")) {
+                NamespacedKey key = NamespacedKey.minecraft(next.replaceFirst("#", ""));
+                for (Material material : Bukkit.getTag(Tag.REGISTRY_BLOCKS, key, Material.class).getValues()) {
+                    outputSet.add(material.toString());
+                }
+            } else {
+                outputSet.add(next.toUpperCase());
+            }
+        });
     }
 
 

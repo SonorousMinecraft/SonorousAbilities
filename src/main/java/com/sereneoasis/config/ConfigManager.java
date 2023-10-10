@@ -3,12 +3,13 @@ package com.sereneoasis.config;
 
 import com.sereneoasis.archetypes.Archetypes;
 import com.sereneoasis.ability.ComboManager;
+import com.sereneoasis.util.Methods;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigManager {
 
@@ -99,9 +100,9 @@ public class ConfigManager {
         }
     }
 
-    private void saveConfigValuesArchetype(FileConfiguration config, Archetypes archetype, double armor, double toughness, double damage,
-                                           double attackspeed, double kbres,
-                                           double health, double speed)
+    private void saveAttributeValuesArchetype(FileConfiguration config, Archetypes archetype, double armor, double toughness, double damage,
+                                              double attackspeed, double kbres,
+                                              double health, double speed)
     {
         String dir = archetype.toString() + ".attribute.";
         config.addDefault(dir + Attribute.GENERIC_ARMOR.toString(), armor);
@@ -111,7 +112,20 @@ public class ConfigManager {
         config.addDefault(dir + Attribute.GENERIC_KNOCKBACK_RESISTANCE.toString(), kbres);
         config.addDefault(dir + Attribute.GENERIC_MAX_HEALTH.toString(), health);
         config.addDefault(dir + Attribute.GENERIC_MOVEMENT_SPEED.toString(), speed);
+    }
 
+    private void saveArchetypeBlocks(FileConfiguration config, Archetypes archetype, Set<Tag<Material>> tags, Set<Material>blocks)
+    {
+        List<String>entries = new ArrayList<>();
+        tags.forEach(tag -> entries.add(tag.toString()));
+        blocks.forEach(block -> entries.add(block.toString()));
+        config.addDefault(archetype.toString() + ".blocks", entries);
+    }
+
+    private void saveArchetypeCosmetics(FileConfiguration config, Archetypes archetype, String color)
+    {
+        String dir = archetype.toString() + ".cosmetics.";
+        config.addDefault(archetype.toString() + ".color", color);
     }
 
     public void loadConfig() {
@@ -130,7 +144,7 @@ public class ConfigManager {
 
 
         //Below are the defaults, if you are going to change then comment it out and copy and paste
-        saveConfigValuesArchetype(ocean, Archetypes.OCEAN, 0, 0, 2, 4,
+        saveAttributeValuesArchetype(ocean, Archetypes.OCEAN, 0, 0, 2, 4,
                 0.0, 20, 0.13);
 
         ocean.options().copyDefaults(true);
@@ -143,7 +157,7 @@ public class ConfigManager {
 
 
         //Below are the defaults, if you are going to change then comment it out and copy and paste
-        saveConfigValuesArchetype(none, Archetypes.NONE, 0, 0, 0, 0,
+        saveAttributeValuesArchetype(none, Archetypes.NONE, 0, 0, 0, 0,
                 0.0, 0, 0);
 
         ocean.options().copyDefaults(true);
