@@ -2,7 +2,7 @@ package com.sereneoasis.command;
 
 import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
-import com.sereneoasis.archetypes.Archetypes;
+import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.SerenityPlayer;
 import org.bukkit.command.Command;
@@ -33,8 +33,8 @@ public class SerenityCommand implements CommandExecutor {
                                 return false;
                             }
                             else{
-                                Archetypes archetype = null;
-                                for (Archetypes archetypes : Archetypes.values())
+                                Archetype archetype = null;
+                                for (Archetype archetypes : Archetype.values())
                                 {
                                     if (strings[1].equalsIgnoreCase(archetypes.toString()))
                                     {
@@ -91,13 +91,13 @@ public class SerenityCommand implements CommandExecutor {
                             else {
                                 String archetypeString = strings[1].toUpperCase();
 
-                                if (! Arrays.stream(Archetypes.values()).anyMatch(archetype -> archetype.toString().equalsIgnoreCase(archetypeString)))
+                                if (! Arrays.stream(Archetype.values()).anyMatch(archetype -> archetype.toString().equalsIgnoreCase(archetypeString)))
                                 {
                                     player.sendMessage("This isn't an archetype.");
                                     return false;
                                 }
-                                Archetypes archetypes = Archetypes.valueOf(archetypeString);
-                                for(String abil : AbilityDataManager.getArchetypeAbilities(archetypes))
+                                Archetype archetype = Archetype.valueOf(archetypeString);
+                                for(String abil : AbilityDataManager.getArchetypeAbilities(archetype))
                                 {
                                     player.sendMessage(abil);
                                 }

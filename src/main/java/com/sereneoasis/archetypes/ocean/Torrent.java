@@ -41,7 +41,7 @@ public class Torrent extends CoreAbility {
             this.remove();
         }
 
-        if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED)
+        if (!hasSourced && sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED)
         {
             hasSourced = true;
             loc = sourceBlockToPlayer.getLocation();

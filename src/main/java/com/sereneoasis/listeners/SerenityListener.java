@@ -44,7 +44,7 @@ public class SerenityListener implements Listener {
             for (int i : serenityPlayer.getAbilities().keySet()) {
                 board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
             }
-            ArchetypeDataManager.getArchetypeAttributes(serenityPlayer.getArchetype()).forEach((attribute, value) ->
+            ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
             {
                 AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(),"Serenity." + attribute.toString(),value,
                     AttributeModifier.Operation.ADD_NUMBER);
@@ -72,14 +72,14 @@ public class SerenityListener implements Listener {
         PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
         oldPlayerData.setAbilities(serenityPlayer.getAbilities());
         oldPlayerData.setArchetype(serenityPlayer.getArchetype().toString());
-        Serenity.getRepository().upsert(oldPlayerData);
+        Serenity.getRepository().updateAsync(oldPlayerData);
 
         for (Attribute attribute : ATTRIBUTE_TRACKER.get(player).keySet())
         {
             player.getAttribute(attribute).removeModifier(ATTRIBUTE_TRACKER.get(player).get(attribute));
         }
 
-        SerenityPlayer.getSerenityPlayerMap().remove(player.getUniqueId());
+        //SerenityPlayer.getSerenityPlayerMap().remove(player.getUniqueId());
 
     }
 

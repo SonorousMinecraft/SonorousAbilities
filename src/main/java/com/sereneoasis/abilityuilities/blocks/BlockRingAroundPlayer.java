@@ -24,6 +24,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private int rotation;
 
+
     public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation) {
         super(player, user);
 
@@ -39,7 +40,12 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     @Override
     public void progress() {
-        rotation += 15;
+        if (orientation > 0) {
+            rotation += 15;
+        }
+        else{
+            rotation -= 15;
+        }
         loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).rotateAroundY(Math.toRadians(rotation)).rotateAroundAxis(player.getEyeLocation().getDirection(), orientation));
         new TempBlock(loc.getBlock(), type.createBlockData(), 500);
     }

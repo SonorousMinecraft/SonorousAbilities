@@ -28,7 +28,7 @@ public class SourceBlockToPlayer extends CoreAbility {
 
         abilityStatus = AbilityStatus.NO_SOURCE;
         Block source = Methods.getFacingBlockOrLiquid(player, sourceRange);
-        if (source != null && source.getType().equals(type))
+        if (source != null && Methods.getArchetypeBlocks(sPlayer).contains(source.getType()))
         {
             this.user = user;
             this.type = type;

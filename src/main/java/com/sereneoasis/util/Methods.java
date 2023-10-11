@@ -1,5 +1,8 @@
 package com.sereneoasis.util;
 
+import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.archetypes.data.ArchetypeDataManager;
+import com.sereneoasis.displays.SerenityBoard;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -73,7 +76,6 @@ public class Methods {
         Block block = null;
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS) != null)
         {
-            Bukkit.broadcastMessage("not null");
             block = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS).getHitBlock();
         }
         return block;
@@ -138,6 +140,11 @@ public class Methods {
                 outputSet.add(next.toUpperCase());
             }
         });
+    }
+
+    public static Set<Material>getArchetypeBlocks(SerenityPlayer serenityPlayer)
+    {
+        return ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getBlocks();
     }
 
 

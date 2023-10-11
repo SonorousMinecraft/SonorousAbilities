@@ -1,9 +1,8 @@
 package com.sereneoasis.config;
 
 
-import com.sereneoasis.archetypes.Archetypes;
+import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.ability.ComboManager;
-import com.sereneoasis.util.Methods;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
@@ -13,10 +12,10 @@ import java.util.*;
 
 public class ConfigManager {
 
-    private static final Map<Archetypes, ConfigFile> configs = new HashMap<>();
+    private static final Map<Archetype, ConfigFile> configs = new HashMap<>();
 
     public ConfigManager() {
-        for (Archetypes archetype : Archetypes.values())
+        for (Archetype archetype : Archetype.values())
         {
             ConfigFile config = new ConfigFile(archetype.toString());
             configs.put(archetype, config);
@@ -25,8 +24,8 @@ public class ConfigManager {
         loadConfig();
     }
 
-    public static ConfigFile getConfig(Archetypes archetypes) {
-        return configs.get(archetypes);
+    public static ConfigFile getConfig(Archetype archetype) {
+        return configs.get(archetype);
     }
 
     private void saveConfigValuesAbility(FileConfiguration config, String name, String archetype, String description, String instructions,
@@ -62,7 +61,7 @@ public class ConfigManager {
         }
     }
 
-    private void saveConfigValuesCombo(FileConfiguration config, String name, Archetypes archetype, String description, String instructions,
+    private void saveConfigValuesCombo(FileConfiguration config, String name, Archetype archetype, String description, String instructions,
                                        long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed, double sourceRange,
                                        ArrayList<ComboManager.AbilityInformation> abilities)
     {
@@ -100,7 +99,7 @@ public class ConfigManager {
         }
     }
 
-    private void saveAttributeValuesArchetype(FileConfiguration config, Archetypes archetype, double armor, double toughness, double damage,
+    private void saveAttributeValuesArchetype(FileConfiguration config, Archetype archetype, double armor, double toughness, double damage,
                                               double attackspeed, double kbres,
                                               double health, double speed)
     {
@@ -114,54 +113,68 @@ public class ConfigManager {
         config.addDefault(dir + Attribute.GENERIC_MOVEMENT_SPEED.toString(), speed);
     }
 
-    private void saveArchetypeBlocks(FileConfiguration config, Archetypes archetype, Set<Tag<Material>> tags, Set<Material>blocks)
+    private void saveArchetypeBlocks(FileConfiguration config, Archetype archetype, Set<Tag<Material>> tags, Set<Material>blocks)
     {
-        List<String>entries = new ArrayList<>();
-        tags.forEach(tag -> entries.add(tag.toString()));
-        blocks.forEach(block -> entries.add(block.toString()));
-        config.addDefault(archetype.toString() + ".blocks", entries);
+        List<String>tagList = new ArrayList<>();
+        tags.forEach(tag -> tagList.add(tag.toString()));
+        List<String>blockList = new ArrayList<>();
+        blocks.forEach(block -> blockList.add(block.toString()));
+        config.addDefault(archetype.toString() + ".blocks", tagList);
+        config.addDefault(archetype.toString() + ".blocks.tags", blockList);
     }
 
-    private void saveArchetypeCosmetics(FileConfiguration config, Archetypes archetype, String color)
+    private void saveArchetypeCosmetics(FileConfiguration config, Archetype archetype, String color)
     {
         String dir = archetype.toString() + ".cosmetics.";
-        config.addDefault(archetype.toString() + ".color", color);
+        config.addDefault(dir + ".color", color);
     }
 
     public void loadConfig() {
-        FileConfiguration ocean = getConfig(Archetypes.OCEAN).getConfig();
+        FileConfiguration ocean = getConfig(Archetype.OCEAN).getConfig();
 
         //Archetype config values are added on top of base values (which are below)
         /*
-        saveConfigValuesArchetype(ocean, Archetypes.NONE, 0, 0, 2, 0, 4, 0.4,0.0, 20, 0.13);
+        saveConfigValuesArchetype(ocean, Archetype.NONE, 0, 0, 2, 0, 4, 0.4,0.0, 20, 0.13);
 
          */
 
         //Ability configuration
-        saveConfigValuesAbility(ocean, "Torrent", Archetypes.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
                 2, 0.5, 20, 1, 10);
 
+        saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 0,
+                2, 0.5, 20, 1, 10);
 
-        //Below are the defaults, if you are going to change then comment it out and copy and paste
-        saveAttributeValuesArchetype(ocean, Archetypes.OCEAN, 0, 0, 2, 4,
+        Set<Tag<Material>>oceanTags = new HashSet<>();
+        oceanTags.add(Tag.ICE);
+        oceanTags.add(Tag.SNOW);
+        Set<Material>oceanBlocks = new HashSet<>();
+        oceanBlocks.add(Material.WATER);
+
+        saveArchetypeBlocks(ocean, Archetype.OCEAN, oceanTags, oceanBlocks);
+
+        saveAttributeValuesArchetype(ocean, Archetype.OCEAN, 0, 0, 2, 4,
                 0.0, 20, 0.13);
 
+        saveArchetypeCosmetics(ocean, Archetype.OCEAN, "#005EB8");
+
         ocean.options().copyDefaults(true);
-        getConfig(Archetypes.OCEAN).saveConfig();
+        getConfig(Archetype.OCEAN).saveConfig();
 
 
-        FileConfiguration none = getConfig(Archetypes.NONE).getConfig();
+        FileConfiguration none = getConfig(Archetype.NONE).getConfig();
 
         //Ability configuration
 
-
-        //Below are the defaults, if you are going to change then comment it out and copy and paste
-        saveAttributeValuesArchetype(none, Archetypes.NONE, 0, 0, 0, 0,
+        none.addDefault(Archetype.NONE.toString() + ".blocks", "DIRT");
+        saveAttributeValuesArchetype(none, Archetype.NONE, 0, 0, 0, 0,
                 0.0, 0, 0);
 
-        ocean.options().copyDefaults(true);
-        getConfig(Archetypes.NONE).saveConfig();
+        saveArchetypeCosmetics(none, Archetype.NONE, "#ffffff");
+        none.options().copyDefaults(true);
+        getConfig(Archetype.NONE).saveConfig();
     }
 
 

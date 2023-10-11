@@ -1,12 +1,8 @@
 package com.sereneoasis.archetypes.data;
 
-import com.sereneoasis.archetypes.Archetypes;
-import com.sereneoasis.config.ConfigFile;
+import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.config.ConfigManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,16 +10,21 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static com.sereneoasis.util.Methods.addTags;
 
 public class ArchetypeDataManager {
 
-    private static final Map<Archetypes, ArchetypeData> ARCHETYPE_DATA_MAP = new ConcurrentHashMap<>();
+    private static final Map<Archetype, ArchetypeData> ARCHETYPE_DATA_MAP = new ConcurrentHashMap<>();
 
+    public static ArchetypeData getArchetypeData(Archetype archetype)
+    {
+        return ARCHETYPE_DATA_MAP.get(archetype);
+    }
 
     public ArchetypeDataManager() {
-        for (Archetypes archetype : Archetypes.values()) {
+        for (Archetype archetype : Archetype.values()) {
             FileConfiguration config = ConfigManager.getConfig(archetype).getConfig();
 
             ConfigurationSection section = config.getConfigurationSection(archetype.toString() + ".attribute");
@@ -35,10 +36,11 @@ public class ArchetypeDataManager {
             }
             ConfigurationSection section2 = config.getConfigurationSection(archetype.toString());
 
-            Set<String>archetypeBlocks = new HashSet<>();
-            addTags(archetypeBlocks, section2.getStringList("blocks"));
+            Set<String>archetypeBlocksString = new HashSet<>(section2.getStringList("blocks"));
+            addTags(archetypeBlocksString, section2.getStringList("blocks.tags"));
+            Set<Material>archetypeBlocks = archetypeBlocksString.stream().map(s -> Material.valueOf(s)).collect(Collectors.toSet());
 
-            ConfigurationSection section3 = config.getConfigurationSection(archetype.toString() + ".cosmetics.");
+            ConfigurationSection section3 = config.getConfigurationSection(archetype.toString() + ".cosmetics");
             String color = section3.getString("color");
 
             ArchetypeData archetypeData = new ArchetypeData(attributeValues, archetypeBlocks, color);

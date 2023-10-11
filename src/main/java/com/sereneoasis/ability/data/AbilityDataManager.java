@@ -1,6 +1,6 @@
 package com.sereneoasis.ability.data;
 
-import com.sereneoasis.archetypes.Archetypes;
+import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.config.ConfigManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,9 +26,9 @@ public class AbilityDataManager {
     public AbilityDataManager()
     {
 
-//        for (Archetypes archetype : Archetypes.values())
+//        for (Archetype archetype : Archetype.values())
 //        {
-        Archetypes archetype = Archetypes.OCEAN;
+        Archetype archetype = Archetype.OCEAN;
             config = ConfigManager.getConfig(archetype).getConfig();
 
             for (String ability : config.getConfigurationSection(archetype.toString() + ".ability").getKeys(false))
@@ -75,13 +75,13 @@ public class AbilityDataManager {
     }
 
 
-    public static List<String> getArchetypeAbilities(Archetypes archetypes)
+    public static List<String> getArchetypeAbilities(Archetype archetype)
     {
-        if (archetypes != null) {
+        if (archetype != null) {
             List<String> archetypeAbilities = new ArrayList<>();
             for (String ability : abilityDataMap.keySet())
             {
-                if (abilityDataMap.get(ability).getArchetype().equals(archetypes.toString()))
+                if (abilityDataMap.get(ability).getArchetype().equals(archetype.toString()))
                 {
                     archetypeAbilities.add(ability);
                 }

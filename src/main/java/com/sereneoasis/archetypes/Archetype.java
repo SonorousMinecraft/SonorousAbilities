@@ -1,6 +1,6 @@
 package com.sereneoasis.archetypes;
 
-public enum Archetypes {
+public enum Archetype {
     NONE("none"),
     OCEAN("ocean");
     //SUN("sun"),
@@ -11,7 +11,7 @@ public enum Archetypes {
 
     private String name;
 
-    Archetypes(String name)
+    Archetype(String name)
     {
         this.name = name;
     }

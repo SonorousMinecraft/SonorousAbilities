@@ -1,10 +1,9 @@
 package com.sereneoasis;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
-import com.sereneoasis.archetypes.Archetypes;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -57,14 +56,14 @@ public class SerenityPlayer {
         this.name = name;
     }
 
-    private Archetypes archetypes;
+    private Archetype archetype;
 
-    public Archetypes getArchetype() {
-        return archetypes;
+    public Archetype getArchetype() {
+        return archetype;
     }
 
-    public void setArchetype(Archetypes archetypes) {
-        this.archetypes = archetypes;
+    public void setArchetype(Archetype archetype) {
+        this.archetype = archetype;
     }
 
     public Player getPlayer() {
@@ -80,6 +79,11 @@ public class SerenityPlayer {
     public static void loadAsync(UUID uuid, Player player)
     {
 
+        if (SERENITY_PLAYER_MAP.containsKey(uuid))
+        {
+            return;
+        }
+
         Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData,exception) -> {
             if (exception != null)
             {
@@ -88,7 +92,7 @@ public class SerenityPlayer {
                 {
                     abilities.put(i,"-----");
                 }
-                insertPlayer(uuid, player.getName(), abilities, Archetypes.NONE);
+                insertPlayer(uuid, player.getName(), abilities, Archetype.NONE);
 
                 SerenityPlayer serenityPlayer = new SerenityPlayer();
                 getSerenityPlayerMap().put(uuid, serenityPlayer);
@@ -96,7 +100,7 @@ public class SerenityPlayer {
 
                 serenityPlayer.setAbilities(abilities);
 
-                serenityPlayer.setArchetype(Archetypes.NONE);
+                serenityPlayer.setArchetype(Archetype.NONE);
                 serenityPlayer.setPlayer(player);
             }
             else {
@@ -108,14 +112,14 @@ public class SerenityPlayer {
 
                 serenityPlayer.setAbilities(abilities);
 
-                serenityPlayer.setArchetype(Archetypes.valueOf(PlayerData.getArchetype()));
+                serenityPlayer.setArchetype(Archetype.valueOf(PlayerData.getArchetype()));
                 serenityPlayer.setPlayer(player);
             }
         });
 
     }
 
-    public static void insertPlayer(UUID uuid, String name, HashMap<Integer,String> abilities, Archetypes archetypes)
+    public static void insertPlayer(UUID uuid, String name, HashMap<Integer,String> abilities, Archetype archetype)
     {
         PlayerData playerData = new PlayerData();
         playerData.setKey(uuid);
@@ -123,7 +127,7 @@ public class SerenityPlayer {
 
         playerData.setAbilities(abilities);
 
-        playerData.setArchetype(archetypes.toString());
+        playerData.setArchetype(archetype.toString());
 
         Serenity.getRepository().upsert(playerData);
     }
@@ -132,10 +136,15 @@ public class SerenityPlayer {
 
     public void removeOldCooldowns() {
         Iterator<Map.Entry<String, Long>> iterator = this.cooldowns.entrySet().iterator();
+
         while (iterator.hasNext()) {
             Map.Entry<String, Long> entry = iterator.next();
             if (System.currentTimeMillis() >= entry.getValue()) {
                 SerenityBoard board = SerenityBoard.getByPlayer(player);
+                if (board == null)
+                {
+                    return;
+                }
                 for (int i = 1; i<=9; i++)
                 {
                     if (abilities.get(i).equals(entry.getKey()))
@@ -153,6 +162,10 @@ public class SerenityPlayer {
             return;
         }
         SerenityBoard board = SerenityBoard.getByPlayer(player);
+        if (board == null)
+        {
+            return;
+        }
         for (int i = 1; i<=9; i++)
         {
             if (abilities.get(i).equals(ability))
