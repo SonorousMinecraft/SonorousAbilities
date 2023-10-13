@@ -2,7 +2,8 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.Methods;
-import com.sereneoasis.util.TempBlock;
+import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,14 +25,16 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private int rotation;
 
+    private double rotatePerTick;
 
-    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation) {
+    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, double rotatePerTick) {
         super(player, user);
 
         this.user = user;
         this.type = type;
         this.ringSize = ringSize;
         this.orientation = orientation;
+        this.rotatePerTick = rotatePerTick;
         loc = startLoc;
         this.dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation()).setY(0).normalize();
         rotation = 0;
@@ -40,14 +43,23 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     @Override
     public void progress() {
+        loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).rotateAroundY(Math.toRadians(rotation)).rotateAroundAxis(player.getEyeLocation().getDirection().setY(0).normalize(), orientation));
         if (orientation > 0) {
-            rotation += 15;
+            rotation += rotatePerTick;
         }
         else{
-            rotation -= 15;
+            rotation -= rotatePerTick;
+
         }
-        loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).rotateAroundY(Math.toRadians(rotation)).rotateAroundAxis(player.getEyeLocation().getDirection(), orientation));
-        new TempBlock(loc.getBlock(), type.createBlockData(), 500);
+        Vector playerToLoc = Methods.getDirectionBetweenLocations(player.getEyeLocation(), loc);
+        Methods.getPivotedLocations(Methods.getDisplayEntityLocs(loc, 2.0, 1),
+                        player.getEyeLocation().add(playerToLoc), playerToLoc )
+                .forEach(tempBlockLoc -> {
+            new TempDisplayBlock(tempBlockLoc, type.createBlockData(), 500, 1);
+        });
+
+        //new TempDisplayBlock(loc, Material.LIGHT_BLUE_STAINED_GLASS_PANE.createBlockData(), 500, 1);
+        //new TempBlock(loc.getBlock(), type.createBlockData(), 500, false);
     }
 
     public void setOrientation(int orientation) {

@@ -83,7 +83,7 @@ public class Methods {
 
     public static Vector getDirectionBetweenLocations(Location start, Location end)
     {
-        return end.subtract(start).toVector().normalize();
+        return end.subtract(start).toVector();
     }
 
     public static List<Block>getBlocksAroundPoint(Location loc, double radius)
@@ -128,19 +128,41 @@ public class Methods {
         return blocks;
     }
 
-    public static void addTags(Set<String> outputSet, List<String> configList) {
-        ListIterator<String> iterator = new ArrayList<String>(configList).listIterator();
-        iterator.forEachRemaining(next -> {
-            if (next.startsWith("#")) {
-                NamespacedKey key = NamespacedKey.minecraft(next.replaceFirst("#", ""));
-                for (Material material : Bukkit.getTag(Tag.REGISTRY_BLOCKS, key, Material.class).getValues()) {
-                    outputSet.add(material.toString());
+    public static List<Location>getDisplayEntityLocs(Location loc, double size, double increment)
+    {
+        List<Location>locs = new ArrayList<>();
+        for (double x = -size/2; x <size/2 ; x += increment)
+        {
+            for (double y = -size/2; y <size/2 ; y += increment)
+            {
+                for (double z = -size/2; z <size/2 ; z += increment)
+                {
+                    locs.add(loc.clone().add(x,y,z));
                 }
-            } else {
-                outputSet.add(next.toUpperCase());
             }
-        });
+        }
+        return locs;
     }
+
+    public static double getAngleBetweenVectors(Vector vec1, Vector vec2)
+    {
+        double num = vec1.dot(vec2);
+        double den = vec1.length() * vec2.length();
+        double d = Math.acos(num/den);
+        return d;
+    }
+
+    public static List<Location> getPivotedLocations(List<Location>locs, Location pivot, Vector dir)
+    {
+        List<Location>newLocs = new ArrayList<>();
+        for (Location loc : locs)
+        {
+            double angle = getAngleBetweenVectors(Methods.getDirectionBetweenLocations(pivot, loc), dir);
+            newLocs.add(pivot.clone().add(dir.clone().rotateAroundY(angle)));
+        }
+        return newLocs;
+    }
+
 
     public static Set<Material>getArchetypeBlocks(SerenityPlayer serenityPlayer)
     {

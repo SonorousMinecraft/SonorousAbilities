@@ -1,11 +1,8 @@
-package com.sereneoasis.util;
+package com.sereneoasis.util.temp;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,9 +24,14 @@ public class TempBlock {
 
     private long revertTime;
 
-    public TempBlock( Block block, BlockData newData, final long revertTime) {
+    public TempBlock( Block block, BlockData newData, final long revertTime, boolean canReplaceBlocks)
+    {
         if (! INSTANCES.containsKey(block)) {
             this.block = block;
+            if (!canReplaceBlocks && !block.getType().isAir())
+            {
+                return;
+            }
             this.newData = newData;
             this.revertTime = System.currentTimeMillis() + revertTime;
 
@@ -39,6 +41,9 @@ public class TempBlock {
             INSTANCES.put(block, this);
             REVERT_QUEUE.add(this);
         }
+    }
+    public TempBlock( Block block, BlockData newData, final long revertTime) {
+        new TempBlock(block, newData, revertTime, true);
     }
 
     public static boolean isTempBlock(Block block)

@@ -33,11 +33,15 @@ public class Gimbal extends CoreAbility
     public Gimbal(Player player) {
         super(player);
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, this.getName(), Material.WATER, 4);
+        if (CoreAbility.hasAbility(player, this.getClass()))
+        {
+            return;
+        }
+
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Gimbal", Material.BLUE_STAINED_GLASS, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             start();
-
         }
     }
 
@@ -46,25 +50,29 @@ public class Gimbal extends CoreAbility
 
         if (!hasSourced && sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED)
         {
+
             hasSourced = true;
             blockRingAroundPlayer1 = new BlockRingAroundPlayer(player, "Gimbal", sourceBlockToPlayer.getLocation(),
-                    Material.WATER, 2, 30);
+                    Material.BLUE_STAINED_GLASS, 2, 60, 30);
             blockRingAroundPlayer2 = new BlockRingAroundPlayer(player, "Gimbal", sourceBlockToPlayer.getLocation(),
-                    Material.WATER, 2, -30);
+                    Material.BLUE_STAINED_GLASS, 2, -60, 30);
             sourceBlockToPlayer.remove();
         }
 
 
         if (hasShot1)
         {
+
             if (shootBlockFromPlayer1 !=null && shootBlockFromPlayer1.getAbilityStatus() == AbilityStatus.COMPLETE)
             {
+
                 shootBlockFromPlayer1.remove();
             }
             if (hasShot2)
             {
                 if (shootBlockFromPlayer2 !=null && shootBlockFromPlayer2.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
+
                     shootBlockFromPlayer2.remove();
                     this.remove();
                 }
@@ -75,14 +83,15 @@ public class Gimbal extends CoreAbility
     public void setHasClicked()
     {
         if (hasSourced) {
+
             if (!hasShot1) {
                 hasShot1 = true;
-                shootBlockFromPlayer1 = new ShootBlockFromPlayer(player, "Gimbal", blockRingAroundPlayer1.getLocation(), Material.WATER, true);
+                shootBlockFromPlayer1 = new ShootBlockFromPlayer(player, "Gimbal", blockRingAroundPlayer1.getLocation(), Material.BLUE_STAINED_GLASS, true);
                 blockRingAroundPlayer1.remove();
             } else {
                 if (!hasShot2) {
                     hasShot2 = true;
-                    shootBlockFromPlayer2 = new ShootBlockFromPlayer(player, "Gimbal", blockRingAroundPlayer2.getLocation(), Material.WATER, true);
+                    shootBlockFromPlayer2 = new ShootBlockFromPlayer(player, "Gimbal", blockRingAroundPlayer2.getLocation(), Material.BLUE_STAINED_GLASS, true);
                     blockRingAroundPlayer2.remove();
                 }
             }

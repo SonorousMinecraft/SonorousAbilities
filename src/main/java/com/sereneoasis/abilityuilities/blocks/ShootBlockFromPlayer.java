@@ -4,8 +4,8 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.Methods;
-import com.sereneoasis.util.TempBlock;
-import org.bukkit.Bukkit;
+import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,7 +20,6 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
     private boolean directable;
 
-    private TempBlock tb;
 
     private Vector dir;
 
@@ -47,7 +46,8 @@ public class ShootBlockFromPlayer extends CoreAbility {
         }
 
 
-        tb = new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 500);
+        //new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 500);
+        new TempDisplayBlock(loc, type.createBlockData(), 500, radius);
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
         }

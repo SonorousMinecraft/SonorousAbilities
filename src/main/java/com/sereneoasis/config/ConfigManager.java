@@ -116,11 +116,11 @@ public class ConfigManager {
     private void saveArchetypeBlocks(FileConfiguration config, Archetype archetype, Set<Tag<Material>> tags, Set<Material>blocks)
     {
         List<String>tagList = new ArrayList<>();
-        tags.forEach(tag -> tagList.add(tag.toString()));
+        tags.forEach(tag -> tagList.add(String.valueOf(tag.getKey())));
         List<String>blockList = new ArrayList<>();
         blocks.forEach(block -> blockList.add(block.toString()));
-        config.addDefault(archetype.toString() + ".blocks", tagList);
-        config.addDefault(archetype.toString() + ".blocks.tags", blockList);
+        config.addDefault(archetype.toString() + ".blocks", blockList);
+        config.addDefault(archetype.toString() + ".tags", tagList);
     }
 
     private void saveArchetypeCosmetics(FileConfiguration config, Archetype archetype, String color)

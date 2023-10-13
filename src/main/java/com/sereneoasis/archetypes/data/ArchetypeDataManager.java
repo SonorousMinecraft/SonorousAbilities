@@ -2,7 +2,10 @@ package com.sereneoasis.archetypes.data;
 
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.config.ConfigManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +15,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.sereneoasis.util.Methods.addTags;
 
 public class ArchetypeDataManager {
 
@@ -37,8 +39,12 @@ public class ArchetypeDataManager {
             ConfigurationSection section2 = config.getConfigurationSection(archetype.toString());
 
             Set<String>archetypeBlocksString = new HashSet<>(section2.getStringList("blocks"));
-            addTags(archetypeBlocksString, section2.getStringList("blocks.tags"));
             Set<Material>archetypeBlocks = archetypeBlocksString.stream().map(s -> Material.valueOf(s)).collect(Collectors.toSet());
+
+            section2.getStringList("tags").forEach(tag -> {
+                Tag<Material>tagBlocks = Bukkit.getTag(Tag.REGISTRY_BLOCKS,NamespacedKey.fromString(tag),  Material.class);
+                archetypeBlocks.addAll(tagBlocks.getValues());
+            });
 
             ConfigurationSection section3 = config.getConfigurationSection(archetype.toString() + ".cosmetics");
             String color = section3.getString("color");

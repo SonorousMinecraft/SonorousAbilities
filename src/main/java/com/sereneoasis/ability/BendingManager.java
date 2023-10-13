@@ -2,7 +2,8 @@ package com.sereneoasis.ability;
 
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.util.TempBlock;
+import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 
 import java.util.Map;
 import java.util.UUID;
@@ -29,6 +30,16 @@ public class BendingManager implements Runnable{
             final TempBlock tempBlock = TempBlock.getRevertQueue().peek(); //Check if the top TempBlock is ready for reverting
             if (tempBlock.getRevertTime() < System.currentTimeMillis()) {
                 tempBlock.revertBlock();
+            }
+            else{
+                break;
+            }
+        }
+        while (!TempDisplayBlock.getRevertQueue().isEmpty())
+        {
+            final TempDisplayBlock tempDisplayBlock = TempDisplayBlock.getRevertQueue().peek(); //Check if the top TempBlock is ready for reverting
+            if (tempDisplayBlock.getRevertTime() < System.currentTimeMillis()) {
+                tempDisplayBlock.revertTempDisplayBlock();
             }
             else{
                 break;

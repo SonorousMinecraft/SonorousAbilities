@@ -4,7 +4,8 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.TempBlock;
+import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -54,13 +55,15 @@ public class SourceBlockToPlayer extends CoreAbility {
             this.remove();
         }
 
-        new TempBlock(loc.getBlock(), type.createBlockData(), 500);
+        new TempDisplayBlock(loc, type.createBlockData(), 500, radius);
+
+        //new TempBlock(loc.getBlock(), type.createBlockData(), 500);
         //loc.getBlock().setBlockData(Material.DIRT.createBlockData());
         //loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5);
 
         if (abilityStatus == AbilityStatus.SOURCING)
         {
-            Vector dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation());
+            Vector dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation()).normalize();
             loc.add(dir.clone().multiply(speed));
             if (loc.distance(player.getLocation()) <= distanceToStop)
             {

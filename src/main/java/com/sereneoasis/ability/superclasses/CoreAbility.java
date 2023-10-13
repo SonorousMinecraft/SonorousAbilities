@@ -34,25 +34,20 @@ public abstract class CoreAbility implements Ability {
         this.player = player;
         this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
 
-        AbilityData abilityData = AbilityDataManager.getAbilityData(this.getName());
+        initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
 
-        this.chargetime = abilityData.getChargetime();
-        this.cooldown = abilityData.getCooldown();
-        this.duration = abilityData.getDuration();
-
-        this.damage = abilityData.getDamage();
-        this.radius = abilityData.getRadius();
-        this.range = abilityData.getRange();
-        this.speed = abilityData.getSpeed();
-        this.sourceRange = abilityData.getSourceRange();
     }
 
     public CoreAbility(final Player player, String name) {
         this.player = player;
         this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
 
-        AbilityData abilityData = AbilityDataManager.getAbilityData(name);
+        initialiseConfigVariables(AbilityDataManager.getAbilityData(name));
 
+    }
+
+    private void initialiseConfigVariables(AbilityData abilityData)
+    {
         this.chargetime = abilityData.getChargetime();
         this.cooldown = abilityData.getCooldown();
         this.duration = abilityData.getDuration();
@@ -63,7 +58,6 @@ public abstract class CoreAbility implements Ability {
         this.speed = abilityData.getSpeed();
         this.sourceRange = abilityData.getSourceRange();
     }
-
 
 
     public void start()

@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
+import static com.sereneoasis.listeners.SerenityListener.initialiseAttributePlayer;
+
 public class SerenityCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -49,6 +51,7 @@ public class SerenityCommand implements CommandExecutor {
                                 else{
                                     sPlayer.setArchetype(archetype);
                                     SerenityBoard.getByPlayer(player).setSlot(10, archetype.toString());
+                                    initialiseAttributePlayer(player, sPlayer);
                                     return true;
                                 }
                             }

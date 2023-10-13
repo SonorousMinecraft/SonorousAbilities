@@ -3,7 +3,7 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.util.Methods;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.TempBlock;
+import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -60,7 +60,7 @@ public class Spikes extends CoreAbility {
         {
             Location targetLoc = player.getEyeLocation().
                     add(player.getEyeLocation().getDirection().multiply(loc.distance(player.getEyeLocation())));
-            Vector dir = Methods.getDirectionBetweenLocations(loc, targetLoc);
+            Vector dir = Methods.getDirectionBetweenLocations(loc, targetLoc).normalize();
             loc.add(dir.clone().multiply(speed));
             createTempBlocks();
         }

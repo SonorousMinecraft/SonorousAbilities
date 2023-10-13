@@ -8,9 +8,8 @@ import com.sereneoasis.archetypes.ocean.Gimbal;
 import com.sereneoasis.archetypes.ocean.Spikes;
 import com.sereneoasis.archetypes.ocean.Torrent;
 import com.sereneoasis.storage.PlayerData;
-import com.sereneoasis.util.TempBlock;
+import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,15 +21,31 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SerenityListener implements Listener {
 
-    private static final Map<Player, Map<Attribute,AttributeModifier>>ATTRIBUTE_TRACKER = new ConcurrentHashMap<>();
+
+    public static void initialiseAttributePlayer(Player player, SerenityPlayer serenityPlayer)
+    {
+        removeAttributePlayer(player, serenityPlayer);
+        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
+        {
+            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(),"Serenity." + attribute.toString(),value,
+                    AttributeModifier.Operation.ADD_NUMBER);
+
+            player.getAttribute(attribute).addModifier(attributeModifier);
+        });
+    }
+
+    public static void removeAttributePlayer(Player player, SerenityPlayer serenityPlayer)
+    {
+        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
+        {
+            player.getAttribute(attribute).getModifiers().forEach(attributeModifier ->  {player.getAttribute(attribute).removeModifier(attributeModifier);});
+        });
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -44,16 +59,7 @@ public class SerenityListener implements Listener {
             for (int i : serenityPlayer.getAbilities().keySet()) {
                 board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
             }
-            ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
-            {
-                AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(),"Serenity." + attribute.toString(),value,
-                    AttributeModifier.Operation.ADD_NUMBER);
-                HashMap<Attribute, AttributeModifier> map = new HashMap<>();
-                map.put(attribute,attributeModifier);
-                ATTRIBUTE_TRACKER.put(player, map);
-
-                player.getAttribute(attribute).addModifier(attributeModifier);
-            });
+            initialiseAttributePlayer(player, serenityPlayer);
 
         }, 150L);
 
@@ -69,17 +75,26 @@ public class SerenityListener implements Listener {
         SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
 
         Serenity.getComboManager().removePlayer(player);
-        PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
-        oldPlayerData.setAbilities(serenityPlayer.getAbilities());
-        oldPlayerData.setArchetype(serenityPlayer.getArchetype().toString());
-        Serenity.getRepository().updateAsync(oldPlayerData);
 
-        for (Attribute attribute : ATTRIBUTE_TRACKER.get(player).keySet())
-        {
-            player.getAttribute(attribute).removeModifier(ATTRIBUTE_TRACKER.get(player).get(attribute));
-        }
 
-        //SerenityPlayer.getSerenityPlayerMap().remove(player.getUniqueId());
+//        PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
+//        oldPlayerData.setAbilities(serenityPlayer.getAbilities());
+//        oldPlayerData.setArchetype(serenityPlayer.getArchetype().toString());
+//        Serenity.getRepository().update(oldPlayerData);
+
+        PlayerData playerData = new PlayerData();
+        playerData.setKey(uuid);
+        playerData.setName(player.getName());
+
+        playerData.setAbilities(serenityPlayer.getAbilities());
+
+        playerData.setArchetype(serenityPlayer.getArchetype().toString());
+
+        Serenity.getRepository().updateAsync(playerData);
+
+        removeAttributePlayer(player, serenityPlayer);
+
+
 
     }
 

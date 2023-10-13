@@ -129,7 +129,7 @@ public class SerenityPlayer {
 
         playerData.setArchetype(archetype.toString());
 
-        Serenity.getRepository().upsert(playerData);
+        Serenity.getRepository().insert(playerData);
     }
 
     protected final Map<String, Long> cooldowns = new HashMap<>();

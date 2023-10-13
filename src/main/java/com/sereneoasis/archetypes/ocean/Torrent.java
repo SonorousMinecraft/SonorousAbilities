@@ -27,7 +27,12 @@ public class Torrent extends CoreAbility {
     public Torrent(Player player) {
         super(player);
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.WATER, 3);
+        if (CoreAbility.hasAbility(player, this.getClass()))
+        {
+            return;
+        }
+
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.BLUE_STAINED_GLASS, 2);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             start();
@@ -60,7 +65,7 @@ public class Torrent extends CoreAbility {
             else{
                 if (blockRingAroundPlayer == null)
                 {
-                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.WATER, 3, 0);
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.BLUE_STAINED_GLASS, 2, 0, 30);
                 }
             }
         }
@@ -73,7 +78,7 @@ public class Torrent extends CoreAbility {
         if (hasSourced)
         {
             hasShot = true;
-            shootBlockFromPlayer = new ShootBlockFromPlayer(player, "Torrent", blockRingAroundPlayer.getLocation(), Material.WATER, true);
+            shootBlockFromPlayer = new ShootBlockFromPlayer(player, "Torrent", blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true);
             blockRingAroundPlayer.remove();
         }
     }
