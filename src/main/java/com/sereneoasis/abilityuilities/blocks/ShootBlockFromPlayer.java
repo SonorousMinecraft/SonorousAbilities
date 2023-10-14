@@ -50,7 +50,7 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
 
         //new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 500);
-        new TempDisplayBlock(loc, type.createBlockData(), 500, radius);
+        new TempDisplayBlock(loc, type.createBlockData(), 500, radius/2);
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
         }

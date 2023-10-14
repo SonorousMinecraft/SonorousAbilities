@@ -99,7 +99,7 @@ public class SerenityPlayer {
 
         if (Serenity.getRepository().get(uuid) == null) {
             for (int i = 1; i <= 9; i++) {
-                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + i + "-=-=");
+                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
             }
 
             SerenityPlayer serenityPlayer = new SerenityPlayer(player.getName(), abilities, Archetype.NONE, player);
@@ -109,7 +109,7 @@ public class SerenityPlayer {
         }
         else{
             Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData) -> {
-                SerenityPlayer serenityPlayer = new SerenityPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype()), player);
+                SerenityPlayer serenityPlayer = new SerenityPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype().toUpperCase()), player);
                 getSerenityPlayerMap().put(uuid, serenityPlayer);
             });
         }

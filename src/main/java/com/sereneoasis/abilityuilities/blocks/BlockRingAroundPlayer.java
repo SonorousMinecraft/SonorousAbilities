@@ -9,6 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Sakrajin
  * Creates a ring of blocks around a player
@@ -29,9 +32,9 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private int rotation;
 
-    private double rotatePerTick;
+    private int rotatePerTick;
 
-    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, double rotatePerTick) {
+    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick) {
         super(player, user);
 
         this.user = user;
@@ -41,28 +44,36 @@ public class BlockRingAroundPlayer extends CoreAbility {
         this.rotatePerTick = rotatePerTick;
         loc = startLoc;
         this.dir = Vectors.getDirectionBetweenLocations(loc, player.getEyeLocation()).setY(0).normalize();
-        rotation = 0;
+        rotation = Math.round(player.getEyeLocation().getYaw());
         start();
     }
 
     @Override
     public void progress() {
         loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).rotateAroundY(Math.toRadians(rotation)).rotateAroundAxis(player.getEyeLocation().getDirection().setY(0).normalize(), orientation));
+
         if (orientation > 0) {
             rotation += rotatePerTick;
-        }
-        else{
+        } else {
             rotation -= rotatePerTick;
 
         }
-        Vector playerToLoc = Vectors.getDirectionBetweenLocations(player.getEyeLocation(), loc);
-        Locations.getPivotedLocations(Locations.getDisplayEntityLocs(loc, 2.0, 1),
-                        player.getEyeLocation().add(playerToLoc), playerToLoc )
-                .forEach(tempBlockLoc -> {
-            new TempDisplayBlock(tempBlockLoc, type.createBlockData(), 500, 1);
-        });
+//        List<Location> currentLocs = Locations.getCircle(player.getEyeLocation(), radius, 360)
+//                .subList(Math.floorMod(Math.abs(rotation) + Math.abs(rotatePerTick), 360), Math.floorMod(Math.abs(rotation), 360));
+//        for (Location point : currentLocs)
+//        {
+//            new TempDisplayBlock(point, type.createBlockData(), 100, 0.05);
+//        }
 
-        //new TempDisplayBlock(loc, Material.LIGHT_BLUE_STAINED_GLASS_PANE.createBlockData(), 500, 1);
+
+        for (Location point : Locations.getCirclePointsBetweenPoints(player.getEyeLocation(), ringSize, rotatePerTick, dir,
+                Math.abs(rotation) - Math.abs(rotatePerTick), Math.abs(rotation)))
+        {
+            new TempDisplayBlock(point, type.createBlockData(), 200, 0.3);
+        }
+
+
+        //new TempDisplayBlock(loc, type.createBlockData(), 500, 1);
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500, false);
     }
 

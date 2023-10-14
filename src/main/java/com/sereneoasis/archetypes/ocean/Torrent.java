@@ -69,7 +69,7 @@ public class Torrent extends CoreAbility {
             else{
                 if (blockRingAroundPlayer == null)
                 {
-                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.BLUE_STAINED_GLASS, 2, 0, 30);
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.BLUE_STAINED_GLASS, 2, 0, 10);
                 }
             }
         }

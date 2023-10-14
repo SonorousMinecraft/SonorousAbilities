@@ -2,6 +2,7 @@ package com.sereneoasis.util.methods;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +35,6 @@ public class Locations {
 
 
 
-    public static List<Location> getPivotedLocations(List<Location>locs, Location pivot, Vector dir)
-    {
-        List<Location>newLocs = new ArrayList<>();
-        for (Location loc : locs)
-        {
-            double angle = Vectors.getAngleBetweenVectors(Vectors.getDirectionBetweenLocations(pivot, loc), dir);
-            newLocs.add(pivot.clone().add(dir.clone().rotateAroundY(angle)));
-        }
-        return newLocs;
-    }
-
     public static List<Location> getSphere(Location loc, double radii, int density) {
         final List<Location> sphere = new ArrayList<Location>();
         for (double i = 0; i <= Math.PI; i += Math.PI / density) {
@@ -67,6 +57,21 @@ public class Locations {
             circle.add(location);
         }
         return circle;
+    }
+
+    public static List<Location>getCirclePointsBetweenPoints(Location loc, double radii, int points, Vector dir, int startAngle, int endAngle)
+    {
+        int increment = Math.floorDiv(endAngle-startAngle, points);
+        List<Location>locs = new ArrayList<>();
+        for (int i = startAngle; i < endAngle; i+=increment)
+        {
+            double radian = Math.toRadians(i);
+            double x = Math.sin(radian) * radii;
+            double z = Math.cos(radian) * radii;
+            Vector v = new Vector(x, 0, z).multiply(radii);
+            locs.add(loc.clone().add(v));
+        }
+        return locs;
     }
 
     public static List<Location> getPolygon(Location loc, double radii, int points){

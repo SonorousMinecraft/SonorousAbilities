@@ -1,5 +1,7 @@
 package com.sereneoasis.archetypes;
 
+import java.lang.invoke.VarHandle;
+
 /**
  * @author Sakrajin
  * Enums to represent different archetypes
@@ -24,4 +26,5 @@ public enum Archetype {
     public String toString() {
         return name;
     }
+
 }
