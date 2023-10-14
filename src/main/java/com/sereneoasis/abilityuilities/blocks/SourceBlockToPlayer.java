@@ -4,6 +4,8 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
@@ -28,8 +30,8 @@ public class SourceBlockToPlayer extends CoreAbility {
         super(player,user);
 
         abilityStatus = AbilityStatus.NO_SOURCE;
-        Block source = Methods.getFacingBlockOrLiquid(player, sourceRange);
-        if (source != null && Methods.getArchetypeBlocks(sPlayer).contains(source.getType()))
+        Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
+        if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType()))
         {
             this.user = user;
             this.type = type;
@@ -63,7 +65,7 @@ public class SourceBlockToPlayer extends CoreAbility {
 
         if (abilityStatus == AbilityStatus.SOURCING)
         {
-            Vector dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation()).normalize();
+            Vector dir = Vectors.getDirectionBetweenLocations(loc, player.getEyeLocation()).normalize();
             loc.add(dir.clone().multiply(speed));
             if (loc.distance(player.getLocation()) <= distanceToStop)
             {

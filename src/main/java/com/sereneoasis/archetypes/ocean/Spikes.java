@@ -3,6 +3,9 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.util.Methods;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,7 +27,7 @@ public class Spikes extends CoreAbility {
 
     public Spikes(Player player) {
         super(player);
-        Block source = Methods.getFacingBlockOrLiquid(player, sourceRange);
+        Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (source.getType().equals(Material.WATER))
         {
             loc = source.getLocation();
@@ -39,12 +42,12 @@ public class Spikes extends CoreAbility {
     {
         for (Block b: spike.keySet())
         {
-            if (!Methods.getBlocksAroundPoint(loc, radius, Material.WATER).contains(b)) {
+            if (!Blocks.getBlocksAroundPoint(loc, radius, Material.WATER).contains(b)) {
                 spike.get(b).revertBlock();
             }
         }
 
-        for (Block b: Methods.getBlocksAroundPoint(loc, radius, Material.WATER))
+        for (Block b: Blocks.getBlocksAroundPoint(loc, radius, Material.WATER))
         {
             if (!TempBlock.isTempBlock(b))
             {
@@ -60,7 +63,7 @@ public class Spikes extends CoreAbility {
         {
             Location targetLoc = player.getEyeLocation().
                     add(player.getEyeLocation().getDirection().multiply(loc.distance(player.getEyeLocation())));
-            Vector dir = Methods.getDirectionBetweenLocations(loc, targetLoc).normalize();
+            Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
             loc.add(dir.clone().multiply(speed));
             createTempBlocks();
         }
@@ -72,7 +75,7 @@ public class Spikes extends CoreAbility {
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
             createTempBlocks();
-            DamageHandler.damageEntity(Methods.getAffected(loc, radius, player), player, this, damage);
+            DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         }
         else if (!hasShot && System.currentTimeMillis() > starttime+duration)
         {

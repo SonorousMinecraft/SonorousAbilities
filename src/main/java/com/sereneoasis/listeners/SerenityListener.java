@@ -3,6 +3,7 @@ package com.sereneoasis.listeners;
 import com.sereneoasis.*;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
+import com.sereneoasis.archetypes.sun.CruelSun;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.archetypes.ocean.Gimbal;
 import com.sereneoasis.archetypes.ocean.Spikes;
@@ -165,6 +166,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Spikes":
                 new Spikes(player);
+                break;
+            case "CruelSun":
+                new CruelSun(player);
                 break;
         }
     }

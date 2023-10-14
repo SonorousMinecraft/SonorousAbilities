@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Sakrajin
+ * Initialises all configuration values for abilities
+ */
 public class AbilityDataManager {
 
     private static final Map<String, AbilityData> abilityDataMap = new ConcurrentHashMap<>();
@@ -23,22 +27,22 @@ public class AbilityDataManager {
     private FileConfiguration config;
 
 
-    public AbilityDataManager()
-    {
+    public AbilityDataManager() {
 
-//        for (Archetype archetype : Archetype.values())
-//        {
-        Archetype archetype = Archetype.OCEAN;
+        for (Archetype archetype : Archetype.values()) {
+
             config = ConfigManager.getConfig(archetype).getConfig();
-
-            for (String ability : config.getConfigurationSection(archetype.toString() + ".ability").getKeys(false))
-            {
-                ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".ability" + "." + ability);
-                AbilityData abilityData = new AbilityData(abil.getString("description") , abil.getString("instructions"),
-                        abil.getLong("chargetime"), abil.getLong("cooldown"),  abil.getLong("duration") , abil.getDouble("damage") ,
-                        abil.getDouble("radius") , abil.getDouble("range") , abil.getDouble("speed"), abil.getDouble("sourcerange"));
-                abilityDataMap.put(ability, abilityData);
+            if (config.getConfigurationSection(archetype.toString()+ ".ability") != null) {
+                for (String ability : config.getConfigurationSection(archetype.toString() + ".ability").getKeys(false)) {
+                    ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".ability" + "." + ability);
+                    AbilityData abilityData = new AbilityData(abil.getString("description"), abil.getString("instructions"),
+                            abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"), abil.getDouble("damage"),
+                            abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"));
+                    abilityDataMap.put(ability, abilityData);
+                }
             }
+        }
+    }
             //        for (String combo : config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo").getKeys(false))
 //        {
 //            ConfigurationSection abil = config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo" + "." + combo);
@@ -57,10 +61,6 @@ public class AbilityDataManager {
 //            abilityDataMap.put(combo, comboData);
 //        }
 //        }
-
-
-
-    }
 
     public static AbilityData getAbilityData(String ability)
     {

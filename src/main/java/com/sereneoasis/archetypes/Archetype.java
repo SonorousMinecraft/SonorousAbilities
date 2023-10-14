@@ -2,8 +2,8 @@ package com.sereneoasis.archetypes;
 
 public enum Archetype {
     NONE("none"),
-    OCEAN("ocean");
-    //SUN("sun"),
+    OCEAN("ocean"),
+    SUN("sun");
     //WAR("war"),
     //NETHER("nether"),
     //EARTH("earth"),

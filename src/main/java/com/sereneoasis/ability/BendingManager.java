@@ -8,6 +8,10 @@ import com.sereneoasis.util.temp.TempDisplayBlock;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author Sakrajin
+ *
+ */
 public class BendingManager implements Runnable{
 
     private static BendingManager instance;

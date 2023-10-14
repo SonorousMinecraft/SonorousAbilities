@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Sakrajin
+ *
+ */
 public class ComboManager {
 
     private static Map<Player, ArrayList<AbilityInformation>> RECENTLY_USED = new ConcurrentHashMap<>();

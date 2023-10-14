@@ -1,5 +1,9 @@
 package com.sereneoasis.ability.data;
 
+/**
+ * @author Sakrajin
+ *
+ */
 public class AbilityData {
 
     protected String archetype, description, instructions;

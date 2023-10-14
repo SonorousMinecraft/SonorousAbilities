@@ -1,60 +1,59 @@
-package com.sereneoasis.abilityuilities.blocks;
+package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.temp.TempBlock;
-import com.sereneoasis.util.temp.TempDisplayBlock;
+import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class ShootBlockFromPlayer extends CoreAbility {
-
-    private Location loc;
-    private String user;
-
-    private Material type;
+public class SphereBlast extends CoreAbility {
 
     private boolean directable;
 
-
+    private Location loc, origin;
     private Vector dir;
 
     private AbilityStatus abilityStatus;
 
-    public ShootBlockFromPlayer(Player player, String user, Location startLoc, Material type, boolean directable) {
-        super(player, user);
-        this.user = user;
-        this.type = type;
-        this.loc = startLoc;
+    private String name;
+
+    private Particle particle;
+    public SphereBlast(Player player, String name, boolean directable, Particle particle) {
+        super(player, name);
+        this.name = name;
         this.directable = directable;
-        this.dir = player.getEyeLocation().getDirection().normalize();
+        this.particle = particle;
+        this.loc = player.getEyeLocation();
+        this.origin = loc.clone();
+        this.dir = loc.getDirection();
         this.abilityStatus = AbilityStatus.SHOT;
         start();
     }
 
+
     @Override
     public void progress() {
-
-
-        if (loc.distance(player.getEyeLocation()) > range) {
-            abilityStatus = AbilityStatus.COMPLETE;
-            return;
+        if (loc.distance(origin) > range)
+        {
+            this.abilityStatus = AbilityStatus.COMPLETE;
         }
 
-
-        //new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 500);
-        new TempDisplayBlock(loc, type.createBlockData(), 500, radius);
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
         }
 
         loc.add(dir.clone().multiply(speed));
+        Particles.playSphere(Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), 1),
+                radius, 1, particle);
+
         DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
+
     }
 
     public AbilityStatus getAbilityStatus() {
@@ -68,6 +67,6 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
     @Override
     public String getName() {
-        return user;
+        return name;
     }
 }

@@ -5,5 +5,6 @@ public enum AbilityStatus {
     SOURCING,
     SOURCED,
     SHOT,
-    COMPLETE
+    COMPLETE,
+    CHARGED
 }

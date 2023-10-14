@@ -2,6 +2,8 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.Methods;
+import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
@@ -36,7 +38,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
         this.orientation = orientation;
         this.rotatePerTick = rotatePerTick;
         loc = startLoc;
-        this.dir = Methods.getDirectionBetweenLocations(loc, player.getEyeLocation()).setY(0).normalize();
+        this.dir = Vectors.getDirectionBetweenLocations(loc, player.getEyeLocation()).setY(0).normalize();
         rotation = 0;
         start();
     }
@@ -51,8 +53,8 @@ public class BlockRingAroundPlayer extends CoreAbility {
             rotation -= rotatePerTick;
 
         }
-        Vector playerToLoc = Methods.getDirectionBetweenLocations(player.getEyeLocation(), loc);
-        Methods.getPivotedLocations(Methods.getDisplayEntityLocs(loc, 2.0, 1),
+        Vector playerToLoc = Vectors.getDirectionBetweenLocations(player.getEyeLocation(), loc);
+        Locations.getPivotedLocations(Locations.getDisplayEntityLocs(loc, 2.0, 1),
                         player.getEyeLocation().add(playerToLoc), playerToLoc )
                 .forEach(tempBlockLoc -> {
             new TempDisplayBlock(tempBlockLoc, type.createBlockData(), 500, 1);

@@ -4,6 +4,10 @@ import com.sereneoasis.ability.ComboManager;
 
 import java.util.ArrayList;
 
+/**
+ * @author Sakrajin
+ * Adds additional functionality to {@link AbilityData}
+ */
 public class ComboData extends AbilityData {
 
     private ArrayList<ComboManager.AbilityInformation> abilities;

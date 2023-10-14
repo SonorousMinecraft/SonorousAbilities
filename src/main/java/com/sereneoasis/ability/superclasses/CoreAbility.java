@@ -9,6 +9,10 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Sakrajin
+ *
+ */
 public abstract class CoreAbility implements Ability {
 
     private static final Set<CoreAbility> INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());

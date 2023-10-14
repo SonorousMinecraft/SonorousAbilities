@@ -10,6 +10,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 
+/**
+ * @author Sakrajin
+ * Used to create the configs for Archetypes and initialise defaults
+ */
 public class ConfigManager {
 
     private static final Map<Archetype, ConfigFile> configs = new HashMap<>();
@@ -130,13 +134,29 @@ public class ConfigManager {
     }
 
     public void loadConfig() {
-        FileConfiguration ocean = getConfig(Archetype.OCEAN).getConfig();
-
         //Archetype config values are added on top of base values (which are below)
         /*
         saveConfigValuesArchetype(ocean, Archetype.NONE, 0, 0, 2, 0, 4, 0.4,0.0, 20, 0.13);
 
          */
+
+
+
+        FileConfiguration none = getConfig(Archetype.NONE).getConfig();
+
+        //Ability configuration
+
+        none.addDefault(Archetype.NONE.toString() + ".blocks", "DIRT");
+        saveAttributeValuesArchetype(none, Archetype.NONE, 0, 0, 0, 0,
+                0.0, 0, 0);
+
+        saveArchetypeCosmetics(none, Archetype.NONE, "#ffffff");
+        none.options().copyDefaults(true);
+        getConfig(Archetype.NONE).saveConfig();
+
+
+        FileConfiguration ocean = getConfig(Archetype.OCEAN).getConfig();
+
 
         //Ability configuration
         saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
@@ -164,17 +184,23 @@ public class ConfigManager {
         getConfig(Archetype.OCEAN).saveConfig();
 
 
-        FileConfiguration none = getConfig(Archetype.NONE).getConfig();
+
+        FileConfiguration sun = getConfig(Archetype.SUN).getConfig();
 
         //Ability configuration
+        saveConfigValuesAbility(sun, "CruelSun", Archetype.SUN.toString(), "description", "instructions",
+                10000, 5000, 0,
+                2, 2, 20, 1, 0);
 
-        none.addDefault(Archetype.NONE.toString() + ".blocks", "DIRT");
-        saveAttributeValuesArchetype(none, Archetype.NONE, 0, 0, 0, 0,
+        sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");
+        saveAttributeValuesArchetype(sun, Archetype.SUN, 0, 0, 0, 0,
                 0.0, 0, 0);
 
-        saveArchetypeCosmetics(none, Archetype.NONE, "#ffffff");
-        none.options().copyDefaults(true);
-        getConfig(Archetype.NONE).saveConfig();
+        saveArchetypeCosmetics(sun, Archetype.SUN, "#FFCC33");
+        sun.options().copyDefaults(true);
+        getConfig(Archetype.SUN).saveConfig();
+
+
     }
 
 
