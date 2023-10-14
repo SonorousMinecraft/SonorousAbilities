@@ -82,61 +82,53 @@ public class SerenityPlayer {
 
     private Player player;
 
-    public static void loadAsync(UUID uuid, Player player)
+    public SerenityPlayer(String name, HashMap<Integer,String>abilities, Archetype archetype, Player player)
     {
+        this.name = name;
+        this.abilities = abilities;
+        this.archetype = archetype;
+        this.player = player;
+    }
 
-        if (SERENITY_PLAYER_MAP.containsKey(uuid))
-        {
+    public static void loadPlayer(UUID uuid, Player player)
+    {
+        if (SERENITY_PLAYER_MAP.containsKey(uuid)) {
             return;
         }
+        HashMap<Integer, String> abilities = new HashMap<>();
 
-        Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData,exception) -> {
-            if (exception != null)
-            {
-                HashMap<Integer, String>abilities = new HashMap<>();
-                for (int i = 1; i<=9; i++)
-                {
-                    abilities.put(i,"-----");
-                }
-                insertPlayer(uuid, player.getName(), abilities, Archetype.NONE);
-
-                SerenityPlayer serenityPlayer = new SerenityPlayer();
-                getSerenityPlayerMap().put(uuid, serenityPlayer);
-                serenityPlayer.setName(player.getName());
-
-                serenityPlayer.setAbilities(abilities);
-
-                serenityPlayer.setArchetype(Archetype.NONE);
-                serenityPlayer.setPlayer(player);
+        if (Serenity.getRepository().get(uuid) == null) {
+            for (int i = 1; i <= 9; i++) {
+                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + i + "-=-=");
             }
-            else {
-                SerenityPlayer serenityPlayer = new SerenityPlayer();
+
+            SerenityPlayer serenityPlayer = new SerenityPlayer(player.getName(), abilities, Archetype.NONE, player);
+            getSerenityPlayerMap().put(uuid, serenityPlayer);
+            upsertPlayer(serenityPlayer);
+
+        }
+        else{
+            Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData) -> {
+                SerenityPlayer serenityPlayer = new SerenityPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype()), player);
                 getSerenityPlayerMap().put(uuid, serenityPlayer);
-                serenityPlayer.setName(PlayerData.getName());
-
-                HashMap<Integer, String> abilities = PlayerData.getAbilities();
-
-                serenityPlayer.setAbilities(abilities);
-
-                serenityPlayer.setArchetype(Archetype.valueOf(PlayerData.getArchetype()));
-                serenityPlayer.setPlayer(player);
-            }
-        });
-
+            });
+        }
     }
 
-    public static void insertPlayer(UUID uuid, String name, HashMap<Integer,String> abilities, Archetype archetype)
+
+    public static void upsertPlayer(SerenityPlayer serenityPlayer)
     {
+
         PlayerData playerData = new PlayerData();
-        playerData.setKey(uuid);
-        playerData.setName(name);
+        playerData.setKey(serenityPlayer.getPlayer().getUniqueId());
+        playerData.setName(serenityPlayer.getName());
 
-        playerData.setAbilities(abilities);
+        playerData.setAbilities(serenityPlayer.getAbilities());
 
-        playerData.setArchetype(archetype.toString());
-
-        Serenity.getRepository().insert(playerData);
+        playerData.setArchetype(serenityPlayer.getArchetype().toString());
+        Serenity.getRepository().upsertAsync(playerData);
     }
+
 
     protected final Map<String, Long> cooldowns = new HashMap<>();
 

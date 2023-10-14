@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.ChargeSphere;
 import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.util.AbilityStatus;
+import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -15,7 +16,7 @@ public class CruelSun extends CoreAbility {
 
     private ChargeSphere chargeSphere;
     private SphereBlast sphereBlast;
-    private boolean hasCharged, hasShot;
+    private boolean hasCharged = false, hasShot = false;
     public CruelSun(Player player) {
         super(player);
 

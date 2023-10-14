@@ -6,6 +6,7 @@ import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -35,7 +36,7 @@ public class SphereBlast extends CoreAbility {
         this.particle = particle;
 
         this.origin = player.getEyeLocation();
-        this.dir = origin.getDirection();
+        this.dir = origin.getDirection().normalize();
         this.loc = origin.clone().add(dir.clone().multiply(radius));
         this.abilityStatus = AbilityStatus.SHOT;
         start();
@@ -44,6 +45,7 @@ public class SphereBlast extends CoreAbility {
 
     @Override
     public void progress() {
+
         if (loc.distance(origin) > range)
         {
             this.abilityStatus = AbilityStatus.COMPLETE;
@@ -54,8 +56,7 @@ public class SphereBlast extends CoreAbility {
         }
 
         loc.add(dir.clone().multiply(speed));
-        Particles.playSphere(Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), 1),
-                radius, 1, particle);
+        Particles.playSphere(loc, radius, 12, particle);
 
         DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
 
