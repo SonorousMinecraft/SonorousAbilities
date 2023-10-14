@@ -1,20 +1,25 @@
 package com.sereneoasis.ability.data;
 
+import com.sereneoasis.archetypes.Archetype;
+
 /**
  * @author Sakrajin
  * Stores all the data for a specific ability.
  */
 public class AbilityData {
 
-    protected String archetype, description, instructions;
+    protected Archetype archetype;
+
+    protected String description, instructions;
     protected long chargetime, cooldown,  duration;
 
     protected double damage, radius, range, speed, sourceRange;
 
-    public AbilityData(String description, String instructions,
+    public AbilityData(Archetype archetype, String description, String instructions,
                        long chargetime, long cooldown, long duration,
                        double damage, double radius, double range, double speed, double sourceRange) {
 
+        this.archetype = archetype;
         this.description = description;
         this.instructions = instructions;
 
@@ -29,7 +34,7 @@ public class AbilityData {
         this.sourceRange = sourceRange;
     }
 
-    public String getArchetype() {
+    public Archetype getArchetype() {
         return archetype;
     }
 

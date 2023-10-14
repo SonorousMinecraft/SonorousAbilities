@@ -42,6 +42,7 @@ public abstract class CoreAbility implements Ability {
 
         initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
 
+
     }
 
     public CoreAbility(final Player player, String name) {
@@ -54,6 +55,7 @@ public abstract class CoreAbility implements Ability {
 
     private void initialiseConfigVariables(AbilityData abilityData)
     {
+        this.archetype = abilityData.getArchetype();
         this.chargetime = abilityData.getChargetime();
         this.cooldown = abilityData.getCooldown();
         this.duration = abilityData.getDuration();

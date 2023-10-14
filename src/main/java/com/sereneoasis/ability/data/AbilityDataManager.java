@@ -35,7 +35,7 @@ public class AbilityDataManager {
             if (config.getConfigurationSection(archetype.toString()+ ".ability") != null) {
                 for (String ability : config.getConfigurationSection(archetype.toString() + ".ability").getKeys(false)) {
                     ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".ability" + "." + ability);
-                    AbilityData abilityData = new AbilityData(abil.getString("description"), abil.getString("instructions"),
+                    AbilityData abilityData = new AbilityData(archetype, abil.getString("description"), abil.getString("instructions"),
                             abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"), abil.getDouble("damage"),
                             abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"));
                     abilityDataMap.put(ability, abilityData);
