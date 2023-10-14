@@ -10,7 +10,8 @@ import java.util.UUID;
 
 /**
  * @author Sakrajin
- *
+ * Runnable to handle all ability progression and cooldowns.
+ * Reverts {@link TempBlock temporary blocks} and {@link TempDisplayBlock temporary display blocks}
  */
 public class BendingManager implements Runnable{
 

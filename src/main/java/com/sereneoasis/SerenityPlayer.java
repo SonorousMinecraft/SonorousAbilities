@@ -13,6 +13,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Sakrajin
+ * Represents a player within the context of serenity.
+ * Used to create/retrieve and update a players data from the database.
+ * Handles everything related to abilities and a player.
+ */
 public class SerenityPlayer {
 
     private static final Map<UUID,SerenityPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();

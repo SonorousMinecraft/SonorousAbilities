@@ -3,15 +3,17 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+/**
+ * @author Sakrajin
+ * Allows the shooting of a block from a player
+ */
 public class ShootBlockFromPlayer extends CoreAbility {
 
     private Location loc;

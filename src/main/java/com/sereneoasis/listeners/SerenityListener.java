@@ -24,7 +24,10 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.UUID;
 
-
+/**
+ * @author Sakrajin
+ * Main listener for all serenity events
+ */
 public class SerenityListener implements Listener {
 
 

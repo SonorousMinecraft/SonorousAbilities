@@ -1,5 +1,9 @@
 package com.sereneoasis.archetypes;
 
+/**
+ * @author Sakrajin
+ * Enums to represent different archetypes
+ */
 public enum Archetype {
     NONE("none"),
     OCEAN("ocean"),

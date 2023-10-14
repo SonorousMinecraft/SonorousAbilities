@@ -2,12 +2,15 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
+/**
+ * @author Sakrajin
+ * Allows a player to charge a sphere that grows in size as time passes.
+ */
 public class ChargeSphere extends CoreAbility {
 
     private String name;
@@ -19,6 +22,7 @@ public class ChargeSphere extends CoreAbility {
     private Particle particle;
     public ChargeSphere(Player player, String name, double startRadius, Particle particle) {
         super(player, name);
+
         this.name = name;
         this.abilityStatus = AbilityStatus.SOURCING;
 

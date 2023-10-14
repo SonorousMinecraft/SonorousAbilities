@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sakrajin
- * Initialises all configuration values for abilities
+ * Initialises all configuration values for abilities.
  */
 public class AbilityDataManager {
 

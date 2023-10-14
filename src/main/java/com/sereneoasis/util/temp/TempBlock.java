@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Sakrajin
+ * Represents temporary block instances and handles reverting
+ */
 public class TempBlock {
 
     private static final PriorityQueue<TempBlock> REVERT_QUEUE = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.revertTime - t2.revertTime));

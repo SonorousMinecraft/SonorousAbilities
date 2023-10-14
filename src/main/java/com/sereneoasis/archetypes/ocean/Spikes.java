@@ -1,6 +1,5 @@
 package com.sereneoasis.archetypes.ocean;
 
-import com.sereneoasis.util.Methods;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Blocks;
@@ -15,6 +14,10 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
+/**
+ * @author Sakrajin
+ *
+ */
 public class Spikes extends CoreAbility {
 
     private Location loc;

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sakrajin
- *
+ * Handles all combo instantiation by keeping track of recently used abilities using {@link ComboData combo data}
  */
 public class ComboManager {
 

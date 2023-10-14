@@ -13,6 +13,10 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Sakrajin
+ * Methods which are related to entities
+ */
 public class Entities {
     public static void applyPotion(Entity e, PotionEffectType effect, int durationinms) {
         ((LivingEntity) e).addPotionEffect(effect.createEffect(durationinms/1000*20, 1));

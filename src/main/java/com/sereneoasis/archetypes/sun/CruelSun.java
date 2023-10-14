@@ -7,6 +7,10 @@ import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
+/**
+ * @author Sakrajin
+ *
+ */
 public class CruelSun extends CoreAbility {
 
     private ChargeSphere chargeSphere;

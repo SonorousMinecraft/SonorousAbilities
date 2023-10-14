@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * @author Sakrajin
- * Adds additional functionality to {@link AbilityData}
+ * Adds additional functionality to {@link AbilityData}.
  */
 public class ComboData extends AbilityData {
 

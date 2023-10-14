@@ -5,6 +5,10 @@ import com.sereneoasis.Serenity;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * @author Sakrajin
+ * Used to create configuration files.
+ */
 public class ConfigFile {
 
     private Serenity plugin;

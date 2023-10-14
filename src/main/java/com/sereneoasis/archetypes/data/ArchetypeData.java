@@ -8,6 +8,10 @@ import org.bukkit.block.Block;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Sakrajin
+ * Represents all configuration data for a specific archetype
+ */
 public class ArchetypeData {
 
     private Map<Attribute, Double> ARCHETYPE_ATTRIBUTES = new HashMap<>();

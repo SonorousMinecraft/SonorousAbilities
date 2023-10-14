@@ -9,7 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.units.qual.A;
 
-
+/**
+ * @author Sakrajin
+ * Handles where abilities damage entities
+ */
 public class DamageHandler {
 
     public static void damageEntity( Entity entity, Player source, CoreAbility ability, double damage)

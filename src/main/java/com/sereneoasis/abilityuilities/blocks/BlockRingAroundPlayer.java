@@ -1,16 +1,18 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
-import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+/**
+ * @author Sakrajin
+ * Creates a ring of blocks around a player
+ */
 public class BlockRingAroundPlayer extends CoreAbility {
 
     private Location loc;

@@ -3,7 +3,6 @@ package com.sereneoasis.abilityuilities.particles;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.Methods;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
@@ -12,6 +11,10 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+/**
+ * @author Sakrajin
+ * Causes a spherical shaped blast to be shot from the player
+ */
 public class SphereBlast extends CoreAbility {
 
     private boolean directable;
@@ -26,12 +29,14 @@ public class SphereBlast extends CoreAbility {
     private Particle particle;
     public SphereBlast(Player player, String name, boolean directable, Particle particle) {
         super(player, name);
+
         this.name = name;
         this.directable = directable;
         this.particle = particle;
-        this.loc = player.getEyeLocation();
-        this.origin = loc.clone();
-        this.dir = loc.getDirection();
+
+        this.origin = player.getEyeLocation();
+        this.dir = origin.getDirection();
+        this.loc = origin.clone().add(dir.clone().multiply(radius));
         this.abilityStatus = AbilityStatus.SHOT;
         start();
     }

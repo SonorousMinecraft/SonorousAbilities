@@ -14,6 +14,10 @@ import java.util.Arrays;
 
 import static com.sereneoasis.listeners.SerenityListener.initialiseAttributePlayer;
 
+/**
+ * @author Sakrajin
+ * Handles all serenity commands
+ */
 public class SerenityCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {

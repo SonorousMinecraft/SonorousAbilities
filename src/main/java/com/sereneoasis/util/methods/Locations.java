@@ -1,12 +1,15 @@
 package com.sereneoasis.util.methods;
 
-import com.sereneoasis.util.Methods;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Sakrajin
+ * Methods which are related to locations
+ */
 public class Locations {
     public static Location getFacingLocation(Location loc, Vector dir, double distance)
     {

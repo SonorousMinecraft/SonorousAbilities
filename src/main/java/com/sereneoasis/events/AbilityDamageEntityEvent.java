@@ -8,6 +8,10 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 
+/**
+ * @author Sakrajin
+ * Event to represent when ability damages another entity
+ */
 public class AbilityDamageEntityEvent extends Event implements Cancellable {
 
     private Player attacker;

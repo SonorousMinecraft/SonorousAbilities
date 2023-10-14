@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Sakrajin
+ * Methods which are related to blocks
+ */
 public class Blocks {
 
     public static Block getFacingBlock(Player player, double distance)

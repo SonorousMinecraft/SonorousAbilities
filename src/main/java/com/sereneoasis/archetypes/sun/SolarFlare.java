@@ -4,6 +4,10 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.entity.Player;
 
+/**
+ * @author Sakrajin
+ *
+ */
 public class SolarFlare extends CoreAbility {
     public SolarFlare(Player player) {
         super(player);

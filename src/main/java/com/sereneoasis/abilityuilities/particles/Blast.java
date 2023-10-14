@@ -9,6 +9,10 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+/**
+ * @author Sakrajin
+ * Basic particle based blast ability
+ */
 public class Blast extends CoreAbility {
 
     private boolean directable;

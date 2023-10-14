@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.HexFormat;
 import java.util.List;
 
+/**
+ * @author Sakrajin
+ * Methods which are related to particles
+ */
 public class Particles {
 
     public static void spawnParticle(Particle particle, Location loc, int count, int offset, double extra)

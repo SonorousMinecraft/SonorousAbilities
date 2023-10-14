@@ -10,6 +10,10 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * @author Sakrajin
+ * Used by NDatabase API to represent players data within the database
+ */
 @NTable(name = "player_data", schema = "", catalog = "")
 public class PlayerData extends NEntity<UUID> {
 

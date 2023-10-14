@@ -3,6 +3,10 @@ package com.sereneoasis.util.methods;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+/**
+ * @author Sakrajin
+ * Methods which are related to vectors
+ */
 public class Vectors {
 
     public static Vector getDirectionBetweenLocations(Location start, Location end)

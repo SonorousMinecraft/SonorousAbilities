@@ -11,7 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sakrajin
- *
+ * Serves as a blueprint for abilities.
+ * Handles config values, so they are automatically available in subclasses.
+ * Used to handle all ability progression, removal and cooldowns.
  */
 public abstract class CoreAbility implements Ability {
 

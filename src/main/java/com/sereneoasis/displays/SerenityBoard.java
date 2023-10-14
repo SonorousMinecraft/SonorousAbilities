@@ -10,6 +10,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
+/**
+ * @author Sakrajin
+ * Handles scoreboards for serenity.
+ * Used to store, create, and modify them.
+ *
+ */
 public class SerenityBoard {
 
     private static HashMap<UUID, SerenityBoard> players = new HashMap<>();
