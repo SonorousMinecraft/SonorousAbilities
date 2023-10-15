@@ -43,7 +43,7 @@ public class TempDisplayBlock {
             //transformation.getTranslation().set(new Vector3d(-size/2, -size/2,- size/2));
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size);
-
+            bDisplay.setViewRange(100);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setGlowing(true);
             bDisplay.setTransformation(transformation);

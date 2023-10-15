@@ -7,6 +7,7 @@ import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromPlayer;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
 import com.sereneoasis.util.AbilityStatus;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class Torrent extends CoreAbility {
             return;
         }
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.BLUE_STAINED_GLASS, 2);
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.BLUE_STAINED_GLASS, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             start();
@@ -69,7 +70,7 @@ public class Torrent extends CoreAbility {
             else{
                 if (blockRingAroundPlayer == null)
                 {
-                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.BLUE_STAINED_GLASS, 2, 0, 10);
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.BLUE_STAINED_GLASS, 2, 0, 10, true);
                 }
             }
         }

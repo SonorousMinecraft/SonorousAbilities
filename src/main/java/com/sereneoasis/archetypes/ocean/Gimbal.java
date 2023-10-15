@@ -57,9 +57,9 @@ public class Gimbal extends CoreAbility
 
             hasSourced = true;
             blockRingAroundPlayer1 = new BlockRingAroundPlayer(player, "Gimbal", sourceBlockToPlayer.getLocation(),
-                    Material.BLUE_STAINED_GLASS, 2, 60, 30);
+                    Material.BLUE_STAINED_GLASS, 2, 45, 30, true);
             blockRingAroundPlayer2 = new BlockRingAroundPlayer(player, "Gimbal", sourceBlockToPlayer.getLocation(),
-                    Material.BLUE_STAINED_GLASS, 2, -60, 30);
+                    Material.BLUE_STAINED_GLASS, 2, -45, 30, false);
             sourceBlockToPlayer.remove();
         }
 

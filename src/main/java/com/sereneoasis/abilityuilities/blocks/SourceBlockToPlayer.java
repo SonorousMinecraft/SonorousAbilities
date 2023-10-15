@@ -4,6 +4,7 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
@@ -11,6 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.List;
 
 /**
  * @author Sakrajin
@@ -59,7 +62,6 @@ public class SourceBlockToPlayer extends CoreAbility {
             this.remove();
         }
 
-        new TempDisplayBlock(loc, type.createBlockData(), 500, radius);
 
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500);
         //loc.getBlock().setBlockData(Material.DIRT.createBlockData());
@@ -68,7 +70,16 @@ public class SourceBlockToPlayer extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCING)
         {
             Vector dir = Vectors.getDirectionBetweenLocations(loc, player.getEyeLocation()).normalize();
+
             loc.add(dir.clone().multiply(speed));
+
+            List<Location> locs = Locations.getShotLocations(loc, 20, dir, speed);
+
+            for (Location point : locs)
+            {
+                new TempDisplayBlock(point, type.createBlockData(), 1000, Math.random());
+            }
+
             if (loc.distance(player.getLocation()) <= distanceToStop)
             {
                 abilityStatus = AbilityStatus.SOURCED;

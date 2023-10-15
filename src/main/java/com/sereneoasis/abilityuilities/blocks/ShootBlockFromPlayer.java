@@ -4,11 +4,15 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author Sakrajin
@@ -27,6 +31,10 @@ public class ShootBlockFromPlayer extends CoreAbility {
     private Vector dir;
 
     private AbilityStatus abilityStatus;
+
+    private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
+
+    private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
 
     public ShootBlockFromPlayer(Player player, String user, Location startLoc, Material type, boolean directable) {
         super(player, user);
@@ -48,15 +56,30 @@ public class ShootBlockFromPlayer extends CoreAbility {
             return;
         }
 
+        List<Location> locs = null;
 
-        //new TempBlock(loc.getBlock(), Material.WATER.createBlockData(), 500);
-        new TempDisplayBlock(loc, type.createBlockData(), 500, radius/2);
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
+            if (System.currentTimeMillis() > lastCurveTime+timeBetweenCurves) {
+                directions.put(dir, speed);
+                lastCurveTime = System.currentTimeMillis();
+            }
+            locs = Locations.getBezierCurveLocations(loc, 20, directions, speed);
+
+        }
+        else{
+            locs = Locations.getShotLocations(loc, 20, dir, speed);
         }
 
-        loc.add(dir.clone().multiply(speed));
+
+        for (Location point : locs)
+        {
+            new TempDisplayBlock(point, type.createBlockData(), 200, Math.random());
+        }
+
         DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
+        loc.add(dir.clone().multiply(speed));
+
     }
 
     public AbilityStatus getAbilityStatus() {

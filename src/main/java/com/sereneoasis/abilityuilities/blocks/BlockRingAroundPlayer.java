@@ -34,7 +34,9 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private int rotatePerTick;
 
-    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick) {
+    private boolean clockwise;
+
+    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
 
         this.user = user;
@@ -42,22 +44,28 @@ public class BlockRingAroundPlayer extends CoreAbility {
         this.ringSize = ringSize;
         this.orientation = orientation;
         this.rotatePerTick = rotatePerTick;
+        this.clockwise = clockwise;
         loc = startLoc;
-        this.dir = Vectors.getDirectionBetweenLocations(loc, player.getEyeLocation()).setY(0).normalize();
+        this.dir = Vectors.getDirectionBetweenLocations(startLoc, player.getEyeLocation()).setY(0).normalize();
         rotation = Math.round(player.getEyeLocation().getYaw());
         start();
     }
 
     @Override
     public void progress() {
-        loc = player.getEyeLocation().add(dir.clone().multiply(ringSize).rotateAroundY(Math.toRadians(rotation)).rotateAroundAxis(player.getEyeLocation().getDirection().setY(0).normalize(), orientation));
 
-        if (orientation > 0) {
-            rotation += rotatePerTick;
-        } else {
-            rotation -= rotatePerTick;
+        dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
+        List<Location>locs = Locations.getCirclePointsBetweenPoints(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
+                rotation, rotation + rotatePerTick, clockwise);
+        loc = locs.get(locs.size()-1);
+
+        for (Location point : locs)
+        {
+            new TempDisplayBlock(point, type.createBlockData(), 200, Math.random());
         }
+
+        rotation += rotatePerTick;
 //        List<Location> currentLocs = Locations.getCircle(player.getEyeLocation(), radius, 360)
 //                .subList(Math.floorMod(Math.abs(rotation) + Math.abs(rotatePerTick), 360), Math.floorMod(Math.abs(rotation), 360));
 //        for (Location point : currentLocs)
@@ -66,11 +74,6 @@ public class BlockRingAroundPlayer extends CoreAbility {
 //        }
 
 
-        for (Location point : Locations.getCirclePointsBetweenPoints(player.getEyeLocation(), ringSize, rotatePerTick, dir,
-                Math.abs(rotation) - Math.abs(rotatePerTick), Math.abs(rotation)))
-        {
-            new TempDisplayBlock(point, type.createBlockData(), 200, 0.3);
-        }
 
 
         //new TempDisplayBlock(loc, type.createBlockData(), 500, 1);

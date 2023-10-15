@@ -1,11 +1,13 @@
 package com.sereneoasis.util.methods;
 
+import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.units.qual.A;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Sakrajin
@@ -59,19 +61,105 @@ public class Locations {
         return circle;
     }
 
-    public static List<Location>getCirclePointsBetweenPoints(Location loc, double radii, int points, Vector dir, int startAngle, int endAngle)
+    public static List<Location>getCirclePointsBetweenPoints(Location loc, double radii, int points, Vector dir, int orientation, int startAngle, int endAngle, boolean clockwise)
     {
         int increment = Math.floorDiv(endAngle-startAngle, points);
         List<Location>locs = new ArrayList<>();
         for (int i = startAngle; i < endAngle; i+=increment)
         {
             double radian = Math.toRadians(i);
-            double x = Math.sin(radian) * radii;
-            double z = Math.cos(radian) * radii;
-            Vector v = new Vector(x, 0, z).multiply(radii);
+            double x, z;
+            if (clockwise) {
+                 x = Math.sin(radian) * radii;
+                 z = Math.cos(radian) * radii;
+            }
+            else{
+                 z = Math.sin(radian) * radii;
+                 x = Math.cos(radian) * radii;
+            }
+            Vector v = new Vector(x, 0, z).multiply(radii).rotateAroundAxis(dir,Math.toRadians(orientation));
             locs.add(loc.clone().add(v));
         }
         return locs;
+    }
+
+
+    public static List<Location>getShotLocations(Location loc, int points, Vector dir, double speed)
+    {
+        double increment = speed/points;
+        List<Location>locs = new ArrayList<>();
+        for (double d = 0; d < speed ; d+= increment)
+        {
+            locs.add(loc.clone().add(dir.clone().multiply(d)));
+        }
+        return locs;
+    }
+
+    public static List<Location>getBezierCurveLocations(Location loc, int points, LinkedHashMap<Vector,Double> directions, double speed)
+    {
+        double distance = directions.values().stream().reduce(0.0, Double::sum);
+        double increment = (speed * distance)/points;
+        List<Location>locs = new ArrayList<>();
+        Line line = new Line(directions);
+        for (double d = 0; d < distance; d+= increment)
+        {
+
+            locs.add(loc.clone().add(line.getVector(increment/distance)));
+
+
+        }
+
+        return locs;
+    }
+
+    private static class Line {
+
+        private Vector dir1;
+        private Vector dir2;
+
+        private Line previous;
+
+        Line(Line previous, Vector dir1, Vector dir2)
+        {
+            this.previous = previous;
+            this.dir1 = dir1;
+            this.dir2 = dir2;
+        }
+
+        Line(LinkedHashMap<Vector,Double> directions)
+        {
+            Vector oldVector = new Vector(0,0,0);
+            Line line = null;
+            int i = 0;
+            for (Map.Entry<Vector,Double> entry : directions.entrySet())
+            {
+                i++;
+                if (i == directions.size()) {
+                    this.previous = line;
+                    this.dir1 = oldVector;
+                    this.dir2 = entry.getKey().multiply(entry.getValue()).add(oldVector);
+                    return;
+                }
+
+                Line newLine = new Line(line, oldVector,  entry.getKey().multiply( entry.getValue()).add(oldVector));
+                oldVector = oldVector.add(entry.getKey());
+                line = newLine;
+
+            }
+
+        }
+
+        private Vector getVector(double time)
+        {
+            if (previous == null)
+            {
+                return dir1.multiply(1-time).add(dir2.multiply(time));
+            }
+            else {
+                return previous.getVector(1 - time).add(dir2.multiply(time));
+            }
+        }
+
     }
 
     public static List<Location> getPolygon(Location loc, double radii, int points){
