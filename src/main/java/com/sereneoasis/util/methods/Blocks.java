@@ -2,6 +2,7 @@ package com.sereneoasis.util.methods;
 
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
+import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -86,4 +87,15 @@ public class Blocks {
     {
         return ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getBlocks();
     }
+
+    public static Block getSourceBlock(Player player, SerenityPlayer sPlayer, double sourceRange)
+    {
+        Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
+        if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType()))
+        {
+            return source;
+        }
+        return null;
+    }
+
 }

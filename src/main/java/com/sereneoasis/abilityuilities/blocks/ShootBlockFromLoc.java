@@ -18,7 +18,7 @@ import java.util.List;
  * @author Sakrajin
  * Allows the shooting of a block from a player
  */
-public class ShootBlockFromPlayer extends CoreAbility {
+public class ShootBlockFromLoc extends CoreAbility {
 
     private Location loc;
     private String user;
@@ -36,7 +36,7 @@ public class ShootBlockFromPlayer extends CoreAbility {
 
     private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
 
-    public ShootBlockFromPlayer(Player player, String user, Location startLoc, Material type, boolean directable) {
+    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable) {
         super(player, user);
         this.user = user;
         this.type = type;
@@ -80,6 +80,10 @@ public class ShootBlockFromPlayer extends CoreAbility {
         DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         loc.add(dir.clone().multiply(speed));
 
+    }
+
+    public Location getLoc() {
+        return loc;
     }
 
     public AbilityStatus getAbilityStatus() {

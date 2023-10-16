@@ -3,6 +3,7 @@ package com.sereneoasis.listeners;
 import com.sereneoasis.*;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
+import com.sereneoasis.archetypes.ocean.Frostbite;
 import com.sereneoasis.archetypes.sun.CruelSun;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.archetypes.ocean.Gimbal;
@@ -140,6 +141,11 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasClicked();
                 }
                 break;
+            case "Frostbite":
+                if (CoreAbility.hasAbility(e.getPlayer(), Frostbite.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Frostbite.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -172,9 +178,18 @@ public class SerenityListener implements Listener {
             case "Spikes":
                 new Spikes(player);
                 break;
+            case "Frostbite":
+                if (CoreAbility.hasAbility(e.getPlayer(), Frostbite.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Frostbite.class).setSourceBlock2();
+                }
+                else{
+                    new Frostbite(player);
+                }
+                break;
             case "CruelSun":
                 new CruelSun(player);
                 break;
+
         }
     }
 

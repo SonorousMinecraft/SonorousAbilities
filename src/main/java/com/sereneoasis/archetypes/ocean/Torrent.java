@@ -4,10 +4,9 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockFromPlayer;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
 import com.sereneoasis.util.AbilityStatus;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,7 +21,7 @@ public class Torrent extends CoreAbility {
 
     private BlockRingAroundPlayer blockRingAroundPlayer;
 
-    private ShootBlockFromPlayer shootBlockFromPlayer;
+    private ShootBlockFromLoc shootBlockFromLoc;
 
     private boolean hasSourced = false;
 
@@ -60,9 +59,9 @@ public class Torrent extends CoreAbility {
 
         if (hasSourced) {
             if (hasShot) {
-                if (shootBlockFromPlayer.getAbilityStatus() == AbilityStatus.COMPLETE)
+                if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
-                    shootBlockFromPlayer.remove();
+                    shootBlockFromLoc.remove();
                     sPlayer.addCooldown(this.getName(), this.cooldown);
                     this.remove();
                 }
@@ -83,7 +82,7 @@ public class Torrent extends CoreAbility {
         if (hasSourced)
         {
             hasShot = true;
-            shootBlockFromPlayer = new ShootBlockFromPlayer(player, "Torrent", blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true);
+            shootBlockFromLoc = new ShootBlockFromLoc(player, "Torrent", blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true);
             blockRingAroundPlayer.remove();
         }
     }

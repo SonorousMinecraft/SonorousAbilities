@@ -26,7 +26,7 @@ public class Particles {
         loc.getWorld().spawnParticle(particle,loc,count, offset, offset, offset, extra);
     }
 
-    public static void spawnColoredParticle(Location loc, int count, int offset, double size, String hexCode)
+    public static void spawnColoredParticle(Location loc, int count, double offset, double size, String hexCode)
     {
 
         int red = 255;
@@ -41,8 +41,6 @@ public class Particles {
         loc.getWorld().
             spawnParticle(Particle.REDSTONE, loc, count, offset, offset, offset, dustOptions);
     }
-    
-
 
 
 

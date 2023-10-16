@@ -3,11 +3,9 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockFromPlayer;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
 import com.sereneoasis.util.AbilityStatus;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -25,9 +23,9 @@ public class Gimbal extends CoreAbility
 
     private BlockRingAroundPlayer blockRingAroundPlayer2;
 
-    private ShootBlockFromPlayer shootBlockFromPlayer1;
+    private ShootBlockFromLoc shootBlockFromLoc1;
 
-    private ShootBlockFromPlayer shootBlockFromPlayer2;
+    private ShootBlockFromLoc shootBlockFromLoc2;
 
     private boolean hasSourced = false;
     private boolean hasShot1 = false;
@@ -67,17 +65,17 @@ public class Gimbal extends CoreAbility
         if (hasShot1)
         {
 
-            if (shootBlockFromPlayer1 !=null && shootBlockFromPlayer1.getAbilityStatus() == AbilityStatus.COMPLETE)
+            if (shootBlockFromLoc1 !=null && shootBlockFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE)
             {
 
-                shootBlockFromPlayer1.remove();
+                shootBlockFromLoc1.remove();
             }
             if (hasShot2)
             {
-                if (shootBlockFromPlayer2 !=null && shootBlockFromPlayer2.getAbilityStatus() == AbilityStatus.COMPLETE)
+                if (shootBlockFromLoc2 !=null && shootBlockFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
 
-                    shootBlockFromPlayer2.remove();
+                    shootBlockFromLoc2.remove();
                     this.remove();
                 }
             }
@@ -90,12 +88,12 @@ public class Gimbal extends CoreAbility
 
             if (!hasShot1) {
                 hasShot1 = true;
-                shootBlockFromPlayer1 = new ShootBlockFromPlayer(player, "Gimbal", blockRingAroundPlayer1.getLocation(), Material.BLUE_STAINED_GLASS, true);
+                shootBlockFromLoc1 = new ShootBlockFromLoc(player, "Gimbal", blockRingAroundPlayer1.getLocation(), Material.BLUE_STAINED_GLASS, true);
                 blockRingAroundPlayer1.remove();
             } else {
                 if (!hasShot2) {
                     hasShot2 = true;
-                    shootBlockFromPlayer2 = new ShootBlockFromPlayer(player, "Gimbal", blockRingAroundPlayer2.getLocation(), Material.BLUE_STAINED_GLASS, true);
+                    shootBlockFromLoc2 = new ShootBlockFromLoc(player, "Gimbal", blockRingAroundPlayer2.getLocation(), Material.BLUE_STAINED_GLASS, true);
                     blockRingAroundPlayer2.remove();
                 }
             }
