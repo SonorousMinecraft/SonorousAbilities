@@ -137,8 +137,8 @@ public class SerenityListener implements Listener {
                 }
                 break;
             case "Spikes":
-                if (CoreAbility.hasAbility(e.getPlayer(), Gimbal.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasClicked();
+                if (CoreAbility.hasAbility(e.getPlayer(), Spikes.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Spikes.class).setHasClicked();
                 }
                 break;
             case "Frostbite":

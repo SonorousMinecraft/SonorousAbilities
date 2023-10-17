@@ -1,7 +1,8 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockToLoc;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockToLoc;
 import com.sereneoasis.archetypes.data.ArchetypeData;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.DamageHandler;
@@ -19,7 +20,10 @@ public class Frostbite extends CoreAbility {
 
     private boolean hasSourced2 = false, hasShot = false, hasSpawnedShots = false;
 
-    private ShootBlockFromLoc shootBlockFromLoc1, shootBlockFromLoc2;
+    private ShootBlockToLoc shootBlockToLoc1, shootBlockToLoc2;
+    
+    private double currentDistance = 0;
+    
 
     public Frostbite(Player player) {
         super(player);
@@ -38,27 +42,38 @@ public class Frostbite extends CoreAbility {
 
     @Override
     public void progress() {
+        
+        if (player.isSneaking())
+        {
+            if (currentDistance < range) {
+                currentDistance += (range * 50) / chargetime;
+            }
+        }
         if (!hasSourced2)
         {
             Particles.spawnColoredParticle(sourceBlock1.getLocation().add(0,1,0),
-                    1, 0.5, 0.2, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
+                    5, 0.5, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
         }
         else {
             if (!hasShot) {
+                Particles.spawnColoredParticle(sourceBlock1.getLocation().add(0,1,0),
+                        5, 0.5, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
+
                 Particles.spawnColoredParticle(sourceBlock2.getLocation().add(0, 1, 0),
-                        1, 0.5, 0.2, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
+                        5, 0.5, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
             }
             else {
                 if (!hasSpawnedShots) {
                     hasSpawnedShots = true;
-                    shootBlockFromLoc1 = new ShootBlockFromLoc(player, "Frostbite", sourceBlock1.getLocation()
-                            , Material.ICE, true);
-                    shootBlockFromLoc2 = new ShootBlockFromLoc(player, "Frostbite", sourceBlock2.getLocation()
-                            , Material.ICE, true);
+                    Location endLoc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection().normalize(), currentDistance);
+                    shootBlockToLoc1 = new ShootBlockToLoc(player, "Frostbite", sourceBlock1.getLocation()
+                            , Material.ICE, endLoc);
+                    shootBlockToLoc2 = new ShootBlockToLoc(player, "Frostbite", sourceBlock2.getLocation()
+                            , Material.ICE, endLoc);
                 }
                 else{
-                    Location loc1 = shootBlockFromLoc1.getLoc();
-                    Location loc2 = shootBlockFromLoc2.getLoc();
+                    Location loc1 = shootBlockToLoc1.getLoc();
+                    Location loc2 = shootBlockToLoc2.getLoc();
                     if (loc1.distance(loc2) < 2)
                     {
                         Location explode = loc1.add(Vectors.getDirectionBetweenLocations(loc1,loc2).multiply(0.5));
@@ -67,6 +82,7 @@ public class Frostbite extends CoreAbility {
                             TempBlock tb = new TempBlock(b, Material.ICE.createBlockData(), 5000);
                         }
                         DamageHandler.damageEntity(Entities.getAffected(explode, radius, player), player, this, damage);
+                        this.remove();
                     }
                 }
             }
@@ -95,12 +111,25 @@ public class Frostbite extends CoreAbility {
     }
 
     @Override
+    public void remove()
+    {
+        super.remove();
+
+        if (shootBlockToLoc1 != null && shootBlockToLoc2 != null)
+        {
+            shootBlockToLoc1.remove();
+            shootBlockToLoc2.remove();
+        }
+
+    }
+
+    @Override
     public Player getPlayer() {
-        return null;
+        return player;
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Frostbite";
     }
 }

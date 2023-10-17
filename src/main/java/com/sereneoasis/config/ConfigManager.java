@@ -167,8 +167,12 @@ public class ConfigManager {
                 0, 5000, 0,
                 2, 0.5, 20, 1, 10);
 
+        saveConfigValuesAbility(ocean, "Spikes", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 10000,
+                2, 5, 20, 1, 10);
+
         saveConfigValuesAbility(ocean, "Frostbite", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 0,
+                5000, 5000, 0,
                 2, 0.5, 20, 1, 10);
 
         Set<Tag<Material>>oceanTags = new HashSet<>();

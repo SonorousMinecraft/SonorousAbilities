@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Sakrajin
@@ -30,8 +31,8 @@ public class Spikes extends CoreAbility {
 
     public Spikes(Player player) {
         super(player);
-        Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
-        if (source.getType().equals(Material.WATER))
+        Block source = Blocks.getSourceBlock(player, sPlayer, sourceRange);
+        if (source != null)
         {
             loc = source.getLocation();
             starttime = System.currentTimeMillis();
@@ -43,10 +44,9 @@ public class Spikes extends CoreAbility {
     }
     private void createTempBlocks()
     {
-        for (Block b: spike.keySet())
-        {
-            if (!Blocks.getBlocksAroundPoint(loc, radius, Material.WATER).contains(b)) {
-                spike.get(b).revertBlock();
+        for (Map.Entry<Block,TempBlock> entry : spike.entrySet()) {
+            if (!Blocks.getBlocksAroundPoint(loc, radius, Material.WATER).contains(entry.getKey())) {
+                entry.getValue().revertBlock();
             }
         }
 
@@ -54,7 +54,7 @@ public class Spikes extends CoreAbility {
         {
             if (!TempBlock.isTempBlock(b))
             {
-                TempBlock tb = new TempBlock(b, Material.WATER.createBlockData(), duration);
+                TempBlock tb = new TempBlock(b, Material.ICE.createBlockData(), duration);
                 spike.put(b, tb);
             }
         }
