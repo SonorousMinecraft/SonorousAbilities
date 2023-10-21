@@ -17,16 +17,15 @@ import org.bukkit.entity.Player;
  */
 public class Torrent extends CoreAbility {
 
+    private AbilityStatus abilityStatus;
+
     private SourceBlockToPlayer sourceBlockToPlayer;
 
     private BlockRingAroundPlayer blockRingAroundPlayer;
 
     private ShootBlockFromLoc shootBlockFromLoc;
 
-    private boolean hasSourced = false;
 
-    private boolean hasShot = false;
-    private Location loc;
 
     public Torrent(Player player) {
         super(player);
@@ -39,26 +38,40 @@ public class Torrent extends CoreAbility {
         sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.BLUE_STAINED_GLASS, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
+            abilityStatus = AbilityStatus.SOURCE_SELECTED;
+            sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
             start();
         }
     }
 
+    public void setHasSourced()
+    {
+        sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCING);
+        abilityStatus = AbilityStatus.SOURCING;
+    }
+
+
     @Override
     public void progress() {
-        if (!player.isSneaking())
-        {
-            this.remove();
-        }
 
-        if (!hasSourced && sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED)
-        {
-            hasSourced = true;
-            loc = sourceBlockToPlayer.getLocation();
-            sourceBlockToPlayer.remove();
-        }
+            if (abilityStatus == AbilityStatus.SOURCING)
+            {
+                if (!player.isSneaking())
+                {
+                    sourceBlockToPlayer.remove();
+                    this.remove();
+                }
 
-        if (hasSourced) {
-            if (hasShot) {
+                if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED) {
+                    abilityStatus = AbilityStatus.SOURCED;
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", sourceBlockToPlayer.getLocation(), Material.BLUE_STAINED_GLASS,
+                            2, 0, 10, true);
+                    sourceBlockToPlayer.remove();
+                }
+            }
+
+
+        if (abilityStatus == AbilityStatus.SHOT) {
                 if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
                     shootBlockFromLoc.remove();
@@ -66,38 +79,20 @@ public class Torrent extends CoreAbility {
                     this.remove();
                 }
             }
-            else{
-                if (blockRingAroundPlayer == null)
-                {
-                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", loc, Material.BLUE_STAINED_GLASS, 2, 0, 10, true);
-                }
-            }
+
         }
 
 
-    }
-
     public void setHasClicked()
     {
-        if (hasSourced)
+        if (abilityStatus == AbilityStatus.SOURCED)
         {
-            hasShot = true;
+            abilityStatus = AbilityStatus.SHOT;
             shootBlockFromLoc = new ShootBlockFromLoc(player, "Torrent", blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true);
             blockRingAroundPlayer.remove();
         }
     }
 
-    @Override
-    public void remove() {
-        super.remove();
-
-        if (hasSourced) {
-            blockRingAroundPlayer.remove();
-        }
-        else {
-            sourceBlockToPlayer.remove();
-        }
-    }
 
     @Override
     public Player getPlayer() {

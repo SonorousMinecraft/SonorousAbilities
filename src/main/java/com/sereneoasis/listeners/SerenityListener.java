@@ -130,10 +130,16 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), Torrent.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Torrent.class).setHasClicked();
                 }
+                else{
+                    new Torrent(player);
+                }
                 break;
             case "Gimbal":
                 if (CoreAbility.hasAbility(e.getPlayer(), Gimbal.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasClicked();
+                }
+                else{
+                    new Gimbal(player);
                 }
                 break;
             case "Spikes":
@@ -143,9 +149,14 @@ public class SerenityListener implements Listener {
                 break;
             case "Frostbite":
                 if (CoreAbility.hasAbility(e.getPlayer(), Frostbite.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Frostbite.class).setSourceBlock2();
                     CoreAbility.getAbility(e.getPlayer(), Frostbite.class).setHasClicked();
                 }
+                else{
+                    new Frostbite(player);
+                }
                 break;
+
         }
 
     }
@@ -170,21 +181,19 @@ public class SerenityListener implements Listener {
         switch(ability)
         {
             case "Torrent":
-                new Torrent(player);
+                if (CoreAbility.hasAbility(e.getPlayer(), Torrent.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Torrent.class).setHasSourced();
+                }
                 break;
             case "Gimbal":
-                new Gimbal(player);
+                if (CoreAbility.hasAbility(e.getPlayer(), Gimbal.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasSourced();
+                }
                 break;
             case "Spikes":
                 new Spikes(player);
                 break;
             case "Frostbite":
-                if (CoreAbility.hasAbility(e.getPlayer(), Frostbite.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Frostbite.class).setSourceBlock2();
-                }
-                else{
-                    new Frostbite(player);
-                }
                 break;
             case "CruelSun":
                 new CruelSun(player);

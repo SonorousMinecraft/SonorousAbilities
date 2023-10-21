@@ -1,10 +1,9 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockToLoc;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockToLoc;
-import com.sereneoasis.archetypes.data.ArchetypeData;
-import com.sereneoasis.archetypes.data.ArchetypeDataManager;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
+import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
+import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
@@ -15,15 +14,15 @@ import org.bukkit.entity.Player;
 
 public class Frostbite extends CoreAbility {
 
+    private boolean hasSetSource2 = false, hasBeganSourcing = false, hasSourced = false, hasShot = false, hasSpawnedShots = false;
 
-    private Block sourceBlock1, sourceBlock2;
-
-    private boolean hasSourced2 = false, hasShot = false, hasSpawnedShots = false;
-
-    private ShootBlockToLoc shootBlockToLoc1, shootBlockToLoc2;
+    private SourceBlockToPlayer sourceBlockToPlayer1, sourceBlockToPlayer2;
     
-    private double currentDistance = 0;
-    
+    private Location sourceLoc1, sourceLoc2;
+
+    private ShootBlockFromLoc shootBlockFromLoc1, shootBlockFromLoc2;
+
+
 
     public Frostbite(Player player) {
         super(player);
@@ -33,92 +32,108 @@ public class Frostbite extends CoreAbility {
             return;
         }
 
-        sourceBlock1 = Blocks.getSourceBlock(player, sPlayer, sourceRange);
-        if (sourceBlock1 != null)
+        sourceBlockToPlayer1 = new SourceBlockToPlayer(player, "Frostbite", Material.BLUE_STAINED_GLASS, 4);
+        if (! (sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
+            sourceBlockToPlayer1.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
+            sourceLoc1 = sourceBlockToPlayer1.getLocation().clone();
+
             start();
         }
     }
 
     @Override
     public void progress() {
-        
-        if (player.isSneaking())
-        {
-            if (currentDistance < range) {
-                currentDistance += (range * 50) / chargetime;
-            }
-        }
-        if (!hasSourced2)
-        {
-            Particles.spawnColoredParticle(sourceBlock1.getLocation().add(0,1,0),
-                    5, 0.5, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
-        }
-        else {
-            if (!hasShot) {
-                Particles.spawnColoredParticle(sourceBlock1.getLocation().add(0,1,0),
-                        5, 0.5, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
 
-                Particles.spawnColoredParticle(sourceBlock2.getLocation().add(0, 1, 0),
-                        5, 0.5, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
+        if (hasSetSource2 & player.isSneaking() & !hasSourced)
+        {
+            if (!hasBeganSourcing) {
+
+                sourceBlockToPlayer1.setAbilityStatus(AbilityStatus.SOURCING);
+                sourceBlockToPlayer2.setAbilityStatus(AbilityStatus.SOURCING);
+                hasBeganSourcing = true;
             }
             else {
-                if (!hasSpawnedShots) {
-                    hasSpawnedShots = true;
-                    Location endLoc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection().normalize(), currentDistance);
-                    shootBlockToLoc1 = new ShootBlockToLoc(player, "Frostbite", sourceBlock1.getLocation()
-                            , Material.ICE, endLoc);
-                    shootBlockToLoc2 = new ShootBlockToLoc(player, "Frostbite", sourceBlock2.getLocation()
-                            , Material.ICE, endLoc);
+                if (sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.SOURCED && sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.SOURCED )
+                {
+                    hasSourced = true;
+
+                    sourceBlockToPlayer1.remove();
+                    sourceBlockToPlayer2.remove();
                 }
-                else{
-                    Location loc1 = shootBlockToLoc1.getLoc();
-                    Location loc2 = shootBlockToLoc2.getLoc();
-                    if (loc1.distance(loc2) < 2)
-                    {
-                        Location explode = loc1.add(Vectors.getDirectionBetweenLocations(loc1,loc2).multiply(0.5));
-                        for (Block b : Blocks.getBlocksAroundPoint(explode, radius))
-                        {
-                            TempBlock tb = new TempBlock(b, Material.ICE.createBlockData(), 5000);
-                        }
-                        DamageHandler.damageEntity(Entities.getAffected(explode, radius, player), player, this, damage);
-                        this.remove();
+            }
+        }
+
+        if (hasShot) {
+            if (!hasSpawnedShots) {
+                hasSpawnedShots = true;
+
+                shootBlockFromLoc1 = new ShootBlockFromLoc(player, "Frostbite", sourceLoc1
+                        , Material.ICE, false);
+                shootBlockFromLoc2 = new ShootBlockFromLoc(player, "Frostbite", sourceLoc2
+                        , Material.ICE, false);
+            } else {
+                if (shootBlockFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE && shootBlockFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE)
+                {
+                    this.remove();
+                }
+
+                Location loc1 = shootBlockFromLoc1.getLoc();
+                Location loc2 = shootBlockFromLoc2.getLoc();
+                if (loc1.distance(loc2) < 5) {
+                    Location explode = loc1.add(Vectors.getDirectionBetweenLocations(loc1, loc2).multiply(0.5));
+                    for (Block b : Blocks.getBlocksAroundPoint(explode, radius)) {
+                        TempBlock tb = new TempBlock(b, Material.ICE.createBlockData(), 5000);
                     }
+                    DamageHandler.damageEntity(Entities.getAffected(explode, radius, player), player, this, damage);
+                    this.remove();
                 }
+            }
+        }
+    }
+
+    public void setHasClicked()
+    {
+        if (hasSourced)
+        {
+            if (!hasShot) {
+                hasShot = true;
+            }
+            else{
+                Location loc1 = shootBlockFromLoc1.getLoc();
+                Location loc2 = shootBlockFromLoc2.getLoc();
+                shootBlockFromLoc1.setDir(Vectors.getDirectionBetweenLocations(loc1, loc2).normalize());
+                shootBlockFromLoc2.setDir(Vectors.getDirectionBetweenLocations(loc2, loc1).normalize());
             }
         }
     }
 
     public void setSourceBlock2()
     {
-        if (!hasSourced2)
+        if (!hasSetSource2)
         {
-            sourceBlock2 = Blocks.getSourceBlock(player, sPlayer, sourceRange);
-            if (sourceBlock2 != null)
+            hasSetSource2 = true;
+            sourceBlockToPlayer2 = new SourceBlockToPlayer(player, "Frostbite", Material.BLUE_STAINED_GLASS, 4);
+            if (! (sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.NO_SOURCE))
             {
-                hasSourced2 = true;
+                sourceBlockToPlayer2.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
+                sourceLoc2 = sourceBlockToPlayer2.getLocation().clone();
             }
 
         }
-    }
 
-    public void setHasClicked()
-    {
-        if (hasSourced2 && !hasShot)
-        {
-            hasShot = true;
-        }
     }
 
     @Override
     public void remove()
     {
         super.remove();
+        sPlayer.addCooldown("Frostbite", cooldown);
 
-        if (shootBlockToLoc1 != null && shootBlockToLoc2 != null)
+        if (shootBlockFromLoc1 != null && shootBlockFromLoc2 != null)
         {
-            shootBlockToLoc1.remove();
-            shootBlockToLoc2.remove();
+            shootBlockFromLoc1.remove();
+            shootBlockFromLoc2.remove();
         }
 
     }

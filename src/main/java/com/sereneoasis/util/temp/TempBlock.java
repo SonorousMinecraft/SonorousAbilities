@@ -59,9 +59,14 @@ public class TempBlock {
         return false;
     }
 
+    public static TempBlock getTempBlock(Block block)
+    {
+        return INSTANCES.get(block);
+    }
+
     public void revertBlock()
     {
-        block.setBlockData(oldData);
+        this.block.setBlockData(oldData);
         REVERT_QUEUE.remove();
         INSTANCES.remove(block,this);
     }

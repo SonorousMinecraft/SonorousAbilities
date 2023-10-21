@@ -16,4 +16,5 @@ public interface Ability {
     public Player getPlayer();
 
     public String getName();
+
 }

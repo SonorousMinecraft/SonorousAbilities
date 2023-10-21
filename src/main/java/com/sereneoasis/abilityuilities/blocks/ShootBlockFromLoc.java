@@ -82,6 +82,10 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     }
 
+    public void setDir(Vector dir) {
+        this.dir = dir;
+    }
+
     public Location getLoc() {
         return loc;
     }

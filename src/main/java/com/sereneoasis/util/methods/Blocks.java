@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,9 +42,9 @@ public class Blocks {
         return block;
     }
 
-    public static List<Block> getBlocksAroundPoint(Location loc, double radius)
+    public static Set<Block> getBlocksAroundPoint(Location loc, double radius)
     {
-        List<Block>blocks = new ArrayList<Block>();
+        Set<Block>blocks = new HashSet<>();
         radius -= radius/2;
         for (double y = -radius ; y < radius ; y++)
         {

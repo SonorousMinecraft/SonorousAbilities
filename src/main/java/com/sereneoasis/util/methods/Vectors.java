@@ -11,7 +11,7 @@ public class Vectors {
 
     public static Vector getDirectionBetweenLocations(Location start, Location end)
     {
-        return end.subtract(start).toVector();
+        return end.clone().subtract(start).toVector();
     }
 
     public static double getAngleBetweenVectors(Vector vec1, Vector vec2)

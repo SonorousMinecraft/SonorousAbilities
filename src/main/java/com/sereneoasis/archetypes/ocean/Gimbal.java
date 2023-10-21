@@ -43,8 +43,13 @@ public class Gimbal extends CoreAbility
         sourceBlockToPlayer = new SourceBlockToPlayer(player, "Gimbal", Material.BLUE_STAINED_GLASS, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
+            sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
             start();
         }
+    }
+
+    public void setHasSourced() {
+        sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCING);
     }
 
     @Override

@@ -12,8 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Sakrajin
@@ -23,7 +22,7 @@ public class Spikes extends CoreAbility {
 
     private Location loc;
 
-    private HashMap<Block, TempBlock>spike;
+    private HashSet<Block>spike;
 
     private long starttime;
 
@@ -31,12 +30,13 @@ public class Spikes extends CoreAbility {
 
     public Spikes(Player player) {
         super(player);
+
         Block source = Blocks.getSourceBlock(player, sPlayer, sourceRange);
         if (source != null)
         {
             loc = source.getLocation();
             starttime = System.currentTimeMillis();
-            spike = new HashMap<>();
+            spike = new HashSet<>();
             createTempBlocks();
             start();
         }
@@ -44,18 +44,23 @@ public class Spikes extends CoreAbility {
     }
     private void createTempBlocks()
     {
-        for (Map.Entry<Block,TempBlock> entry : spike.entrySet()) {
-            if (!Blocks.getBlocksAroundPoint(loc, radius, Material.WATER).contains(entry.getKey())) {
-                entry.getValue().revertBlock();
+        Set<Block> currentBlocks = Blocks.getBlocksAroundPoint(loc.getBlock().getLocation(), radius);
+        for (Block b: currentBlocks)
+        {
+            if (!spike.contains(b) && !TempBlock.isTempBlock(b))
+            {
+                new TempBlock(b, Material.ICE.createBlockData(), duration);
+                spike.add(b);
             }
         }
-
-        for (Block b: Blocks.getBlocksAroundPoint(loc, radius, Material.WATER))
+        Iterator<Block>it = spike.iterator();
+        while (it.hasNext())
         {
-            if (!TempBlock.isTempBlock(b))
+            Block b = it.next();
+            if (!currentBlocks.contains(b))
             {
-                TempBlock tb = new TempBlock(b, Material.ICE.createBlockData(), duration);
-                spike.put(b, tb);
+                TempBlock.getTempBlock(b).revertBlock();
+                it.remove();
             }
         }
     }
@@ -85,6 +90,13 @@ public class Spikes extends CoreAbility {
             this.remove();
         }
 
+    }
+
+    @Override
+    public void remove()
+    {
+        super.remove();
+        sPlayer.addCooldown("Spikes", cooldown);
     }
 
     public void setHasClicked()

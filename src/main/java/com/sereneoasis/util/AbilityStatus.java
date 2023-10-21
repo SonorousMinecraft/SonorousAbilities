@@ -9,7 +9,10 @@ public enum AbilityStatus {
     NO_SOURCE,
     SOURCING,
     SOURCED,
+
+    SOURCE_SELECTED,
     SHOT,
     COMPLETE,
-    CHARGED
+    CHARGED,
+
 }

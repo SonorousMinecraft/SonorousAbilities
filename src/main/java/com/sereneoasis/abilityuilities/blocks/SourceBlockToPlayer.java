@@ -2,9 +2,11 @@ package com.sereneoasis.abilityuilities.blocks;
 
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
@@ -41,7 +43,7 @@ public class SourceBlockToPlayer extends CoreAbility {
             this.user = user;
             this.type = type;
             this.distanceToStop = distanceToStop;
-            abilityStatus = AbilityStatus.SOURCING;
+            abilityStatus = AbilityStatus.SOURCE_SELECTED;
             loc = source.getLocation();
             start();
         }
@@ -57,18 +59,23 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     @Override
     public void progress() {
-        if (!player.isSneaking() )
+
+        if (abilityStatus == AbilityStatus.SOURCE_SELECTED)
         {
-            this.remove();
+            Particles.spawnColoredParticle(loc.getBlock().getLocation().add(0,1,0),
+                    5, 0.2, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
         }
-
-
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500);
         //loc.getBlock().setBlockData(Material.DIRT.createBlockData());
         //loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5);
 
         if (abilityStatus == AbilityStatus.SOURCING)
         {
+            if (!player.isSneaking() )
+            {
+                this.remove();
+            }
+
             Vector dir = Vectors.getDirectionBetweenLocations(loc, player.getEyeLocation()).normalize();
 
             loc.add(dir.clone().multiply(speed));
@@ -85,6 +92,10 @@ public class SourceBlockToPlayer extends CoreAbility {
                 abilityStatus = AbilityStatus.SOURCED;
             }
         }
+    }
+
+    public void setAbilityStatus(AbilityStatus abilityStatus) {
+        this.abilityStatus = abilityStatus;
     }
 
     @Override
