@@ -4,8 +4,9 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
-import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,7 +23,7 @@ public class Spikes extends CoreAbility {
 
     private Location loc;
 
-    private HashSet<Block>spike;
+    private HashMap<Integer, TempDisplayBlock>spike;
 
     private long starttime;
 
@@ -36,7 +37,7 @@ public class Spikes extends CoreAbility {
         {
             loc = source.getLocation();
             starttime = System.currentTimeMillis();
-            spike = new HashSet<>();
+            spike = new HashMap<>();
             createTempBlocks();
             start();
         }
@@ -44,24 +45,18 @@ public class Spikes extends CoreAbility {
     }
     private void createTempBlocks()
     {
-        Set<Block> currentBlocks = Blocks.getBlocksAroundPoint(loc.getBlock().getLocation(), radius);
-        for (Block b: currentBlocks)
+
+        int i = 0;
+        for (Location l: Locations.getSphereLocsAroundPoint(loc, radius, 0.5))
         {
-            if (!spike.contains(b) && !TempBlock.isTempBlock(b))
-            {
-                new TempBlock(b, Material.ICE.createBlockData(), duration);
-                spike.add(b);
+            if (! spike.containsKey(i)) {
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, Material.ICE.createBlockData(), 5000, 0.5);
+                spike.put(i, tempDisplayBlock);
             }
-        }
-        Iterator<Block>it = spike.iterator();
-        while (it.hasNext())
-        {
-            Block b = it.next();
-            if (!currentBlocks.contains(b))
-            {
-                TempBlock.getTempBlock(b).revertBlock();
-                it.remove();
+            else{
+                spike.get(i).teleport(l);
             }
+            i++;
         }
     }
 

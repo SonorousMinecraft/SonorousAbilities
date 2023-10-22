@@ -64,11 +64,18 @@ public class TempBlock {
         return INSTANCES.get(block);
     }
 
-    public void revertBlock()
+    public void automaticRevert()
     {
-        this.block.setBlockData(oldData);
+        if (block.getBlockData() != oldData) {
+            this.block.setBlockData(oldData);
+        }
         REVERT_QUEUE.remove();
         INSTANCES.remove(block,this);
+    }
+
+    public void revert()
+    {
+        this.block.setBlockData(oldData);
     }
 
     public long getRevertTime() {

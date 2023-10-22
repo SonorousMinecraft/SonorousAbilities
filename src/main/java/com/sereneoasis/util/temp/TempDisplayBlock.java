@@ -1,20 +1,13 @@
 package com.sereneoasis.util.temp;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Transformation;
-import org.joml.AxisAngle4d;
-import org.joml.AxisAngle4f;
 import org.joml.Vector3d;
-import org.joml.Vector3f;
 
-import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sakrajin
@@ -22,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TempDisplayBlock {
     private static final PriorityQueue<TempDisplayBlock> REVERT_QUEUE = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.revertTime - t2.revertTime));
+
+
+
 
     public static PriorityQueue<TempDisplayBlock> getRevertQueue()
     {
@@ -40,7 +36,7 @@ public class TempDisplayBlock {
 
             bDisplay.setBlock(newData);
             Transformation transformation = bDisplay.getTransformation();
-            //transformation.getTranslation().set(new Vector3d(-size/2, -size/2,- size/2));
+            transformation.getTranslation().set(new Vector3d(-size/2, -size/2,- size/2));
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size);
             bDisplay.setViewRange(100);
@@ -54,14 +50,27 @@ public class TempDisplayBlock {
     }
 
 
-    public void revertTempDisplayBlock()
+    public void automaticRevert()
     {
-        blockDisplay.remove();
+        if (blockDisplay != null) {
+            blockDisplay.remove();
+        }
         REVERT_QUEUE.remove();
     }
 
+    public void revert()
+    {
+        blockDisplay.remove();
+    }
+
+
     public long getRevertTime() {
         return revertTime;
+    }
+
+    public void teleport(Location newLoc)
+    {
+        blockDisplay.teleport(newLoc);
     }
 }
 

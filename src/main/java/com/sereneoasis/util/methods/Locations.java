@@ -4,6 +4,7 @@ import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.units.qual.A;
 
@@ -195,5 +196,44 @@ public class Locations {
         }
         return hpolygon;
     }
+
+
+    public static Set<Location> getLocsAroundPoint(Location loc, double radius, double distance)
+    {
+        Set<Location>locs = new HashSet<>();
+        radius -= radius/2;
+        for (double y = -radius ; y < radius ; y+= distance)
+        {
+            for (double x = -radius ; x < radius ; x+= distance)
+            {
+                for (double z = -radius ; z < radius ; z+= distance)
+                {
+                    locs.add(loc.clone().add(x,y,z));
+                }
+            }
+        }
+        return locs;
+    }
+
+    public static Set<Location> getSphereLocsAroundPoint(Location loc, double radius, double distance)
+    {
+        Set<Location>locs = new HashSet<>();
+        radius -= radius/2;
+        for (double y = -radius ; y < radius ; y+= distance)
+        {
+            for (double x = -radius ; x < radius ; x+= distance)
+            {
+                for (double z = -radius ; z < radius ; z+= distance)
+                {
+                    Location temploc = loc.clone().add(x,y,z);
+                    if (temploc.distanceSquared(loc) < radius*radius) {
+                        locs.add(temploc);
+                    }
+                }
+            }
+        }
+        return locs;
+    }
+
 
 }

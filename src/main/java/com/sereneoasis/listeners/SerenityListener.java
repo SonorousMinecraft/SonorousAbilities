@@ -3,12 +3,9 @@ package com.sereneoasis.listeners;
 import com.sereneoasis.*;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
-import com.sereneoasis.archetypes.ocean.Frostbite;
+import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sun.CruelSun;
 import com.sereneoasis.displays.SerenityBoard;
-import com.sereneoasis.archetypes.ocean.Gimbal;
-import com.sereneoasis.archetypes.ocean.Spikes;
-import com.sereneoasis.archetypes.ocean.Torrent;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.AttributeModifier;
@@ -147,14 +144,19 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Spikes.class).setHasClicked();
                 }
                 break;
-            case "Frostbite":
-                if (CoreAbility.hasAbility(e.getPlayer(), Frostbite.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Frostbite.class).setSourceBlock2();
-                    CoreAbility.getAbility(e.getPlayer(), Frostbite.class).setHasClicked();
+            case "FrostBite":
+                if (CoreAbility.hasAbility(e.getPlayer(), FrostBite.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), FrostBite.class).setSourceBlock2();
+                    CoreAbility.getAbility(e.getPlayer(), FrostBite.class).setHasClicked();
                 }
                 else{
-                    new Frostbite(player);
+                    new FrostBite(player);
                 }
+                break;
+            case "GlacierBreath":
+                    if (CoreAbility.hasAbility(player, GlacierBreath.class)){
+                        CoreAbility.getAbility(player, GlacierBreath.class).onClick();
+                    }
                 break;
 
         }
@@ -193,7 +195,8 @@ public class SerenityListener implements Listener {
             case "Spikes":
                 new Spikes(player);
                 break;
-            case "Frostbite":
+            case "GlacierBreath":
+                new GlacierBreath(player);
                 break;
             case "CruelSun":
                 new CruelSun(player);

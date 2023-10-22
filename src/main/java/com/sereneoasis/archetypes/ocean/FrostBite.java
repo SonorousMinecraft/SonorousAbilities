@@ -12,7 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-public class Frostbite extends CoreAbility {
+public class FrostBite extends CoreAbility {
 
     private boolean hasSetSource2 = false, hasBeganSourcing = false, hasSourced = false, hasShot = false, hasSpawnedShots = false;
 
@@ -24,7 +24,7 @@ public class Frostbite extends CoreAbility {
 
 
 
-    public Frostbite(Player player) {
+    public FrostBite(Player player) {
         super(player);
 
         if (CoreAbility.hasAbility(player, this.getClass()))
@@ -32,7 +32,7 @@ public class Frostbite extends CoreAbility {
             return;
         }
 
-        sourceBlockToPlayer1 = new SourceBlockToPlayer(player, "Frostbite", Material.BLUE_STAINED_GLASS, 4);
+        sourceBlockToPlayer1 = new SourceBlockToPlayer(player, "FrostBite", Material.BLUE_STAINED_GLASS, 4);
         if (! (sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             sourceBlockToPlayer1.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
@@ -68,9 +68,9 @@ public class Frostbite extends CoreAbility {
             if (!hasSpawnedShots) {
                 hasSpawnedShots = true;
 
-                shootBlockFromLoc1 = new ShootBlockFromLoc(player, "Frostbite", sourceLoc1
+                shootBlockFromLoc1 = new ShootBlockFromLoc(player, "FrostBite", sourceLoc1
                         , Material.ICE, false);
-                shootBlockFromLoc2 = new ShootBlockFromLoc(player, "Frostbite", sourceLoc2
+                shootBlockFromLoc2 = new ShootBlockFromLoc(player, "FrostBite", sourceLoc2
                         , Material.ICE, false);
             } else {
                 if (shootBlockFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE && shootBlockFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE)
@@ -113,7 +113,7 @@ public class Frostbite extends CoreAbility {
         if (!hasSetSource2)
         {
             hasSetSource2 = true;
-            sourceBlockToPlayer2 = new SourceBlockToPlayer(player, "Frostbite", Material.BLUE_STAINED_GLASS, 4);
+            sourceBlockToPlayer2 = new SourceBlockToPlayer(player, "FrostBite", Material.BLUE_STAINED_GLASS, 4);
             if (! (sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.NO_SOURCE))
             {
                 sourceBlockToPlayer2.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
@@ -128,7 +128,7 @@ public class Frostbite extends CoreAbility {
     public void remove()
     {
         super.remove();
-        sPlayer.addCooldown("Frostbite", cooldown);
+        sPlayer.addCooldown("FrostBite", cooldown);
 
         if (shootBlockFromLoc1 != null && shootBlockFromLoc2 != null)
         {
@@ -145,6 +145,6 @@ public class Frostbite extends CoreAbility {
 
     @Override
     public String getName() {
-        return "Frostbite";
+        return "FrostBite";
     }
 }
