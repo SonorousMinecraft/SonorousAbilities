@@ -1,7 +1,9 @@
 package com.sereneoasis.util.methods;
 
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -10,8 +12,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Sakrajin
@@ -19,7 +20,8 @@ import java.util.List;
  */
 public class Entities {
     public static void applyPotion(Entity e, PotionEffectType effect, int durationinms) {
-        ((LivingEntity) e).addPotionEffect(effect.createEffect(durationinms/1000*20, 1));
+        PotionEffect ef = new PotionEffect(effect, durationinms/1000*20, 1, false, false, false);
+        ((LivingEntity) e).addPotionEffect(ef);
     }
 
     public static void applyPotionPlayer(Player player, PotionEffectType effect, int durationinms) {
@@ -88,4 +90,22 @@ public class Entities {
                         || entity instanceof ArmorStand && ((ArmorStand)entity).isMarker())));
     }
 
+
+    public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock>spike, Collection<Location> locs, Material material, double size)
+    {
+
+        int i = 0;
+        for (Location l: locs)
+        {
+            if (! spike.containsKey(i)) {
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, material.createBlockData(), 5000, size);
+                spike.put(i, tempDisplayBlock);
+            }
+            else{
+                spike.get(i).teleport(l);
+            }
+            i++;
+        }
+        return spike;
+    }
 }

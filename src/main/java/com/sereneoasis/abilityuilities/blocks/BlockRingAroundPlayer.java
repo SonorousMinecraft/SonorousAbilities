@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +55,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
         dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
-        List<Location>locs = Locations.getCirclePointsBetweenPoints(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
+        List<Location>locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
                 rotation, rotation + rotatePerTick, clockwise);
         loc = locs.get(locs.size()-1);
 

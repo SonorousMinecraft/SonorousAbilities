@@ -13,11 +13,11 @@ public class AbilityData {
     protected String description, instructions;
     protected long chargetime, cooldown,  duration;
 
-    protected double damage, radius, range, speed, sourceRange;
+    protected double damage, hitbox, radius, range, speed, sourceRange;
 
     public AbilityData(Archetype archetype, String description, String instructions,
                        long chargetime, long cooldown, long duration,
-                       double damage, double radius, double range, double speed, double sourceRange) {
+                       double damage, double hitbox, double radius, double range, double speed, double sourceRange) {
 
         this.archetype = archetype;
         this.description = description;
@@ -28,6 +28,7 @@ public class AbilityData {
         this.duration = duration;
 
         this.damage = damage;
+        this.hitbox = hitbox;
         this.radius = radius;
         this.range = range;
         this.speed = speed;
@@ -60,6 +61,10 @@ public class AbilityData {
 
     public double getDamage() {
         return damage;
+    }
+
+    public double getHitbox() {
+        return hitbox;
     }
 
     public double getRadius() {

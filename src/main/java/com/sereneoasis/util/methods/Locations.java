@@ -1,12 +1,7 @@
 package com.sereneoasis.util.methods;
 
-import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -62,7 +57,7 @@ public class Locations {
         return circle;
     }
 
-    public static List<Location>getCirclePointsBetweenPoints(Location loc, double radii, int points, Vector dir, int orientation, int startAngle, int endAngle, boolean clockwise)
+    public static List<Location> getArcFromTrig(Location loc, double radius, int points, Vector dir, int orientation, int startAngle, int endAngle, boolean clockwise)
     {
         int increment = Math.floorDiv(endAngle-startAngle, points);
         List<Location>locs = new ArrayList<>();
@@ -70,16 +65,27 @@ public class Locations {
         {
             double radian = Math.toRadians(i);
             double x, z;
-            if (clockwise) {
-                 x = Math.sin(radian) * radii;
-                 z = Math.cos(radian) * radii;
+            if (!clockwise) {
+                 x = Math.sin(radian) ;
+                 z = Math.cos(radian) ;
             }
             else{
-                 z = Math.sin(radian) * radii;
-                 x = Math.cos(radian) * radii;
+                 z = Math.sin(radian) ;
+                 x = Math.cos(radian) ;
             }
-            Vector v = new Vector(x, 0, z).multiply(radii).rotateAroundAxis(dir,Math.toRadians(orientation));
+            Vector v = new Vector(x, 0, z).multiply(radius).rotateAroundAxis(dir,Math.toRadians(orientation));
             locs.add(loc.clone().add(v));
+        }
+        return locs;
+    }
+
+    public static Set<Location>getPerpArcFromVector(Location loc, Vector dir, double radius, int startAngle, int endAngle, int points)
+    {
+        int increment = Math.floorDiv(endAngle-startAngle, points);
+        Set<Location>locs = new HashSet<>();
+        for (int i = startAngle; i < endAngle; i+=increment)
+        {
+            locs.add(loc.clone().add(dir.clone().rotateAroundY(Math.toRadians(i)).multiply(radius)));
         }
         return locs;
     }
@@ -215,7 +221,7 @@ public class Locations {
         return locs;
     }
 
-    public static Set<Location> getSphereLocsAroundPoint(Location loc, double radius, double distance)
+    public static Set<Location> getOutsideSphereLocs(Location loc, double radius, double distance)
     {
         Set<Location>locs = new HashSet<>();
         radius -= radius/2;
@@ -226,7 +232,7 @@ public class Locations {
                 for (double z = -radius ; z < radius ; z+= distance)
                 {
                     Location temploc = loc.clone().add(x,y,z);
-                    if (temploc.distanceSquared(loc) < radius*radius) {
+                    if (temploc.distanceSquared(loc) < radius*radius && temploc.distance(loc) > radius-distance-0.1) {
                         locs.add(temploc);
                     }
                 }

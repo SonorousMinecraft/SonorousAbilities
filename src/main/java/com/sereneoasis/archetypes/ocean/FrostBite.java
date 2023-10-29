@@ -112,10 +112,10 @@ public class FrostBite extends CoreAbility {
     {
         if (!hasSetSource2)
         {
-            hasSetSource2 = true;
             sourceBlockToPlayer2 = new SourceBlockToPlayer(player, "FrostBite", Material.BLUE_STAINED_GLASS, 4);
             if (! (sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.NO_SOURCE))
             {
+                hasSetSource2 = true;
                 sourceBlockToPlayer2.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
                 sourceLoc2 = sourceBlockToPlayer2.getLocation().clone();
             }

@@ -25,6 +25,8 @@ import org.bukkit.util.Vector;
 
 public class GlacierBreath extends CoreAbility {
 
+    private final String name = "GlacierBreath";
+
     private int firehelixes;
 
 
@@ -45,7 +47,7 @@ public class GlacierBreath extends CoreAbility {
     public GlacierBreath(Player player) {
         super(player);
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown("GlacierBreath")) {
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
             return;
         }
 
@@ -68,14 +70,14 @@ public class GlacierBreath extends CoreAbility {
         }
         this.arbitraryangleincrement = 0;
 
-        barduration = Bukkit.getServer().createBossBar("GlacierBreath",BarColor.BLUE, BarStyle.SEGMENTED_10);
+        barduration = Bukkit.getServer().createBossBar(name,BarColor.BLUE, BarStyle.SEGMENTED_10);
 
     }
 
 
     @Override
     public String getName() {
-        return "GlacierBreath";
+        return name;
     }
 
 
@@ -190,7 +192,7 @@ public class GlacierBreath extends CoreAbility {
 
         barduration.removeAll();
         if (this.started) {
-            sPlayer.addCooldown("GlacierBreath", cooldown);
+            sPlayer.addCooldown(name, cooldown);
         }
         super.remove();
     }

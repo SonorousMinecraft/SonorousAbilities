@@ -58,7 +58,7 @@ public class SphereBlast extends CoreAbility {
         loc.add(dir.clone().multiply(speed));
         Particles.playSphere(loc, radius, 12, particle);
 
-        DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
+        DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
 
     }
 

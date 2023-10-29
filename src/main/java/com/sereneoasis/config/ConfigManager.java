@@ -33,7 +33,8 @@ public class ConfigManager {
     }
 
     private void saveConfigValuesAbility(FileConfiguration config, String name, String archetype, String description, String instructions,
-                                  long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed, double sourceRange)
+                                  long chargetime, long cooldown, long duration,
+                                         double damage, double hitbox, double radius, double range, double speed, double sourceRange)
     {
         String directory = archetype + ".ability." + name;
         config.addDefault(directory + ".description", description);
@@ -51,6 +52,11 @@ public class ConfigManager {
         if (damage != 0) {
             config.addDefault(directory + ".damage", damage);
         }
+
+        if (hitbox != 0) {
+            config.addDefault(directory + ".hitbox", hitbox);
+        }
+
         if (radius != 0) {
             config.addDefault(directory + ".radius", radius);
         }
@@ -66,7 +72,8 @@ public class ConfigManager {
     }
 
     private void saveConfigValuesCombo(FileConfiguration config, String name, Archetype archetype, String description, String instructions,
-                                       long chargetime, long cooldown, long duration, double damage, double radius, double range, double speed, double sourceRange,
+                                       long chargetime, long cooldown, long duration,
+                                       double damage, double hitbox, double radius, double range, double speed, double sourceRange,
                                        ArrayList<ComboManager.AbilityInformation> abilities)
     {
         String directory = archetype.toString() + ".combo." + name;
@@ -85,6 +92,11 @@ public class ConfigManager {
         if (damage != 0) {
             config.addDefault(directory + ".damage", damage);
         }
+
+        if (hitbox != 0) {
+            config.addDefault(directory + ".hitbox", hitbox);
+        }
+
         if (radius != 0) {
             config.addDefault(directory + ".radius", radius);
         }
@@ -161,23 +173,31 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.5, 20, 1, 10);
+                2, 0.5, 2, 20, 1, 10);
 
         saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.5, 20, 1, 10);
+                2,0.5, 1.5, 20, 1, 10);
 
         saveConfigValuesAbility(ocean, "Spikes", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 10000,
-                2, 5, 20, 1, 10);
+                2, 0.5,4, 20, 1, 10);
 
         saveConfigValuesAbility(ocean, "FrostBite", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 0,
-                2, 0.5, 20, 1, 10);
+                2, 0.5, 0, 20, 1, 10);
 
         saveConfigValuesAbility(ocean, "GlacierBreath", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 10000,
-                2, 0.5, 10, 1, 0);
+                2, 0.5, 3, 10, 1, 0);
+
+        saveConfigValuesAbility(ocean, "Blizzard", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 0,
+                1, 0.5, 4, 15, 1.5, 0);
+
+        saveConfigValuesAbility(ocean, "Tsunami", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 5000,
+                0, 0, 2, 0, 0.5, 0);
 
         Set<Tag<Material>>oceanTags = new HashSet<>();
         oceanTags.add(Tag.ICE);
@@ -202,7 +222,7 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(sun, "CruelSun", Archetype.SUN.toString(), "description", "instructions",
                 10000, 5000, 0,
-                2, 2, 20, 1, 0);
+                2, 0.5,2, 20, 1, 0);
 
         sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");
         saveAttributeValuesArchetype(sun, Archetype.SUN, 0, 0, 0, 0,

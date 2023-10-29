@@ -21,6 +21,8 @@ import java.util.*;
  */
 public class Spikes extends CoreAbility {
 
+    private final String name = "Spikes";
+
     private Location loc;
 
     private HashMap<Integer, TempDisplayBlock>spike;
@@ -32,32 +34,21 @@ public class Spikes extends CoreAbility {
     public Spikes(Player player) {
         super(player);
 
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name))
+        {
+            return;
+        }
+
         Block source = Blocks.getSourceBlock(player, sPlayer, sourceRange);
         if (source != null)
         {
             loc = source.getLocation();
             starttime = System.currentTimeMillis();
             spike = new HashMap<>();
-            createTempBlocks();
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), Material.ICE, 0.5);
             start();
         }
 
-    }
-    private void createTempBlocks()
-    {
-
-        int i = 0;
-        for (Location l: Locations.getSphereLocsAroundPoint(loc, radius, 0.5))
-        {
-            if (! spike.containsKey(i)) {
-                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, Material.ICE.createBlockData(), 5000, 0.5);
-                spike.put(i, tempDisplayBlock);
-            }
-            else{
-                spike.get(i).teleport(l);
-            }
-            i++;
-        }
     }
 
     @Override
@@ -68,7 +59,7 @@ public class Spikes extends CoreAbility {
                     add(player.getEyeLocation().getDirection().multiply(loc.distance(player.getEyeLocation())));
             Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
             loc.add(dir.clone().multiply(speed));
-            createTempBlocks();
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), Material.ICE, 0.5);
         }
         else if (hasShot)
         {
@@ -77,7 +68,7 @@ public class Spikes extends CoreAbility {
                 this.remove();
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
-            createTempBlocks();
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), Material.ICE, 0.5);
             DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         }
         else if (!hasShot && System.currentTimeMillis() > starttime+duration)
@@ -91,7 +82,11 @@ public class Spikes extends CoreAbility {
     public void remove()
     {
         super.remove();
-        sPlayer.addCooldown("Spikes", cooldown);
+        sPlayer.addCooldown(name, cooldown);
+        for (TempDisplayBlock tb : spike.values())
+        {
+            tb.revert();
+        }
     }
 
     public void setHasClicked()
@@ -110,6 +105,6 @@ public class Spikes extends CoreAbility {
 
     @Override
     public String getName() {
-        return "Spikes";
+        return name;
     }
 }

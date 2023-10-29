@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 public class Gimbal extends CoreAbility
 {
 
+    private final String name = "Gimbal";
+
     private SourceBlockToPlayer sourceBlockToPlayer;
 
     //1 is shot first
@@ -35,12 +37,12 @@ public class Gimbal extends CoreAbility
     public Gimbal(Player player) {
         super(player);
 
-        if (CoreAbility.hasAbility(player, this.getClass()))
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name))
         {
             return;
         }
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Gimbal", Material.BLUE_STAINED_GLASS, 4);
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, name, Material.BLUE_STAINED_GLASS, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
@@ -59,10 +61,10 @@ public class Gimbal extends CoreAbility
         {
 
             hasSourced = true;
-            blockRingAroundPlayer1 = new BlockRingAroundPlayer(player, "Gimbal", sourceBlockToPlayer.getLocation(),
-                    Material.BLUE_STAINED_GLASS, 2, 45, 30, true);
-            blockRingAroundPlayer2 = new BlockRingAroundPlayer(player, "Gimbal", sourceBlockToPlayer.getLocation(),
-                    Material.BLUE_STAINED_GLASS, 2, -45, 30, false);
+            blockRingAroundPlayer1 = new BlockRingAroundPlayer(player, name, sourceBlockToPlayer.getLocation(),
+                    Material.BLUE_STAINED_GLASS, radius, 45, 30, true);
+            blockRingAroundPlayer2 = new BlockRingAroundPlayer(player, name, sourceBlockToPlayer.getLocation(),
+                    Material.BLUE_STAINED_GLASS, radius, -45, 30, false);
             sourceBlockToPlayer.remove();
         }
 
@@ -93,12 +95,12 @@ public class Gimbal extends CoreAbility
 
             if (!hasShot1) {
                 hasShot1 = true;
-                shootBlockFromLoc1 = new ShootBlockFromLoc(player, "Gimbal", blockRingAroundPlayer1.getLocation(), Material.BLUE_STAINED_GLASS, true);
+                shootBlockFromLoc1 = new ShootBlockFromLoc(player, name, blockRingAroundPlayer1.getLocation(), Material.BLUE_STAINED_GLASS, true);
                 blockRingAroundPlayer1.remove();
             } else {
                 if (!hasShot2) {
                     hasShot2 = true;
-                    shootBlockFromLoc2 = new ShootBlockFromLoc(player, "Gimbal", blockRingAroundPlayer2.getLocation(), Material.BLUE_STAINED_GLASS, true);
+                    shootBlockFromLoc2 = new ShootBlockFromLoc(player, name, blockRingAroundPlayer2.getLocation(), Material.BLUE_STAINED_GLASS, true);
                     blockRingAroundPlayer2.remove();
                 }
             }
@@ -126,6 +128,6 @@ public class Gimbal extends CoreAbility
 
     @Override
     public String getName() {
-        return "Gimbal";
+        return name;
     }
 }

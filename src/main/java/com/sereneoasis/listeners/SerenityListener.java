@@ -158,6 +158,13 @@ public class SerenityListener implements Listener {
                         CoreAbility.getAbility(player, GlacierBreath.class).onClick();
                     }
                 break;
+            case "Blizzard":
+                if (CoreAbility.hasAbility(e.getPlayer(), Blizzard.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Blizzard.class).setHasClicked();
+                }
+                break;
+            case "Tsunami":
+                new Tsunami(player);
 
         }
 
@@ -194,6 +201,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Spikes":
                 new Spikes(player);
+                break;
+            case "Blizzard":
+                new Blizzard(player);
                 break;
             case "GlacierBreath":
                 new GlacierBreath(player);

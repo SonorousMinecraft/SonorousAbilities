@@ -17,6 +17,8 @@ import org.bukkit.entity.Player;
  */
 public class Torrent extends CoreAbility {
 
+    private final String name = "Torrent";
+
     private AbilityStatus abilityStatus;
 
     private SourceBlockToPlayer sourceBlockToPlayer;
@@ -30,12 +32,12 @@ public class Torrent extends CoreAbility {
     public Torrent(Player player) {
         super(player);
 
-        if (CoreAbility.hasAbility(player, this.getClass()))
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name))
         {
             return;
         }
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, "Torrent", Material.BLUE_STAINED_GLASS, 4);
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, name, Material.BLUE_STAINED_GLASS, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
@@ -64,8 +66,8 @@ public class Torrent extends CoreAbility {
 
                 if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED) {
                     abilityStatus = AbilityStatus.SOURCED;
-                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, "Torrent", sourceBlockToPlayer.getLocation(), Material.BLUE_STAINED_GLASS,
-                            2, 0, 10, true);
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, name, sourceBlockToPlayer.getLocation(), Material.BLUE_STAINED_GLASS,
+                            radius, 0, 10, true);
                     sourceBlockToPlayer.remove();
                 }
             }
@@ -88,7 +90,7 @@ public class Torrent extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCED)
         {
             abilityStatus = AbilityStatus.SHOT;
-            shootBlockFromLoc = new ShootBlockFromLoc(player, "Torrent", blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true);
+            shootBlockFromLoc = new ShootBlockFromLoc(player, name, blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true);
             blockRingAroundPlayer.remove();
         }
     }
@@ -101,6 +103,6 @@ public class Torrent extends CoreAbility {
 
     @Override
     public String getName() {
-        return "Torrent";
+        return name;
     }
 }
