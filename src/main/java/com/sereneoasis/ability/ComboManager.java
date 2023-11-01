@@ -65,7 +65,6 @@ public class ComboManager {
                     .stream().map(AbilityInformation::getName).collect(Collectors.toList()));
             if (abilities.get(abilities.size() - 1).equals( sPlayer.getHeldAbility()))
             {
-                Bukkit.broadcastMessage(String.valueOf(RECENTLY_USED.get(player)));
 
                 Set<String> recentlyUsedStrings = RECENTLY_USED.get(player).stream().map(AbilityInformation::getName).collect(Collectors.toSet());
                 if (recentlyUsedStrings.containsAll(abilities))

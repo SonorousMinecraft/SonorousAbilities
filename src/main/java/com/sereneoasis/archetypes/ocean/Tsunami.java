@@ -1,6 +1,8 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.abilityuilities.velocity.Skate;
+import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -23,14 +25,10 @@ public class Tsunami extends CoreAbility {
 
     private final String name = "Tsunami";
 
-    private int maxHeightFromGround = 5;
 
-    private Block floorBlock;
-
-    private int heightFromGround;
     private HashMap<Integer, TempDisplayBlock> wave;
 
-    private ArmorStand armorStand;
+    private Skate skate;
 
     private long startTime;
 
@@ -41,60 +39,31 @@ public class Tsunami extends CoreAbility {
             return;
         }
 
-        setFloorBlock();
-        if (floorBlock == null)
-        {
-            return;
-        }
+        skate = new Skate(player, name, 5, Material.WATER);
+        if (skate.getAbilityStatus() == AbilityStatus.MOVING) {
+            wave = new HashMap<>();
 
-        wave = new HashMap<>();
-
-        Location loc = player.getLocation();
-
-        armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ( (entity) ->
-        {
-            ArmorStand aStand = (ArmorStand) entity;
-            aStand.setInvulnerable(true);
-            aStand.setVisible(false);
-        }));
-        Entities.applyPotion(armorStand, PotionEffectType.INVISIBILITY, Math.round(duration));
-
-        armorStand.addPassenger(player);
-
-        this.startTime = System.currentTimeMillis();
-        start();
-    }
-
-    private void setFloorBlock()
-    {
-        floorBlock = null;
-        for (int i = 0; i <= this.maxHeightFromGround; i++) {
-            final Block block = this.player.getEyeLocation().getBlock().getRelative(BlockFace.DOWN, i);
-            if (block.getType() == Material.WATER) {
-                this.floorBlock = block;
-                heightFromGround = maxHeightFromGround;
-                return;
-            }
+            this.startTime = System.currentTimeMillis();
+            start();
         }
     }
 
     @Override
     public void progress() {
 
-        setFloorBlock();
-        if (player.isSneaking() || floorBlock == null || System.currentTimeMillis() > startTime+duration)
+
+        if (System.currentTimeMillis() > startTime+duration | skate.getAbilityStatus() == AbilityStatus.COMPLETE)
         {
             this.remove();
             return;
         }
 
         Vector dir = player.getEyeLocation().getDirection().setY(0).normalize();
-        armorStand.setVelocity(dir.clone().multiply(speed));
 
-        Location waveLoc = floorBlock.getLocation().clone().add(0,1,0);
+        Location waveLoc = player.getLocation().clone();
         Set<Location> waveLocs = new HashSet<>();
         for (double i = 0; i < radius; i +=0.5) {
-            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i,0), dir, i, 135, 225, 10));
+            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i,0), dir, i, 90, 270, 10));
         }
         wave = Entities.handleDisplayBlockEntities(wave,
                 waveLocs,
@@ -105,13 +74,13 @@ public class Tsunami extends CoreAbility {
     public void remove()
     {
         super.remove();
+        skate.remove();
         sPlayer.addCooldown(name,cooldown);
         for (TempDisplayBlock tb : wave.values())
         {
             tb.revert();
         }
-        armorStand.removePassenger(player);
-        armorStand.remove();
+
     }
 
     @Override
