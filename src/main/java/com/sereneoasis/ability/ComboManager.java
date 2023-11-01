@@ -3,13 +3,17 @@ package com.sereneoasis.ability;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.data.ComboData;
+import com.sereneoasis.archetypes.ocean.SnowStorm;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author Sakrajin
@@ -57,14 +61,19 @@ public class ComboManager {
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
         for (String ability : COMBO_ABILITIES.keySet())
         {
-            ArrayList<AbilityInformation>abilities = COMBO_ABILITIES.get(ability).getAbilities();
-            if (abilities.get(abilities.size() - 1).getName().equals( sPlayer.getHeldAbility()))
+            ArrayList<String>abilities = new ArrayList<>(COMBO_ABILITIES.get(ability).getAbilities()
+                    .stream().map(AbilityInformation::getName).collect(Collectors.toList()));
+            if (abilities.get(abilities.size() - 1).equals( sPlayer.getHeldAbility()))
             {
-                if (RECENTLY_USED.get(player).containsAll(abilities))
+                Bukkit.broadcastMessage(String.valueOf(RECENTLY_USED.get(player)));
+
+                Set<String> recentlyUsedStrings = RECENTLY_USED.get(player).stream().map(AbilityInformation::getName).collect(Collectors.toSet());
+                if (recentlyUsedStrings.containsAll(abilities))
                 {
                     switch (ability)
                     {
-
+                        case "SnowStorm":
+                            new SnowStorm(player);
                     }
                 }
             }

@@ -90,7 +90,7 @@ public class Torrent extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCED)
         {
             abilityStatus = AbilityStatus.SHOT;
-            shootBlockFromLoc = new ShootBlockFromLoc(player, name, blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true);
+            shootBlockFromLoc = new ShootBlockFromLoc(player, name, blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true, true);
             blockRingAroundPlayer.remove();
         }
     }

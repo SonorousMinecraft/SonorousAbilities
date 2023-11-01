@@ -57,7 +57,7 @@ public class Blizzard extends CoreAbility {
         Location tempLoc = player.getEyeLocation();
         Vector dir = tempLoc.getDirection().normalize();
 
-        new ShootBlockFromLoc(player, name, tempLoc.add(dir.multiply(radius)), Material.ICE, true);
+        new ShootBlockFromLoc(player, name, tempLoc.add(dir.multiply(radius)), Material.ICE, true, true);
     }
 
     @Override

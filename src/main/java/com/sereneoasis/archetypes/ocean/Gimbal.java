@@ -95,12 +95,12 @@ public class Gimbal extends CoreAbility
 
             if (!hasShot1) {
                 hasShot1 = true;
-                shootBlockFromLoc1 = new ShootBlockFromLoc(player, name, blockRingAroundPlayer1.getLocation(), Material.BLUE_STAINED_GLASS, true);
+                shootBlockFromLoc1 = new ShootBlockFromLoc(player, name, blockRingAroundPlayer1.getLocation(), Material.BLUE_STAINED_GLASS, true, false);
                 blockRingAroundPlayer1.remove();
             } else {
                 if (!hasShot2) {
                     hasShot2 = true;
-                    shootBlockFromLoc2 = new ShootBlockFromLoc(player, name, blockRingAroundPlayer2.getLocation(), Material.BLUE_STAINED_GLASS, true);
+                    shootBlockFromLoc2 = new ShootBlockFromLoc(player, name, blockRingAroundPlayer2.getLocation(), Material.BLUE_STAINED_GLASS, true, false);
                     blockRingAroundPlayer2.remove();
                 }
             }

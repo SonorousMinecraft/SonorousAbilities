@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.inventory.ClickType;
 
 import java.util.*;
 
@@ -71,12 +72,12 @@ public class ConfigManager {
         }
     }
 
-    private void saveConfigValuesCombo(FileConfiguration config, String name, Archetype archetype, String description, String instructions,
+    private void saveConfigValuesCombo(FileConfiguration config, String name, String archetype, String description, String instructions,
                                        long chargetime, long cooldown, long duration,
                                        double damage, double hitbox, double radius, double range, double speed, double sourceRange,
                                        ArrayList<ComboManager.AbilityInformation> abilities)
     {
-        String directory = archetype.toString() + ".combo." + name;
+        String directory = archetype + ".combo." + name;
         config.addDefault(directory + ".description", description);
         config.addDefault(directory + ".instructions", instructions);
         if (chargetime != 0) {
@@ -109,10 +110,12 @@ public class ConfigManager {
         if (sourceRange != 0) {
             config.addDefault(directory + ".sourcerange", sourceRange);
         }
+        List<String>storableAbilities = new ArrayList<>();
         for (ComboManager.AbilityInformation abilityInformation : abilities)
         {
-            config.addDefault(directory + ".usage",abilityInformation.getName() + ":" + abilityInformation.getClickType().toString());
+            storableAbilities.add(abilityInformation.getName() + ":" + abilityInformation.getClickType().toString());
         }
+        config.addDefault(directory + ".usage", storableAbilities);
     }
 
     private void saveAttributeValuesArchetype(FileConfiguration config, Archetype archetype, double armor, double toughness, double damage,
@@ -198,6 +201,14 @@ public class ConfigManager {
         saveConfigValuesAbility(ocean, "Tsunami", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 5000,
                 0, 0, 2, 0, 0.5, 0);
+
+        ArrayList<ComboManager.AbilityInformation> snowStormAbilities = new ArrayList<>();
+        snowStormAbilities.add(0, new ComboManager.AbilityInformation("Blizzard", ClickType.SHIFT_LEFT));
+        snowStormAbilities.add(1, new ComboManager.AbilityInformation("Torrent", ClickType.LEFT));
+
+        saveConfigValuesCombo(ocean, "SnowStorm", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 5000,
+                0, 0, 10, 0, 0.5, 0, snowStormAbilities);
 
         Set<Tag<Material>>oceanTags = new HashSet<>();
         oceanTags.add(Tag.ICE);

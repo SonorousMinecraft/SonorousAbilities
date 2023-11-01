@@ -69,9 +69,9 @@ public class FrostBite extends CoreAbility {
                 hasSpawnedShots = true;
 
                 shootBlockFromLoc1 = new ShootBlockFromLoc(player, "FrostBite", sourceLoc1
-                        , Material.ICE, false);
+                        , Material.ICE, false, false);
                 shootBlockFromLoc2 = new ShootBlockFromLoc(player, "FrostBite", sourceLoc2
-                        , Material.ICE, false);
+                        , Material.ICE, false, false);
             } else {
                 if (shootBlockFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE && shootBlockFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {

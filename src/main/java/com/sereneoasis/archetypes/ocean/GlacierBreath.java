@@ -8,12 +8,14 @@ import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -140,27 +142,15 @@ public class GlacierBreath extends CoreAbility {
                         //Particles.spawnColoredParticle(loc, 1, 0.1, 1, ArchetypeDataManager.getArchetypeData(Archetype.OCEAN).getColor());
                         new TempDisplayBlock(helixloc, Material.ICE.createBlockData(), 100, 0.5);
                     }
-					/*
-					else {
-						if (helixloc.getBlock().getType().isSolid()) {
-							if (helixloc.clone().add(0,1,0).getBlock().getType().isAir()){
-								if (!TempBlock.isTempBlock(helixloc.clone().add(0,1,0).getBlock())) {
-									//Methods.playFireBall(helixloc.clone().add(0,1,0), 0.5, 10, 5, bPlayer.hasElement(Element.BLUE_FIRE));
-									if (hasbluefire) {
-										TempBlock tb = new TempBlock(helixloc.clone().add(0,1,0).getBlock(), Material.SOUL_FIRE);
-										tb.setRevertTime(10000);
-									}
-									else {
-										TempBlock tb = new TempBlock(helixloc.clone().add(0,1,0).getBlock(), Material.FIRE);
-										tb.setRevertTime(10000);
-									}
 
+					else {
+                            Block topBlock = helixloc.clone().add(0,1,0).getBlock();
+							if (topBlock.getType().isAir()){
+								if (!TempBlock.isTempBlock(topBlock) && helixloc.getBlock().getType() == Material.WATER) {
+                                    new TempBlock(helixloc.getBlock(), Material.ICE.createBlockData(), 2000, true);
 								}
 							}
-						}
 					}
-					*/
-
 
                 }
 

@@ -25,7 +25,7 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     private Material type;
 
-    private boolean directable;
+    private boolean directable, autoRemove;
 
 
     private Vector dir;
@@ -36,12 +36,13 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
 
-    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable) {
+    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
         super(player, user);
         this.user = user;
         this.type = type;
         this.loc = startLoc;
         this.directable = directable;
+        this.autoRemove = autoRemove;
         this.dir = player.getEyeLocation().getDirection().normalize();
         this.abilityStatus = AbilityStatus.SHOT;
         start();
@@ -53,6 +54,10 @@ public class ShootBlockFromLoc extends CoreAbility {
 
         if (loc.distance(player.getEyeLocation()) > range) {
             abilityStatus = AbilityStatus.COMPLETE;
+            if (autoRemove){
+                this.remove();
+            }
+
             return;
         }
 

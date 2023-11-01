@@ -1,9 +1,12 @@
 package com.sereneoasis.ability.data;
 
+import com.sereneoasis.ability.ComboManager;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.config.ConfigManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.inventory.ClickType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,26 +45,34 @@ public class AbilityDataManager {
                     abilityDataMap.put(ability, abilityData);
                 }
             }
+
+
+        }
+
+        Archetype archetype = Archetype.OCEAN;
+        config = ConfigManager.getConfig(archetype).getConfig();
+
+        if (config.getConfigurationSection(archetype.toString()+ ".combo") != null) {
+            for (String combo : config.getConfigurationSection(archetype.toString() + ".combo").getKeys(false)) {
+                ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".combo" + "." + combo);
+
+                ArrayList<ComboManager.AbilityInformation> abilities = new ArrayList<>();
+                for (String usageAbilities : abil.getStringList(".usage"))
+                {
+                    abilities.add(new ComboManager.AbilityInformation(usageAbilities.split(":")[0], ClickType.valueOf(usageAbilities.split(":")[1])));
+                }
+
+                ComboData comboData = new ComboData(archetype, abil.getString("description"), abil.getString("instructions"),
+                        abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"),
+                        abil.getDouble("damage"), abil.getDouble("hitbox"),
+                        abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abilities);
+                abilityDataMap.put(combo, comboData);
+                comboDataMap.put(combo, comboData);
+            }
         }
     }
-            //        for (String combo : config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo").getKeys(false))
-//        {
-//            ConfigurationSection abil = config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo" + "." + combo);
-//
-//            ArrayList<ComboManager.AbilityInformation> abilities = new ArrayList<>();
-//            for (String ability : config.getConfigurationSection(Archetype.OCEAN.toString() + ".combo" + "." + combo + ".usage").getKeys(false))
-//            {
-//                abilities.add(new ComboManager.AbilityInformation(ability.split(":")[0], ClickType.valueOf(ability.split(":")[1])));
-//            }
-//
-//            ComboData comboData = new ComboData(abil.getString("description") , abil.getString("instructions"),
-//                    abil.getLong("chargetime"), abil.getLong("cooldown"),  abil.getLong("duration") , abil.getDouble("damage") ,
-//                    abil.getDouble("radius") , abil.getDouble("range") , abil.getDouble("speed"), abilities);
-//
-//            comboDataMap.put(combo, comboData);
-//            abilityDataMap.put(combo, comboData);
-//        }
-//        }
+
+
 
     public static AbilityData getAbilityData(String ability)
     {
