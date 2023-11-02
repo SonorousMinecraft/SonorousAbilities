@@ -4,6 +4,7 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
+import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
@@ -40,10 +41,15 @@ public class GlacierBreath extends CoreAbility {
     private Vector dir;
     private Boolean charged;
     private Boolean started;
+
+    private boolean isBlackIce = false;
     private double arbitraryangleincrement;
     private double angle;
     private double angledifference;
     private BossBar barduration;
+
+
+    private AbilityStatus abilityStatus = AbilityStatus.CHARGING;
 
 
     public GlacierBreath(Player player) {
@@ -85,21 +91,31 @@ public class GlacierBreath extends CoreAbility {
 
     @Override
     public void progress() {
-        if (player.isDead() || !player.isOnline() || !player.isSneaking()){
+        if (player.isDead() || !player.isOnline()){
             this.remove();
         }
 
         Long timecharged = System.currentTimeMillis() - chargestarttime;
 
-        if (timecharged < chargetime && !player.isSneaking()) {
+        if (timecharged > chargetime) {
+            charged = true;
+            abilityStatus = AbilityStatus.CHARGED;
+        }
+
+        if (isBlackIce && timecharged < chargetime && !player.isSneaking())
+        {
             this.remove();
         }
 
-        if (timecharged > chargetime) {
-            charged = true;
+        if (!isBlackIce) {
+            if (!player.isSneaking())
+            {
+                this.remove();
+            }
         }
 
         if (started) {
+
             player.setFireTicks(0);
             Long timeelapsed = System.currentTimeMillis() - breathstarttime;
             Double progress = 1 - (double) timeelapsed / (double) duration;
@@ -115,7 +131,12 @@ public class GlacierBreath extends CoreAbility {
             }
 
             this.origin = player.getEyeLocation();
-            this.dir = origin.getDirection().normalize();
+            if (isBlackIce){
+                this.dir = new Vector(0,-1,0);
+            }
+            else {
+                this.dir = origin.getDirection().normalize();
+            }
 
             arbitraryangleincrement+=5;
 
@@ -162,29 +183,38 @@ public class GlacierBreath extends CoreAbility {
                 }
             }
         }
-
     }
 
+    public AbilityStatus getAbilityStatus() {
+        return abilityStatus;
+    }
 
+    public void setBlackIce()
+    {
+        this.isBlackIce = true;
+        started = true;
+    }
 
     public void onClick() {
-        if (charged && !started) {
+        if (!isBlackIce && charged && !started) {
             started = true;
             breathstarttime = System.currentTimeMillis();
             this.barduration.addPlayer(player);
+            abilityStatus = AbilityStatus.SHOT;
         }
+
     }
 
 
 
     @Override
     public void remove() {
-
+        super.remove();
         barduration.removeAll();
         if (this.started) {
             sPlayer.addCooldown(name, cooldown);
         }
-        super.remove();
+
     }
 
     @Override

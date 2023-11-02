@@ -188,7 +188,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(ocean, "FrostBite", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 0,
-                2, 0.5, 0, 20, 1, 10);
+                2, 0.5, 5, 20, 1, 10);
 
         saveConfigValuesAbility(ocean, "GlacierBreath", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 10000,
@@ -209,6 +209,13 @@ public class ConfigManager {
         saveConfigValuesCombo(ocean, "SnowStorm", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 5000,
                 0, 0, 10, 0, 0.5, 0, snowStormAbilities);
+
+        ArrayList<ComboManager.AbilityInformation> blackIceAbilities = new ArrayList<>();
+        blackIceAbilities.add(0, new ComboManager.AbilityInformation("GlacierBreath", ClickType.RIGHT));
+
+        saveConfigValuesCombo(ocean, "BlackIce", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 15000,
+                0, 0, 20, 0, 0.5, 5, blackIceAbilities);
 
         Set<Tag<Material>>oceanTags = new HashSet<>();
         oceanTags.add(Tag.ICE);

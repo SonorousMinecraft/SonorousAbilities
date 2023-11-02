@@ -3,6 +3,7 @@ package com.sereneoasis.ability;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.data.ComboData;
+import com.sereneoasis.archetypes.ocean.BlackIce;
 import com.sereneoasis.archetypes.ocean.SnowStorm;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -73,6 +74,8 @@ public class ComboManager {
                     {
                         case "SnowStorm":
                             new SnowStorm(player);
+                        case "BlackIce":
+                            new BlackIce(player);
                     }
                 }
             }

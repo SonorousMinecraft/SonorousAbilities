@@ -80,7 +80,7 @@ public class FrostBite extends CoreAbility {
 
                 Location loc1 = shootBlockFromLoc1.getLoc();
                 Location loc2 = shootBlockFromLoc2.getLoc();
-                if (loc1.distance(loc2) < 5) {
+                if (loc1.distance(loc2) < 3) {
                     Location explode = loc1.add(Vectors.getDirectionBetweenLocations(loc1, loc2).multiply(0.5));
                     for (Block b : Blocks.getBlocksAroundPoint(explode, radius)) {
                         TempBlock tb = new TempBlock(b, Material.ICE.createBlockData(), 5000);

@@ -15,6 +15,8 @@ public enum AbilityStatus {
     COMPLETE,
     CHARGED,
 
+    CHARGING,
+
     MOVING
 
 }
