@@ -1,6 +1,8 @@
 package com.sereneoasis.util.temp;
 
+import com.sereneoasis.archetypes.DisplayBlock;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
@@ -8,6 +10,8 @@ import org.bukkit.util.Transformation;
 import org.joml.Vector3d;
 
 import java.util.PriorityQueue;
+import java.util.SplittableRandom;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Sakrajin
@@ -28,20 +32,21 @@ public class TempDisplayBlock {
 
     private long revertTime;
 
-    public TempDisplayBlock(Location loc, BlockData newData, final long revertTime, double size) {
+    public TempDisplayBlock(Location loc, DisplayBlock blocks, final long revertTime, double size) {
 
         blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
         {
             BlockDisplay bDisplay = (BlockDisplay)entity;
-
+            SplittableRandom splittableRandom = new SplittableRandom();
+            int randomIndex = splittableRandom.nextInt(0, blocks.getBlocks().size());
+            BlockData newData = blocks.getBlocks().get(randomIndex).createBlockData();
             bDisplay.setBlock(newData);
             Transformation transformation = bDisplay.getTransformation();
             transformation.getTranslation().set(new Vector3d(-size/2, -size/2,- size/2));
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size);
-            bDisplay.setViewRange(100);
+            bDisplay.setViewRange(30);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
-            bDisplay.setGlowing(true);
             bDisplay.setTransformation(transformation);
 
         });

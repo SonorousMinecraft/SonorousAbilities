@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Sakrajin
  * Methods which are related to blocks
  */
 public class Blocks {
+
 
     public static Block getFacingBlock(Player player, double distance)
     {
@@ -53,7 +55,7 @@ public class Blocks {
                 for (double z = -radius ; z < radius ; z++)
                 {
                     Block block = loc.clone().add(x,y,z).getBlock();
-                    if (block.getLocation().distanceSquared(loc) <  ( (radius*2) * (radius*2)))
+                    if (block.getLocation().distanceSquared(loc) <  ( (radius) * (radius)))
                     {
                         blocks.add(block);
                     }
@@ -74,7 +76,7 @@ public class Blocks {
                 for (double z = -radius ; z < radius ; z++)
                 {
                     Block block = loc.clone().add(x,y,z).getBlock();
-                    if (block.getType() == type && block.getLocation().distanceSquared(loc) <  ( (radius*2) * (radius*2)))
+                    if (block.getType() == type && block.getLocation().distanceSquared(loc) <  ( (radius) * (radius)))
                     {
                         blocks.add(block);
                     }

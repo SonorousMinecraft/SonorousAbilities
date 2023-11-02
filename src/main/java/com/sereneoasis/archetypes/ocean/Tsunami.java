@@ -2,7 +2,9 @@ package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Skate;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -60,14 +62,14 @@ public class Tsunami extends CoreAbility {
 
         Vector dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
-        Location waveLoc = player.getLocation().clone();
+        Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed *3));
         Set<Location> waveLocs = new HashSet<>();
         for (double i = 0; i < radius; i +=0.5) {
             waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i,0), dir, i, 90, 270, 10));
         }
         wave = Entities.handleDisplayBlockEntities(wave,
                 waveLocs,
-                Material.BLUE_STAINED_GLASS, 0.5);
+                DisplayBlock.WATER, 0.5);
     }
 
     @Override

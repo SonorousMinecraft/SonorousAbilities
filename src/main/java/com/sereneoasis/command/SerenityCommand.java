@@ -54,7 +54,7 @@ public class SerenityCommand implements CommandExecutor {
                                 }
                                 else{
                                     sPlayer.setArchetype(archetype);
-                                    SerenityBoard.getByPlayer(player).setSlot(10, archetype.toString());
+                                    SerenityBoard.getByPlayer(player).setAboveSlot(1, archetype.toString());
                                     initialiseAttributePlayer(player, sPlayer);
                                     return true;
                                 }

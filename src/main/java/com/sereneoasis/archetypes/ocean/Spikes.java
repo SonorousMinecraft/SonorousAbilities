@@ -1,6 +1,7 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
@@ -45,7 +46,7 @@ public class Spikes extends CoreAbility {
             loc = source.getLocation();
             starttime = System.currentTimeMillis();
             spike = new HashMap<>();
-            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), Material.ICE, 0.5);
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
             start();
         }
 
@@ -59,7 +60,7 @@ public class Spikes extends CoreAbility {
                     add(player.getEyeLocation().getDirection().multiply(loc.distance(player.getEyeLocation())));
             Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
             loc.add(dir.clone().multiply(speed));
-            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), Material.ICE, 0.5);
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
         }
         else if (hasShot)
         {
@@ -68,7 +69,7 @@ public class Spikes extends CoreAbility {
                 this.remove();
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
-            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), Material.ICE, 0.5);
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
             DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         }
         else if (!hasShot && System.currentTimeMillis() > starttime+duration)

@@ -93,7 +93,7 @@ public class AbilityDataManager {
             List<String> archetypeAbilities = new ArrayList<>();
             for (String ability : abilityDataMap.keySet())
             {
-                if (abilityDataMap.get(ability).getArchetype().equals(archetype.toString()))
+                if (abilityDataMap.get(ability).getArchetype().equals(archetype))
                 {
                     archetypeAbilities.add(ability);
                 }
@@ -103,5 +103,13 @@ public class AbilityDataManager {
         return null;
     }
 
+    public static boolean isCombo(String ability)
+    {
+        if (comboDataMap.containsKey(ability))
+        {
+            return true;
+        }
+        return false;
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -23,7 +24,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private double ringSize;
 
-    private Material type;
+    private DisplayBlock type;
 
     private int orientation;
 
@@ -35,7 +36,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private boolean clockwise;
 
-    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
+    public BlockRingAroundPlayer(Player player, String user, Location startLoc, DisplayBlock type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
 
         this.user = user;
@@ -61,7 +62,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
         for (Location point : locs)
         {
-            new TempDisplayBlock(point, type.createBlockData(), 200, Math.random());
+            new TempDisplayBlock(point, type, 200, Math.random() * hitbox);
         }
 
         rotation += rotatePerTick;

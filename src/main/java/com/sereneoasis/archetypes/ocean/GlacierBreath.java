@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
@@ -116,26 +117,24 @@ public class GlacierBreath extends CoreAbility {
 
         if (started) {
 
-            player.setFireTicks(0);
-            Long timeelapsed = System.currentTimeMillis() - breathstarttime;
-            Double progress = 1 - (double) timeelapsed / (double) duration;
-            if (progress < 0) {
-                barduration.setProgress(0);
-            }
-            else {
-                barduration.setProgress(progress);
-            }
+            if (!isBlackIce) {
+                Long timeelapsed = System.currentTimeMillis() - breathstarttime;
+                Double progress = 1 - (double) timeelapsed / (double) duration;
+                if (progress < 0) {
+                    barduration.setProgress(0);
+                } else {
+                    barduration.setProgress(progress);
+                }
 
-            if (timeelapsed > duration) {
-                this.remove();
+                if (timeelapsed > duration) {
+                    this.remove();
+                }
+                this.origin = player.getEyeLocation();
+                this.dir = origin.getDirection().normalize();
             }
-
-            this.origin = player.getEyeLocation();
             if (isBlackIce){
                 this.dir = new Vector(0,-1,0);
-            }
-            else {
-                this.dir = origin.getDirection().normalize();
+                this.origin = player.getLocation();
             }
 
             arbitraryangleincrement+=5;
@@ -161,14 +160,14 @@ public class GlacierBreath extends CoreAbility {
 
                     if (!Vectors.isObstructed(loc, helixloc)){
                         //Particles.spawnColoredParticle(loc, 1, 0.1, 1, ArchetypeDataManager.getArchetypeData(Archetype.OCEAN).getColor());
-                        new TempDisplayBlock(helixloc, Material.ICE.createBlockData(), 100, 0.5);
+                        new TempDisplayBlock(helixloc, DisplayBlock.ICE, 100, 0.5);
                     }
 
 					else {
                             Block topBlock = helixloc.clone().add(0,1,0).getBlock();
 							if (topBlock.getType().isAir()){
 								if (!TempBlock.isTempBlock(topBlock) && helixloc.getBlock().getType() == Material.WATER) {
-                                    new TempBlock(helixloc.getBlock(), Material.ICE.createBlockData(), 2000, true);
+                                    new TempBlock(helixloc.getBlock(), DisplayBlock.ICE, 2000, true);
 								}
 							}
 					}
@@ -191,6 +190,7 @@ public class GlacierBreath extends CoreAbility {
 
     public void setBlackIce()
     {
+        barduration.removeAll();
         this.isBlackIce = true;
         started = true;
     }

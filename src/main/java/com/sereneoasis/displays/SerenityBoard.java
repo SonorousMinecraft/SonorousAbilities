@@ -41,13 +41,23 @@ public class SerenityBoard {
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
         sidebar.setDisplayName(hex("#d99856 Serenity"));
         // Create Teams
+
+        //Abilities
         for (int i = 1; i <= 9; i++) {
             Team team = scoreboard.registerNewTeam("SLOT_" + -i);
             team.addEntry(genEntry(i));
         }
-        for (int i = 10; i <= 10; i++)
+        // Above text
+        for (int i = 10; i <= 14; i++)
         {
             Team team = scoreboard.registerNewTeam("SLOT_" + i);
+            team.addEntry(genEntry(i));
+        }
+
+        // Combos and text
+        for (int i = 15; i <= 19; i++)
+        {
+            Team team = scoreboard.registerNewTeam("SLOT_" + -i);
             team.addEntry(genEntry(i));
         }
         player.setScoreboard(scoreboard);
@@ -73,12 +83,29 @@ public class SerenityBoard {
         team.setSuffix(suf);
     }
 
-    public void setSlot(int slot, String text)
+    public void setAboveSlot(int slot, String text)
     {
+        slot += 9;
         Team team = scoreboard.getTeam("SLOT_" + slot);
         String entry = genEntry(slot);
         if(!scoreboard.getEntries().contains(entry)) {
-            sidebar.getScore(entry).setScore(slot);
+            sidebar.getScore(entry).setScore(slot-9);
+        }
+
+        text = hex(text);
+        String pre = getFirstSplit(text);
+        String suf = getFirstSplit(ChatColor.getLastColors(pre) + getSecondSplit(text));
+        team.setPrefix(pre);
+        team.setSuffix(suf);
+    }
+
+    public void setBelowSlot(int slot, String text)
+    {
+        slot += 14;
+        Team team = scoreboard.getTeam("SLOT_" + -slot);
+        String entry = genEntry(slot);
+        if(!scoreboard.getEntries().contains(entry)) {
+            sidebar.getScore(entry).setScore( -9 - (slot-14));
         }
 
         text = hex(text);
@@ -87,7 +114,17 @@ public class SerenityBoard {
 
         team.setPrefix(pre);
         team.setSuffix(suf);
+    }
 
+    public String getBelowComboSlot(int slot)
+    {
+        slot += 14;
+        Team team = scoreboard.getTeam("SLOT_" + -slot);
+        if (team.getPrefix() != null)
+        {
+            return team.getPrefix();
+        }
+        return "";
     }
 
     public void removeSlot(int slot) {

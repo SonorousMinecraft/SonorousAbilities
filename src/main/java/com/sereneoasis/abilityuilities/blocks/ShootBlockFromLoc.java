@@ -1,6 +1,7 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
@@ -23,7 +24,7 @@ public class ShootBlockFromLoc extends CoreAbility {
     private Location loc;
     private String user;
 
-    private Material type;
+    private DisplayBlock type;
 
     private boolean directable, autoRemove;
 
@@ -36,7 +37,7 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
 
-    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
+    public ShootBlockFromLoc(Player player, String user, Location startLoc, DisplayBlock type, boolean directable, boolean autoRemove) {
         super(player, user);
         this.user = user;
         this.type = type;
@@ -79,7 +80,7 @@ public class ShootBlockFromLoc extends CoreAbility {
 
         for (Location point : locs)
         {
-            new TempDisplayBlock(point, type.createBlockData(), 200, Math.random());
+            new TempDisplayBlock(point, type, 200, Math.random() * hitbox);
         }
 
         DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);

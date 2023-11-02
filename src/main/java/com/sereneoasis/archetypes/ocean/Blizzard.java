@@ -2,6 +2,7 @@ package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -29,7 +30,7 @@ public class Blizzard extends CoreAbility {
             return;
         }
 
-        if (player.getLocation().clone().subtract(new Vector(0,1,0)).getBlock().getType() == Material.ICE)
+        if (DisplayBlock.ICE.getBlocks().contains(player.getLocation().clone().subtract(new Vector(0,1,0)).getBlock().getType()))
         {
 
             dome = new HashMap<>();
@@ -48,7 +49,7 @@ public class Blizzard extends CoreAbility {
             this.remove();
         }
 
-        dome = Entities.handleDisplayBlockEntities(dome, Locations.getOutsideSphereLocs(player.getEyeLocation(), radius, 0.5), Material.ICE, 0.5);
+        dome = Entities.handleDisplayBlockEntities(dome, Locations.getOutsideSphereLocs(player.getEyeLocation(), radius, 0.5), DisplayBlock.ICE, 0.5);
     }
 
     public void setHasClicked()
@@ -57,7 +58,7 @@ public class Blizzard extends CoreAbility {
         Location tempLoc = player.getEyeLocation();
         Vector dir = tempLoc.getDirection().normalize();
 
-        new ShootBlockFromLoc(player, name, tempLoc.add(dir.multiply(radius)), Material.ICE, true, true);
+        new ShootBlockFromLoc(player, name, tempLoc.add(dir.multiply(radius)), DisplayBlock.ICE, true, true);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.sereneoasis.abilityuilities.blocks;
 
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
@@ -31,9 +32,9 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     private double distanceToStop;
 
-    private Material type;
+    private DisplayBlock type;
 
-    public SourceBlockToPlayer(Player player, String user, Material type, double distanceToStop) {
+    public SourceBlockToPlayer(Player player, String user, DisplayBlock type, double distanceToStop) {
         super(player,user);
 
         abilityStatus = AbilityStatus.NO_SOURCE;
@@ -84,7 +85,7 @@ public class SourceBlockToPlayer extends CoreAbility {
 
             for (Location point : locs)
             {
-                new TempDisplayBlock(point, type.createBlockData(), 1000, Math.random());
+                new TempDisplayBlock(point, type, 1000, Math.random() * hitbox);
             }
 
             if (loc.distance(player.getLocation()) <= distanceToStop)

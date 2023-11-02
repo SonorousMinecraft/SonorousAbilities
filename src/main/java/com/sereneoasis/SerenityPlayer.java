@@ -1,9 +1,11 @@
 package com.sereneoasis;
 
+import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -143,11 +145,20 @@ public class SerenityPlayer {
                 {
                     return;
                 }
+                String ability = entry.getKey();
+
+                for (int i = 2; i <= 5; i++) {
+                    if (board.getBelowComboSlot(i).equalsIgnoreCase(ChatColor.STRIKETHROUGH + ability))
+                    {
+                        board.setBelowSlot(i, ability);
+                    }
+                }
+
                 for (int i = 1; i<=9; i++)
                 {
-                    if (abilities.get(i).equals(entry.getKey()))
+                    if (abilities.get(i).equals(ability))
                     {
-                        board.setAbilitySlot(i, entry.getKey());
+                        board.setAbilitySlot(i, ability);
                     }
                 }
                     iterator.remove();
@@ -164,11 +175,20 @@ public class SerenityPlayer {
         {
             return;
         }
-        for (int i = 1; i<=9; i++)
+        if (AbilityDataManager.isCombo(ability))
         {
-            if (abilities.get(i).equals(ability))
-            {
-                board.setAbilitySlot(i, ChatColor.STRIKETHROUGH + ability);
+            for (int i = 2; i <= 5; i++) {
+                if (board.getBelowComboSlot(i).equalsIgnoreCase(ability))
+                {
+                    board.setBelowSlot(i, ChatColor.STRIKETHROUGH + ability);
+                }
+            }
+        }
+        else {
+            for (int i = 1; i <= 9; i++) {
+                if (abilities.get(i).equals(ability)) {
+                    board.setAbilitySlot(i, ChatColor.STRIKETHROUGH + ability);
+                }
             }
         }
 

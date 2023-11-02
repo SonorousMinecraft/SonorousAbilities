@@ -1,5 +1,6 @@
 package com.sereneoasis.util.methods;
 
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -91,20 +92,31 @@ public class Entities {
     }
 
 
-    public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock>spike, Collection<Location> locs, Material material, double size)
+    public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock>spike, Collection<Location> locs, DisplayBlock type, double size)
     {
 
         int i = 0;
         for (Location l: locs)
         {
             if (! spike.containsKey(i)) {
-                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, material.createBlockData(), 5000, size);
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 5000, size);
                 spike.put(i, tempDisplayBlock);
             }
             else{
                 spike.get(i).teleport(l);
             }
             i++;
+        }
+        if (locs.size() < spike.size())
+        {
+            for (int n = locs.size(); n < spike.size(); n++)
+            {
+                TempDisplayBlock tb = spike.get(n);
+                if (tb != null) {
+                    spike.get(n).revert();
+                }
+                spike.remove(n);
+            }
         }
         return spike;
     }

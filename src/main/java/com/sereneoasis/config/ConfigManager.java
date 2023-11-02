@@ -176,31 +176,31 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.5, 2, 20, 1, 10);
+                2, 0.8, 3, 30, 1.5, 10);
 
         saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2,0.5, 1.5, 20, 1, 10);
+                2,0.6, 2.0, 20, 1.7, 10);
 
         saveConfigValuesAbility(ocean, "Spikes", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 10000,
-                2, 0.5,4, 20, 1, 10);
+                4, 0.5,5, 20, 1, 10);
 
         saveConfigValuesAbility(ocean, "FrostBite", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 0,
-                2, 0.5, 5, 20, 1, 10);
+                2, 1.0, 8, 20, 2.0, 10);
 
         saveConfigValuesAbility(ocean, "GlacierBreath", Archetype.OCEAN.toString(), "description", "instructions",
-                5000, 5000, 10000,
-                2, 0.5, 3, 10, 1, 0);
+                2000, 5000, 10000,
+                2, 0.5, 2, 10, 1, 0);
 
         saveConfigValuesAbility(ocean, "Blizzard", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                1, 0.5, 4, 15, 1.5, 0);
+                1, 0.8, 6, 15, 1.5, 0);
 
         saveConfigValuesAbility(ocean, "Tsunami", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 5000,
-                0, 0, 2, 0, 0.5, 0);
+                0, 0, 5, 0, 1.0, 0);
 
         ArrayList<ComboManager.AbilityInformation> snowStormAbilities = new ArrayList<>();
         snowStormAbilities.add(0, new ComboManager.AbilityInformation("Blizzard", ClickType.SHIFT_LEFT));
@@ -208,7 +208,7 @@ public class ConfigManager {
 
         saveConfigValuesCombo(ocean, "SnowStorm", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 5000,
-                0, 0, 10, 0, 0.5, 0, snowStormAbilities);
+                0, 0, 15, 0, 0.5, 0, snowStormAbilities);
 
         ArrayList<ComboManager.AbilityInformation> blackIceAbilities = new ArrayList<>();
         blackIceAbilities.add(0, new ComboManager.AbilityInformation("GlacierBreath", ClickType.RIGHT));

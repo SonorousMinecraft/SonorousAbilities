@@ -1,13 +1,16 @@
 package com.sereneoasis.listeners;
 
 import com.sereneoasis.*;
+import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sun.CruelSun;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -58,7 +61,19 @@ public class SerenityListener implements Listener {
         Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), () -> {
             SerenityBoard board = SerenityBoard.createScore(player);
             SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
-            board.setSlot(10, serenityPlayer.getArchetype().toString());
+            board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
+            board.setAboveSlot(2, "Abilities:");
+            board.setBelowSlot(1, "Combos:");
+            int slot = 2;
+
+            for (String abil : AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype()))
+            {
+                if (AbilityDataManager.getComboDataMap().containsKey(abil))
+                {
+                    board.setBelowSlot(slot, abil);
+                    slot++;
+                }
+            }
             for (int i : serenityPlayer.getAbilities().keySet()) {
                 board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
             }
@@ -189,10 +204,16 @@ public class SerenityListener implements Listener {
             return;
         }
         String ability = sPlayer.getHeldAbility();
+
+        if (sPlayer.getArchetype().equals(Archetype.OCEAN) && player.getLocation().getBlock().getType() == Material.WATER)
+        {
+            player.setVelocity(player.getEyeLocation().getDirection().normalize());
+        }
         if (ability != null)
         {
             Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.SHIFT_LEFT);
         }
+
         switch(ability)
         {
             case "Torrent":

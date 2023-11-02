@@ -1,11 +1,13 @@
 package com.sereneoasis.util.temp;
 
+import com.sereneoasis.archetypes.DisplayBlock;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Sakrajin
@@ -28,7 +30,7 @@ public class TempBlock {
 
     private long revertTime;
 
-    public TempBlock( Block block, BlockData newData, final long revertTime, boolean canReplaceBlocks)
+    public TempBlock(Block block, DisplayBlock blocks, final long revertTime, boolean canReplaceBlocks)
     {
         if (! INSTANCES.containsKey(block)) {
             this.block = block;
@@ -36,6 +38,8 @@ public class TempBlock {
             {
                 return;
             }
+            int randomIndex = ThreadLocalRandom.current().nextInt(blocks.getBlocks().size());
+            BlockData newData = blocks.getBlocks().get(randomIndex).createBlockData();
             this.newData = newData;
             this.revertTime = System.currentTimeMillis() + revertTime;
 
@@ -46,8 +50,8 @@ public class TempBlock {
             REVERT_QUEUE.add(this);
         }
     }
-    public TempBlock( Block block, BlockData newData, final long revertTime) {
-        new TempBlock(block, newData, revertTime, true);
+    public TempBlock( Block block, DisplayBlock blocks, final long revertTime) {
+        new TempBlock(block, blocks, revertTime, true);
     }
 
     public static boolean isTempBlock(Block block)

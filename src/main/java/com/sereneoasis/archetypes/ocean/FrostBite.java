@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.*;
@@ -32,7 +33,7 @@ public class FrostBite extends CoreAbility {
             return;
         }
 
-        sourceBlockToPlayer1 = new SourceBlockToPlayer(player, "FrostBite", Material.BLUE_STAINED_GLASS, 4);
+        sourceBlockToPlayer1 = new SourceBlockToPlayer(player, "FrostBite", DisplayBlock.WATER, 4);
         if (! (sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             sourceBlockToPlayer1.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
@@ -69,9 +70,9 @@ public class FrostBite extends CoreAbility {
                 hasSpawnedShots = true;
 
                 shootBlockFromLoc1 = new ShootBlockFromLoc(player, "FrostBite", sourceLoc1
-                        , Material.ICE, false, false);
+                        , DisplayBlock.ICE, false, false);
                 shootBlockFromLoc2 = new ShootBlockFromLoc(player, "FrostBite", sourceLoc2
-                        , Material.ICE, false, false);
+                        , DisplayBlock.ICE, false, false);
             } else {
                 if (shootBlockFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE && shootBlockFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
@@ -83,7 +84,7 @@ public class FrostBite extends CoreAbility {
                 if (loc1.distance(loc2) < 3) {
                     Location explode = loc1.add(Vectors.getDirectionBetweenLocations(loc1, loc2).multiply(0.5));
                     for (Block b : Blocks.getBlocksAroundPoint(explode, radius)) {
-                        TempBlock tb = new TempBlock(b, Material.ICE.createBlockData(), 5000);
+                        TempBlock tb = new TempBlock(b, DisplayBlock.ICE, 5000);
                     }
                     DamageHandler.damageEntity(Entities.getAffected(explode, radius, player), player, this, damage);
                     this.remove();
@@ -99,7 +100,7 @@ public class FrostBite extends CoreAbility {
             if (!hasShot) {
                 hasShot = true;
             }
-            else{
+            else if (hasSpawnedShots){
                 Location loc1 = shootBlockFromLoc1.getLoc();
                 Location loc2 = shootBlockFromLoc2.getLoc();
                 shootBlockFromLoc1.setDir(Vectors.getDirectionBetweenLocations(loc1, loc2).normalize());
@@ -112,7 +113,7 @@ public class FrostBite extends CoreAbility {
     {
         if (!hasSetSource2)
         {
-            sourceBlockToPlayer2 = new SourceBlockToPlayer(player, "FrostBite", Material.BLUE_STAINED_GLASS, 4);
+            sourceBlockToPlayer2 = new SourceBlockToPlayer(player, "FrostBite", DisplayBlock.WATER, 4);
             if (! (sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.NO_SOURCE))
             {
                 hasSetSource2 = true;

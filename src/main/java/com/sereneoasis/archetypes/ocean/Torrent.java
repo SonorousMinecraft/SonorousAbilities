@@ -6,7 +6,9 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Blocks;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,7 +39,7 @@ public class Torrent extends CoreAbility {
             return;
         }
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, name, Material.BLUE_STAINED_GLASS, 4);
+        sourceBlockToPlayer = new SourceBlockToPlayer(player, name, DisplayBlock.WATER, 4);
         if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
         {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
@@ -66,8 +68,8 @@ public class Torrent extends CoreAbility {
 
                 if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED) {
                     abilityStatus = AbilityStatus.SOURCED;
-                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, name, sourceBlockToPlayer.getLocation(), Material.BLUE_STAINED_GLASS,
-                            radius, 0, 10, true);
+                    blockRingAroundPlayer = new BlockRingAroundPlayer(player, name, sourceBlockToPlayer.getLocation(), DisplayBlock.WATER,
+                            radius, 0, 30, true);
                     sourceBlockToPlayer.remove();
                 }
             }
@@ -77,7 +79,7 @@ public class Torrent extends CoreAbility {
                 if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
                     shootBlockFromLoc.remove();
-                    sPlayer.addCooldown(this.getName(), this.cooldown);
+
                     this.remove();
                 }
             }
@@ -90,11 +92,28 @@ public class Torrent extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCED)
         {
             abilityStatus = AbilityStatus.SHOT;
-            shootBlockFromLoc = new ShootBlockFromLoc(player, name, blockRingAroundPlayer.getLocation(), Material.BLUE_STAINED_GLASS, true, true);
+            shootBlockFromLoc = new ShootBlockFromLoc(player, name, blockRingAroundPlayer.getLocation(), DisplayBlock.WATER, true, true);
             blockRingAroundPlayer.remove();
         }
     }
 
+    @Override
+    public void remove() {
+        super.remove();
+        sPlayer.addCooldown(this.getName(), this.cooldown);
+        if (sourceBlockToPlayer != null)
+        {
+            sourceBlockToPlayer.remove();
+        }
+        if (blockRingAroundPlayer != null)
+        {
+            blockRingAroundPlayer.remove();
+        }
+        if (shootBlockFromLoc != null)
+        {
+            shootBlockFromLoc.remove();
+        }
+    }
 
     @Override
     public Player getPlayer() {

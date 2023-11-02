@@ -1,6 +1,7 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -38,13 +39,14 @@ public class SnowStorm extends CoreAbility {
         currentRadius+=speed;
         if (currentRadius < radius)
         {
-            explosion = Entities.handleDisplayBlockEntities(explosion, Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, 0.5), Material.SNOW_BLOCK, 0.5);
+            explosion = Entities.handleDisplayBlockEntities(explosion, Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, 0.5), DisplayBlock.SNOW, 0.5);
         }
         else{
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }
     }
+
 
     @Override
     public Player getPlayer() {
