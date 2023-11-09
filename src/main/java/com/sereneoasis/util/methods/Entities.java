@@ -92,14 +92,14 @@ public class Entities {
     }
 
 
-    public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock>spike, Collection<Location> locs, DisplayBlock type, double size)
+    public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock>spike, Set<Location> locs, DisplayBlock type, double size)
     {
 
         int i = 0;
         for (Location l: locs)
         {
             if (! spike.containsKey(i)) {
-                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 5000, size);
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
                 spike.put(i, tempDisplayBlock);
             }
             else{
@@ -109,7 +109,7 @@ public class Entities {
         }
         if (locs.size() < spike.size())
         {
-            for (int n = locs.size(); n < spike.size(); n++)
+            for (int n = locs.size(); n <= spike.size(); n++)
             {
                 TempDisplayBlock tb = spike.get(n);
                 if (tb != null) {

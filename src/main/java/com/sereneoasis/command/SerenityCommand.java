@@ -5,6 +5,7 @@ import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.SerenityPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -130,6 +131,32 @@ public class SerenityCommand implements CommandExecutor {
                                 }
                                 AbilityData abilityData = AbilityDataManager.getAbilityData(ability);
                                 player.sendMessage(ability + "\n" + abilityData.getDescription() + "\n" + abilityData.getInstructions());
+                                return true;
+                            }
+                        case "unbind":
+                            if (strings.length == 1)
+                            {
+                                player.sendMessage("Specify a slot");
+                                return false;
+                            }
+                            if (strings.length > 2)
+                            {
+                                player.sendMessage("Too many arguments");
+                                return false;
+                            }
+                            else {
+                                String possibleSlot = strings[1];
+                                int slot;
+                                try {
+                                    slot = Integer.parseInt(possibleSlot);
+                                }
+                                catch (NumberFormatException e) {
+                                    player.sendMessage("This isn't a slot number.");
+                                    return false;
+                                }
+                                String nullAbility = ChatColor.DARK_GRAY + "=-=-Slot" + "_" + slot + "-=-=";
+                                sPlayer.setAbility(slot, nullAbility);
+                                SerenityBoard.getByPlayer(player).setAbilitySlot(slot, nullAbility );
                                 return true;
                             }
                     }

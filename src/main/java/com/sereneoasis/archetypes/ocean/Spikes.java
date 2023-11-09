@@ -57,10 +57,14 @@ public class Spikes extends CoreAbility {
         if (player.isSneaking() && !hasShot)
         {
             Location targetLoc = player.getEyeLocation().
-                    add(player.getEyeLocation().getDirection().multiply(loc.distance(player.getEyeLocation())));
-            Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
-            loc.add(dir.clone().multiply(speed));
-            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
+                    add(player.getEyeLocation().getDirection().multiply(Math.max(radius+1,loc.distance(player.getEyeLocation()))));
+            if (loc.distance(targetLoc) > 1)
+            {
+                Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
+                loc.add(dir.clone().multiply(speed));
+                spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
+            }
+
         }
         else if (hasShot)
         {
@@ -72,7 +76,9 @@ public class Spikes extends CoreAbility {
             spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
             DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         }
-        else if (!hasShot && System.currentTimeMillis() > starttime+duration)
+
+
+        if (!hasShot && System.currentTimeMillis() > starttime+duration)
         {
             this.remove();
         }

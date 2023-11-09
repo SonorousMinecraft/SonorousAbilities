@@ -242,6 +242,10 @@ public class ConfigManager {
                 10000, 5000, 0,
                 2, 0.5,2, 20, 1, 0);
 
+        saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "instructions",
+                10000, 5000, 0,
+                2, 0.5,5, 0, 1, 10);
+
         sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");
         saveAttributeValuesArchetype(sun, Archetype.SUN, 0, 0, 0, 0,
                 0.0, 0, 0);
