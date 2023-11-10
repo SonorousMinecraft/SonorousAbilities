@@ -28,8 +28,7 @@ public class FrostBite extends CoreAbility {
     public FrostBite(Player player) {
         super(player);
 
-        if (CoreAbility.hasAbility(player, this.getClass()))
-        {
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
             return;
         }
 

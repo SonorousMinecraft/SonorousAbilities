@@ -2,9 +2,11 @@ package com.sereneoasis.util.methods;
 
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -119,5 +121,30 @@ public class Entities {
             }
         }
         return spike;
+    }
+
+    public static LivingEntity getFacingEntity(Player player, double distance)
+    {
+        Location loc = player.getEyeLocation();
+        if (loc.getWorld().rayTraceEntities(loc, loc.getDirection(), distance) != null)
+        {
+            if (loc.getWorld().rayTraceEntities(loc, loc.getDirection(), distance).getHitEntity() instanceof LivingEntity entity)
+            {
+                return entity;
+            }
+        }
+        return null;
+    }
+
+    public static LivingEntity getFacingEntity(Location loc, Vector dir, double distance)
+    {
+        if (loc.getWorld().rayTraceEntities(loc, dir, distance) != null)
+        {
+            if (loc.getWorld().rayTraceEntities(loc, dir, distance).getHitEntity() instanceof LivingEntity entity)
+            {
+                return entity;
+            }
+        }
+        return null;
     }
 }

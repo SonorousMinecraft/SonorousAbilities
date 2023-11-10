@@ -31,7 +31,7 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     private Vector dir;
 
-    private AbilityStatus abilityStatus;
+    
 
     private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
 

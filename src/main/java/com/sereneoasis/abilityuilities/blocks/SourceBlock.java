@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class SourceBlock extends CoreAbility {
 
-    private AbilityStatus abilityStatus;
+    
 
     private Location loc;
 

@@ -4,6 +4,7 @@ import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -28,7 +29,9 @@ public abstract class CoreAbility implements Ability {
 
     protected Archetype archetype;
 
-    protected long chargetime, cooldown, duration;
+    protected long startTime, chargeTime, cooldown, duration;
+
+    protected AbilityStatus abilityStatus;
 
     protected double damage, hitbox, radius, range, speed, sourceRange;
 
@@ -55,8 +58,11 @@ public abstract class CoreAbility implements Ability {
 
     private void initialiseConfigVariables(AbilityData abilityData)
     {
+
         this.archetype = abilityData.getArchetype();
-        this.chargetime = abilityData.getChargetime();
+        this.startTime = System.currentTimeMillis();
+
+        this.chargeTime = abilityData.getChargetime();
         this.cooldown = abilityData.getCooldown();
         this.duration = abilityData.getDuration();
 
@@ -71,6 +77,7 @@ public abstract class CoreAbility implements Ability {
 
     public void start()
     {
+
         INSTANCES.add(this);
 
         final Class<? extends CoreAbility> clazz = this.getClass();

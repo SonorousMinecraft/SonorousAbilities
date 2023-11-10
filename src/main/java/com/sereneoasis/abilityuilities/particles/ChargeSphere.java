@@ -15,7 +15,7 @@ public class ChargeSphere extends CoreAbility {
 
     private String name;
 
-    private AbilityStatus abilityStatus;
+    
     private long startTime;
 
     private double startRadius, increment;
@@ -28,14 +28,14 @@ public class ChargeSphere extends CoreAbility {
 
         this.startRadius = startRadius;
         this.startTime = System.currentTimeMillis();
-        this.increment = ((radius - startRadius)/chargetime) * 50;
+        this.increment = ((radius - startRadius)/ chargeTime) * 50;
         this.particle = particle;
         start();
     }
 
     @Override
     public void progress() {
-        if (System.currentTimeMillis() > startTime+chargetime)
+        if (System.currentTimeMillis() > startTime+ chargeTime)
         {
             this.abilityStatus = AbilityStatus.CHARGED;
         }

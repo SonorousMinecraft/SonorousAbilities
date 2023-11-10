@@ -14,7 +14,9 @@ public enum DisplayBlock {
 
     SNOW(new ArrayList<>(List.of(new Material[]{Material.SNOW_BLOCK}))),
 
-    SUN(new ArrayList<>(List.of(new Material[]{Material.SHROOMLIGHT})));
+    SUN(new ArrayList<>(List.of(new Material[]{Material.SHROOMLIGHT}))),
+
+    FIRE(new ArrayList<>(List.of(new Material[]{Material.FIRE, Material.SOUL_FIRE})));
 
     List<Material> blocks = new ArrayList<>();
 

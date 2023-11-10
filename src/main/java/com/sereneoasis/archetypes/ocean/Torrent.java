@@ -21,7 +21,7 @@ public class Torrent extends CoreAbility {
 
     private final String name = "Torrent";
 
-    private AbilityStatus abilityStatus;
+    
 
     private SourceBlockToPlayer sourceBlockToPlayer;
 

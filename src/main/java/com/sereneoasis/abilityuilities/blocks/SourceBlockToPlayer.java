@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class SourceBlockToPlayer extends CoreAbility {
 
-    private AbilityStatus abilityStatus;
+    
 
     private Location loc;
 

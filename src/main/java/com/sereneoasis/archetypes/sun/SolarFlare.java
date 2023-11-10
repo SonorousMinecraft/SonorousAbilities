@@ -5,7 +5,6 @@ import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -29,12 +28,16 @@ public class SolarFlare extends CoreAbility {
 
     private Location flareLoc;
 
-    private AbilityStatus abilityStatus;
+    
 
     private HashMap<Integer, TempDisplayBlock>flares = new HashMap<>();
 
     public SolarFlare(Player player) {
         super(player);
+
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+            return;
+        }
 
         abilityStatus = AbilityStatus.NO_SOURCE;
         target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
@@ -67,7 +70,7 @@ public class SolarFlare extends CoreAbility {
     @Override
     public void progress() {
 
-        if (!started && System.currentTimeMillis() > startTime + chargetime)
+        if (!started && System.currentTimeMillis() > startTime + chargeTime)
         {
             started = true;
         }

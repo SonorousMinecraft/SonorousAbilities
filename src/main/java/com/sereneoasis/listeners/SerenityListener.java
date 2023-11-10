@@ -6,8 +6,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
-import com.sereneoasis.archetypes.sun.CruelSun;
-import com.sereneoasis.archetypes.sun.SolarFlare;
+import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -187,7 +186,21 @@ public class SerenityListener implements Listener {
                 break;
             case "Tsunami":
                 new Tsunami(player);
-
+            case "FlamingRays":
+                if (CoreAbility.hasAbility(e.getPlayer(), FlamingRays.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), FlamingRays.class).setHasClicked();
+                }
+                break;
+            case "SolarBeam":
+                if (CoreAbility.hasAbility(e.getPlayer(), SolarBeam.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SolarBeam.class).setHasClicked();
+                }
+                break;
+            case "SolarBarrage":
+                if (CoreAbility.hasAbility(e.getPlayer(), SolarBarrage.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SolarBarrage.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -242,7 +255,21 @@ public class SerenityListener implements Listener {
             case "SolarFlare":
                 new SolarFlare(player);
                 break;
-
+            case "FlamingRays":
+                new FlamingRays(player);
+                break;
+            case "SolarBeam":
+                new SolarBeam(player);
+                break;
+            case "SunBurst":
+                new SunBurst(player);
+                break;
+            case "MeltingGlare":
+                new MeltingGlare(player);
+                break;
+            case "SolarBarrage":
+                new SolarBarrage(player);
+                break;
         }
     }
 

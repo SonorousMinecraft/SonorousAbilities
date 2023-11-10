@@ -13,15 +13,12 @@ import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -98,12 +95,12 @@ public class GlacierBreath extends CoreAbility {
 
         Long timecharged = System.currentTimeMillis() - chargestarttime;
 
-        if (timecharged > chargetime) {
+        if (timecharged > chargeTime) {
             charged = true;
             abilityStatus = AbilityStatus.CHARGED;
         }
 
-        if (isBlackIce && timecharged < chargetime && !player.isSneaking())
+        if (isBlackIce && timecharged < chargeTime && !player.isSneaking())
         {
             this.remove();
         }

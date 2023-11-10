@@ -20,7 +20,7 @@ public class Blast extends CoreAbility {
     private Location loc, origin;
     private Vector dir;
 
-    private AbilityStatus abilityStatus;
+    
 
     private String name;
 

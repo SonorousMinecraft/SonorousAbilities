@@ -2,63 +2,65 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
  * @author Sakrajin
- * Causes a spherical shaped blast to be shot from the player
+ * Basic particle based Laser ability
  */
-public class SphereBlast extends CoreAbility {
+public class Laser extends CoreAbility {
 
-    private boolean directable;
 
-    private Location loc, origin;
+    private Location loc;
     private Vector dir;
-
-    
 
     private String name;
 
     private Particle particle;
-    public SphereBlast(Player player, String name, boolean directable, Particle particle) {
+    public Laser(Player player, Location startLoc, String name, Particle particle) {
         super(player, name);
 
         this.name = name;
-        this.directable = directable;
         this.particle = particle;
-
-        this.origin = player.getEyeLocation();
-        this.dir = origin.getDirection().normalize();
-        this.loc = origin.clone().add(dir.clone().multiply(radius));
+        this.loc = startLoc.clone();
+        this.dir = loc.getDirection().clone();
         this.abilityStatus = AbilityStatus.SHOT;
         start();
     }
 
-
+    public void setLoc(Location newLoc)
+    {
+        this.loc = newLoc;
+    }
     @Override
     public void progress() {
-
-        if (loc.distance(origin) > range)
+        if (System.currentTimeMillis() > startTime + duration)
         {
             this.abilityStatus = AbilityStatus.COMPLETE;
         }
 
-        if (directable) {
-            dir = player.getEyeLocation().getDirection().normalize();
+        dir = player.getEyeLocation().getDirection().normalize();
+
+        double distance = range;
+        LivingEntity entity = Entities.getFacingEntity(loc, dir, range);
+        if (entity != null)
+        {
+            DamageHandler.damageEntity(entity, player, this, damage);
+            distance = entity.getLocation().distance(loc);
         }
 
-        loc.add(dir.clone().multiply(speed));
-        Particles.playSphere(loc, radius, 12, particle);
+        for (double d = 0; d < distance ; d++) {
+            Particles.spawnParticle(particle, loc.clone().add(dir.clone().multiply(d)), 1, 0, 0);
+        }
 
-        DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
 
     }
 

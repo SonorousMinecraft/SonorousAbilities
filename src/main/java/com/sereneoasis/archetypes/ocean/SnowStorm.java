@@ -23,7 +23,7 @@ public class SnowStorm extends CoreAbility {
     public SnowStorm(Player player) {
         super(player);
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
             return;
         }
 

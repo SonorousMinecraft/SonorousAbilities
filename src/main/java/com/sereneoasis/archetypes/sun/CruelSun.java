@@ -20,6 +20,10 @@ public class CruelSun extends CoreAbility {
     public CruelSun(Player player) {
         super(player);
 
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+            return;
+        }
+
         chargeSphere = new ChargeSphere(player, "CruelSun", 0, Particle.FLAME);
         start();
 
