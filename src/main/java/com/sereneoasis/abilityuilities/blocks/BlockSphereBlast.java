@@ -76,9 +76,6 @@ public class BlockSphereBlast extends CoreAbility {
         this.abilityStatus = abilityStatus;
     }
 
-    public AbilityStatus getAbilityStatus() {
-        return abilityStatus;
-    }
 
     @Override
     public Player getPlayer() {

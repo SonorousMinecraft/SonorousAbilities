@@ -186,6 +186,7 @@ public class SerenityListener implements Listener {
                 break;
             case "Tsunami":
                 new Tsunami(player);
+                break;
             case "FlamingRays":
                 if (CoreAbility.hasAbility(e.getPlayer(), FlamingRays.class)) {
                     CoreAbility.getAbility(e.getPlayer(), FlamingRays.class).setHasClicked();
@@ -200,6 +201,12 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), SolarBarrage.class)) {
                     CoreAbility.getAbility(e.getPlayer(), SolarBarrage.class).setHasClicked();
                 }
+                break;
+            case "Daybreak":
+                new Daybreak(player);
+                break;
+            case "Sunrise":
+                new Sunrise(player);
                 break;
         }
 

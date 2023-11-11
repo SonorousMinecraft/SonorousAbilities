@@ -25,9 +25,6 @@ public class Skate extends CoreAbility {
 
     private Material floorType;
 
-    public AbilityStatus getAbilityStatus() {
-        return abilityStatus;
-    }
 
     public Skate(Player player, String user, int maxHeightFromGround, Material floorType) {
         super(player, user);

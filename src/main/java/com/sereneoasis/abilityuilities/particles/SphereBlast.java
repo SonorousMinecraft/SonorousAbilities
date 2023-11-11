@@ -62,10 +62,6 @@ public class SphereBlast extends CoreAbility {
 
     }
 
-    public AbilityStatus getAbilityStatus() {
-        return abilityStatus;
-    }
-
     @Override
     public Player getPlayer() {
         return player;

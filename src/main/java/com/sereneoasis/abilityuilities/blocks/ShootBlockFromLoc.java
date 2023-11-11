@@ -96,10 +96,6 @@ public class ShootBlockFromLoc extends CoreAbility {
         return loc;
     }
 
-    public AbilityStatus getAbilityStatus() {
-        return abilityStatus;
-    }
-
     @Override
     public Player getPlayer() {
         return player;

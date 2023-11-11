@@ -44,10 +44,6 @@ public class ChargeSphere extends CoreAbility {
         startRadius += increment;
     }
 
-    public AbilityStatus getAbilityStatus() {
-        return abilityStatus;
-    }
-
     @Override
     public Player getPlayer() {
         return player;

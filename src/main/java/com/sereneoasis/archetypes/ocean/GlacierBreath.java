@@ -181,10 +181,6 @@ public class GlacierBreath extends CoreAbility {
         }
     }
 
-    public AbilityStatus getAbilityStatus() {
-        return abilityStatus;
-    }
-
     public void setBlackIce()
     {
         barduration.removeAll();
