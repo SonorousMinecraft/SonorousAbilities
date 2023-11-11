@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Colors;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
@@ -42,6 +43,7 @@ public class SolarFlare extends CoreAbility {
         abilityStatus = AbilityStatus.NO_SOURCE;
         target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (target != null && target.getType().isSolid()) {
+            Blocks.selectSourceAnimation(target, sPlayer.getColor());
             long time = player.getWorld().getTime();
             if (time < 167 || (time > 1200 && time < 22300))
             {

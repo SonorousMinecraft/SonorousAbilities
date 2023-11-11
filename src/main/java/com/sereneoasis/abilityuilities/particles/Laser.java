@@ -6,6 +6,7 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -45,19 +46,21 @@ public class Laser extends CoreAbility {
         {
             this.abilityStatus = AbilityStatus.COMPLETE;
         }
-
-        dir = player.getEyeLocation().getDirection().normalize();
-
-        double distance = range;
-        LivingEntity entity = Entities.getFacingEntity(loc, dir, range);
-        if (entity != null)
+        if (abilityStatus == AbilityStatus.SHOT)
         {
-            DamageHandler.damageEntity(entity, player, this, damage);
-            distance = entity.getLocation().distance(loc);
-        }
 
-        for (double d = 0; d < distance ; d++) {
-            Particles.spawnParticle(particle, loc.clone().add(dir.clone().multiply(d)), 1, 0, 0);
+            dir = player.getEyeLocation().getDirection().normalize();
+
+            double distance = range;
+            LivingEntity entity = Entities.getFacingEntity(player, range);
+            if (entity != null) {
+                DamageHandler.damageEntity(entity, player, this, damage);
+                distance = entity.getLocation().distance(loc);
+            }
+
+            for (double d = 0; d < distance; d++) {
+                Particles.spawnParticle(particle, loc.clone().add(dir.clone().multiply(d)), 1, 0, 0);
+            }
         }
 
 

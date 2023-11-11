@@ -3,6 +3,8 @@ package com.sereneoasis.util.methods;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Color;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +22,18 @@ import java.util.concurrent.ThreadLocalRandom;
  * Methods which are related to blocks
  */
 public class Blocks {
+
+    public static void selectSourceAnimation(Block block, Color color)
+    {
+        if (block.getType() == Material.WATER)
+        {
+            new TempDisplayBlock(block.getLocation(), Material.BLUE_STAINED_GLASS, 1000, 1.0, true, color);
+        }
+        else {
+            new TempDisplayBlock(block.getLocation(), block.getType(), 1000, 1.0, true, color);
+        }
+    }
+
 
 
     public static Block getFacingBlock(Player player, double distance)

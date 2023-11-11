@@ -59,8 +59,8 @@ public class SerenityListener implements Listener {
         SerenityPlayer.loadPlayer(player.getUniqueId(), player);
 
         Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), () -> {
-            SerenityBoard board = SerenityBoard.createScore(player);
             SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+            SerenityBoard board = SerenityBoard.createScore(player, serenityPlayer);
             board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
             board.setAboveSlot(2, "Abilities:");
             board.setBelowSlot(1, "Combos:");

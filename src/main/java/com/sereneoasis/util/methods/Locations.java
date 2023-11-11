@@ -112,10 +112,7 @@ public class Locations {
         Line line = new Line(directions);
         for (double d = 0; d < distance; d+= increment)
         {
-
             locs.add(loc.clone().add(line.getVector(increment/distance)));
-
-
         }
 
         return locs;

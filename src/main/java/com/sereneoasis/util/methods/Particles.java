@@ -26,18 +26,11 @@ public class Particles {
         loc.getWorld().spawnParticle(particle,loc,count, offset, offset, offset, extra);
     }
 
-    public static void spawnColoredParticle(Location loc, int count, double offset, double size, String hexCode)
+    public static void spawnColoredParticle(Location loc, int count, double offset, double size, Color color)
     {
 
-        int red = 255;
-        int green = 153;
-        int blue = 51;
 
-        int resultRed = Integer.valueOf(hexCode.substring(0, 2), 16);
-        int resultGreen = Integer.valueOf(hexCode.substring(2, 4), 16);
-        int resultBlue = Integer.valueOf(hexCode.substring(4, 6), 16);
-
-        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(resultRed, resultGreen, resultBlue), (float) size);
+        Particle.DustOptions dustOptions = new Particle.DustOptions(color, (float) size);
         loc.getWorld().
             spawnParticle(Particle.REDSTONE, loc, count, offset, offset, offset, dustOptions);
     }

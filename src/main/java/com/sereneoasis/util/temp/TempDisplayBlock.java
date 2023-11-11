@@ -1,8 +1,11 @@
 package com.sereneoasis.util.temp;
 
+import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.DisplayBlock;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
@@ -48,6 +51,34 @@ public class TempDisplayBlock {
             bDisplay.setViewRange(30);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
+
+        });
+        this.revertTime = System.currentTimeMillis() + revertTime;
+        REVERT_QUEUE.add(this);
+    }
+
+    public TempDisplayBlock(Location loc, Material block, final long revertTime, double size) {
+        new TempDisplayBlock(loc, block, revertTime, size, false, null);
+    }
+
+    public TempDisplayBlock(Location loc, Material block, final long revertTime, double size, boolean glowing, Color color) {
+
+        blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
+        {
+            BlockDisplay bDisplay = (BlockDisplay)entity;
+            SplittableRandom splittableRandom = new SplittableRandom();
+            bDisplay.setBlock(block.createBlockData());
+            Transformation transformation = bDisplay.getTransformation();
+            //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
+            transformation.getScale().set(size);
+            bDisplay.setViewRange(30);
+            //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
+            bDisplay.setTransformation(transformation);
+            if (glowing)
+            {
+                bDisplay.setGlowing(true);
+                bDisplay.setGlowColorOverride(color);
+            }
 
         });
         this.revertTime = System.currentTimeMillis() + revertTime;

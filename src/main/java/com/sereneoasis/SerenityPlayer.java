@@ -3,10 +3,13 @@ package com.sereneoasis;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
+import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
+import com.sereneoasis.util.methods.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -23,14 +26,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SerenityPlayer {
 
-    private static final Map<UUID,SerenityPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, SerenityPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
 
     public static Map<UUID, SerenityPlayer> getSerenityPlayerMap() {
         return SERENITY_PLAYER_MAP;
     }
 
-    public static SerenityPlayer getSerenityPlayer(Player player)
-    {
+    public static SerenityPlayer getSerenityPlayer(Player player) {
         return SERENITY_PLAYER_MAP.get(player.getUniqueId());
     }
 
@@ -44,13 +46,11 @@ public class SerenityPlayer {
         this.abilities = abilities;
     }
 
-    public void setAbility(int slot, String ability)
-    {
+    public void setAbility(int slot, String ability) {
         this.getAbilities().put(slot, ability);
     }
 
-    public String getHeldAbility()
-    {
+    public String getHeldAbility() {
         return getAbilities().get(player.getInventory().getHeldItemSlot() + 1);
     }
 
@@ -84,16 +84,14 @@ public class SerenityPlayer {
 
     private Player player;
 
-    public SerenityPlayer(String name, HashMap<Integer,String>abilities, Archetype archetype, Player player)
-    {
+    public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player) {
         this.name = name;
         this.abilities = abilities;
         this.archetype = archetype;
         this.player = player;
     }
 
-    public static void loadPlayer(UUID uuid, Player player)
-    {
+    public static void loadPlayer(UUID uuid, Player player) {
         if (SERENITY_PLAYER_MAP.containsKey(uuid)) {
             return;
         }
@@ -108,9 +106,8 @@ public class SerenityPlayer {
             getSerenityPlayerMap().put(uuid, serenityPlayer);
             upsertPlayer(serenityPlayer);
 
-        }
-        else{
-            Serenity.getRepository().getAsync(uuid).thenAsync( (PlayerData) -> {
+        } else {
+            Serenity.getRepository().getAsync(uuid).thenAsync((PlayerData) -> {
                 SerenityPlayer serenityPlayer = new SerenityPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype().toUpperCase()), player);
                 getSerenityPlayerMap().put(uuid, serenityPlayer);
             });
@@ -118,8 +115,7 @@ public class SerenityPlayer {
     }
 
 
-    public static void upsertPlayer(SerenityPlayer serenityPlayer)
-    {
+    public static void upsertPlayer(SerenityPlayer serenityPlayer) {
 
         PlayerData playerData = new PlayerData();
         playerData.setKey(serenityPlayer.getPlayer().getUniqueId());
@@ -141,27 +137,23 @@ public class SerenityPlayer {
             Map.Entry<String, Long> entry = iterator.next();
             if (System.currentTimeMillis() >= entry.getValue()) {
                 SerenityBoard board = SerenityBoard.getByPlayer(player);
-                if (board == null)
-                {
+                if (board == null) {
                     return;
                 }
                 String ability = entry.getKey();
 
                 for (int i = 2; i <= 5; i++) {
-                    if (board.getBelowComboSlot(i).equalsIgnoreCase(ChatColor.STRIKETHROUGH + ability))
-                    {
+                    if (board.getBelowComboSlot(i).equalsIgnoreCase(ChatColor.STRIKETHROUGH + ability)) {
                         board.setBelowSlot(i, ability);
                     }
                 }
 
-                for (int i = 1; i<=9; i++)
-                {
-                    if (abilities.get(i).equals(ability))
-                    {
+                for (int i = 1; i <= 9; i++) {
+                    if (abilities.get(i).equals(ability)) {
                         board.setAbilitySlot(i, ability);
                     }
                 }
-                    iterator.remove();
+                iterator.remove();
             }
         }
     }
@@ -171,20 +163,16 @@ public class SerenityPlayer {
             return;
         }
         SerenityBoard board = SerenityBoard.getByPlayer(player);
-        if (board == null)
-        {
+        if (board == null) {
             return;
         }
-        if (AbilityDataManager.isCombo(ability))
-        {
+        if (AbilityDataManager.isCombo(ability)) {
             for (int i = 2; i <= 5; i++) {
-                if (board.getBelowComboSlot(i).equalsIgnoreCase(ability))
-                {
+                if (board.getBelowComboSlot(i).equalsIgnoreCase(ability)) {
                     board.setBelowSlot(i, ChatColor.STRIKETHROUGH + ability);
                 }
             }
-        }
-        else {
+        } else {
             for (int i = 1; i <= 9; i++) {
                 if (abilities.get(i).equals(ability)) {
                     board.setAbilitySlot(i, ChatColor.STRIKETHROUGH + ability);
@@ -203,13 +191,21 @@ public class SerenityPlayer {
         return false;
     }
 
-    public boolean canBend(CoreAbility ability)
-    {
-        if (this.isOnCooldown(ability.getName()))
-        {
+    public boolean canBend(CoreAbility ability) {
+        if (this.isOnCooldown(ability.getName())) {
             return false;
         }
         return true;
     }
+
+    public String getStringColor() {
+        return ArchetypeDataManager.getArchetypeData(this.getArchetype()).getColor();
+    }
+
+    public Color getColor()
+    {
+        return Colors.hexToColor(ArchetypeDataManager.getArchetypeData(this.getArchetype()).getColor());
+    }
+
 
 }

@@ -71,6 +71,15 @@ public class BlockSphereBlast extends CoreAbility {
         }
     }
 
+    @Override
+    public void remove() {
+        super.remove();
+        for (TempDisplayBlock tb : spike.values())
+        {
+            tb.revert();
+        }
+    }
+
     public void setAbilityStatus(AbilityStatus abilityStatus)
     {
         this.abilityStatus = abilityStatus;

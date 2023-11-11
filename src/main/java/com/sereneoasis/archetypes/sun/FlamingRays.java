@@ -41,14 +41,14 @@ public class FlamingRays extends CoreAbility {
         }
         if (abilityStatus == AbilityStatus.CHARGED)
         {
-            for (int i = 0 ; i <= currentShots; i++)
+            for (int i = 0 ; i < currentShots; i++)
             {
                 Blast blast = rays.get(i);
                 if (blast.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
-                    blast.remove();
-                    if (i == 5)
+                    if (i == shots)
                     {
+                        blast.remove();
                         this.remove();
                     }
                 }

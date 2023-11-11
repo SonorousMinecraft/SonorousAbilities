@@ -128,7 +128,8 @@ public class Entities {
         Location loc = player.getEyeLocation();
         if (loc.getWorld().rayTraceEntities(loc, loc.getDirection(), distance) != null)
         {
-            if (loc.getWorld().rayTraceEntities(loc, loc.getDirection(), distance).getHitEntity() instanceof LivingEntity entity)
+            Entity e = loc.getWorld().rayTraceEntities(loc, loc.getDirection(), distance).getHitEntity();
+            if (e instanceof LivingEntity entity && e.getUniqueId() != player.getUniqueId())
             {
                 return entity;
             }

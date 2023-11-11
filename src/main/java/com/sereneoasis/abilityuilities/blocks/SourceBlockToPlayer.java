@@ -5,13 +5,9 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -45,6 +41,7 @@ public class SourceBlockToPlayer extends CoreAbility {
             this.type = type;
             this.distanceToStop = distanceToStop;
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
+            Blocks.selectSourceAnimation(source, sPlayer.getColor());
             loc = source.getLocation();
             start();
         }
@@ -64,7 +61,7 @@ public class SourceBlockToPlayer extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED)
         {
             Particles.spawnColoredParticle(loc.getBlock().getLocation().add(0,1,0),
-                    5, 0.2, 1, ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getColor());
+                    5, 0.2, 1, sPlayer.getColor());
         }
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500);
         //loc.getBlock().setBlockData(Material.DIRT.createBlockData());

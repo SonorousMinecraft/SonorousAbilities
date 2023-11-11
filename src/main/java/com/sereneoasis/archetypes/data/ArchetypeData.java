@@ -24,7 +24,7 @@ public class ArchetypeData {
     {
         this.ARCHETYPE_ATTRIBUTES = attributes;
         this.blocks = blocks;
-        this.color = color.replace("#","");
+        this.color = color;
     }
 
     public Map<Attribute, Double> getArchetypeAttributes() {

@@ -42,8 +42,8 @@ public class MeltingGlare extends CoreAbility {
             this.remove();
         }
 
-        leftEye.setLoc(player.getEyeLocation().clone().add(Locations.getLeftSide(player.getEyeLocation(), 0.2)));
-        rightEye.setLoc(player.getEyeLocation().clone().add(Locations.getRightSide(player.getEyeLocation(), 0.2)));
+        leftEye.setLoc(Locations.getLeftSide(player.getEyeLocation(), 0.2));
+        rightEye.setLoc(Locations.getRightSide(player.getEyeLocation(), 0.2));
 
     }
 

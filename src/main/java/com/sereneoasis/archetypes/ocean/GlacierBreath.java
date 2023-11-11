@@ -172,7 +172,7 @@ public class GlacierBreath extends CoreAbility {
                 }
 
 
-                Particles.spawnColoredParticle(loc.clone().add(dir.clone().multiply(2)), 1, d/3, 1, ArchetypeDataManager.getArchetypeData(Archetype.OCEAN).getColor());
+                Particles.spawnColoredParticle(loc.clone().add(dir.clone().multiply(2)), 1, d/3, 1, sPlayer.getColor());
 
                 if (Entities.getAffected(loc, d, player) != null) {
                     DamageHandler.damageEntity(Entities.getAffected(loc, d, player), player, this, damage);
