@@ -50,7 +50,7 @@ public class Blast extends CoreAbility {
         }
         
         loc.add(dir.clone().multiply(speed));
-        Particles.spawnParticle(particle, loc, 1, 0, 0);
+        Particles.spawnParticle(particle, loc, 5, hitbox, 0);
 
     }
 

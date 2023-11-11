@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sun;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockSphereBlast;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -10,7 +11,6 @@ import org.bukkit.util.Vector;
 public class SolarBarrage extends CoreAbility {
     private final String name = "SolarBarrage";
 
-    private AbilityStatus abilityStatus = AbilityStatus.NOT_SHOT;
 
     private BlockSphereBlast leftSphere, centerSphere, rightSphere;
     public SolarBarrage(Player player) {
@@ -20,18 +20,20 @@ public class SolarBarrage extends CoreAbility {
             return;
         }
 
-        Vector dir = player.getEyeLocation().getDirection().multiply(radius);
+        abilityStatus = AbilityStatus.NOT_SHOT;
+
+        Vector dir = player.getEyeLocation().getDirection().clone();
 
         Location aboveLoc = player.getEyeLocation().clone().add(0,radius + 2, 0)
                 .subtract(dir);
 
         leftSphere = new BlockSphereBlast(player, name,
-                aboveLoc.add(dir.clone().rotateAroundY(Math.toRadians(90))), true );
+                Locations.getLeftSide(aboveLoc, radius), true );
 
         centerSphere = new BlockSphereBlast(player, name, aboveLoc, true);
 
         rightSphere = new BlockSphereBlast(player, name,
-                aboveLoc.add(dir.clone().rotateAroundY(Math.toRadians(270))), true );
+                Locations.getRightSide(aboveLoc, radius), true );
         start();
 
     }
@@ -54,9 +56,9 @@ public class SolarBarrage extends CoreAbility {
         if (abilityStatus == AbilityStatus.NOT_SHOT)
         {
             abilityStatus = AbilityStatus.SHOT;
-            leftSphere.setAbilityStatus(abilityStatus);
-            rightSphere.setAbilityStatus(abilityStatus);
-            centerSphere.setAbilityStatus(abilityStatus);
+            leftSphere.setAbilityStatus(AbilityStatus.SHOT);
+            rightSphere.setAbilityStatus(AbilityStatus.SHOT);
+            centerSphere.setAbilityStatus(AbilityStatus.SHOT);
         }
     }
 

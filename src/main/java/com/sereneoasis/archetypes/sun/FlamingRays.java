@@ -41,7 +41,7 @@ public class FlamingRays extends CoreAbility {
         }
         if (abilityStatus == AbilityStatus.CHARGED)
         {
-            for (int i = 0 ; i < currentShots; i++)
+            for (int i = 0 ; i <= currentShots; i++)
             {
                 Blast blast = rays.get(i);
                 if (blast.getAbilityStatus() == AbilityStatus.COMPLETE)
@@ -56,6 +56,12 @@ public class FlamingRays extends CoreAbility {
 
         }
 
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        sPlayer.addCooldown(name, cooldown);
     }
 
     public void setHasClicked()

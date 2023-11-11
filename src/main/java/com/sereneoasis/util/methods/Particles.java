@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class Particles {
 
-    public static void spawnParticle(Particle particle, Location loc, int count, int offset, double extra)
+    public static void spawnParticle(Particle particle, Location loc, int count, double offset, double extra)
     {
         loc.getWorld().spawnParticle(particle,loc,count, offset, offset, offset, extra);
     }

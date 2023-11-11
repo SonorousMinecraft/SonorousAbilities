@@ -2,6 +2,7 @@ package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Blast;
+import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -10,7 +11,7 @@ public class SolarBeam extends CoreAbility {
 
     private final String name = "SolarBeam";
 
-    private Blast blast;
+    private SphereBlast blast;
     public SolarBeam(Player player) {
         super(player);
 
@@ -36,6 +37,7 @@ public class SolarBeam extends CoreAbility {
         if (abilityStatus == AbilityStatus.SHOT) {
             if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
                 blast.remove();
+                this.remove();
             }
         }
     }
@@ -44,11 +46,16 @@ public class SolarBeam extends CoreAbility {
     {
         if (abilityStatus == AbilityStatus.CHARGED)
         {
-            blast = new Blast(player, name, false, Particle.FLAME);
+            blast = new SphereBlast(player, name, false, Particle.FLAME);
             abilityStatus = AbilityStatus.SHOT;
         }
     }
 
+    @Override
+    public void remove() {
+        super.remove();
+        sPlayer.addCooldown(name, cooldown);
+    }
 
     @Override
     public Player getPlayer() {

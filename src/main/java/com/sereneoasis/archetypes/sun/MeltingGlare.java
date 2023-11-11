@@ -4,6 +4,8 @@ import com.sereneoasis.ability.superclasses.Ability;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Laser;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Locations;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -18,11 +20,9 @@ public class MeltingGlare extends CoreAbility {
             return;
         }
 
-        Vector dir = player.getEyeLocation().getDirection().rotateAroundY(Math.toRadians(90));
-
-        leftEye = new Laser(player, player.getEyeLocation().clone().add(dir).multiply(0.2),
+        leftEye = new Laser(player, Locations.getLeftSide(player.getEyeLocation(), 0.2),
                 "MeltingGlare", Particle.FLAME);
-        rightEye = new Laser(player, player.getEyeLocation().clone().subtract(dir).multiply(0.2),
+        rightEye = new Laser(player, Locations.getRightSide(player.getEyeLocation(), 0.2),
                 "MeltingGlare", Particle.FLAME);
         start();
     }
@@ -37,12 +37,13 @@ public class MeltingGlare extends CoreAbility {
         if (leftEye.getAbilityStatus() == AbilityStatus.COMPLETE &&
                 rightEye.getAbilityStatus() == AbilityStatus.COMPLETE)
         {
+            leftEye.remove();
+            rightEye.remove();
             this.remove();
         }
 
-        Vector dir = player.getEyeLocation().getDirection().rotateAroundY(Math.toRadians(90));
-        leftEye.setLoc(player.getEyeLocation().clone().add(dir).multiply(0.2));
-        rightEye.setLoc(player.getEyeLocation().clone().subtract(dir).multiply(0.2));
+        leftEye.setLoc(player.getEyeLocation().clone().add(Locations.getLeftSide(player.getEyeLocation(), 0.2)));
+        rightEye.setLoc(player.getEyeLocation().clone().add(Locations.getRightSide(player.getEyeLocation(), 0.2)));
 
     }
 

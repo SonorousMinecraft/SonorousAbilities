@@ -30,7 +30,7 @@ public class BlockSphereBlast extends CoreAbility {
     private String name;
 
 
-    private HashMap<Integer, TempDisplayBlock> spike;
+    private HashMap<Integer, TempDisplayBlock> spike = new HashMap<>();
 
 
     public BlockSphereBlast(Player player, String name, Location startLoc, boolean gravity) {
@@ -42,6 +42,8 @@ public class BlockSphereBlast extends CoreAbility {
         this.origin = player.getEyeLocation().clone();
         this.dir = origin.getDirection().normalize();
         this.loc = startLoc.clone();
+        spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5),
+                DisplayBlock.SUN, 0.5);
         this.abilityStatus = AbilityStatus.CHARGED;
         start();
     }
@@ -55,17 +57,14 @@ public class BlockSphereBlast extends CoreAbility {
                 this.abilityStatus = AbilityStatus.COMPLETE;
             }
 
-
-
-
             if (gravity) {
-                dir = dir.setY(dir.getY() - 0.9);
+                dir = dir.setY(dir.getY() - 0.01);
             }
 
             loc.add(dir.clone().multiply(speed));
 
             spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5),
-                    DisplayBlock.ICE, 0.5);
+                    DisplayBlock.SUN, 0.5);
 
             DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
 

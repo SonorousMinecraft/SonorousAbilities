@@ -31,7 +31,6 @@ public class Laser extends CoreAbility {
         this.name = name;
         this.particle = particle;
         this.loc = startLoc.clone();
-        this.dir = loc.getDirection().clone();
         this.abilityStatus = AbilityStatus.SHOT;
         start();
     }

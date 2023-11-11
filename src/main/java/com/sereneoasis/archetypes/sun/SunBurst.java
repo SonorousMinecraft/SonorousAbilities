@@ -66,9 +66,15 @@ public class SunBurst extends CoreAbility {
         }
     }
 
+
+
     @Override
     public void remove() {
         super.remove();
+        for (TempDisplayBlock tb : explosion.values())
+        {
+            tb.revert();
+        }
         sPlayer.addCooldown(name, cooldown);
     }
 

@@ -43,7 +43,7 @@ public class SolarFlare extends CoreAbility {
         target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (target != null && target.getType().isSolid()) {
             long time = player.getWorld().getTime();
-            if (time < 12300 || time > 23850)
+            if (time < 167 || (time > 1200 && time < 22300))
             {
                 flareLoc = target.getLocation().clone().subtract(0,10,0);
                 isDayTime = false;
@@ -75,6 +75,7 @@ public class SolarFlare extends CoreAbility {
             started = true;
         }
 
+
         if (started)
         {
 
@@ -82,18 +83,24 @@ public class SolarFlare extends CoreAbility {
             if (isDayTime)
             {
                 flareLoc.subtract(0,1,0);
+                if (flareLoc.getY() <= target.getY())
+                {
+                    this.remove();
+                }
             }
             else{
                 flareLoc.add(0,1,0);
+                if (flareLoc.getY() >= target.getY())
+                {
+                    this.remove();
+                }
             }
-
-
 
             Set<Location> locs = new HashSet<>();
             for (Block block : Blocks.getBlocksAroundPoint(flareLoc, radius))
             {
                 Location b = block.getLocation();
-                if (b.getBlock() == flareLoc.getBlock())
+                if (b.getY() == flareLoc.getY())
                 {
                     locs.add(b);
                 }

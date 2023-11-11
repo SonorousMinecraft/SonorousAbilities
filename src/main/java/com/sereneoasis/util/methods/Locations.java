@@ -1,6 +1,8 @@
 package com.sereneoasis.util.methods;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.MainHand;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -241,5 +243,35 @@ public class Locations {
         return locs;
     }
 
+    public static Location getLeftSide(final Location location, final double distance) {
+        final float angle = (float) Math.toRadians(location.getYaw());
+        return location.clone().add(new Vector(Math.cos(angle), 0, Math.sin(angle)).normalize().multiply(distance));
+    }
 
+    public static Location getRightSide(final Location location, final double distance) {
+        final float angle = (float) Math.toRadians(location.getYaw());
+        return location.clone().subtract(new Vector(Math.cos(angle), 0, Math.sin(angle)).normalize().multiply(distance));
+    }
+
+    public static Location getMainHandLocation(final Player player) {
+        double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
+        if (player.getMainHand() == MainHand.LEFT) {
+            return getLeftSide(player.getLocation(), .55).add(0, y, 0)
+                    .add(player.getLocation().getDirection().multiply(0.8));
+        } else {
+            return getRightSide(player.getLocation(), .55).add(0, y, 0)
+                    .add(player.getLocation().getDirection().multiply(0.8));
+        }
+    }
+
+    public static Location getOffHandLocation(final Player player) {
+        double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
+        if (player.getMainHand() == MainHand.RIGHT) {
+            return getLeftSide(player.getLocation(), .55).add(0, y, 0)
+                    .add(player.getLocation().getDirection().multiply(0.8));
+        } else {
+            return getRightSide(player.getLocation(), .55).add(0, y, 0)
+                    .add(player.getLocation().getDirection().multiply(0.8));
+        }
+    }
 }
