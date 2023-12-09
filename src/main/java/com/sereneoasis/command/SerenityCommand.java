@@ -80,7 +80,6 @@ public class SerenityCommand implements CommandExecutor {
                                 }
                                 int slot = player.getInventory().getHeldItemSlot()+1;
                                 sPlayer.setAbility(slot, ability);
-                                SerenityBoard.getByPlayer(player).setAbilitySlot(slot, ability);
                                 player.sendMessage("Successfully bound " + ability + " to slot " + slot + "." );
                                 return true;
                             }
@@ -157,6 +156,71 @@ public class SerenityCommand implements CommandExecutor {
                                 String nullAbility = ChatColor.DARK_GRAY + "=-=-Slot" + "_" + slot + "-=-=";
                                 sPlayer.setAbility(slot, nullAbility);
                                 SerenityBoard.getByPlayer(player).setAbilitySlot(slot, nullAbility );
+                                return true;
+                            }
+                        case "preset":
+                            if (strings.length == 1)
+                            {
+                                player.sendMessage("What preset do you want to do a command for for?");
+                                String message = ("You have these presets: ");
+                                for (String preset : sPlayer.getPresetNames())
+                                {
+                                    message = message + "\n" + preset;
+                                }
+                                player.sendMessage(message);
+                                return false;
+                            }
+                            if (strings.length > 3)
+                            {
+                                player.sendMessage("Too many arguments");
+                                return false;
+                            }
+                            else {
+                                String presetOption = strings[1];
+
+                                switch (presetOption)
+                                {
+                                    case "display":
+                                        String message = ("You have these presets: ");
+                                        for (String preset : sPlayer.getPresetNames())
+                                        {
+                                            message = message + "\n" + preset;
+                                        }
+                                        return true;
+                                    case "create":
+                                        String newName = strings[2];
+                                        if (sPlayer.existsPreset(newName))
+                                        {
+                                            player.sendMessage("This preset already exists");
+                                            return false;
+                                        }
+                                        sPlayer.setPreset(newName,sPlayer.getAbilities());
+                                        return true;
+                                    case "bind":
+                                        String presetToBind = strings[2];
+                                        if (!sPlayer.existsPreset(presetToBind))
+                                        {
+                                            player.sendMessage("This preset does not exist");
+                                            return false;
+                                        }
+                                        sPlayer.getPreset(presetToBind).forEach( (slot, preset) -> {player.sendMessage("\n" + slot + "is " + preset);});
+                                        sPlayer.setAbilities(sPlayer.getPreset(presetToBind));
+
+                                        return true;
+                                    case "delete":
+                                        String presetToDelete = strings[2];
+                                        if (!sPlayer.existsPreset(presetToDelete))
+                                        {
+                                            player.sendMessage("This preset does not exist");
+                                            return false;
+                                        }
+                                        sPlayer.deletePreset(presetToDelete);
+                                        return true;
+                                    default:
+                                        String invalidMessage = "The valid options are: \n" +
+                                                "display, create, bind and delete";
+                                        player.sendMessage(invalidMessage);
+                                }
                                 return true;
                             }
                     }

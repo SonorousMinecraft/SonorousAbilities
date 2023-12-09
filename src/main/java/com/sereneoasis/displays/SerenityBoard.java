@@ -75,6 +75,15 @@ public class SerenityBoard {
 //        sidebar.setDisplayName(title.length()>32 ? title.substring(0, 32) : title);
 //    }
 
+    public void setAllAbilitySlots(HashMap<Integer, String> abilities)
+    {
+        for (int slot : abilities.keySet())
+        {
+            String ability = abilities.get(slot);
+            setAbilitySlot(slot,ability);
+        }
+    }
+
     public void setAbilitySlot(int slot, String text) {
         Team team = scoreboard.getTeam("SLOT_" +- slot);
         String entry = genEntry(slot);

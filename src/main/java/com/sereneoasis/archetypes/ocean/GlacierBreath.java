@@ -47,8 +47,6 @@ public class GlacierBreath extends CoreAbility {
     private BossBar barduration;
 
 
-    private AbilityStatus abilityStatus = AbilityStatus.CHARGING;
-
 
     public GlacierBreath(Player player) {
         super(player);
@@ -66,7 +64,7 @@ public class GlacierBreath extends CoreAbility {
         //Config
 
         this.firehelixes = 6;
-
+        this.abilityStatus = AbilityStatus.CHARGING;
         //Set variables
         this.chargestarttime = System.currentTimeMillis();
         this.charged = false;

@@ -12,10 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -36,6 +33,48 @@ public class SerenityPlayer {
         return SERENITY_PLAYER_MAP.get(player.getUniqueId());
     }
 
+
+    private HashMap<String, HashMap<Integer,String>> presets;
+
+    public void setPreset(String name, HashMap<Integer, String> abilities)
+    {
+        HashMap<Integer,String> clonedAbilities = new HashMap<>();
+        abilities.forEach((slot,abil) ->
+        {
+            clonedAbilities.put(slot,abil);
+        });
+        presets.put(name,clonedAbilities);
+    }
+
+    public boolean existsPreset(String name)
+    {
+
+        if (presets.containsKey(name))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public HashMap<Integer,String> getPreset(String name)
+    {
+        return presets.get(name);
+    }
+
+    public Set<String> getPresetNames()
+    {
+        return presets.keySet();
+    }
+
+    public HashMap<String, HashMap<Integer, String>> getPresets() {
+        return presets;
+    }
+
+    public void deletePreset(String name)
+    {
+        presets.remove(name);
+    }
+
     private HashMap<Integer, String> abilities;
 
     public HashMap<Integer, String> getAbilities() {
@@ -44,9 +83,11 @@ public class SerenityPlayer {
 
     public void setAbilities(HashMap<Integer, String> abilities) {
         this.abilities = abilities;
+        SerenityBoard.getByPlayer(player).setAllAbilitySlots(abilities);
     }
 
     public void setAbility(int slot, String ability) {
+        SerenityBoard.getByPlayer(player).setAbilitySlot(slot, ability);
         this.getAbilities().put(slot, ability);
     }
 
@@ -82,13 +123,16 @@ public class SerenityPlayer {
         this.player = player;
     }
 
+
+
     private Player player;
 
-    public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player) {
+    public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player, HashMap<String, HashMap<Integer,String>> presets) {
         this.name = name;
         this.abilities = abilities;
         this.archetype = archetype;
         this.player = player;
+        this.presets = presets;
     }
 
     public static void loadPlayer(UUID uuid, Player player) {
@@ -102,13 +146,13 @@ public class SerenityPlayer {
                 abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
             }
 
-            SerenityPlayer serenityPlayer = new SerenityPlayer(player.getName(), abilities, Archetype.NONE, player);
+            SerenityPlayer serenityPlayer = new SerenityPlayer(player.getName(), abilities, Archetype.NONE, player, new HashMap<>());
             getSerenityPlayerMap().put(uuid, serenityPlayer);
             upsertPlayer(serenityPlayer);
 
         } else {
             Serenity.getRepository().getAsync(uuid).thenAsync((PlayerData) -> {
-                SerenityPlayer serenityPlayer = new SerenityPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype().toUpperCase()), player);
+                SerenityPlayer serenityPlayer = new SerenityPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype().toUpperCase()), player, PlayerData.getPresets());
                 getSerenityPlayerMap().put(uuid, serenityPlayer);
             });
         }
@@ -124,6 +168,8 @@ public class SerenityPlayer {
         playerData.setAbilities(serenityPlayer.getAbilities());
 
         playerData.setArchetype(serenityPlayer.getArchetype().toString());
+
+        playerData.setPresets(serenityPlayer.getPresets());
         Serenity.getRepository().upsertAsync(playerData);
     }
 

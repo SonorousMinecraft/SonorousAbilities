@@ -8,6 +8,7 @@ import com.nivixx.ndatabase.api.model.NEntity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -57,5 +58,17 @@ public class PlayerData extends NEntity<UUID> {
     {
         return this.archetype;
     }
+
+    @JsonProperty("presets")
+    private HashMap<String, HashMap<Integer,String>> presets;
+
+    public void setPresets(HashMap<String, HashMap<Integer, String>> presets) {
+        this.presets = presets;
+    }
+
+    public HashMap<String, HashMap<Integer, String>> getPresets() {
+        return presets;
+    }
+
 
 }
