@@ -95,23 +95,6 @@ public class SerenityListener implements Listener {
 
         SerenityPlayer.upsertPlayer(serenityPlayer);
 
-//        Serenity.getRepository().getAsync(player.getUniqueId())
-//                .thenAsync((playerData) ->
-//                {
-//                    playerData.setName(player.getName());
-//
-//                    playerData.setAbilities(serenityPlayer.getAbilities());
-//
-//                    playerData.setArchetype(serenityPlayer.getArchetype().toString());
-//                    Serenity.getRepository().upsertAsync(playerData);
-//                });
-//        PlayerData oldPlayerData = Serenity.getRepository().get(uuid);
-//        oldPlayerData.setAbilities(serenityPlayer.getAbilities());
-//        oldPlayerData.setArchetype(serenityPlayer.getArchetype().toString());
-//        Serenity.getRepository().update(oldPlayerData);
-
-
-
         removeAttributePlayer(player, serenityPlayer);
 
 
