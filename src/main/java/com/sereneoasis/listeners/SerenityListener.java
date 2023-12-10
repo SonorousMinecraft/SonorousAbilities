@@ -6,10 +6,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
-import com.sereneoasis.archetypes.sky.Cyclone;
-import com.sereneoasis.archetypes.sky.Nimbus;
-import com.sereneoasis.archetypes.sky.SkyBlast;
-import com.sereneoasis.archetypes.sky.SkyRipper;
+import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
@@ -216,6 +213,9 @@ public class SerenityListener implements Listener {
                     new Cyclone(player);
                 }
                 break;
+            case "CloudStep":
+                new CloudStep(player);
+                break;
         }
 
     }
@@ -290,6 +290,11 @@ public class SerenityListener implements Listener {
                 break;
             case "SkyRipper":
                 new SkyRipper(player);
+                break;
+            case "CloudStep":
+                if (CoreAbility.hasAbility(e.getPlayer(), CloudStep.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), CloudStep.class).setHasShifted();
+                }
                 break;
         }
     }

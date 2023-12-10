@@ -11,6 +11,8 @@ import org.bukkit.event.inventory.ClickType;
 
 import java.util.*;
 
+import static com.sereneoasis.archetypes.Archetype.SKY;
+
 /**
  * @author Sakrajin
  * Used to create the configs for Archetypes and initialise defaults
@@ -282,31 +284,35 @@ public class ConfigManager {
         sun.options().copyDefaults(true);
         getConfig(Archetype.SUN).saveConfig();
 
-        FileConfiguration sky = getConfig(Archetype.SKY).getConfig();
+        FileConfiguration sky = getConfig(SKY).getConfig();
 
         //Ability configuration
-        saveConfigValuesAbility(sky, "SkyBlast", Archetype.SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "SkyBlast", SKY.toString(), "description", "instructions",
                 0, 5000, 0,
                 0, 1.0,0.5, 20, 1, 1);
 
-        saveConfigValuesAbility(sky, "Nimbus", Archetype.SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "instructions",
                 0, 5000, 3000,
                 0, 0,0, 0, 1, 0);
 
-        saveConfigValuesAbility(sky, "SkyRipper", Archetype.SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "SkyRipper", SKY.toString(), "description", "instructions",
                 0, 5000, 0,
                 2, 0,0, 30, 1.5, 5);
 
-        saveConfigValuesAbility(sky, "Cyclone", Archetype.SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "Cyclone", SKY.toString(), "description", "instructions",
                 0, 500, 5000,
                 0, 0, 2, 0, 1.0, 0);
 
-        saveAttributeValuesArchetype(sky, Archetype.SKY, 0, 0, 0, 0,
+        saveConfigValuesAbility(sky, "CloudStep", SKY.toString(), "description", "instructions",
+                1000, 5000, 8000,
+                0, 0,0, 0, 1, 0);
+
+        saveAttributeValuesArchetype(sky, SKY, 0, 0, 0, 0,
                 0.0, 0, 0.2);
 
-        saveArchetypeCosmetics(sky, Archetype.SKY, "#BCC8C6");
+        saveArchetypeCosmetics(sky, SKY, "#BCC8C6");
         sky.options().copyDefaults(true);
-        getConfig(Archetype.SKY).saveConfig();
+        getConfig(SKY).saveConfig();
 
     }
 
