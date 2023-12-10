@@ -6,6 +6,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
+import com.sereneoasis.archetypes.sky.Cyclone;
 import com.sereneoasis.archetypes.sky.Nimbus;
 import com.sereneoasis.archetypes.sky.SkyBlast;
 import com.sereneoasis.archetypes.sky.SkyRipper;
@@ -205,6 +206,14 @@ public class SerenityListener implements Listener {
             case "SkyRipper":
                 if (CoreAbility.hasAbility(e.getPlayer(), SkyRipper.class)) {
                     CoreAbility.getAbility(e.getPlayer(), SkyRipper.class).setHasClicked();
+                }
+                break;
+            case "Cyclone":
+                if (CoreAbility.hasAbility(e.getPlayer(), Cyclone.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Cyclone.class).setHasClicked();
+                }
+                else{
+                    new Cyclone(player);
                 }
                 break;
         }

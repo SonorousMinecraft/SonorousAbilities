@@ -77,12 +77,14 @@ public class Locations {
         }
         return sphere;
     }
-    public static List<Location> getCircle(Location loc, double radii, int points) {
+    public static List<Location> getCircle(Location loc, double radii, int points, Vector dir, double orientation) {
         final List<Location> circle = new ArrayList<>();
         for (double i = 0; i < Math.PI *2; i+= Math.PI*2 / points) {
             double x = Math.sin(i) * radii;
             double z = Math.cos(i) * radii;
-            Location location = loc.clone().add(x,0,z);
+            Vector vec = new Vector(x,0,z);
+            vec.rotateAroundAxis(dir,orientation);
+            Location location = loc.clone().add(vec);
             circle.add(location);
         }
         return circle;

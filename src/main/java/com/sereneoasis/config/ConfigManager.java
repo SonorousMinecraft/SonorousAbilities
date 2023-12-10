@@ -297,6 +297,10 @@ public class ConfigManager {
                 0, 5000, 0,
                 2, 0,0, 30, 1.5, 5);
 
+        saveConfigValuesAbility(sky, "Cyclone", Archetype.SKY.toString(), "description", "instructions",
+                0, 500, 5000,
+                0, 0, 2, 0, 1.0, 0);
+
         saveAttributeValuesArchetype(sky, Archetype.SKY, 0, 0, 0, 0,
                 0.0, 0, 0.2);
 
