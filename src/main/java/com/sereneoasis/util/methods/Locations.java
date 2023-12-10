@@ -1,6 +1,8 @@
 package com.sereneoasis.util.methods;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.util.Vector;
@@ -12,9 +14,36 @@ import java.util.*;
  * Methods which are related to locations
  */
 public class Locations {
+
+    public static Location getMidpoint(Location loc1, Location loc2)
+    {
+        return loc1.clone().add(loc2.clone()).multiply(0.5);
+    }
+
+    public static List<Location> getLocationsBetweenLocs(Location loc1, Location loc2, double distance)
+    {
+        Location startLoc = loc1.clone();
+        Vector differenceVec = Vectors.getDirectionBetweenLocations(loc1,loc2);
+        List<Location>locs = new ArrayList<>();
+        for (double d = 0 ; d < differenceVec.length(); d+=distance)
+        {
+            locs.add(startLoc.clone().add(differenceVec.clone().normalize().multiply(d)));
+        }
+        return locs;
+    }
+
     public static Location getFacingLocation(Location loc, Vector dir, double distance)
     {
-        return loc.add(dir.normalize().multiply(distance));
+        return loc.add(dir.normalize().multiply(distance)).clone();
+    }
+
+    public static Location getFacingLocationObstructed(Location loc, Vector dir, double distance)
+    {
+        Location facingLoc = getFacingLocation(loc, dir, distance);
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance) != null) {
+            facingLoc = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance).getHitBlock().getLocation();
+        }
+        return facingLoc;
     }
 
     public static List<Location> getDisplayEntityLocs(Location loc, double size, double increment)

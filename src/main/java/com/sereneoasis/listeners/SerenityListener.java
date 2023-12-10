@@ -6,6 +6,9 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
+import com.sereneoasis.archetypes.sky.Nimbus;
+import com.sereneoasis.archetypes.sky.SkyBlast;
+import com.sereneoasis.archetypes.sky.SkyRipper;
 import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
@@ -191,6 +194,19 @@ public class SerenityListener implements Listener {
             case "Sunrise":
                 new Sunrise(player);
                 break;
+            case "SkyBlast":
+                if (CoreAbility.hasAbility(e.getPlayer(), SkyBlast.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SkyBlast.class).setHasClicked();
+                 }
+                break;
+            case "Nimbus":
+                new Nimbus(player);
+                break;
+            case "SkyRipper":
+                if (CoreAbility.hasAbility(e.getPlayer(), SkyRipper.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SkyRipper.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -259,6 +275,12 @@ public class SerenityListener implements Listener {
                 break;
             case "SolarBarrage":
                 new SolarBarrage(player);
+                break;
+            case "SkyBlast":
+                new SkyBlast(player);
+                break;
+            case "SkyRipper":
+                new SkyRipper(player);
                 break;
         }
     }

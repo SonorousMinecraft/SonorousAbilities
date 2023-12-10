@@ -282,6 +282,27 @@ public class ConfigManager {
         sun.options().copyDefaults(true);
         getConfig(Archetype.SUN).saveConfig();
 
+        FileConfiguration sky = getConfig(Archetype.SKY).getConfig();
+
+        //Ability configuration
+        saveConfigValuesAbility(sky, "SkyBlast", Archetype.SKY.toString(), "description", "instructions",
+                0, 5000, 0,
+                0, 1.0,0.5, 20, 1, 1);
+
+        saveConfigValuesAbility(sky, "Nimbus", Archetype.SKY.toString(), "description", "instructions",
+                0, 5000, 3000,
+                0, 0,0, 0, 1, 0);
+
+        saveConfigValuesAbility(sky, "SkyRipper", Archetype.SKY.toString(), "description", "instructions",
+                0, 5000, 0,
+                2, 0,0, 30, 1.5, 5);
+
+        saveAttributeValuesArchetype(sky, Archetype.SKY, 0, 0, 0, 0,
+                0.0, 0, 0.2);
+
+        saveArchetypeCosmetics(sky, Archetype.SKY, "#BCC8C6");
+        sky.options().copyDefaults(true);
+        getConfig(Archetype.SKY).saveConfig();
 
     }
 
