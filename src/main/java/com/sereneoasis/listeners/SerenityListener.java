@@ -219,6 +219,7 @@ public class SerenityListener implements Listener {
             case "HeavenSlash":
                 new HeavenSlash(player);
                 break;
+
         }
 
     }
@@ -298,6 +299,9 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), CloudStep.class)) {
                     CoreAbility.getAbility(e.getPlayer(), CloudStep.class).setHasShifted();
                 }
+                break;
+            case "Shocker":
+                new Shocker(player);
                 break;
         }
     }

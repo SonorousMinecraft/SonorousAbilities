@@ -44,11 +44,8 @@ public class Particles {
 
     public static void spawnColoredParticle(Location loc, int count, double offset, double size, Color color)
     {
-
-
         Particle.DustOptions dustOptions = new Particle.DustOptions(color, (float) size);
-        loc.getWorld().
-            spawnParticle(Particle.REDSTONE, loc, count, offset, offset, offset, dustOptions);
+        loc.getWorld().spawnParticle(Particle.REDSTONE, loc, count, offset, offset, offset, dustOptions);
     }
 
     public static void playSphere(Location loc, double radii, int density, Particle particle) {
