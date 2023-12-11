@@ -9,7 +9,9 @@ import java.lang.invoke.VarHandle;
 public enum Archetype {
     NONE("none"),
     OCEAN("ocean"),
-    SUN("sun");
+    SUN("sun"),
+
+    SKY("sky");
     //WAR("war"),
     //NETHER("nether"),
     //EARTH("earth"),

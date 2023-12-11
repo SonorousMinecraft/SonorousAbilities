@@ -1,9 +1,13 @@
 package com.sereneoasis.util.methods;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -12,9 +16,53 @@ import java.util.*;
  * Methods which are related to locations
  */
 public class Locations {
+
+    public static List<Location> getArc(Location loc1, Location loc2, Location origin, double distance)
+    {
+        List<Location>locs = new ArrayList<>();
+        double radius = loc1.distance(origin);
+        Vector orth = Vectors.getOrthFrom2Vectors(Vectors.getDirectionBetweenLocations(loc1,origin), Vectors.getDirectionBetweenLocations(loc2,origin) );
+        double angle = Vectors.getAngleBetweenVectors(Vectors.getDirectionBetweenLocations(loc1,origin), Vectors.getDirectionBetweenLocations(loc2,origin));
+        double arcLength = radius * angle;
+        int increments = (int) (arcLength/distance);
+        double angleStep = angle/increments;
+        Vector startRadius = Vectors.getDirectionBetweenLocations(origin,loc1);
+        for (int r = 0 ; r < increments ; r++)
+        {
+            locs.add(origin.clone().add(startRadius.rotateAroundAxis(orth,angleStep)));
+        }
+        return locs;
+    }
+
+    public static Location getMidpoint(Location loc1, Location loc2)
+    {
+        return loc1.clone().add(loc2.clone()).multiply(0.5);
+    }
+
+    public static List<Location> getLocationsBetweenLocs(Location loc1, Location loc2, double distance)
+    {
+        Location startLoc = loc1.clone();
+        Vector differenceVec = Vectors.getDirectionBetweenLocations(loc1,loc2);
+        List<Location>locs = new ArrayList<>();
+        for (double d = 0 ; d < differenceVec.length(); d+=distance)
+        {
+            locs.add(startLoc.clone().add(differenceVec.clone().normalize().multiply(d)));
+        }
+        return locs;
+    }
+
     public static Location getFacingLocation(Location loc, Vector dir, double distance)
     {
-        return loc.add(dir.normalize().multiply(distance));
+        return loc.add(dir.normalize().multiply(distance)).clone();
+    }
+
+    public static Location getFacingLocationObstructed(Location loc, Vector dir, double distance)
+    {
+        Location facingLoc = getFacingLocation(loc, dir, distance);
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance) != null) {
+            facingLoc = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance).getHitBlock().getLocation();
+        }
+        return facingLoc;
     }
 
     public static List<Location> getDisplayEntityLocs(Location loc, double size, double increment)
@@ -48,12 +96,14 @@ public class Locations {
         }
         return sphere;
     }
-    public static List<Location> getCircle(Location loc, double radii, int points) {
+    public static List<Location> getCircle(Location loc, double radii, int points, Vector dir, double orientation) {
         final List<Location> circle = new ArrayList<>();
         for (double i = 0; i < Math.PI *2; i+= Math.PI*2 / points) {
             double x = Math.sin(i) * radii;
             double z = Math.cos(i) * radii;
-            Location location = loc.clone().add(x,0,z);
+            Vector vec = new Vector(x,0,z);
+            vec.rotateAroundAxis(dir,orientation);
+            Location location = loc.clone().add(vec);
             circle.add(location);
         }
         return circle;

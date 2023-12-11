@@ -21,6 +21,22 @@ import java.util.List;
  */
 public class Particles {
 
+    public static void playParticlesBetweenPoints(Particle particle, Location loc1, Location loc2, double difference, int count, double offset, double extra) {
+        for (Location loc : Locations.getLocationsBetweenLocs(loc1, loc2, difference))
+        {
+            spawnParticle(particle, loc, count, offset, extra);
+        }
+    }
+
+
+    public static void playLocParticles(List<Location>locs, Particle particle, int count, double offset, double extra)
+    {
+        for (Location loc : locs)
+        {
+            spawnParticle(particle, loc, count, offset, extra);
+        }
+    }
+
     public static void spawnParticle(Particle particle, Location loc, int count, double offset, double extra)
     {
         loc.getWorld().spawnParticle(particle,loc,count, offset, offset, offset, extra);
@@ -28,14 +44,9 @@ public class Particles {
 
     public static void spawnColoredParticle(Location loc, int count, double offset, double size, Color color)
     {
-
-
         Particle.DustOptions dustOptions = new Particle.DustOptions(color, (float) size);
-        loc.getWorld().
-            spawnParticle(Particle.REDSTONE, loc, count, offset, offset, offset, dustOptions);
+        loc.getWorld().spawnParticle(Particle.REDSTONE, loc, count, offset, offset, offset, dustOptions);
     }
-
-
 
     public static void playSphere(Location loc, double radii, int density, Particle particle) {
         for (double i = 0; i <= Math.PI; i += Math.PI / density) {
@@ -50,52 +61,7 @@ public class Particles {
     }
 
 
-        public static void playCircle(Location loc, double radii, int points, Archetype type) {
-            for (double i = 0; i < Math.PI *2; i+= Math.PI*2 / points) {
-                double x = Math.sin(i) * radii;
-                double z = Math.cos(i) * radii;
-                Location location = loc.clone().add(x,0,z);
-            }
-        }
-        
-        public static double getWave(Location loc, Location origin, double wavelength, double amplitude) {
-            final double distance = loc.distance(origin) % wavelength;
-            double y = Math.cos(distance)*amplitude;
-            return y;
-        }
-        
 
-
-        public static void playPolygon(Location loc, double radii, int points, Archetype type){
-            for (int i = 0; i < points; i++) {
-                double angle = 360.0 / points * i;
-                double nextAngle = 360.0 / points * (i + 1); // the angle for the next point.
-                angle = Math.toRadians(angle);
-                nextAngle = Math.toRadians(nextAngle); // convert to radians.
-                double x = Math.cos(angle);
-                double z = Math.sin(angle);
-                double x2 = Math.cos(nextAngle);
-                double z2 = Math.sin(nextAngle);
-                double deltaX = x2 - x; // get the x-difference between the points.
-                double deltaZ = z2 - z; // get the z-difference between the points.
-                double distance = Math.sqrt((deltaX - x) * (deltaX - x) + (deltaZ - z) * (deltaZ - z));
-                for (double d = 0; d < distance - .1; d += .1) { // we subtract .1 from the distance because otherwise it would make 1 step too many.
-                    loc.add(x + deltaX * d, 0, z + deltaZ * d);
-                    loc.subtract(x + deltaX * d, 0, z + deltaZ * d);
-                }
-            }
-        }
-
-
-
-        public static void playHollowPolygon(Location loc, double radii, int points, Archetype type){
-            for (int i = 0; i < points; i++) {
-                double angle = 360.0 / points * i;
-                angle = Math.toRadians(angle);
-                double x = Math.cos(angle);
-                double z = Math.sin(angle);
-            }
-        }
 
 
 

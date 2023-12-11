@@ -11,6 +11,8 @@ import org.bukkit.event.inventory.ClickType;
 
 import java.util.*;
 
+import static com.sereneoasis.archetypes.Archetype.SKY;
+
 /**
  * @author Sakrajin
  * Used to create the configs for Archetypes and initialise defaults
@@ -282,6 +284,47 @@ public class ConfigManager {
         sun.options().copyDefaults(true);
         getConfig(Archetype.SUN).saveConfig();
 
+        FileConfiguration sky = getConfig(SKY).getConfig();
+
+        //Ability configuration
+        saveConfigValuesAbility(sky, "SkyBlast", SKY.toString(), "description", "instructions",
+                0, 5000, 0,
+                0, 1.0,0.5, 20, 1, 1);
+
+        saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "instructions",
+                0, 5000, 3000,
+                0, 0,0, 0, 1, 0);
+
+        saveConfigValuesAbility(sky, "SkyRipper", SKY.toString(), "description", "instructions",
+                0, 5000, 0,
+                2, 0,0, 30, 1.5, 5);
+
+        saveConfigValuesAbility(sky, "Cyclone", SKY.toString(), "description", "instructions",
+                0, 500, 5000,
+                0, 0, 2, 0, 1.0, 0);
+
+        saveConfigValuesAbility(sky, "CloudStep", SKY.toString(), "description", "instructions",
+                1000, 5000, 8000,
+                0, 0,0, 0, 1, 0);
+
+        saveConfigValuesAbility(sky, "HeavenSlash", SKY.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,0, 20, 1, 0);
+
+        saveConfigValuesAbility(sky, "Shocker", SKY.toString(), "description", "instructions",
+                0, 2000, 5000,
+                2, 1.0,0, 20, 1, 0);
+
+        saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "instructions",
+                1000, 5000, 0,
+                2, 0.5,2.0, 30, 0.5, 0);
+
+        saveAttributeValuesArchetype(sky, SKY, 0, 0, 0, 0,
+                0.0, 0, 0.2);
+
+        saveArchetypeCosmetics(sky, SKY, "#BCC8C6");
+        sky.options().copyDefaults(true);
+        getConfig(SKY).saveConfig();
 
     }
 

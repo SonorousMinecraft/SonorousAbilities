@@ -25,14 +25,16 @@ public class Skate extends CoreAbility {
 
     private Material floorType;
 
+    private boolean any;
 
-    public Skate(Player player, String user, int maxHeightFromGround, Material floorType) {
+
+    public Skate(Player player, String user, int maxHeightFromGround, boolean any, Material floorType) {
         super(player, user);
 
         this.user = user;
         this.maxHeightFromGround = maxHeightFromGround;
         this.floorType = floorType;
-
+        this.any = any;
 
         Location loc = player.getLocation();
         setFloorBlock();
@@ -59,7 +61,7 @@ public class Skate extends CoreAbility {
         floorBlock = null;
         for (int i = 0; i <= this.maxHeightFromGround; i++) {
             final Block block = this.player.getEyeLocation().getBlock().getRelative(BlockFace.DOWN, i);
-            if (block.getType() == floorType) {
+            if (block.getType() == floorType || any) {
                 this.floorBlock = block;
                 return;
             }

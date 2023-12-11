@@ -148,4 +148,11 @@ public class Entities {
         }
         return null;
     }
+
+    public static LivingEntity getEntityBetweenPoints(Location loc1, Location loc2)
+    {
+        Vector dir = Vectors.getDirectionBetweenLocations(loc1, loc2);
+        return getFacingEntity(loc1, dir.clone().normalize(), dir.length());
+
+    }
 }

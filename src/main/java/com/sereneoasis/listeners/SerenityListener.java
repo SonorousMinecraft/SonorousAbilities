@@ -6,6 +6,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
+import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
@@ -191,6 +192,38 @@ public class SerenityListener implements Listener {
             case "Sunrise":
                 new Sunrise(player);
                 break;
+            case "SkyBlast":
+                if (CoreAbility.hasAbility(e.getPlayer(), SkyBlast.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SkyBlast.class).setHasClicked();
+                 }
+                break;
+            case "Nimbus":
+                new Nimbus(player);
+                break;
+            case "SkyRipper":
+                if (CoreAbility.hasAbility(e.getPlayer(), SkyRipper.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SkyRipper.class).setHasClicked();
+                }
+                break;
+            case "Cyclone":
+                if (CoreAbility.hasAbility(e.getPlayer(), Cyclone.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Cyclone.class).setHasClicked();
+                }
+                else{
+                    new Cyclone(player);
+                }
+                break;
+            case "CloudStep":
+                new CloudStep(player);
+                break;
+            case "HeavenSlash":
+                new HeavenSlash(player);
+                break;
+            case "ThunderStrike":
+                if (CoreAbility.hasAbility(e.getPlayer(), ThunderStrike.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), ThunderStrike.class).setHasClicked();
+                }
+
         }
 
     }
@@ -259,6 +292,23 @@ public class SerenityListener implements Listener {
                 break;
             case "SolarBarrage":
                 new SolarBarrage(player);
+                break;
+            case "SkyBlast":
+                new SkyBlast(player);
+                break;
+            case "SkyRipper":
+                new SkyRipper(player);
+                break;
+            case "CloudStep":
+                if (CoreAbility.hasAbility(e.getPlayer(), CloudStep.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), CloudStep.class).setHasShifted();
+                }
+                break;
+            case "Shocker":
+                new Shocker(player);
+                break;
+            case "ThunderStrike":
+                new ThunderStrike(player);
                 break;
         }
     }
