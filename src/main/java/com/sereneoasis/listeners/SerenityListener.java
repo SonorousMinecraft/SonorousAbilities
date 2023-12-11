@@ -216,6 +216,9 @@ public class SerenityListener implements Listener {
             case "CloudStep":
                 new CloudStep(player);
                 break;
+            case "HeavenSlash":
+                new HeavenSlash(player);
+                break;
         }
 
     }

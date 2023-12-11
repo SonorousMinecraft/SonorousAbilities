@@ -12,7 +12,7 @@ public class Vectors {
 
     public static Vector getDirectionBetweenLocations(Location start, Location end)
     {
-        return end.clone().subtract(start).toVector();
+        return end.clone().subtract(start.clone()).toVector();
     }
 
     public static double getAngleBetweenVectors(Vector vec1, Vector vec2)
@@ -53,6 +53,11 @@ public class Vectors {
         ortho = ortho.multiply(length);
 
         return rotateVectorAroundVector(axis, ortho, degrees);
+    }
+
+    public static Vector getOrthFrom2Vectors(final Vector vec1, final Vector vec2)
+    {
+        return vec1.clone().crossProduct(vec2.clone()).normalize();
     }
 
     public static Vector rotateVectorAroundVector(final Vector axis, final Vector rotator, final double degrees) {

@@ -307,6 +307,10 @@ public class ConfigManager {
                 1000, 5000, 8000,
                 0, 0,0, 0, 1, 0);
 
+        saveConfigValuesAbility(sky, "HeavenSlash", SKY.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,0, 20, 1, 0);
+
         saveAttributeValuesArchetype(sky, SKY, 0, 0, 0, 0,
                 0.0, 0, 0.2);
 

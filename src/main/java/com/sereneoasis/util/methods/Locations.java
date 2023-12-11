@@ -1,11 +1,13 @@
 package com.sereneoasis.util.methods;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -14,6 +16,23 @@ import java.util.*;
  * Methods which are related to locations
  */
 public class Locations {
+
+    public static List<Location> getArc(Location loc1, Location loc2, Location origin, double distance)
+    {
+        List<Location>locs = new ArrayList<>();
+        double radius = loc1.distance(origin);
+        Vector orth = Vectors.getOrthFrom2Vectors(Vectors.getDirectionBetweenLocations(loc1,origin), Vectors.getDirectionBetweenLocations(loc2,origin) );
+        double angle = Vectors.getAngleBetweenVectors(Vectors.getDirectionBetweenLocations(loc1,origin), Vectors.getDirectionBetweenLocations(loc2,origin));
+        double arcLength = radius * angle;
+        int increments = (int) (arcLength/distance);
+        double angleStep = angle/increments;
+        Vector startRadius = Vectors.getDirectionBetweenLocations(origin,loc1);
+        for (int r = 0 ; r < increments ; r++)
+        {
+            locs.add(origin.clone().add(startRadius.rotateAroundAxis(orth,angleStep)));
+        }
+        return locs;
+    }
 
     public static Location getMidpoint(Location loc1, Location loc2)
     {
