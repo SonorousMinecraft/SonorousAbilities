@@ -219,6 +219,10 @@ public class SerenityListener implements Listener {
             case "HeavenSlash":
                 new HeavenSlash(player);
                 break;
+            case "ThunderStrike":
+                if (CoreAbility.hasAbility(e.getPlayer(), ThunderStrike.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), ThunderStrike.class).setHasClicked();
+                }
 
         }
 
@@ -302,6 +306,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Shocker":
                 new Shocker(player);
+                break;
+            case "ThunderStrike":
+                new ThunderStrike(player);
                 break;
         }
     }

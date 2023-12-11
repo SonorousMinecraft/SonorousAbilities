@@ -315,6 +315,10 @@ public class ConfigManager {
                 0, 2000, 5000,
                 2, 1.0,0, 20, 1, 0);
 
+        saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "instructions",
+                1000, 5000, 0,
+                2, 0.5,2.0, 30, 0.5, 0);
+
         saveAttributeValuesArchetype(sky, SKY, 0, 0, 0, 0,
                 0.0, 0, 0.2);
 
