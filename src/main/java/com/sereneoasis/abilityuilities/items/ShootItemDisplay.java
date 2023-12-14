@@ -58,7 +58,7 @@ public class ShootItemDisplay extends CoreAbility {
     public void progress() {
 
         if (abilityStatus != AbilityStatus.COMPLETE) {
-            if (armorStand.getVelocity().length() < 0.2) {
+            if (armorStand.getVelocity().length() < 0.01) {
                 if (mightHaveStopped) {
                     this.abilityStatus = AbilityStatus.COMPLETE;
                 }
