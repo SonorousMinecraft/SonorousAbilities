@@ -224,7 +224,12 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), ThunderStrike.class).setHasClicked();
                 }
             case "Tether":
-                new Tether(player);
+                if (CoreAbility.hasAbility(e.getPlayer(), Tether.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Tether.class).setHasClicked();
+                }
+                else{
+                    new Tether(player);
+                }
                 break;
         }
 

@@ -5,31 +5,23 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.items.ShootItemDisplay;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.Laser;
-import com.sereneoasis.util.methods.Display;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
-import org.joml.*;
-
-import java.lang.Math;
 
 public class Tether extends CoreAbility {
 
-    private Location loc;
-    private Vector dir;
     private final String name = "Tether";
 
-    private ShootItemDisplay tether;
+    private ShootItemDisplay tether1, tether2;
 
-    private ArmorStand armorStand;
+    private boolean hasShot2 = false;
 
-    //private FishHook fishHook;
+    private ArmorStand armorStand1, armorStand2;
+
     
     private Laser.GuardianLaser guardianLaser;
 
@@ -40,17 +32,12 @@ public class Tether extends CoreAbility {
             return;
         }
 
-        loc = player.getEyeLocation().clone();
-        dir = loc.getDirection().clone();
-        tether = new ShootItemDisplay(player, name, loc, dir, Material.ARROW, 0.5);
-        armorStand = tether.getArmorStand();
+        Location loc = player.getEyeLocation().clone();
+        Vector dir = loc.getDirection().clone();
+        tether1 = new ShootItemDisplay(player, name, loc, dir, Material.ARROW, 0.5);
+        armorStand1 = tether1.getArmorStand();
 
-//        fishHook = (FishHook) loc.getWorld().spawn(loc, EntityType.FISHING_HOOK.getEntityClass(), (entity) ->
-//        {
-//            FishHook fhook = (FishHook) entity;
-//            fhook.setHookedEntity(armorStand);
-//        });
-        guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), armorStand.getLocation(), -1, 50);
+        guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), armorStand1.getLocation(), -1, 50);
         guardianLaser.start(Serenity.getPlugin());
 
         start();
@@ -58,26 +45,55 @@ public class Tether extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        
-        guardianLaser.moveStart(Locations.getMainHandLocation(player));
-        guardianLaser.moveEnd(armorStand.getLocation());
 
-        if (tether.getAbilityStatus() == AbilityStatus.COMPLETE)
+        if (!hasShot2) {
+            guardianLaser.moveStart(Locations.getMainHandLocation(player));
+        }
+        else{
+            guardianLaser.moveStart(armorStand2.getLocation());
+        }
+        guardianLaser.moveEnd(armorStand1.getLocation());
+
+
+        if (player.isSneaking() && tether1.getAbilityStatus() == AbilityStatus.COMPLETE)
         {
-            player.setVelocity(Vectors.getDirectionBetweenLocations(player.getLocation(), armorStand.getLocation()).normalize());
-            if (armorStand.getLocation().distance(player.getLocation()) < 2)
+            if (hasShot2)
             {
-                this.remove();
+                if (tether2.getAbilityStatus() == AbilityStatus.COMPLETE)
+                {
+                    this.remove();
+                }
             }
+            else {
+                player.setVelocity(Vectors.getDirectionBetweenLocations(player.getLocation(), armorStand1.getLocation()).normalize());
+                if (armorStand1.getLocation().distance(player.getLocation()) < 2) {
+                    this.remove();
+                }
+            }
+        }
+    }
+
+    public void setHasClicked()
+    {
+        if (!hasShot2)
+        {
+            hasShot2 = true;
+            Location loc = player.getEyeLocation().clone();
+            Vector dir = loc.getDirection().clone();
+            tether2 = new ShootItemDisplay(player, name, loc, dir, Material.ARROW, 0.5);
+            armorStand2 = tether2.getArmorStand();
         }
     }
 
     @Override
     public void remove() {
         super.remove();
-        //fishHook.remove();
         guardianLaser.stop();
-        tether.remove();
+        tether1.remove();
+        if (hasShot2)
+        {
+            tether2.remove();
+        }
         sPlayer.addCooldown(name, cooldown);
     }
 
