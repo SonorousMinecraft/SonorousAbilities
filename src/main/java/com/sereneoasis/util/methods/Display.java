@@ -42,6 +42,7 @@ public class Display {
         {
             ArmorStand aStand = (ArmorStand) entity;
             aStand.setInvulnerable(true);
+            aStand.setSmall(true);
             aStand.setVisible(false);
         }));
         return armorStand;

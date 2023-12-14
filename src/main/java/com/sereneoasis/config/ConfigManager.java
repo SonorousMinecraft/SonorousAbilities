@@ -332,7 +332,7 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(war, "Tether", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                0, 1.0,0.5, 20, 1, 0);
+                0, 1.0,0.5, 20, 2, 0);
 
 
         saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,

@@ -3,10 +3,12 @@ package com.sereneoasis.abilityuilities.items;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Display;
+import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
@@ -29,14 +31,14 @@ public class ShootItemDisplay extends CoreAbility {
 
     private double oldPitch;
 
-    private boolean mightHaveStopped = false;
+    private boolean mightHaveStopped = false, stick;
 
-
-    public ShootItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double size) {
+    public ShootItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double size, boolean stick) {
         super(player, name);
 
         this.name = name;
         this.dir = dir.clone();
+        this.stick = stick;
 
         abilityStatus = AbilityStatus.SHOT;
 
@@ -48,38 +50,48 @@ public class ShootItemDisplay extends CoreAbility {
 
         itemDisplay = Display.createItemDisplay(loc, material, dir, size);
         armorStand = Display.createArmorStand(loc);
-        armorStand.setVelocity(dir);
+        armorStand.setVelocity(dir.clone().multiply(speed));
         start();
     }
 
     @Override
     public void progress() {
 
-        if (armorStand.getVelocity().length() < 0.2)
-        {
-            if (mightHaveStopped)
-            {
-                this.abilityStatus = AbilityStatus.COMPLETE;
+        if (abilityStatus != AbilityStatus.COMPLETE) {
+            if (armorStand.getVelocity().length() < 0.2) {
+                if (mightHaveStopped) {
+                    this.abilityStatus = AbilityStatus.COMPLETE;
+                }
+                mightHaveStopped = true;
+            } else {
+
+                Transformation transformation = itemDisplay.getTransformation();
+                if (Vectors.getAngleBetweenVectors(dir, armorStand.getVelocity()) > 0.1) {
+                    tempLoc.setDirection(armorStand.getVelocity());
+                    Quaternionf quaternionf = transformation.getLeftRotation();
+                    quaternionf = quaternionf.rotateAxis((float) Math.toRadians(tempLoc.getPitch() - oldPitch),
+                            new Vector3f((float) orth.getX(), (float) orth.getY(), (float) orth.getZ()));
+                    oldPitch = tempLoc.getPitch();
+                    transformation.getLeftRotation().set(quaternionf);
+                    itemDisplay.setTransformation(transformation);
+                }
+
+                dir = armorStand.getVelocity().clone().normalize();
+                itemDisplay.teleport(armorStand);
+
+                if (stick) {
+                    Block b = Entities.getCollidedBlock(armorStand);
+                    if (b!= null)
+                    {
+                        armorStand.setVelocity(new Vector(0,0,0));
+                        armorStand.setGravity(false);
+                        itemDisplay.teleport(armorStand);
+
+                        abilityStatus = AbilityStatus.COMPLETE;
+                    }
+                }
             }
-            mightHaveStopped = true;
         }
-        else{
-
-            Transformation transformation = itemDisplay.getTransformation();
-            if (Vectors.getAngleBetweenVectors(dir, armorStand.getVelocity()) > 0.1) {
-                tempLoc.setDirection(armorStand.getVelocity());
-                Quaternionf quaternionf = transformation.getLeftRotation();
-                quaternionf = quaternionf.rotateAxis((float) Math.toRadians(tempLoc.getPitch() - oldPitch),
-                        new Vector3f((float) orth.getX(), (float) orth.getY(), (float) orth.getZ()));
-                oldPitch = tempLoc.getPitch();
-                transformation.getLeftRotation().set(quaternionf);
-                itemDisplay.setTransformation(transformation);
-            }
-
-            dir = armorStand.getVelocity().clone().normalize();
-            itemDisplay.teleport(armorStand);
-        }
-
     }
 
 

@@ -153,6 +153,45 @@ public class Entities {
     {
         Vector dir = Vectors.getDirectionBetweenLocations(loc1, loc2);
         return getFacingEntity(loc1, dir.clone().normalize(), dir.length());
+    }
 
+    public static Block getCollidedBlock(Entity entity)
+    {
+        Location loc = entity.getLocation();
+        Vector dir = entity.getVelocity().clone().normalize();
+        double distance = 1.0;
+        Block block = null;
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER) != null)
+        {
+            block = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER).getHitBlock();
+        }
+        return block;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
