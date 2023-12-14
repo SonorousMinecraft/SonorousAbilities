@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.ClickType;
 import java.util.*;
 
 import static com.sereneoasis.archetypes.Archetype.SKY;
+import static com.sereneoasis.archetypes.Archetype.WAR;
 
 /**
  * @author Sakrajin
@@ -325,6 +326,21 @@ public class ConfigManager {
         saveArchetypeCosmetics(sky, SKY, "#BCC8C6");
         sky.options().copyDefaults(true);
         getConfig(SKY).saveConfig();
+
+        FileConfiguration war = getConfig(WAR).getConfig();
+
+        //Ability configuration
+        saveConfigValuesAbility(war, "Tether", WAR.toString(), "description", "instructions",
+                0, 5000, 0,
+                0, 1.0,0.5, 20, 1, 0);
+
+
+        saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
+                1.0, 0.5, 0.1);
+
+        saveArchetypeCosmetics(war, WAR, "#FF8000");
+        war.options().copyDefaults(true);
+        getConfig(WAR).saveConfig();
 
     }
 

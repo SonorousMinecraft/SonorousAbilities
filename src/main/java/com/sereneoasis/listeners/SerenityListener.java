@@ -8,6 +8,7 @@ import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
+import com.sereneoasis.archetypes.war.Tether;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -103,8 +104,7 @@ public class SerenityListener implements Listener {
     }
 
     @EventHandler
-    public void onSwing(PlayerInteractEvent e)
-    {
+    public void onSwing(PlayerInteractEvent e) throws ReflectiveOperationException {
         Player player = e.getPlayer();
         if (player == null)
         {
@@ -223,7 +223,9 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), ThunderStrike.class)) {
                     CoreAbility.getAbility(e.getPlayer(), ThunderStrike.class).setHasClicked();
                 }
-
+            case "Tether":
+                new Tether(player);
+                break;
         }
 
     }

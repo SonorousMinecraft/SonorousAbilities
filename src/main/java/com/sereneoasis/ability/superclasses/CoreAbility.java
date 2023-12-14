@@ -109,8 +109,7 @@ public abstract class CoreAbility implements Ability {
 
     }
 
-    public static void progressAll()
-    {
+    public static void progressAll() throws ReflectiveOperationException {
         for (CoreAbility abil : INSTANCES)
         {
             abil.progress();
