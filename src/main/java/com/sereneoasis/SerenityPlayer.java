@@ -41,7 +41,8 @@ public class SerenityPlayer {
         HashMap<Integer,String> clonedAbilities = new HashMap<>();
         abilities.forEach((slot,abil) ->
         {
-            clonedAbilities.put(slot,abil);
+            String tempString = abil;
+            clonedAbilities.put(slot,tempString);
         });
         presets.put(name,clonedAbilities);
     }
