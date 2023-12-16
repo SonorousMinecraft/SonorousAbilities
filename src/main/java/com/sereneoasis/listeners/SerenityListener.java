@@ -8,6 +8,7 @@ import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
+import com.sereneoasis.archetypes.war.Jab;
 import com.sereneoasis.archetypes.war.Tether;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
@@ -230,6 +231,9 @@ public class SerenityListener implements Listener {
                 else{
                     new Tether(player);
                 }
+                break;
+            case "Jab":
+                new Jab(player);
                 break;
         }
 

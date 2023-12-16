@@ -334,6 +334,9 @@ public class ConfigManager {
                 0, 5000, 0,
                 0, 1.0,0.5, 20, 2, 0);
 
+        saveConfigValuesAbility(war, "Jab", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 0,0, 10, 1.5, 0);
 
         saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
                 1.0, 0.5, 0.1);
