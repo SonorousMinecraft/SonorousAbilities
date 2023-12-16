@@ -2,7 +2,7 @@ package com.sereneoasis.archetypes.war;
 
 import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.items.ShootItemDisplay;
+import com.sereneoasis.abilityuilities.items.ThrowItemDisplay;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.Laser;
 import com.sereneoasis.util.methods.Entities;
@@ -20,7 +20,7 @@ public class Tether extends CoreAbility {
 
     private final String name = "Tether";
 
-    private ShootItemDisplay tether1, tether2;
+    private ThrowItemDisplay tether1, tether2;
 
     private boolean hasShot2 = false;
 
@@ -37,7 +37,7 @@ public class Tether extends CoreAbility {
 
         Location loc = player.getEyeLocation().clone();
         Vector dir = loc.getDirection().clone();
-        tether1 = new ShootItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true);
+        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true, true);
         armorStand1 = tether1.getArmorStand();
 
         guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), armorStand1.getLocation(), -1, 50);
@@ -96,7 +96,7 @@ public class Tether extends CoreAbility {
             hasShot2 = true;
             Location loc = player.getEyeLocation().clone();
             Vector dir = loc.getDirection().clone();
-            tether2 = new ShootItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true);
+            tether2 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true, true);
             armorStand2 = tether2.getArmorStand();
         }
         else{

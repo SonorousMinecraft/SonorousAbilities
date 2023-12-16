@@ -338,6 +338,10 @@ public class ConfigManager {
                 0, 2000, 0,
                 2, 0,0, 10, 1.5, 0);
 
+        saveConfigValuesAbility(sky, "Rocket", SKY.toString(), "description", "instructions",
+                0, 5000, 0,
+                4, 3.0,0, 30, 0.8, 0);
+
         saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
                 1.0, 0.5, 0.1);
 

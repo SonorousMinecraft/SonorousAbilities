@@ -14,7 +14,7 @@ import java.lang.Math;
 
 public class Display {
 
-    public static ItemDisplay createItemDisplay(Location loc, Material material, Vector dir, double size)
+    public static ItemDisplay createItemDisplay(Location loc, Material material, double size, boolean diagonal)
     {
         ItemDisplay itemDisplay = (ItemDisplay) loc.getWorld().spawn(loc, EntityType.ITEM_DISPLAY.getEntityClass(), (entity) ->
         {
@@ -23,20 +23,26 @@ public class Display {
             iDisplay.setItemStack(itemStack);
             iDisplay.setBillboard(org.bukkit.entity.Display.Billboard.FIXED);
             Transformation transformation = iDisplay.getTransformation();
-
             transformation.getScale().set(size);
-            Vector orth = Vectors.getDirectionBetweenLocations(Locations.getLeftSide(loc, 0.5), Locations.getRightSide(loc, 0.5)  );
-
+            transformation.getTranslation().set(new Vector3d(-size/2, 0,-size/2));
             Quaternionf quaternionf = transformation.getLeftRotation();
-            quaternionf = quaternionf.rotateY((float) Math.toRadians(90));
-            quaternionf = quaternionf.rotateAxis((float) -Math.toRadians(22.5), new Vector3f((float) orth.getX(), 0, (float) orth.getZ()));
+
+            double faceForward;
+            if (diagonal)
+            {
+                faceForward = 45;
+            }
+            else{
+                faceForward = 90;
+            }
+            quaternionf.rotateXYZ((float) Math.toRadians(90), (float) -Math.toRadians(faceForward), 0);
             transformation.getLeftRotation().set(quaternionf);
             iDisplay.setTransformation(transformation);
         });
         return itemDisplay;
     }
 
-    public static ArmorStand createArmorStand(Location loc)
+    public static ArmorStand createArmorStand(Location loc, boolean hasGravity)
     {
         ArmorStand armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
         {
@@ -44,6 +50,7 @@ public class Display {
             aStand.setInvulnerable(true);
             aStand.setSmall(true);
             aStand.setVisible(false);
+            //aStand.setGravity(hasGravity);
         }));
         return armorStand;
     }
