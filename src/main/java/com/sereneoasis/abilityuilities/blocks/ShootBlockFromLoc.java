@@ -24,28 +24,24 @@ public class ShootBlockFromLoc extends CoreAbility {
     private Location loc;
     private String user;
 
-    private DisplayBlock type;
-
     private boolean directable, autoRemove;
-
 
     private Vector dir;
 
-    
+    private TempDisplayBlock block;
 
-    private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
 
-    private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
-
-    public ShootBlockFromLoc(Player player, String user, Location startLoc, DisplayBlock type, boolean directable, boolean autoRemove) {
+    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove, double size) {
         super(player, user);
         this.user = user;
-        this.type = type;
         this.loc = startLoc;
         this.directable = directable;
         this.autoRemove = autoRemove;
         this.dir = player.getEyeLocation().getDirection().normalize();
         this.abilityStatus = AbilityStatus.SHOT;
+
+        block = new TempDisplayBlock(loc, type, 60000, size);
+        abilityStatus = AbilityStatus.SHOT;
         start();
     }
 
@@ -53,43 +49,33 @@ public class ShootBlockFromLoc extends CoreAbility {
     public void progress() {
 
 
-        if (loc.distance(player.getEyeLocation()) > range) {
-            abilityStatus = AbilityStatus.COMPLETE;
-            if (autoRemove){
-                this.remove();
+        if (abilityStatus == AbilityStatus.SHOT) {
+
+            loc.add(dir.clone().multiply(speed));
+            block.teleport(loc);
+
+            if (directable) {
+                dir = player.getEyeLocation().getDirection().normalize();
             }
 
-            return;
-        }
+            DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
 
-        List<Location> locs = null;
 
-        if (directable) {
-            dir = player.getEyeLocation().getDirection().normalize();
-            if (System.currentTimeMillis() > lastCurveTime+timeBetweenCurves) {
-                directions.put(dir, speed);
-                lastCurveTime = System.currentTimeMillis();
+            if (loc.distance(player.getEyeLocation()) > range) {
+                abilityStatus = AbilityStatus.COMPLETE;
+                if (autoRemove) {
+                    this.remove();
+                }
             }
-            locs = Locations.getBezierCurveLocations(loc, 20, directions, speed);
 
         }
-        else{
-            locs = Locations.getShotLocations(loc, 20, dir, speed);
-        }
-
-
-        for (Location point : locs)
-        {
-            new TempDisplayBlock(point, type, 200, Math.random() * hitbox);
-        }
-
-        DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
-        loc.add(dir.clone().multiply(speed));
 
     }
 
-    public void setDir(Vector dir) {
-        this.dir = dir;
+    @Override
+    public void remove() {
+        super.remove();
+        block.revert();
     }
 
     public Location getLoc() {

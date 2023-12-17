@@ -4,13 +4,10 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
+import com.sereneoasis.abilityuilities.blocks.ShootBlocksFromLoc;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Blocks;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 /**
@@ -27,7 +24,7 @@ public class Torrent extends CoreAbility {
 
     private BlockRingAroundPlayer blockRingAroundPlayer;
 
-    private ShootBlockFromLoc shootBlockFromLoc;
+    private ShootBlocksFromLoc shootBlocksFromLoc;
 
 
 
@@ -76,9 +73,9 @@ public class Torrent extends CoreAbility {
 
 
         if (abilityStatus == AbilityStatus.SHOT) {
-                if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE)
+                if (shootBlocksFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE)
                 {
-                    shootBlockFromLoc.remove();
+                    shootBlocksFromLoc.remove();
 
                     this.remove();
                 }
@@ -92,7 +89,7 @@ public class Torrent extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCED)
         {
             abilityStatus = AbilityStatus.SHOT;
-            shootBlockFromLoc = new ShootBlockFromLoc(player, name, blockRingAroundPlayer.getLocation(), DisplayBlock.WATER, true, true);
+            shootBlocksFromLoc = new ShootBlocksFromLoc(player, name, blockRingAroundPlayer.getLocation(), DisplayBlock.WATER, true, true);
             blockRingAroundPlayer.remove();
         }
     }
@@ -109,9 +106,9 @@ public class Torrent extends CoreAbility {
         {
             blockRingAroundPlayer.remove();
         }
-        if (shootBlockFromLoc != null)
+        if (shootBlocksFromLoc != null)
         {
-            shootBlockFromLoc.remove();
+            shootBlocksFromLoc.remove();
         }
     }
 

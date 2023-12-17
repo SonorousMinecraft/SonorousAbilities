@@ -1,13 +1,12 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
+import com.sereneoasis.abilityuilities.blocks.ShootBlocksFromLoc;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -57,7 +56,7 @@ public class Blizzard extends CoreAbility {
         Location tempLoc = player.getEyeLocation();
         Vector dir = tempLoc.getDirection().normalize();
 
-        new ShootBlockFromLoc(player, name, tempLoc.add(dir.multiply(radius)), DisplayBlock.ICE, true, true);
+        new ShootBlocksFromLoc(player, name, tempLoc.add(dir.multiply(radius)), DisplayBlock.ICE, true, true);
     }
 
     @Override

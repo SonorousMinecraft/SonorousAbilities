@@ -376,6 +376,10 @@ public class ConfigManager {
 
         saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
 
+        saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,0, 20, 1, 10);
+
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);
 

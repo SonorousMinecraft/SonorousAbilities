@@ -5,6 +5,7 @@ import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
+import com.sereneoasis.archetypes.earth.RockKick;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
@@ -219,6 +220,11 @@ public class SerenityListener implements Listener {
                     new Grenades(player);
                 }
                 break;
+            case "RockKick":
+                if (CoreAbility.hasAbility(e.getPlayer(), RockKick.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), RockKick.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -305,6 +311,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Katana":
                 new Katana(player);
+                break;
+            case "RockKick":
+                new RockKick(player);
                 break;
         }
     }

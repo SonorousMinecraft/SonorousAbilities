@@ -4,12 +4,10 @@ import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -137,6 +135,20 @@ public class Entities {
             return (LivingEntity) rayTraceResult.getHitEntity();
         }
         return null;
+    }
+
+    public static boolean playerLookingAt(Player player, Entity target, double maxDistance)
+    {
+        BoundingBox boundingBox = target.getBoundingBox();
+        Bukkit.broadcastMessage(String.valueOf(boundingBox.getHeight()));
+        Location loc = player.getEyeLocation().clone();
+        Vector dir = player.getEyeLocation().getDirection().clone().normalize();
+        RayTraceResult rayTraceResult = boundingBox.rayTrace(loc.toVector(), dir, maxDistance);
+        if (rayTraceResult != null)
+        {
+            return true;
+        }
+        return false;
     }
 
     public static LivingEntity getFacingEntity(Location loc, Vector dir, double distance)

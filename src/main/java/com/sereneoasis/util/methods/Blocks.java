@@ -4,12 +4,15 @@ import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Color;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +41,7 @@ public class Blocks {
 
     public static Block getFacingBlock(Player player, double distance)
     {
-        Location loc = player.getEyeLocation();
+        Location loc = player.getEyeLocation().clone();
         Block block = null;
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER) != null)
         {
@@ -46,6 +49,34 @@ public class Blocks {
         }
         return block;
     }
+
+    public static Location getFacingBlockLoc(Player player, double distance)
+    {
+        Location loc = player.getEyeLocation().clone();
+        RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER);
+        if (rayTraceResult != null)
+        {
+            return new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
+        }
+        return null;
+    }
+
+    public static boolean playerLookingAtBlockDisplay(Player player, BlockDisplay target, double maxDistance, double size)
+    {
+        Location lowest = target.getLocation();
+        Location highest = lowest.clone().add(size, size, size);
+        BoundingBox boundingBox = new BoundingBox(lowest.getX(), lowest.getY(), lowest.getZ(), highest.getX(), highest.getY(), highest.getZ());
+        Bukkit.broadcastMessage(String.valueOf(boundingBox.getHeight()));
+        Location loc = player.getEyeLocation().clone();
+        Vector dir = player.getEyeLocation().getDirection().clone().normalize();
+        RayTraceResult rayTraceResult = boundingBox.rayTrace(loc.toVector(), dir, maxDistance);
+        if (rayTraceResult != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     public static Block getFacingBlockOrLiquid(Player player, double distance)
     {
