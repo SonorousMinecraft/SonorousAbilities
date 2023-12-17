@@ -10,6 +10,7 @@ import com.sereneoasis.util.methods.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -134,6 +135,47 @@ public class SerenityPlayer {
         this.archetype = archetype;
         this.player = player;
         this.presets = presets;
+    }
+
+    public static void initialisePlayer(Player player)
+    {
+        SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SerenityBoard board = SerenityBoard.createScore(player, serenityPlayer);
+        board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
+        board.setAboveSlot(2, "Abilities:");
+        board.setBelowSlot(1, "Combos:");
+        int slot = 2;
+
+        for (String abil : AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype())) {
+            if (AbilityDataManager.getComboDataMap().containsKey(abil)) {
+                board.setBelowSlot(slot, abil);
+                slot++;
+            }
+        }
+        for (int i : serenityPlayer.getAbilities().keySet()) {
+            board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
+        }
+        initialiseAttributePlayer(player, serenityPlayer);
+    }
+
+    public static void initialiseAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
+        removeAttributePlayer(player, serenityPlayer);
+        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
+        {
+            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), "Serenity." + attribute.toString(), value,
+                    AttributeModifier.Operation.ADD_NUMBER);
+
+            player.getAttribute(attribute).addModifier(attributeModifier);
+        });
+    }
+
+    public static void removeAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
+        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
+        {
+            player.getAttribute(attribute).getModifiers().forEach(attributeModifier -> {
+                player.getAttribute(attribute).removeModifier(attributeModifier);
+            });
+        });
     }
 
     public static void loadPlayer(UUID uuid, Player player) {

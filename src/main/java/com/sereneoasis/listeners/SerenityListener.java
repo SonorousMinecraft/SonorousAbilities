@@ -27,6 +27,8 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.UUID;
 
+import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
+
 /**
  * @author Sakrajin
  * Main listener for all serenity events
@@ -34,25 +36,7 @@ import java.util.UUID;
 public class SerenityListener implements Listener {
 
 
-    public static void initialiseAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
-        removeAttributePlayer(player, serenityPlayer);
-        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
-        {
-            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), "Serenity." + attribute.toString(), value,
-                    AttributeModifier.Operation.ADD_NUMBER);
 
-            player.getAttribute(attribute).addModifier(attributeModifier);
-        });
-    }
-
-    public static void removeAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
-        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
-        {
-            player.getAttribute(attribute).getModifiers().forEach(attributeModifier -> {
-                player.getAttribute(attribute).removeModifier(attributeModifier);
-            });
-        });
-    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -61,27 +45,11 @@ public class SerenityListener implements Listener {
         SerenityPlayer.loadPlayer(player.getUniqueId(), player);
 
         Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), () -> {
-            SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
-            SerenityBoard board = SerenityBoard.createScore(player, serenityPlayer);
-            board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
-            board.setAboveSlot(2, "Abilities:");
-            board.setBelowSlot(1, "Combos:");
-            int slot = 2;
-
-            for (String abil : AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype())) {
-                if (AbilityDataManager.getComboDataMap().containsKey(abil)) {
-                    board.setBelowSlot(slot, abil);
-                    slot++;
-                }
-            }
-            for (int i : serenityPlayer.getAbilities().keySet()) {
-                board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
-            }
-            initialiseAttributePlayer(player, serenityPlayer);
+            SerenityPlayer.initialisePlayer(player);
 
         }, 150L);
-
     }
+
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {

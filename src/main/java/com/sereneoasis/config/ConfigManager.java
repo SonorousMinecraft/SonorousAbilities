@@ -11,8 +11,7 @@ import org.bukkit.event.inventory.ClickType;
 
 import java.util.*;
 
-import static com.sereneoasis.archetypes.Archetype.SKY;
-import static com.sereneoasis.archetypes.Archetype.WAR;
+import static com.sereneoasis.archetypes.Archetype.*;
 
 /**
  * @author Sakrajin
@@ -365,6 +364,24 @@ public class ConfigManager {
         war.options().copyDefaults(true);
         getConfig(WAR).saveConfig();
 
+
+        FileConfiguration earth = getConfig(EARTH).getConfig();
+
+        Set<Tag<Material>>earthTags = new HashSet<>();
+        earthTags.add(Tag.DIRT);
+        earthTags.add(Tag.STONE_BRICKS);
+        earthTags.add(Tag.SAND);
+        Set<Material>earthBlocks = new HashSet<>();
+        earthBlocks.add(Material.GRASS_BLOCK);
+
+        saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
+
+        saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
+                1.0, 1.0, 0.2);
+
+        saveArchetypeCosmetics(earth, EARTH, "#50C878");
+        earth.options().copyDefaults(true);
+        getConfig(EARTH).saveConfig();
     }
 
 

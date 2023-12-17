@@ -13,7 +13,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
-import static com.sereneoasis.listeners.SerenityListener.initialiseAttributePlayer;
+import static com.sereneoasis.SerenityPlayer.initialiseAttributePlayer;
+import static com.sereneoasis.SerenityPlayer.initialisePlayer;
+
 
 /**
  * @author Sakrajin
@@ -55,8 +57,7 @@ public class SerenityCommand implements CommandExecutor {
                                 }
                                 else{
                                     sPlayer.setArchetype(archetype);
-                                    SerenityBoard.getByPlayer(player).setAboveSlot(1, archetype.toString());
-                                    initialiseAttributePlayer(player, sPlayer);
+                                    initialisePlayer(player);
                                     return true;
                                 }
                             }
