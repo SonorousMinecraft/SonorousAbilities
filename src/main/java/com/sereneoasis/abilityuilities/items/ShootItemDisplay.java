@@ -25,7 +25,7 @@ public class ShootItemDisplay extends CoreAbility {
 
     private ArmorStand armorStand;
 
-    private Location tempLoc;
+    private Location origin, tempLoc;
 
     private Vector dir;
 
@@ -43,13 +43,18 @@ public class ShootItemDisplay extends CoreAbility {
 
         abilityStatus = AbilityStatus.SHOT;
 
+        this.origin = loc.clone();
+
         tempLoc = loc.clone();
         tempLoc.setDirection(dir.clone());
         oldPitch = tempLoc.getPitch();
 
-        itemDisplay = Display.createItemDisplay(loc, material, size, diagonal);
-        armorStand = Display.createArmorStand(loc, false);
 
+        Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(loc.getYaw()));
+        Location offsetLocation = loc.clone().add(offsetFix);
+        itemDisplay = Display.createItemDisplay(offsetLocation, material, size, diagonal);
+        armorStand = Display.createArmorStand(offsetLocation);
+        armorStand.addPassenger(itemDisplay);
         armorStand.setVelocity(dir.clone().multiply(speed));
         start();
     }
@@ -58,31 +63,25 @@ public class ShootItemDisplay extends CoreAbility {
     public void progress() {
 
         if (abilityStatus != AbilityStatus.COMPLETE) {
-            Transformation transformation = itemDisplay.getTransformation();
-            Quaternionf quaternionf = transformation.getLeftRotation();
-            if (Vectors.getAngleBetweenVectors(dir, armorStand.getVelocity()) > 0.1) {
-                tempLoc.setDirection(armorStand.getVelocity());
-                quaternionf.rotateX((float) Math.toRadians(tempLoc.getPitch() - oldPitch));
-                oldPitch = tempLoc.getPitch();
-                transformation.getLeftRotation().set(quaternionf);
-            }
-            itemDisplay.setTransformation(transformation);
-
 
             armorStand.setVelocity(dir.clone().multiply(speed));
-            Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
-            itemDisplay.teleport(armorStand.getLocation().clone().add(offsetFix));
 
-            if (stick) {
-                Block b = Entities.getCollidedBlock(armorStand);
-                if (b != null) {
-                    armorStand.setVelocity(new Vector(0, 0, 0));
-                    armorStand.setGravity(false);
-                    itemDisplay.teleport(armorStand);
-
-                    abilityStatus = AbilityStatus.COMPLETE;
-                }
+            if (armorStand.getLocation().distance(origin) > range) {
+                abilityStatus = AbilityStatus.COMPLETE;
             }
+
+            Block b = getLoc().getBlock();
+            if (b.getType().isSolid()) {
+                armorStand.setVelocity(new Vector(0, 0, 0));
+                armorStand.setGravity(false);
+
+                abilityStatus = AbilityStatus.COMPLETE;
+                    if (!stick) {
+                        itemDisplay.remove();
+                    }
+                }
+
+
         }
     }
 
@@ -96,15 +95,21 @@ public class ShootItemDisplay extends CoreAbility {
         return armorStand;
     }
 
+    public Location getLoc()
+    {
+        Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
+        return armorStand.getLocation().clone().subtract(offsetFix);
+    }
+
     @Override
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        if (armorStand != null) {
-            armorStand.remove();
-        }
         if (itemDisplay != null) {
             itemDisplay.remove();
+        }
+        if (armorStand != null) {
+            armorStand.remove();
         }
     }
 

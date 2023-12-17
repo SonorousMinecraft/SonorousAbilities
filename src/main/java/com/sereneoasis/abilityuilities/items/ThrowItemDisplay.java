@@ -25,7 +25,6 @@ public class ThrowItemDisplay extends CoreAbility {
 
     private ArmorStand armorStand;
 
-    private Vector dir, orth;
 
     private double oldPitch, size;
 
@@ -35,18 +34,23 @@ public class ThrowItemDisplay extends CoreAbility {
         super(player, name);
 
         this.name = name;
-        this.dir = dir.clone();
         this.stick = stick;
         this.size = size;
 
         abilityStatus = AbilityStatus.SHOT;
 
-        orth = Vectors.getDirectionBetweenLocations(Locations.getLeftSide(loc, 0.5), Locations.getRightSide(loc, 0.5));
 
-        itemDisplay = Display.createItemDisplay(loc, material, size, diagonal);
-        armorStand = Display.createArmorStand(loc, true);
+
+        Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(loc.getYaw()));
+        Location offsetLocation = loc.clone().add(offsetFix);
+        itemDisplay = Display.createItemDisplay(offsetLocation, material, size, diagonal);
+        armorStand = Display.createArmorStand(offsetLocation);
+        armorStand.addPassenger(itemDisplay);
         armorStand.setVelocity(dir.clone().multiply(speed));
-        oldPitch = armorStand.getLocation().getPitch();
+
+        Location tempLoc = armorStand.getLocation().clone().setDirection(armorStand.getVelocity().clone());
+        oldPitch = tempLoc.getPitch();
+
         start();
     }
 
@@ -62,25 +66,22 @@ public class ThrowItemDisplay extends CoreAbility {
             } else {
 
                 Transformation transformation = itemDisplay.getTransformation();
-                if (Vectors.getAngleBetweenVectors(dir, armorStand.getVelocity()) > 0.1) {
-                    Quaternionf quaternionf = transformation.getLeftRotation();
-                    quaternionf = quaternionf.rotateAxis((float) Math.toRadians(armorStand.getLocation().getPitch() - oldPitch),
-                            new Vector3f((float) orth.getX(), (float) orth.getY(), (float) orth.getZ()));
-                    oldPitch = armorStand.getLocation().getPitch();
-                    transformation.getLeftRotation().set(quaternionf);
-                    itemDisplay.setTransformation(transformation);
-                }
+                Quaternionf quaternionf = transformation.getLeftRotation();
+                Location tempLoc = armorStand.getLocation().clone().setDirection(armorStand.getVelocity().clone());
+                quaternionf.rotateZ((float) -Math.toRadians(tempLoc.getPitch() - oldPitch));
 
-                dir = armorStand.getVelocity().clone().normalize();
-                Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
-                itemDisplay.teleport(armorStand.getLocation().clone().add(offsetFix));
+
+                oldPitch = tempLoc.getPitch();
+                transformation.getLeftRotation().set(quaternionf);
+
+                itemDisplay.setTransformation(transformation);
+
 
                 if (stick) {
-                    Block b = Entities.getCollidedBlock(armorStand);
-                    if (b != null) {
+                    Block b = getLoc().getBlock();
+                    if (b.getType().isSolid()) {
                         armorStand.setVelocity(new Vector(0, 0, 0));
                         armorStand.setGravity(false);
-                        itemDisplay.teleport(armorStand);
 
                         abilityStatus = AbilityStatus.COMPLETE;
                     }
@@ -94,16 +95,23 @@ public class ThrowItemDisplay extends CoreAbility {
         return armorStand;
     }
 
+    public Location getLoc()
+    {
+        Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
+        return armorStand.getLocation().clone().subtract(offsetFix);
+    }
+
     @Override
     public void remove() {
         super.remove();
-        sPlayer.addCooldown(name, cooldown);
-        if (armorStand != null) {
-            armorStand.remove();
-        }
+
         if (itemDisplay != null) {
             itemDisplay.remove();
         }
+        if (armorStand != null) {
+            armorStand.remove();
+        }
+
     }
 
     @Override

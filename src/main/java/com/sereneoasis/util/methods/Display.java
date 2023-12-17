@@ -30,19 +30,19 @@ public class Display {
             double faceForward;
             if (diagonal)
             {
-                faceForward = 45;
+                faceForward = 75;
             }
             else{
                 faceForward = 90;
             }
-            quaternionf.rotateXYZ((float) Math.toRadians(90), (float) -Math.toRadians(faceForward), 0);
+            quaternionf.rotateXYZ( 0, (float) -Math.toRadians(90), (float) -Math.toRadians(faceForward));
             transformation.getLeftRotation().set(quaternionf);
             iDisplay.setTransformation(transformation);
         });
         return itemDisplay;
     }
 
-    public static ArmorStand createArmorStand(Location loc, boolean hasGravity)
+    public static ArmorStand createArmorStand(Location loc)
     {
         ArmorStand armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
         {
@@ -50,7 +50,6 @@ public class Display {
             aStand.setInvulnerable(true);
             aStand.setSmall(true);
             aStand.setVisible(false);
-            //aStand.setGravity(hasGravity);
         }));
         return armorStand;
     }

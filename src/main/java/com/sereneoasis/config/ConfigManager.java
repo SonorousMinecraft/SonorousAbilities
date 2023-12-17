@@ -338,9 +338,25 @@ public class ConfigManager {
                 0, 2000, 0,
                 2, 0,0, 10, 1.5, 0);
 
-        saveConfigValuesAbility(sky, "Rocket", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
                 4, 3.0,0, 30, 0.8, 0);
+
+        saveConfigValuesAbility(war, "Formless", Archetype.WAR.toString(), "description", "instructions",
+                2000, 5000, 30000,
+                0, 0,0, 0, 1, 0);
+
+        saveConfigValuesAbility(war, "Katana", Archetype.WAR.toString(), "description", "instructions",
+                2000, 5000, 30000,
+                0, 0,0, 0, 1, 0);
+
+        saveConfigValuesAbility(war, "Spear", WAR.toString(), "description", "instructions",
+                0, 5000, 0,
+                4, 1.0,0, 30, 1.5, 0);
+
+        saveConfigValuesAbility(war, "Grenades", WAR.toString(), "description", "instructions",
+                2000, 1000, 0,
+                4, 2.0,0, 30, 1.5, 0);
 
         saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
                 1.0, 0.5, 0.1);
