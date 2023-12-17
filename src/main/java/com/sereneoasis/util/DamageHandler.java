@@ -20,8 +20,8 @@ public class DamageHandler {
         if (entity != null) {
             if (entity instanceof LivingEntity livingEntity) {
                 livingEntity.damage(damage, source);
-                Event abilityDamageEntityEvent = new AbilityDamageEntityEvent(source, livingEntity, ability, damage);
-                Bukkit.getServer().getPluginManager().callEvent(abilityDamageEntityEvent);
+                //Event abilityDamageEntityEvent = new AbilityDamageEntityEvent(source, livingEntity, ability, damage);
+                //Bukkit.getServer().getPluginManager().callEvent(abilityDamageEntityEvent);
             }
         }
     }

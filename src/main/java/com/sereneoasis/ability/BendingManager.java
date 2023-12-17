@@ -27,7 +27,11 @@ public class BendingManager implements Runnable{
     @Override
     public void run() {
 
-        CoreAbility.progressAll();
+        try {
+            CoreAbility.progressAll();
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
         this.handleCooldowns();
 
         while (!TempBlock.getRevertQueue().isEmpty())

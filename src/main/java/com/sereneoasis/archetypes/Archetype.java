@@ -11,8 +11,9 @@ public enum Archetype {
     OCEAN("ocean"),
     SUN("sun"),
 
-    SKY("sky");
-    //WAR("war"),
+    SKY("sky"),
+    WAR("war"),
+    EARTH("earth");
     //NETHER("nether"),
     //EARTH("earth"),
     //NATURE("nature");

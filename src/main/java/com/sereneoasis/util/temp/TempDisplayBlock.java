@@ -31,13 +31,13 @@ public class TempDisplayBlock {
         return REVERT_QUEUE;
     }
 
-    private BlockDisplay blockDisplay;
+    private final BlockDisplay blockDisplay;
 
     private long revertTime;
 
     public TempDisplayBlock(Location loc, DisplayBlock blocks, final long revertTime, double size) {
 
-        blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
+        this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
         {
             BlockDisplay bDisplay = (BlockDisplay)entity;
             SplittableRandom splittableRandom = new SplittableRandom();
@@ -58,12 +58,25 @@ public class TempDisplayBlock {
     }
 
     public TempDisplayBlock(Location loc, Material block, final long revertTime, double size) {
-        new TempDisplayBlock(loc, block, revertTime, size, false, null);
+        this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
+        {
+            BlockDisplay bDisplay = (BlockDisplay)entity;
+            bDisplay.setBlock(block.createBlockData());
+            Transformation transformation = bDisplay.getTransformation();
+            //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
+            transformation.getScale().set(size);
+            bDisplay.setViewRange(30);
+            //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
+            bDisplay.setTransformation(transformation);
+
+        });
+        this.revertTime = System.currentTimeMillis() + revertTime;
+        REVERT_QUEUE.add(this);
     }
 
     public TempDisplayBlock(Location loc, Material block, final long revertTime, double size, boolean glowing, Color color) {
 
-        blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
+        this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
         {
             BlockDisplay bDisplay = (BlockDisplay)entity;
             SplittableRandom splittableRandom = new SplittableRandom();
@@ -106,7 +119,11 @@ public class TempDisplayBlock {
 
     public void teleport(Location newLoc)
     {
-        blockDisplay.teleport(newLoc);
+        this.blockDisplay.teleport(newLoc);
+    }
+
+    public BlockDisplay getBlockDisplay() {
+        return blockDisplay;
     }
 }
 

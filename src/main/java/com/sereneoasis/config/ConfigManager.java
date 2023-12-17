@@ -11,7 +11,7 @@ import org.bukkit.event.inventory.ClickType;
 
 import java.util.*;
 
-import static com.sereneoasis.archetypes.Archetype.SKY;
+import static com.sereneoasis.archetypes.Archetype.*;
 
 /**
  * @author Sakrajin
@@ -326,6 +326,66 @@ public class ConfigManager {
         sky.options().copyDefaults(true);
         getConfig(SKY).saveConfig();
 
+        FileConfiguration war = getConfig(WAR).getConfig();
+
+        //Ability configuration
+        saveConfigValuesAbility(war, "Tether", WAR.toString(), "description", "instructions",
+                0, 5000, 0,
+                0, 1.0,0.5, 20, 2, 0);
+
+        saveConfigValuesAbility(war, "Jab", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 0,0, 10, 1.5, 0);
+
+        saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
+                0, 5000, 0,
+                4, 3.0,0, 30, 0.8, 0);
+
+        saveConfigValuesAbility(war, "Formless", Archetype.WAR.toString(), "description", "instructions",
+                2000, 5000, 30000,
+                0, 0,0, 0, 1, 0);
+
+        saveConfigValuesAbility(war, "Katana", Archetype.WAR.toString(), "description", "instructions",
+                2000, 5000, 30000,
+                0, 0,0, 0, 1, 0);
+
+        saveConfigValuesAbility(war, "Spear", WAR.toString(), "description", "instructions",
+                0, 5000, 0,
+                4, 1.0,0, 30, 1.5, 0);
+
+        saveConfigValuesAbility(war, "Grenades", WAR.toString(), "description", "instructions",
+                2000, 1000, 0,
+                4, 2.0,0, 30, 1.5, 0);
+
+        saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
+                1.0, 0.5, 0.1);
+
+        saveArchetypeCosmetics(war, WAR, "#FF8000");
+        war.options().copyDefaults(true);
+        getConfig(WAR).saveConfig();
+
+
+        FileConfiguration earth = getConfig(EARTH).getConfig();
+
+        Set<Tag<Material>>earthTags = new HashSet<>();
+        earthTags.add(Tag.DIRT);
+        earthTags.add(Tag.STONE_BRICKS);
+        earthTags.add(Tag.SAND);
+        Set<Material>earthBlocks = new HashSet<>();
+        earthBlocks.add(Material.GRASS_BLOCK);
+
+        saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
+
+        saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,0, 20, 1, 10);
+
+        saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
+                1.0, 1.0, 0.2);
+
+        saveArchetypeCosmetics(earth, EARTH, "#50C878");
+        earth.options().copyDefaults(true);
+        getConfig(EARTH).saveConfig();
     }
 
 

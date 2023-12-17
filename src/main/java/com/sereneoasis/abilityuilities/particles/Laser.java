@@ -52,7 +52,7 @@ public class Laser extends CoreAbility {
             dir = player.getEyeLocation().getDirection().normalize();
 
             double distance = range;
-            LivingEntity entity = Entities.getFacingEntity(player, range);
+            LivingEntity entity = Entities.getFacingEntity(player, range, hitbox);
             if (entity != null) {
                 DamageHandler.damageEntity(entity, player, this, damage);
                 distance = entity.getLocation().distance(loc);

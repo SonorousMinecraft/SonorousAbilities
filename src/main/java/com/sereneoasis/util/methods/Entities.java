@@ -2,17 +2,13 @@ package com.sereneoasis.util.methods;
 
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -123,18 +119,36 @@ public class Entities {
         return spike;
     }
 
-    public static LivingEntity getFacingEntity(Player player, double distance)
+    public static LivingEntity getFacingEntity(Player player, double distance, double hitbox)
     {
-        Location loc = player.getEyeLocation();
-        if (loc.getWorld().rayTraceEntities(loc, loc.getDirection(), distance) != null)
-        {
-            Entity e = loc.getWorld().rayTraceEntities(loc, loc.getDirection(), distance).getHitEntity();
-            if (e instanceof LivingEntity entity && e.getUniqueId() != player.getUniqueId())
+        Location loc = player.getEyeLocation().clone();
+        Vector dir = player.getEyeLocation().getDirection().clone().normalize();
+        RayTraceResult rayTraceResult = (loc.getWorld().rayTraceEntities(loc, dir, distance, hitbox, entity -> {
+            if (entity instanceof LivingEntity && entity != player)
             {
-                return entity;
+                return true;
             }
+            return false;
+        }));
+        if (rayTraceResult != null)
+        {
+            return (LivingEntity) rayTraceResult.getHitEntity();
         }
         return null;
+    }
+
+    public static boolean playerLookingAt(Player player, Entity target, double maxDistance)
+    {
+        BoundingBox boundingBox = target.getBoundingBox();
+        Bukkit.broadcastMessage(String.valueOf(boundingBox.getHeight()));
+        Location loc = player.getEyeLocation().clone();
+        Vector dir = player.getEyeLocation().getDirection().clone().normalize();
+        RayTraceResult rayTraceResult = boundingBox.rayTrace(loc.toVector(), dir, maxDistance);
+        if (rayTraceResult != null)
+        {
+            return true;
+        }
+        return false;
     }
 
     public static LivingEntity getFacingEntity(Location loc, Vector dir, double distance)
@@ -153,6 +167,45 @@ public class Entities {
     {
         Vector dir = Vectors.getDirectionBetweenLocations(loc1, loc2);
         return getFacingEntity(loc1, dir.clone().normalize(), dir.length());
+    }
 
+    public static Block getCollidedBlock(Entity entity)
+    {
+        Location loc = entity.getLocation();
+        Vector dir = entity.getVelocity().clone().normalize();
+        double distance = 1.0;
+        Block block = null;
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER) != null)
+        {
+            block = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER).getHitBlock();
+        }
+        return block;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

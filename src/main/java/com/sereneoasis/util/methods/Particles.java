@@ -4,6 +4,7 @@ import com.sereneoasis.archetypes.Archetype;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Vibration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,6 +41,17 @@ public class Particles {
     public static void spawnParticle(Particle particle, Location loc, int count, double offset, double extra)
     {
         loc.getWorld().spawnParticle(particle,loc,count, offset, offset, offset, extra);
+    }
+
+    public static void spawnShriekParticle(Location loc, int count, double offset, double extra, int timeInTicks)
+    {
+        loc.getWorld().spawnParticle(Particle.SHRIEK,loc,count, offset, offset, offset, extra, timeInTicks);
+    }
+
+    public static void spawnVibrationParticleEntity(Location loc, int count, double offset, double extra, Entity target, int timeInTicks)
+    {
+        Vibration vibration = new Vibration(loc, new Vibration.Destination.EntityDestination(target), timeInTicks);
+        loc.getWorld().spawnParticle(Particle.VIBRATION,loc,count, offset, offset, offset, extra, vibration);
     }
 
     public static void spawnColoredParticle(Location loc, int count, double offset, double size, Color color)

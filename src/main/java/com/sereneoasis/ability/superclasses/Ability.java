@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
  */
 public interface Ability {
 
-    public void progress();
+    public void progress() throws ReflectiveOperationException;
 
     public void remove();
 
