@@ -140,7 +140,6 @@ public class Entities {
     public static boolean playerLookingAt(Player player, Entity target, double maxDistance)
     {
         BoundingBox boundingBox = target.getBoundingBox();
-        Bukkit.broadcastMessage(String.valueOf(boundingBox.getHeight()));
         Location loc = player.getEyeLocation().clone();
         Vector dir = player.getEyeLocation().getDirection().clone().normalize();
         RayTraceResult rayTraceResult = boundingBox.rayTrace(loc.toVector(), dir, maxDistance);

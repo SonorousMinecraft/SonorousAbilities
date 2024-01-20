@@ -66,7 +66,6 @@ public class Tether extends CoreAbility {
                 {
                     Entity between = Entities.getEntityBetweenPoints(armorStand2.getLocation(), armorStand1.getLocation());
                     if (between instanceof Player zipliner && zipliner.equals(player)) {
-                        Bukkit.broadcastMessage("working");
                         Particles.spawnParticle(Particle.SMOKE_NORMAL, armorStand1.getLocation(), 1, 0, 0);
                         Particles.spawnParticle(Particle.SMOKE_NORMAL, armorStand2.getLocation(), 1, 0, 0);
                         Vector playerLooking = player.getEyeLocation().getDirection().clone();

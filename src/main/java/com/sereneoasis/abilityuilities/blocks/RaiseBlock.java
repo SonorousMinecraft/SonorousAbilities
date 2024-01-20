@@ -13,6 +13,12 @@ import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class RaiseBlock extends CoreAbility {
 
     private final String name;
@@ -23,21 +29,43 @@ public class RaiseBlock extends CoreAbility {
 
     private Vector offsetAdjustment = new Vector(-0.5,-0.5,-0.5);
 
-    public RaiseBlock(Player player, String name, double height) {
+    public RaiseBlock(Player player, String name, double height, boolean mustLook) {
         super(player, name);
 
         this.name = name;
         this.height = height;
         abilityStatus = AbilityStatus.NO_SOURCE;
-        Block source = Blocks.getFacingBlock(player, sourceRange);
-        if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType()))
-        {
-            abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            Blocks.selectSourceAnimation(source, Color.GREEN);
-            this.origin = Blocks.getFacingBlockLoc(player, sourceRange);
-            this.loc = origin.clone();
-            block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, 1);
-            start();
+        Block source;
+        if (mustLook) {
+            source = Blocks.getFacingBlock(player, sourceRange);
+            if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType()))
+            {
+                abilityStatus = AbilityStatus.SOURCE_SELECTED;
+                Blocks.selectSourceAnimation(source, Color.GREEN);
+                this.origin = Blocks.getFacingBlockLoc(player, sourceRange);
+                this.loc = origin.clone();
+                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, 1);
+                start();
+            }
+        }
+        else{
+            Set<Block> possibleSources = Blocks.getBlocksAroundPoint(player.getLocation(), sourceRange).stream()
+                    .filter(Blocks::isTopBlock)
+                    .filter(b -> Blocks.getArchetypeBlocks(sPlayer).contains(b.getType()))
+                    .collect(Collectors.toSet());
+            List<Block> sourcesByDistance = new java.util.ArrayList<>(possibleSources.stream().toList());
+            sourcesByDistance.sort(Comparator.comparing(b -> b.getLocation().distanceSquared(player.getLocation())));
+            if (!sourcesByDistance.isEmpty())
+            {
+                Random rand = new Random();
+                source = sourcesByDistance.get(rand.nextInt(sourcesByDistance.size()));
+                abilityStatus = AbilityStatus.SOURCE_SELECTED;
+                Blocks.selectSourceAnimation(source, Color.GREEN);
+                this.origin = source.getLocation();
+                this.loc = origin.clone();
+                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, 1);
+                start();
+            }
         }
     }
 

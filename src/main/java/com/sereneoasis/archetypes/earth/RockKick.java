@@ -25,7 +25,7 @@ public class RockKick extends CoreAbility {
             return;
         }
 
-        raiseBlock = new RaiseBlock(player, name, 1.5);
+        raiseBlock = new RaiseBlock(player, name, 1.5, true);
         if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             start();
@@ -47,6 +47,7 @@ public class RockKick extends CoreAbility {
             if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE)
             {
                 this.remove();
+                shootBlockFromLoc.remove();
                 sPlayer.addCooldown(name, cooldown);
             }
         }
@@ -56,12 +57,14 @@ public class RockKick extends CoreAbility {
     {
         if (abilityStatus == AbilityStatus.SOURCED) {
             if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, 1)) {
-                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false, 1);
+                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), true, false, 1);
                 raiseBlock.remove();
                 abilityStatus = AbilityStatus.SHOT;
             }
         }
     }
+
+
 
     @Override
     public Player getPlayer() {
