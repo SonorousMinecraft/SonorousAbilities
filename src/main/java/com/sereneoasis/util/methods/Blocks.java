@@ -37,6 +37,16 @@ public class Blocks {
         }
     }
 
+    public static Block getBelowBlock(Block b, double distance)
+    {
+        Location loc = b.getLocation();
+        Block block = b;
+        if (loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.NEVER) != null)
+        {
+            block = loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.NEVER).getHitBlock();
+        }
+        return block;
+    }
 
 
     public static Block getFacingBlock(Player player, double distance)

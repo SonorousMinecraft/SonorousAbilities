@@ -6,6 +6,8 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.earth.Accretion;
+import com.sereneoasis.archetypes.earth.Catapult;
+import com.sereneoasis.archetypes.earth.EarthQuake;
 import com.sereneoasis.archetypes.earth.RockKick;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
@@ -323,6 +325,12 @@ public class SerenityListener implements Listener {
                 break;
             case "Accretion":
                 new Accretion(player);
+                break;
+            case "EarthQuake":
+                new EarthQuake(player);
+                break;
+            case "Catapult":
+                new Catapult(player);
                 break;
         }
     }

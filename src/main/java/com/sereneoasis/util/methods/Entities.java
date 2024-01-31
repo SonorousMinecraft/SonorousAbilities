@@ -36,13 +36,13 @@ public class Entities {
      * speed = The speed at which the player is being sent.
      * height = The height from their original location the player is shot.
      */
-    public static Vector setVelocity(LivingEntity target, float speed, double height) {
-        Location location = target.getLocation();
-        Vector direction = location.getDirection().normalize().multiply(speed);
+    public static void setVelocity(LivingEntity target, float speed, double height) {
+        Location location = target.getLocation().clone();
+        Vector direction = location.getDirection().clone().normalize().multiply(speed);
         if (height != 0) {
             direction.setY(height);
         }
-        return direction;
+        target.setVelocity(direction);
     }
 
     public static Entity getAffected(Location loc, double radius )
@@ -98,6 +98,64 @@ public class Entities {
         {
             if (! spike.containsKey(i)) {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
+                spike.put(i, tempDisplayBlock);
+            }
+            else{
+                spike.get(i).teleport(l);
+            }
+            i++;
+        }
+        if (locs.size() < spike.size())
+        {
+            for (int n = locs.size(); n <= spike.size(); n++)
+            {
+                TempDisplayBlock tb = spike.get(n);
+                if (tb != null) {
+                    spike.get(n).revert();
+                }
+                spike.remove(n);
+            }
+        }
+        return spike;
+    }
+
+    public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock>spike, Set<Location> locs, Material type, double size)
+    {
+
+        int i = 0;
+        for (Location l: locs)
+        {
+            if (! spike.containsKey(i)) {
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
+                spike.put(i, tempDisplayBlock);
+            }
+            else{
+                spike.get(i).teleport(l);
+            }
+            i++;
+        }
+        if (locs.size() < spike.size())
+        {
+            for (int n = locs.size(); n <= spike.size(); n++)
+            {
+                TempDisplayBlock tb = spike.get(n);
+                if (tb != null) {
+                    spike.get(n).revert();
+                }
+                spike.remove(n);
+            }
+        }
+        return spike;
+    }
+
+    public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock>spike, Set<Location> locs, double size)
+    {
+
+        int i = 0;
+        for (Location l: locs)
+        {
+            if (! spike.containsKey(i)) {
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, Blocks.getBelowBlock(l.getBlock(), 10).getType(), 50000, size);
                 spike.put(i, tempDisplayBlock);
             }
             else{

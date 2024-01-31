@@ -384,6 +384,14 @@ public class ConfigManager {
                 0, 2000, 0,
                 2, 1.0,0, 20, 1, 10);
 
+        saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,15, 0, 1, 0);
+
+        saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,15, 0, 1, 0);
+        
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);
 
