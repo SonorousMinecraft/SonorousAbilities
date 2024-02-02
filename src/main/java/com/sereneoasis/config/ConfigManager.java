@@ -391,6 +391,10 @@ public class ConfigManager {
         saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
                 2, 1.0,15, 0, 1, 0);
+
+        saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,0, 20, 1, 10);
         
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);

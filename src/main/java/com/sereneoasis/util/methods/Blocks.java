@@ -37,6 +37,17 @@ public class Blocks {
         }
     }
 
+    public static TempDisplayBlock selectSourceAnimationManual(Block block, Color color)
+    {
+        if (block.getType() == Material.WATER)
+        {
+            return new TempDisplayBlock(block.getLocation(), Material.BLUE_STAINED_GLASS, 60000, 1.0, true, color);
+        }
+        else {
+            return new TempDisplayBlock(block.getLocation(), block.getType(), 60000, 1.0, true, color);
+        }
+    }
+
     public static Block getBelowBlock(Block b, double distance)
     {
         Location loc = b.getLocation();

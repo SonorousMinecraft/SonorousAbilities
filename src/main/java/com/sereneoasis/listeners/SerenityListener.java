@@ -5,10 +5,7 @@ import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
-import com.sereneoasis.archetypes.earth.Accretion;
-import com.sereneoasis.archetypes.earth.Catapult;
-import com.sereneoasis.archetypes.earth.EarthQuake;
-import com.sereneoasis.archetypes.earth.RockKick;
+import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
@@ -233,6 +230,11 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Accretion.class).setHasClicked();
                 }
                 break;
+            case "TerraLine":
+                if (CoreAbility.hasAbility(e.getPlayer(), TerraLine.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), TerraLine.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -331,6 +333,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Catapult":
                 new Catapult(player);
+                break;
+            case "TerraLine":
+                new TerraLine(player);
                 break;
         }
     }
