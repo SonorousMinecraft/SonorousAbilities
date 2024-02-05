@@ -1,6 +1,7 @@
 package com.sereneoasis.util.temp;
 
 import com.sereneoasis.archetypes.DisplayBlock;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
@@ -50,6 +51,28 @@ public class TempBlock {
             REVERT_QUEUE.add(this);
         }
     }
+
+    public TempBlock(Block block, Material type, final long revertTime, boolean canReplaceBlocks)
+    {
+        if (! INSTANCES.containsKey(block)) {
+            this.block = block;
+            if (!canReplaceBlocks && !block.getType().isAir())
+            {
+                return;
+            }
+            BlockData newData = type.createBlockData();
+            this.newData = newData;
+            this.revertTime = System.currentTimeMillis() + revertTime;
+
+            this.oldData = block.getBlockData();
+
+            block.setBlockData(newData);
+            INSTANCES.put(block, this);
+            REVERT_QUEUE.add(this);
+        }
+    }
+
+
     public TempBlock( Block block, DisplayBlock blocks, final long revertTime) {
         new TempBlock(block, blocks, revertTime, true);
     }

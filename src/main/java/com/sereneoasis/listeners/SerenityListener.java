@@ -235,6 +235,9 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), TerraLine.class).setHasClicked();
                 }
                 break;
+            case "Wall":
+                new Wall(player);
+                break;
         }
 
     }
