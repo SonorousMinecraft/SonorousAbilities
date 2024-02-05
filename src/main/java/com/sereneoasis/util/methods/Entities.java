@@ -95,6 +95,8 @@ public class Entities {
 
         int i = 0;
         for (Location l : locs) {
+            l.setDirection(l.getBlock().getLocation().getDirection().clone());
+
             if (!spike.containsKey(i)) {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
                 spike.put(i, tempDisplayBlock);

@@ -51,7 +51,7 @@ public class BlackIce extends CoreAbility {
             this.remove();
         }
 
-        if (Blocks.isBelowWater(player.getLocation().getBlock(), range)) {
+        if (!Blocks.isBelowArchetype(player.getLocation().getBlock(), radius, sPlayer)) {
             this.remove();
         }
     }

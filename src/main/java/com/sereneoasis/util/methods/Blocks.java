@@ -50,10 +50,11 @@ public class Blocks {
         return block;
     }
 
-    public static boolean isBelowWater(Block b, double distance) {
+    public static boolean isBelowArchetype(Block b, double distance, SerenityPlayer serenityPlayer) {
         Location loc = b.getLocation();
         if (loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.ALWAYS) != null) {
-            return true;
+            Block block = loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.ALWAYS).getHitBlock();
+            return Blocks.getArchetypeBlocks(serenityPlayer).contains(block.getType());
         }
         return false;
     }
