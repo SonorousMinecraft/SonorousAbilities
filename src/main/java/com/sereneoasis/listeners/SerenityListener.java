@@ -98,9 +98,9 @@ public class SerenityListener implements Listener {
                     new Gimbal(player);
                 }
                 break;
-            case "Spikes":
-                if (CoreAbility.hasAbility(e.getPlayer(), Spikes.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Spikes.class).setHasClicked();
+            case "Iceberg":
+                if (CoreAbility.hasAbility(e.getPlayer(), Iceberg.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Iceberg.class).setHasClicked();
                 }
                 break;
             case "FrostBite":
@@ -266,8 +266,8 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasSourced();
                 }
                 break;
-            case "Spikes":
-                new Spikes(player);
+            case "Iceberg":
+                new Iceberg(player);
                 break;
             case "Blizzard":
                 new Blizzard(player);

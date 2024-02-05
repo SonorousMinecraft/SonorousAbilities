@@ -1,7 +1,8 @@
-package com.sereneoasis.archetypes.ocean;
+package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
+import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
@@ -18,31 +19,32 @@ import java.util.HashMap;
 /**
  * @author Sakrajin
  */
-public class Spikes extends CoreAbility {
+public class BlockSmash extends CoreAbility {
 
-    private final String name = "Spikes";
+    private final String name;
 
     private Location loc;
 
-    private HashMap<Integer, TempDisplayBlock> spike;
+    private HashMap<Integer, TempDisplayBlock> smash;
 
-    private long starttime;
 
     private boolean hasShot = false;
 
-    public Spikes(Player player) {
-        super(player);
+    private DisplayBlock displayBlock;
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
-            return;
-        }
+    public BlockSmash(Player player, String name, DisplayBlock displayBlock) {
+        super(player, name);
+
+        this.name = name;
+        this.displayBlock = displayBlock;
 
         Block source = Blocks.getSourceBlock(player, sPlayer, sourceRange);
+        abilityStatus = AbilityStatus.NO_SOURCE;
         if (source != null) {
             loc = source.getLocation();
-            starttime = System.currentTimeMillis();
-            spike = new HashMap<>();
-            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
+            smash = new HashMap<>();
+            smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, 0.5), displayBlock, 0.5);
+            abilityStatus = AbilityStatus.SOURCE_SELECTED;
             start();
         }
 
@@ -56,21 +58,22 @@ public class Spikes extends CoreAbility {
             if (loc.distance(targetLoc) > 1) {
                 Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
                 loc.add(dir.clone().multiply(speed));
-                spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, 0.5), displayBlock, 0.5);
             }
 
         } else if (hasShot) {
             if (loc.distance(player.getLocation()) > range) {
-                this.remove();
+                abilityStatus = AbilityStatus.COMPLETE;
+                return;
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
-            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
+            smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, 0.5), displayBlock, 0.5);
             DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         }
 
 
-        if (!hasShot && System.currentTimeMillis() > starttime + duration) {
-            this.remove();
+        if (!hasShot && System.currentTimeMillis() > startTime + duration) {
+            abilityStatus = AbilityStatus.COMPLETE;
         }
 
     }
@@ -78,8 +81,7 @@ public class Spikes extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        sPlayer.addCooldown(name, cooldown);
-        for (TempDisplayBlock tb : spike.values()) {
+        for (TempDisplayBlock tb : smash.values()) {
             tb.revert();
         }
     }

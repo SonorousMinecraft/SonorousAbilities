@@ -176,7 +176,7 @@ public class ConfigManager {
                 0, 5000, 0,
                 2, 0.6, 2.0, 20, 1.7, 10);
 
-        saveConfigValuesAbility(ocean, "Spikes", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 10000,
                 4, 0.5, 5, 20, 1, 10);
 
