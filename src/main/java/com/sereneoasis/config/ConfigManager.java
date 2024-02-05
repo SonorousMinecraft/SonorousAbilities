@@ -380,6 +380,26 @@ public class ConfigManager {
                 0, 2000, 0,
                 2, 1.0,0, 20, 1, 10);
 
+        saveConfigValuesAbility(earth, "Accretion", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,0, 20, 1, 10);
+
+        saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,15, 0, 1, 0);
+
+        saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,15, 0, 1, 0);
+
+        saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0,0, 20, 1, 10);
+
+        saveConfigValuesAbility(earth, "Wall", EARTH.toString(), "description", "instructions",
+                0, 2000, 20000,
+                0, 1.0,0, 10, 1, 10);
+        
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);
 

@@ -37,6 +37,27 @@ public class Blocks {
         }
     }
 
+    public static TempDisplayBlock selectSourceAnimationManual(Block block, Color color)
+    {
+        if (block.getType() == Material.WATER)
+        {
+            return new TempDisplayBlock(block.getLocation(), Material.BLUE_STAINED_GLASS, 60000, 1.0, true, color);
+        }
+        else {
+            return new TempDisplayBlock(block.getLocation(), block.getType(), 60000, 1.0, true, color);
+        }
+    }
+
+    public static Block getBelowBlock(Block b, double distance)
+    {
+        Location loc = b.getLocation();
+        Block block = b;
+        if (loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.NEVER) != null)
+        {
+            block = loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.NEVER).getHitBlock();
+        }
+        return block;
+    }
 
 
     public static Block getFacingBlock(Player player, double distance)
@@ -66,7 +87,6 @@ public class Blocks {
         Location lowest = target.getLocation();
         Location highest = lowest.clone().add(size, size, size);
         BoundingBox boundingBox = new BoundingBox(lowest.getX(), lowest.getY(), lowest.getZ(), highest.getX(), highest.getY(), highest.getZ());
-        Bukkit.broadcastMessage(String.valueOf(boundingBox.getHeight()));
         Location loc = player.getEyeLocation().clone();
         Vector dir = player.getEyeLocation().getDirection().clone().normalize();
         RayTraceResult rayTraceResult = boundingBox.rayTrace(loc.toVector(), dir, maxDistance);
@@ -144,6 +164,15 @@ public class Blocks {
             return source;
         }
         return null;
+    }
+
+    public static boolean isTopBlock(Block b)
+    {
+        if (b.getLocation().add(0,1,0).getBlock().getType().isSolid())
+        {
+            return false;
+        }
+        return true;
     }
 
 }
