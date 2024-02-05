@@ -1,21 +1,10 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.BlockSmash;
+import com.sereneoasis.abilityuilities.blocks.BlockSmashSourced;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Vectors;
-import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-
-import java.util.HashMap;
 
 /**
  * @author Sakrajin
@@ -24,7 +13,7 @@ public class Iceberg extends CoreAbility {
 
     private final String name = "Iceberg";
 
-    private BlockSmash blockSmash;
+    private BlockSmashSourced blockSmashSourced;
 
     public Iceberg(Player player) {
         super(player);
@@ -33,8 +22,8 @@ public class Iceberg extends CoreAbility {
             return;
         }
 
-        blockSmash = new BlockSmash(player, name, DisplayBlock.ICE);
-        if (blockSmash.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED)
+        blockSmashSourced = new BlockSmashSourced(player, name, DisplayBlock.ICE);
+        if (blockSmashSourced.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED)
         {
             start();
         }
@@ -43,8 +32,8 @@ public class Iceberg extends CoreAbility {
     @Override
     public void progress() {
 
-        if (blockSmash.getAbilityStatus() == AbilityStatus.COMPLETE){
-            blockSmash.remove();
+        if (blockSmashSourced.getAbilityStatus() == AbilityStatus.COMPLETE){
+            blockSmashSourced.remove();
             this.remove();
         }
 
@@ -57,7 +46,7 @@ public class Iceberg extends CoreAbility {
     }
 
     public void setHasClicked() {
-        blockSmash.setHasClicked();
+        blockSmashSourced.setHasClicked();
     }
 
 

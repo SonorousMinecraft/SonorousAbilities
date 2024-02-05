@@ -232,7 +232,7 @@ public class ConfigManager {
 
         //Ability configuration
         saveConfigValuesAbility(sun, "CruelSun", Archetype.SUN.toString(), "description", "instructions",
-                10000, 5000, 0,
+                10000, 5000, 30000,
                 2, 0.5, 2, 20, 1, 0);
 
         saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "instructions",

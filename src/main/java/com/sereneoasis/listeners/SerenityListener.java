@@ -124,6 +124,11 @@ public class SerenityListener implements Listener {
             case "Tsunami":
                 new Tsunami(player);
                 break;
+            case "CruelSun":
+                if (CoreAbility.hasAbility(e.getPlayer(), CruelSun.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), CruelSun.class).setHasClicked();
+                }
+                break;
             case "FlamingRays":
                 if (CoreAbility.hasAbility(e.getPlayer(), FlamingRays.class)) {
                     CoreAbility.getAbility(e.getPlayer(), FlamingRays.class).setHasClicked();
@@ -232,6 +237,7 @@ public class SerenityListener implements Listener {
             case "Wall":
                 new Wall(player);
                 break;
+
         }
 
     }
