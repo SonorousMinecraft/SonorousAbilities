@@ -66,6 +66,10 @@ public class SerenityCommand implements CommandExecutor {
                                 player.sendMessage("This isn't an ability.");
                                 return false;
                             }
+                            else if (AbilityDataManager.isCombo(ability)){
+                                player.sendMessage("This is a combo, you cannot bind it.");
+                                return false;
+                            }
                             int slot = player.getInventory().getHeldItemSlot() + 1;
                             sPlayer.setAbility(slot, ability);
                             player.sendMessage("Successfully bound " + ability + " to slot " + slot + ".");
