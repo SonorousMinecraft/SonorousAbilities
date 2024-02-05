@@ -6,7 +6,6 @@ import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -56,12 +55,11 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
         dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
-        List<Location>locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
+        List<Location> locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
                 rotation, rotation + rotatePerTick, clockwise);
-        loc = locs.get(locs.size()-1);
+        loc = locs.get(locs.size() - 1);
 
-        for (Location point : locs)
-        {
+        for (Location point : locs) {
             new TempDisplayBlock(point, type, 200, Math.random() * hitbox);
         }
 
@@ -72,8 +70,6 @@ public class BlockRingAroundPlayer extends CoreAbility {
 //        {
 //            new TempDisplayBlock(point, type.createBlockData(), 100, 0.05);
 //        }
-
-
 
 
         //new TempDisplayBlock(loc, type.createBlockData(), 500, 1);

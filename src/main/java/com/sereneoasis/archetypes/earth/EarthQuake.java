@@ -2,18 +2,11 @@ package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockCircle;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EarthQuake extends CoreAbility {
 
@@ -60,15 +53,12 @@ public class EarthQuake extends CoreAbility {
             quakes.add(shockwaveRing);
         }
         if (abilityStatus == AbilityStatus.COMPLETE) {
-            for (RaiseBlockCircle shockwaveRing : quakes)
-            {
-                if (shockwaveRing.getAbilityStatus() == AbilityStatus.COMPLETE)
-                {
+            for (RaiseBlockCircle shockwaveRing : quakes) {
+                if (shockwaveRing.getAbilityStatus() == AbilityStatus.COMPLETE) {
                     shockwaveRing.remove();
                 }
             }
-            if (quakes.stream().noneMatch(quake -> quake.getAbilityStatus() != AbilityStatus.COMPLETE))
-            {
+            if (quakes.stream().noneMatch(quake -> quake.getAbilityStatus() != AbilityStatus.COMPLETE)) {
                 this.remove();
             }
         }

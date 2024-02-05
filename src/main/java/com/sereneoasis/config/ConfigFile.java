@@ -1,9 +1,10 @@
 package com.sereneoasis.config;
-import java.io.File;
 
 import com.sereneoasis.Serenity;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
 
 /**
  * @author Sakrajin
@@ -15,10 +16,10 @@ public class ConfigFile {
 
     private File file;
 
-    public File getFile()
-    {
+    public File getFile() {
         return file;
     }
+
     public FileConfiguration config;
 
     public ConfigFile(String name) {

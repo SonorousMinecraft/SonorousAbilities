@@ -10,6 +10,7 @@ public class Wall extends CoreAbility {
     private final String name = "Wall";
 
     private RaiseBlockPillar raiseBlockPillar;
+
     public Wall(Player player) {
         super(player);
 
@@ -25,8 +26,7 @@ public class Wall extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (raiseBlockPillar.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (raiseBlockPillar.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }

@@ -1,8 +1,8 @@
 package com.sereneoasis.config;
 
 
-import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.ability.ComboManager;
+import com.sereneoasis.archetypes.Archetype;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
@@ -22,8 +22,7 @@ public class ConfigManager {
     private static final Map<Archetype, ConfigFile> configs = new HashMap<>();
 
     public ConfigManager() {
-        for (Archetype archetype : Archetype.values())
-        {
+        for (Archetype archetype : Archetype.values()) {
             ConfigFile config = new ConfigFile(archetype.toString());
             configs.put(archetype, config);
         }
@@ -36,9 +35,8 @@ public class ConfigManager {
     }
 
     private void saveConfigValuesAbility(FileConfiguration config, String name, String archetype, String description, String instructions,
-                                  long chargetime, long cooldown, long duration,
-                                         double damage, double hitbox, double radius, double range, double speed, double sourceRange)
-    {
+                                         long chargetime, long cooldown, long duration,
+                                         double damage, double hitbox, double radius, double range, double speed, double sourceRange) {
         String directory = archetype + ".ability." + name;
         config.addDefault(directory + ".description", description);
         config.addDefault(directory + ".instructions", instructions);
@@ -51,7 +49,7 @@ public class ConfigManager {
         if (duration != 0) {
             config.addDefault(directory + ".duration", duration);
         }
-        
+
         if (damage != 0) {
             config.addDefault(directory + ".damage", damage);
         }
@@ -77,8 +75,7 @@ public class ConfigManager {
     private void saveConfigValuesCombo(FileConfiguration config, String name, String archetype, String description, String instructions,
                                        long chargetime, long cooldown, long duration,
                                        double damage, double hitbox, double radius, double range, double speed, double sourceRange,
-                                       ArrayList<ComboManager.AbilityInformation> abilities)
-    {
+                                       ArrayList<ComboManager.AbilityInformation> abilities) {
         String directory = archetype + ".combo." + name;
         config.addDefault(directory + ".description", description);
         config.addDefault(directory + ".instructions", instructions);
@@ -112,9 +109,8 @@ public class ConfigManager {
         if (sourceRange != 0) {
             config.addDefault(directory + ".sourcerange", sourceRange);
         }
-        List<String>storableAbilities = new ArrayList<>();
-        for (ComboManager.AbilityInformation abilityInformation : abilities)
-        {
+        List<String> storableAbilities = new ArrayList<>();
+        for (ComboManager.AbilityInformation abilityInformation : abilities) {
             storableAbilities.add(abilityInformation.getName() + ":" + abilityInformation.getClickType().toString());
         }
         config.addDefault(directory + ".usage", storableAbilities);
@@ -122,8 +118,7 @@ public class ConfigManager {
 
     private void saveAttributeValuesArchetype(FileConfiguration config, Archetype archetype, double armor, double toughness, double damage,
                                               double attackspeed, double kbres,
-                                              double health, double speed)
-    {
+                                              double health, double speed) {
         String dir = archetype.toString() + ".attribute.";
         config.addDefault(dir + Attribute.GENERIC_ARMOR.toString(), armor);
         config.addDefault(dir + Attribute.GENERIC_ARMOR_TOUGHNESS.toString(), toughness);
@@ -134,18 +129,16 @@ public class ConfigManager {
         config.addDefault(dir + Attribute.GENERIC_MOVEMENT_SPEED.toString(), speed);
     }
 
-    private void saveArchetypeBlocks(FileConfiguration config, Archetype archetype, Set<Tag<Material>> tags, Set<Material>blocks)
-    {
-        List<String>tagList = new ArrayList<>();
+    private void saveArchetypeBlocks(FileConfiguration config, Archetype archetype, Set<Tag<Material>> tags, Set<Material> blocks) {
+        List<String> tagList = new ArrayList<>();
         tags.forEach(tag -> tagList.add(String.valueOf(tag.getKey())));
-        List<String>blockList = new ArrayList<>();
+        List<String> blockList = new ArrayList<>();
         blocks.forEach(block -> blockList.add(block.toString()));
         config.addDefault(archetype.toString() + ".blocks", blockList);
         config.addDefault(archetype.toString() + ".tags", tagList);
     }
 
-    private void saveArchetypeCosmetics(FileConfiguration config, Archetype archetype, String color)
-    {
+    private void saveArchetypeCosmetics(FileConfiguration config, Archetype archetype, String color) {
         String dir = archetype.toString() + ".cosmetics.";
         config.addDefault(dir + ".color", color);
     }
@@ -156,7 +149,6 @@ public class ConfigManager {
         saveConfigValuesArchetype(ocean, Archetype.NONE, 0, 0, 2, 0, 4, 0.4,0.0, 20, 0.13);
 
          */
-
 
 
         FileConfiguration none = getConfig(Archetype.NONE).getConfig();
@@ -182,11 +174,11 @@ public class ConfigManager {
 
         saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2,0.6, 2.0, 20, 1.7, 10);
+                2, 0.6, 2.0, 20, 1.7, 10);
 
         saveConfigValuesAbility(ocean, "Spikes", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 10000,
-                4, 0.5,5, 20, 1, 10);
+                4, 0.5, 5, 20, 1, 10);
 
         saveConfigValuesAbility(ocean, "FrostBite", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 0,
@@ -219,10 +211,10 @@ public class ConfigManager {
                 0, 5000, 15000,
                 0, 0, 20, 0, 0.5, 5, blackIceAbilities);
 
-        Set<Tag<Material>>oceanTags = new HashSet<>();
+        Set<Tag<Material>> oceanTags = new HashSet<>();
         oceanTags.add(Tag.ICE);
         oceanTags.add(Tag.SNOW);
-        Set<Material>oceanBlocks = new HashSet<>();
+        Set<Material> oceanBlocks = new HashSet<>();
         oceanBlocks.add(Material.WATER);
 
         saveArchetypeBlocks(ocean, Archetype.OCEAN, oceanTags, oceanBlocks);
@@ -236,45 +228,44 @@ public class ConfigManager {
         getConfig(Archetype.OCEAN).saveConfig();
 
 
-
         FileConfiguration sun = getConfig(Archetype.SUN).getConfig();
 
         //Ability configuration
         saveConfigValuesAbility(sun, "CruelSun", Archetype.SUN.toString(), "description", "instructions",
                 10000, 5000, 0,
-                2, 0.5,2, 20, 1, 0);
+                2, 0.5, 2, 20, 1, 0);
 
         saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "instructions",
                 5000, 5000, 0,
-                2, 0.5,5, 0, 1, 10);
+                2, 0.5, 5, 0, 1, 10);
 
         saveConfigValuesAbility(sun, "FlamingRays", Archetype.SUN.toString(), "description", "instructions",
                 3000, 5000, 0,
-                2, 0.5,0.5, 15, 1, 0);
+                2, 0.5, 0.5, 15, 1, 0);
 
         saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "instructions",
                 4000, 5000, 0,
-                2, 0.5,2.0, 30, 0.5, 0);
+                2, 0.5, 2.0, 30, 0.5, 0);
 
         saveConfigValuesAbility(sun, "SunBurst", Archetype.SUN.toString(), "description", "instructions",
                 4000, 5000, 0,
-                2, 0.5,20.0, 30, 1.0, 0);
+                2, 0.5, 20.0, 30, 1.0, 0);
 
         saveConfigValuesAbility(sun, "MeltingGlare", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 10000,
-                2, 0.5,0, 20, 0, 0);
+                2, 0.5, 0, 20, 0, 0);
 
         saveConfigValuesAbility(sun, "SolarBarrage", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 2,2, 20, 1, 0);
+                2, 2, 2, 20, 1, 0);
 
         saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 5000,
-                2, 2,0, 0, 1, 0);
+                2, 2, 0, 0, 1, 0);
 
         saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 5000,
-                2, 2,0, 0, 1, 0);
+                2, 2, 0, 0, 1, 0);
 
         sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");
         saveAttributeValuesArchetype(sun, Archetype.SUN, 0, 0, 0, 0,
@@ -289,15 +280,15 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(sky, "SkyBlast", SKY.toString(), "description", "instructions",
                 0, 5000, 0,
-                0, 1.0,0.5, 20, 1, 1);
+                0, 1.0, 0.5, 20, 1, 1);
 
         saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "instructions",
                 0, 5000, 3000,
-                0, 0,0, 0, 1, 0);
+                0, 0, 0, 0, 1, 0);
 
         saveConfigValuesAbility(sky, "SkyRipper", SKY.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0,0, 30, 1.5, 5);
+                2, 0, 0, 30, 1.5, 5);
 
         saveConfigValuesAbility(sky, "Cyclone", SKY.toString(), "description", "instructions",
                 0, 500, 5000,
@@ -305,19 +296,19 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sky, "CloudStep", SKY.toString(), "description", "instructions",
                 1000, 5000, 8000,
-                0, 0,0, 0, 1, 0);
+                0, 0, 0, 0, 1, 0);
 
         saveConfigValuesAbility(sky, "HeavenSlash", SKY.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1.0,0, 20, 1, 0);
+                2, 1.0, 0, 20, 1, 0);
 
         saveConfigValuesAbility(sky, "Shocker", SKY.toString(), "description", "instructions",
                 0, 2000, 5000,
-                2, 1.0,0, 20, 1, 0);
+                2, 1.0, 0, 20, 1, 0);
 
         saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "instructions",
                 1000, 5000, 0,
-                2, 0.5,2.0, 30, 0.5, 0);
+                2, 0.5, 2.0, 30, 0.5, 0);
 
         saveAttributeValuesArchetype(sky, SKY, 0, 0, 0, 0,
                 0.0, 0, 0.2);
@@ -331,31 +322,31 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(war, "Tether", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                0, 1.0,0.5, 20, 2, 0);
+                0, 1.0, 0.5, 20, 2, 0);
 
         saveConfigValuesAbility(war, "Jab", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 0,0, 10, 1.5, 0);
+                2, 0, 0, 10, 1.5, 0);
 
         saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                4, 3.0,0, 30, 0.8, 0);
+                4, 3.0, 0, 30, 0.8, 0);
 
         saveConfigValuesAbility(war, "Formless", Archetype.WAR.toString(), "description", "instructions",
                 2000, 5000, 30000,
-                0, 0,0, 0, 1, 0);
+                0, 0, 0, 0, 1, 0);
 
         saveConfigValuesAbility(war, "Katana", Archetype.WAR.toString(), "description", "instructions",
                 2000, 5000, 30000,
-                0, 0,0, 0, 1, 0);
+                0, 0, 0, 0, 1, 0);
 
         saveConfigValuesAbility(war, "Spear", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                4, 1.0,0, 30, 1.5, 0);
+                4, 1.0, 0, 30, 1.5, 0);
 
         saveConfigValuesAbility(war, "Grenades", WAR.toString(), "description", "instructions",
                 2000, 1000, 0,
-                4, 2.0,0, 30, 1.5, 0);
+                4, 2.0, 0, 30, 1.5, 0);
 
         saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
                 1.0, 0.5, 0.1);
@@ -367,39 +358,39 @@ public class ConfigManager {
 
         FileConfiguration earth = getConfig(EARTH).getConfig();
 
-        Set<Tag<Material>>earthTags = new HashSet<>();
+        Set<Tag<Material>> earthTags = new HashSet<>();
         earthTags.add(Tag.DIRT);
         earthTags.add(Tag.STONE_BRICKS);
         earthTags.add(Tag.SAND);
-        Set<Material>earthBlocks = new HashSet<>();
+        Set<Material> earthBlocks = new HashSet<>();
         earthBlocks.add(Material.GRASS_BLOCK);
 
         saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
 
         saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1.0,0, 20, 1, 10);
+                2, 1.0, 0, 20, 1, 10);
 
         saveConfigValuesAbility(earth, "Accretion", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1.0,0, 20, 1, 10);
+                2, 1.0, 0, 20, 1, 10);
 
         saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1.0,15, 0, 1, 0);
+                2, 1.0, 15, 0, 1, 0);
 
         saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1.0,15, 0, 1, 0);
+                2, 1.0, 15, 0, 1, 0);
 
         saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1.0,0, 20, 1, 10);
+                2, 1.0, 0, 20, 1, 10);
 
         saveConfigValuesAbility(earth, "Wall", EARTH.toString(), "description", "instructions",
                 0, 2000, 20000,
-                0, 1.0,0, 10, 1, 10);
-        
+                0, 1.0, 0, 10, 1, 10);
+
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);
 

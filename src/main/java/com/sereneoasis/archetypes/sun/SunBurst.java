@@ -2,14 +2,12 @@ package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
-import com.sereneoasis.archetypes.ocean.Blizzard;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -19,7 +17,7 @@ public class SunBurst extends CoreAbility {
 
     private final String name = "SunBurst";
 
-    private HashMap<Integer,TempDisplayBlock> explosion = new HashMap<>();
+    private HashMap<Integer, TempDisplayBlock> explosion = new HashMap<>();
 
     private double currentRadius = 0;
 
@@ -67,12 +65,10 @@ public class SunBurst extends CoreAbility {
     }
 
 
-
     @Override
     public void remove() {
         super.remove();
-        for (TempDisplayBlock tb : explosion.values())
-        {
+        for (TempDisplayBlock tb : explosion.values()) {
             tb.revert();
         }
         sPlayer.addCooldown(name, cooldown);

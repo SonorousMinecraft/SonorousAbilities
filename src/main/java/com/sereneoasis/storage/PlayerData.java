@@ -2,13 +2,10 @@ package com.sereneoasis.storage;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nivixx.ndatabase.api.annotation.Indexed;
 import com.nivixx.ndatabase.api.annotation.NTable;
 import com.nivixx.ndatabase.api.model.NEntity;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -18,49 +15,44 @@ import java.util.UUID;
 @NTable(name = "player_data", schema = "", catalog = "")
 public class PlayerData extends NEntity<UUID> {
 
-    public PlayerData() { }
+    public PlayerData() {
+    }
 
     @JsonProperty("name")
     private String name;
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("abilities")
     private HashMap<Integer, String> abilities;
 
-    public void setAbilities(HashMap<Integer, String> abilities)
-    {
+    public void setAbilities(HashMap<Integer, String> abilities) {
         this.abilities = abilities;
     }
 
-    public HashMap<Integer, String> getAbilities()
-    {
+    public HashMap<Integer, String> getAbilities() {
         return this.abilities;
     }
 
     @JsonProperty("archetype")
     private String archetype;
 
-    public void setArchetype(String archetype)
-    {
+    public void setArchetype(String archetype) {
         this.archetype = archetype;
     }
 
-    public String getArchetype()
-    {
+    public String getArchetype() {
         return this.archetype;
     }
 
     @JsonProperty("presets")
-    private HashMap<String, HashMap<Integer,String>> presets;
+    private HashMap<String, HashMap<Integer, String>> presets;
 
     public void setPresets(HashMap<String, HashMap<Integer, String>> presets) {
         this.presets = presets;

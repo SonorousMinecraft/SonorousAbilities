@@ -35,13 +35,11 @@ public class Katana extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (System.currentTimeMillis() > startTime + duration)
-        {
+        if (System.currentTimeMillis() > startTime + duration) {
             this.remove();
         }
 
-        if (abilityStatus == AbilityStatus.CHARGING)
-        {
+        if (abilityStatus == AbilityStatus.CHARGING) {
             if (player.isSneaking()) {
                 if (System.currentTimeMillis() > startTime + chargeTime) {
                     abilityStatus = AbilityStatus.CHARGED;
@@ -50,20 +48,15 @@ public class Katana extends CoreAbility {
                     defaultTransformation = katana1.getTransformation();
                     player.setGlowing(true);
                 }
-            }
-            else{
+            } else {
                 this.remove();
             }
-        }
-
-        else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.ATTACKING)
-        {
-            Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
+        } else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.ATTACKING) {
+            Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
             katana1.teleport(Locations.getMainHandLocation(player).clone().add(offsetFix));
             katana2.teleport(Locations.getOffHandLocation(player).clone().add(offsetFix));
         }
-        if (abilityStatus == AbilityStatus.ATTACKING)
-        {
+        if (abilityStatus == AbilityStatus.ATTACKING) {
             Transformation transformation = katana1.getTransformation();
             Quaternionf quaternionf = transformation.getLeftRotation();
             quaternionf.rotateZ((float) Math.toRadians(32));
@@ -79,8 +72,7 @@ public class Katana extends CoreAbility {
                     1, 0, 0);
             Particles.spawnParticle(Particle.SWEEP_ATTACK, katana2.getLocation().clone().add(player.getEyeLocation().getDirection()),
                     1, 0, 0);
-            if (currentArcAngle > arcAngle)
-            {
+            if (currentArcAngle > arcAngle) {
                 abilityStatus = AbilityStatus.CHARGED;
                 katana1.setTransformation(defaultTransformation);
                 katana2.setTransformation(defaultTransformation);
@@ -88,10 +80,8 @@ public class Katana extends CoreAbility {
         }
     }
 
-    public void setHasClicked()
-    {
-        if (abilityStatus == AbilityStatus.CHARGED)
-        {
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.CHARGED) {
             Transformation transformation = katana1.getTransformation();
             Quaternionf quaternionf = transformation.getLeftRotation();
             quaternionf.rotateXYZ(0, (float) -Math.toRadians(90), (float) -Math.toRadians(80));

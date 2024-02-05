@@ -2,11 +2,9 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -26,6 +24,7 @@ public class Laser extends CoreAbility {
     private String name;
 
     private Particle particle;
+
     public Laser(Player player, Location startLoc, String name, Particle particle) {
         super(player, name);
 
@@ -36,18 +35,16 @@ public class Laser extends CoreAbility {
         start();
     }
 
-    public void setLoc(Location newLoc)
-    {
+    public void setLoc(Location newLoc) {
         this.loc = newLoc;
     }
+
     @Override
     public void progress() {
-        if (System.currentTimeMillis() > startTime + duration)
-        {
+        if (System.currentTimeMillis() > startTime + duration) {
             this.abilityStatus = AbilityStatus.COMPLETE;
         }
-        if (abilityStatus == AbilityStatus.SHOT)
-        {
+        if (abilityStatus == AbilityStatus.SHOT) {
 
             dir = player.getEyeLocation().getDirection().normalize();
 

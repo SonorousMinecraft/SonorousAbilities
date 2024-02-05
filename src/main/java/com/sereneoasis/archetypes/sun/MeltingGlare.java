@@ -1,18 +1,16 @@
 package com.sereneoasis.archetypes.sun;
 
-import com.sereneoasis.ability.superclasses.Ability;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Laser;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Locations;
-import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class MeltingGlare extends CoreAbility {
 
     private Laser leftEye, rightEye;
+
     public MeltingGlare(Player player) {
         super(player);
 
@@ -29,14 +27,12 @@ public class MeltingGlare extends CoreAbility {
 
     @Override
     public void progress() {
-        if (!player.isSneaking())
-        {
+        if (!player.isSneaking()) {
             this.remove();
         }
 
         if (leftEye.getAbilityStatus() == AbilityStatus.COMPLETE &&
-                rightEye.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+                rightEye.getAbilityStatus() == AbilityStatus.COMPLETE) {
             leftEye.remove();
             rightEye.remove();
             this.remove();

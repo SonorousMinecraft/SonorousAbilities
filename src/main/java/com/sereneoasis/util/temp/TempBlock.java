@@ -18,8 +18,7 @@ public class TempBlock {
 
     private static final PriorityQueue<TempBlock> REVERT_QUEUE = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.revertTime - t2.revertTime));
 
-    public static PriorityQueue<TempBlock> getRevertQueue()
-    {
+    public static PriorityQueue<TempBlock> getRevertQueue() {
         return REVERT_QUEUE;
     }
 
@@ -31,12 +30,10 @@ public class TempBlock {
 
     private long revertTime;
 
-    public TempBlock(Block block, DisplayBlock blocks, final long revertTime, boolean canReplaceBlocks)
-    {
-        if (! INSTANCES.containsKey(block)) {
+    public TempBlock(Block block, DisplayBlock blocks, final long revertTime, boolean canReplaceBlocks) {
+        if (!INSTANCES.containsKey(block)) {
             this.block = block;
-            if (!canReplaceBlocks && !block.getType().isAir())
-            {
+            if (!canReplaceBlocks && !block.getType().isAir()) {
                 return;
             }
             int randomIndex = ThreadLocalRandom.current().nextInt(blocks.getBlocks().size());
@@ -52,12 +49,10 @@ public class TempBlock {
         }
     }
 
-    public TempBlock(Block block, Material type, final long revertTime, boolean canReplaceBlocks)
-    {
-        if (! INSTANCES.containsKey(block)) {
+    public TempBlock(Block block, Material type, final long revertTime, boolean canReplaceBlocks) {
+        if (!INSTANCES.containsKey(block)) {
             this.block = block;
-            if (!canReplaceBlocks && !block.getType().isAir())
-            {
+            if (!canReplaceBlocks && !block.getType().isAir()) {
                 return;
             }
             BlockData newData = type.createBlockData();
@@ -73,35 +68,30 @@ public class TempBlock {
     }
 
 
-    public TempBlock( Block block, DisplayBlock blocks, final long revertTime) {
+    public TempBlock(Block block, DisplayBlock blocks, final long revertTime) {
         new TempBlock(block, blocks, revertTime, true);
     }
 
-    public static boolean isTempBlock(Block block)
-    {
-        if (INSTANCES.containsKey(block))
-        {
+    public static boolean isTempBlock(Block block) {
+        if (INSTANCES.containsKey(block)) {
             return true;
         }
         return false;
     }
 
-    public static TempBlock getTempBlock(Block block)
-    {
+    public static TempBlock getTempBlock(Block block) {
         return INSTANCES.get(block);
     }
 
-    public void automaticRevert()
-    {
+    public void automaticRevert() {
         if (block.getBlockData() != oldData) {
             this.block.setBlockData(oldData);
         }
         REVERT_QUEUE.remove();
-        INSTANCES.remove(block,this);
+        INSTANCES.remove(block, this);
     }
 
-    public void revert()
-    {
+    public void revert() {
         this.block.setBlockData(oldData);
     }
 

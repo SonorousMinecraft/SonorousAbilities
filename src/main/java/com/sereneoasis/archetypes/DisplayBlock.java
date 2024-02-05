@@ -20,8 +20,7 @@ public enum DisplayBlock {
 
     List<Material> blocks = new ArrayList<>();
 
-    DisplayBlock(List<Material> blocks)
-    {
+    DisplayBlock(List<Material> blocks) {
         this.blocks = blocks;
     }
 

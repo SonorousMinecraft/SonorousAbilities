@@ -28,8 +28,7 @@ public class Blizzard extends CoreAbility {
             return;
         }
 
-        if (DisplayBlock.ICE.getBlocks().contains(player.getLocation().clone().subtract(new Vector(0,1,0)).getBlock().getType()))
-        {
+        if (DisplayBlock.ICE.getBlocks().contains(player.getLocation().clone().subtract(new Vector(0, 1, 0)).getBlock().getType())) {
 
             dome = new HashMap<>();
             start();
@@ -38,20 +37,17 @@ public class Blizzard extends CoreAbility {
 
     @Override
     public void progress() {
-        if (!player.isSneaking())
-        {
+        if (!player.isSneaking()) {
             this.remove();
         }
-        if (maxShots == currentShots)
-        {
+        if (maxShots == currentShots) {
             this.remove();
         }
 
         dome = Entities.handleDisplayBlockEntities(dome, Locations.getOutsideSphereLocs(player.getEyeLocation(), radius, 0.5), DisplayBlock.ICE, 0.5);
     }
 
-    public void setHasClicked()
-    {
+    public void setHasClicked() {
         currentShots++;
         Location tempLoc = player.getEyeLocation();
         Vector dir = tempLoc.getDirection().normalize();
@@ -60,12 +56,10 @@ public class Blizzard extends CoreAbility {
     }
 
     @Override
-    public void remove()
-    {
+    public void remove() {
         super.remove();
         sPlayer.addCooldown(this.getName(), this.cooldown);
-        for (TempDisplayBlock tb : dome.values())
-        {
+        for (TempDisplayBlock tb : dome.values()) {
             tb.revert();
         }
     }

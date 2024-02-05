@@ -1,13 +1,9 @@
 package com.sereneoasis.util.methods;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.util.Vector;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -17,47 +13,40 @@ import java.util.*;
  */
 public class Locations {
 
-    public static List<Location> getArc(Location loc1, Location loc2, Location origin, double distance)
-    {
-        List<Location>locs = new ArrayList<>();
+    public static List<Location> getArc(Location loc1, Location loc2, Location origin, double distance) {
+        List<Location> locs = new ArrayList<>();
         double radius = loc1.distance(origin);
-        Vector orth = Vectors.getOrthFrom2Vectors(Vectors.getDirectionBetweenLocations(loc1,origin), Vectors.getDirectionBetweenLocations(loc2,origin) );
-        double angle = Vectors.getAngleBetweenVectors(Vectors.getDirectionBetweenLocations(loc1,origin), Vectors.getDirectionBetweenLocations(loc2,origin));
+        Vector orth = Vectors.getOrthFrom2Vectors(Vectors.getDirectionBetweenLocations(loc1, origin), Vectors.getDirectionBetweenLocations(loc2, origin));
+        double angle = Vectors.getAngleBetweenVectors(Vectors.getDirectionBetweenLocations(loc1, origin), Vectors.getDirectionBetweenLocations(loc2, origin));
         double arcLength = radius * angle;
-        int increments = (int) (arcLength/distance);
-        double angleStep = angle/increments;
-        Vector startRadius = Vectors.getDirectionBetweenLocations(origin,loc1);
-        for (int r = 0 ; r < increments ; r++)
-        {
-            locs.add(origin.clone().add(startRadius.rotateAroundAxis(orth,angleStep)));
+        int increments = (int) (arcLength / distance);
+        double angleStep = angle / increments;
+        Vector startRadius = Vectors.getDirectionBetweenLocations(origin, loc1);
+        for (int r = 0; r < increments; r++) {
+            locs.add(origin.clone().add(startRadius.rotateAroundAxis(orth, angleStep)));
         }
         return locs;
     }
 
-    public static Location getMidpoint(Location loc1, Location loc2)
-    {
+    public static Location getMidpoint(Location loc1, Location loc2) {
         return loc1.clone().add(loc2.clone()).multiply(0.5);
     }
 
-    public static List<Location> getLocationsBetweenLocs(Location loc1, Location loc2, double distance)
-    {
+    public static List<Location> getLocationsBetweenLocs(Location loc1, Location loc2, double distance) {
         Location startLoc = loc1.clone();
-        Vector differenceVec = Vectors.getDirectionBetweenLocations(loc1,loc2);
-        List<Location>locs = new ArrayList<>();
-        for (double d = 0 ; d < differenceVec.length(); d+=distance)
-        {
+        Vector differenceVec = Vectors.getDirectionBetweenLocations(loc1, loc2);
+        List<Location> locs = new ArrayList<>();
+        for (double d = 0; d < differenceVec.length(); d += distance) {
             locs.add(startLoc.clone().add(differenceVec.clone().normalize().multiply(d)));
         }
         return locs;
     }
 
-    public static Location getFacingLocation(Location loc, Vector dir, double distance)
-    {
+    public static Location getFacingLocation(Location loc, Vector dir, double distance) {
         return loc.add(dir.normalize().multiply(distance)).clone();
     }
 
-    public static Location getFacingLocationObstructed(Location loc, Vector dir, double distance)
-    {
+    public static Location getFacingLocationObstructed(Location loc, Vector dir, double distance) {
         Location facingLoc = getFacingLocation(loc, dir, distance);
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance) != null) {
             facingLoc = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance).getHitBlock().getLocation();
@@ -65,16 +54,12 @@ public class Locations {
         return facingLoc;
     }
 
-    public static List<Location> getDisplayEntityLocs(Location loc, double size, double increment)
-    {
-        List<Location>locs = new ArrayList<>();
-        for (double x = -size/2; x <size/2 ; x += increment)
-        {
-            for (double y = -size/2; y <size/2 ; y += increment)
-            {
-                for (double z = -size/2; z <size/2 ; z += increment)
-                {
-                    locs.add(loc.clone().add(x,y,z));
+    public static List<Location> getDisplayEntityLocs(Location loc, double size, double increment) {
+        List<Location> locs = new ArrayList<>();
+        for (double x = -size / 2; x < size / 2; x += increment) {
+            for (double y = -size / 2; y < size / 2; y += increment) {
+                for (double z = -size / 2; z < size / 2; z += increment) {
+                    locs.add(loc.clone().add(x, y, z));
                 }
             }
         }
@@ -82,87 +67,78 @@ public class Locations {
     }
 
 
-
     public static List<Location> getSphere(Location loc, double radii, int density) {
         final List<Location> sphere = new ArrayList<Location>();
         for (double i = 0; i <= Math.PI; i += Math.PI / density) {
             double radius = Math.sin(i) * radii;
             double y = Math.cos(i) * radii;
-            for (double a = 0; a < Math.PI * 2; a+= Math.PI*2 / density) {
+            for (double a = 0; a < Math.PI * 2; a += Math.PI * 2 / density) {
                 double x = Math.cos(a) * radius;
                 double z = Math.sin(a) * radius;
-                sphere.add(loc.clone().add(x,y,z));
+                sphere.add(loc.clone().add(x, y, z));
             }
         }
         return sphere;
     }
+
     public static List<Location> getCircle(Location loc, double radii, int points, Vector dir, double orientation) {
         final List<Location> circle = new ArrayList<>();
-        for (double i = 0; i < Math.PI *2; i+= Math.PI*2 / points) {
+        for (double i = 0; i < Math.PI * 2; i += Math.PI * 2 / points) {
             double x = Math.sin(i) * radii;
             double z = Math.cos(i) * radii;
-            Vector vec = new Vector(x,0,z);
-            vec.rotateAroundAxis(dir,orientation);
+            Vector vec = new Vector(x, 0, z);
+            vec.rotateAroundAxis(dir, orientation);
             Location location = loc.clone().add(vec);
             circle.add(location);
         }
         return circle;
     }
 
-    public static List<Location> getArcFromTrig(Location loc, double radius, int points, Vector dir, int orientation, int startAngle, int endAngle, boolean clockwise)
-    {
-        int increment = Math.floorDiv(endAngle-startAngle, points);
-        List<Location>locs = new ArrayList<>();
-        for (int i = startAngle; i < endAngle; i+=increment)
-        {
+    public static List<Location> getArcFromTrig(Location loc, double radius, int points, Vector dir, int orientation, int startAngle, int endAngle, boolean clockwise) {
+        int increment = Math.floorDiv(endAngle - startAngle, points);
+        List<Location> locs = new ArrayList<>();
+        for (int i = startAngle; i < endAngle; i += increment) {
             double radian = Math.toRadians(i);
             double x, z;
             if (!clockwise) {
-                 x = Math.sin(radian) ;
-                 z = Math.cos(radian) ;
+                x = Math.sin(radian);
+                z = Math.cos(radian);
+            } else {
+                z = Math.sin(radian);
+                x = Math.cos(radian);
             }
-            else{
-                 z = Math.sin(radian) ;
-                 x = Math.cos(radian) ;
-            }
-            Vector v = new Vector(x, 0, z).multiply(radius).rotateAroundAxis(dir,Math.toRadians(orientation));
+            Vector v = new Vector(x, 0, z).multiply(radius).rotateAroundAxis(dir, Math.toRadians(orientation));
             locs.add(loc.clone().add(v));
         }
         return locs;
     }
 
-    public static Set<Location>getPerpArcFromVector(Location loc, Vector dir, double radius, int startAngle, int endAngle, int points)
-    {
-        int increment = Math.floorDiv(endAngle-startAngle, points);
-        Set<Location>locs = new HashSet<>();
-        for (int i = startAngle; i < endAngle; i+=increment)
-        {
+    public static Set<Location> getPerpArcFromVector(Location loc, Vector dir, double radius, int startAngle, int endAngle, int points) {
+        int increment = Math.floorDiv(endAngle - startAngle, points);
+        Set<Location> locs = new HashSet<>();
+        for (int i = startAngle; i < endAngle; i += increment) {
             locs.add(loc.clone().add(dir.clone().rotateAroundY(Math.toRadians(i)).multiply(radius)));
         }
         return locs;
     }
 
 
-    public static List<Location>getShotLocations(Location loc, int points, Vector dir, double speed)
-    {
-        double increment = speed/points;
-        List<Location>locs = new ArrayList<>();
-        for (double d = 0; d < speed ; d+= increment)
-        {
+    public static List<Location> getShotLocations(Location loc, int points, Vector dir, double speed) {
+        double increment = speed / points;
+        List<Location> locs = new ArrayList<>();
+        for (double d = 0; d < speed; d += increment) {
             locs.add(loc.clone().add(dir.clone().multiply(d)));
         }
         return locs;
     }
 
-    public static List<Location>getBezierCurveLocations(Location loc, int points, LinkedHashMap<Vector,Double> directions, double speed)
-    {
+    public static List<Location> getBezierCurveLocations(Location loc, int points, LinkedHashMap<Vector, Double> directions, double speed) {
         double distance = directions.values().stream().reduce(0.0, Double::sum);
-        double increment = (speed * distance)/points;
-        List<Location>locs = new ArrayList<>();
+        double increment = (speed * distance) / points;
+        List<Location> locs = new ArrayList<>();
         Line line = new Line(directions);
-        for (double d = 0; d < distance; d+= increment)
-        {
-            locs.add(loc.clone().add(line.getVector(increment/distance)));
+        for (double d = 0; d < distance; d += increment) {
+            locs.add(loc.clone().add(line.getVector(increment / distance)));
         }
 
         return locs;
@@ -175,20 +151,17 @@ public class Locations {
 
         private Line previous;
 
-        Line(Line previous, Vector dir1, Vector dir2)
-        {
+        Line(Line previous, Vector dir1, Vector dir2) {
             this.previous = previous;
             this.dir1 = dir1;
             this.dir2 = dir2;
         }
 
-        Line(LinkedHashMap<Vector,Double> directions)
-        {
-            Vector oldVector = new Vector(0,0,0);
+        Line(LinkedHashMap<Vector, Double> directions) {
+            Vector oldVector = new Vector(0, 0, 0);
             Line line = null;
             int i = 0;
-            for (Map.Entry<Vector,Double> entry : directions.entrySet())
-            {
+            for (Map.Entry<Vector, Double> entry : directions.entrySet()) {
                 i++;
                 if (i == directions.size()) {
                     this.previous = line;
@@ -197,7 +170,7 @@ public class Locations {
                     return;
                 }
 
-                Line newLine = new Line(line, oldVector,  entry.getKey().multiply( entry.getValue()).add(oldVector));
+                Line newLine = new Line(line, oldVector, entry.getKey().multiply(entry.getValue()).add(oldVector));
                 oldVector = oldVector.add(entry.getKey());
                 line = newLine;
 
@@ -205,20 +178,17 @@ public class Locations {
 
         }
 
-        private Vector getVector(double time)
-        {
-            if (previous == null)
-            {
-                return dir1.multiply(1-time).add(dir2.multiply(time));
-            }
-            else {
+        private Vector getVector(double time) {
+            if (previous == null) {
+                return dir1.multiply(1 - time).add(dir2.multiply(time));
+            } else {
                 return previous.getVector(1 - time).add(dir2.multiply(time));
             }
         }
 
     }
 
-    public static List<Location> getPolygon(Location loc, double radii, int points){
+    public static List<Location> getPolygon(Location loc, double radii, int points) {
         final List<Location> polygon = new ArrayList<Location>();
         for (int i = 0; i < points; i++) {
             double angle = 360.0 / points * i;
@@ -241,7 +211,7 @@ public class Locations {
         return polygon;
     }
 
-    public static List<Location> getHollowPolygon(Location loc, double radii, int points){
+    public static List<Location> getHollowPolygon(Location loc, double radii, int points) {
         final List<Location> hpolygon = new ArrayList<Location>();
         for (int i = 0; i < points; i++) {
             double angle = 360.0 / points * i;
@@ -253,35 +223,27 @@ public class Locations {
     }
 
 
-    public static Set<Location> getLocsAroundPoint(Location loc, double radius, double distance)
-    {
-        Set<Location>locs = new HashSet<>();
-        radius -= radius/2;
-        for (double y = -radius ; y < radius ; y+= distance)
-        {
-            for (double x = -radius ; x < radius ; x+= distance)
-            {
-                for (double z = -radius ; z < radius ; z+= distance)
-                {
-                    locs.add(loc.clone().add(x,y,z));
+    public static Set<Location> getLocsAroundPoint(Location loc, double radius, double distance) {
+        Set<Location> locs = new HashSet<>();
+        radius -= radius / 2;
+        for (double y = -radius; y < radius; y += distance) {
+            for (double x = -radius; x < radius; x += distance) {
+                for (double z = -radius; z < radius; z += distance) {
+                    locs.add(loc.clone().add(x, y, z));
                 }
             }
         }
         return locs;
     }
 
-    public static Set<Location> getOutsideSphereLocs(Location loc, double radius, double distance)
-    {
-        Set<Location>locs = new HashSet<>();
-        radius -= radius/2;
-        for (double y = -radius ; y < radius ; y+= distance)
-        {
-            for (double x = -radius ; x < radius ; x+= distance)
-            {
-                for (double z = -radius ; z < radius ; z+= distance)
-                {
-                    Location temploc = loc.clone().add(x,y,z);
-                    if (temploc.distanceSquared(loc) < radius*radius && temploc.distance(loc) > radius-distance-0.1) {
+    public static Set<Location> getOutsideSphereLocs(Location loc, double radius, double distance) {
+        Set<Location> locs = new HashSet<>();
+        radius -= radius / 2;
+        for (double y = -radius; y < radius; y += distance) {
+            for (double x = -radius; x < radius; x += distance) {
+                for (double z = -radius; z < radius; z += distance) {
+                    Location temploc = loc.clone().add(x, y, z);
+                    if (temploc.distanceSquared(loc) < radius * radius && temploc.distance(loc) > radius - distance - 0.1) {
                         locs.add(temploc);
                     }
                 }

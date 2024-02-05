@@ -21,7 +21,6 @@ public class Skate extends CoreAbility {
     private int maxHeightFromGround;
 
     private Block floorBlock;
-    private AbilityStatus abilityStatus = AbilityStatus.NO_SOURCE;
 
     private Material floorType;
 
@@ -39,8 +38,9 @@ public class Skate extends CoreAbility {
         Location loc = player.getLocation();
         setFloorBlock();
 
-        if (floorBlock != null)
-        {
+        abilityStatus = AbilityStatus.NO_SOURCE;
+
+        if (floorBlock != null) {
             armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
             {
                 ArmorStand aStand = (ArmorStand) entity;
@@ -56,8 +56,7 @@ public class Skate extends CoreAbility {
         }
     }
 
-    private void setFloorBlock()
-    {
+    private void setFloorBlock() {
         floorBlock = null;
         for (int i = 0; i <= this.maxHeightFromGround; i++) {
             final Block block = this.player.getEyeLocation().getBlock().getRelative(BlockFace.DOWN, i);
@@ -71,8 +70,7 @@ public class Skate extends CoreAbility {
     @Override
     public void progress() {
 
-        if (floorBlock == null || player.isSneaking())
-        {
+        if (floorBlock == null || player.isSneaking()) {
             abilityStatus = AbilityStatus.COMPLETE;
             return;
         }
@@ -83,8 +81,7 @@ public class Skate extends CoreAbility {
         setFloorBlock();
     }
 
-    public Block getFloorBlock()
-    {
+    public Block getFloorBlock() {
         return this.floorBlock;
     }
 

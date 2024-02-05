@@ -1,6 +1,5 @@
 package com.sereneoasis.archetypes.sky;
 
-import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.SourcedBlast;
 import com.sereneoasis.util.AbilityStatus;
@@ -11,6 +10,7 @@ public class SkyBlast extends CoreAbility {
 
     private final String name = "SkyBlast";
     private SourcedBlast sourcedBlast;
+
     public SkyBlast(Player player) {
         super(player);
 
@@ -24,15 +24,14 @@ public class SkyBlast extends CoreAbility {
 
     @Override
     public void progress() {
-        if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE) {
             sourcedBlast.remove();
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         sourcedBlast.setHasClicked();
     }
 

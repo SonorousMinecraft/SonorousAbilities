@@ -44,9 +44,8 @@ public class Blade extends CoreAbility {
 
             Particles.playParticlesBetweenPoints(particle, loc1, loc2, 0.1, 5, 0.5, 0);
 
-            if (Entities.getEntityBetweenPoints(loc1, loc2) != null)
-            {
-                DamageHandler.damageEntity(Entities.getEntityBetweenPoints(loc1, loc2), player, this,damage);
+            if (Entities.getEntityBetweenPoints(loc1, loc2) != null) {
+                DamageHandler.damageEntity(Entities.getEntityBetweenPoints(loc1, loc2), player, this, damage);
                 abilityStatus = AbilityStatus.COMPLETE;
             }
 

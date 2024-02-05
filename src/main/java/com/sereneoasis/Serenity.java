@@ -2,9 +2,9 @@ package com.sereneoasis;
 
 import com.nivixx.ndatabase.api.NDatabase;
 import com.nivixx.ndatabase.api.repository.Repository;
-import com.sereneoasis.ability.*;
-import com.sereneoasis.ability.data.AbilityDataManager;
+import com.sereneoasis.ability.BendingManager;
 import com.sereneoasis.ability.ComboManager;
+import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.command.SerenityCommand;
 import com.sereneoasis.config.ConfigManager;
@@ -31,6 +31,7 @@ public class Serenity extends JavaPlugin {
     private static Logger log;
 
     private static Repository<UUID, PlayerData> repository;
+
     public static Repository<UUID, PlayerData> getRepository() {
         return repository;
     }
@@ -60,8 +61,6 @@ public class Serenity extends JavaPlugin {
     }
 
     private static ConfigManager configManager;
-
-
 
 
     public static void main(String[] args) {

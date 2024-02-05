@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class ComboData extends AbilityData {
 
     private ArrayList<ComboManager.AbilityInformation> abilities;
+
     public ComboData(Archetype archetype, String description, String instructions,
                      long chargetime, long cooldown, long duration,
                      double damage, double hitbox, double radius, double range, double speed, double sourceRange, ArrayList<ComboManager.AbilityInformation> abilities) {

@@ -13,17 +13,17 @@ import java.util.UUID;
  * Runnable to handle all ability progression and cooldowns.
  * Reverts {@link TempBlock temporary blocks} and {@link TempDisplayBlock temporary display blocks}
  */
-public class BendingManager implements Runnable{
+public class BendingManager implements Runnable {
 
     private static BendingManager instance;
 
     private long time;
 
-    public BendingManager()
-    {
+    public BendingManager() {
         instance = this;
 
     }
+
     @Override
     public void run() {
 
@@ -34,23 +34,19 @@ public class BendingManager implements Runnable{
         }
         this.handleCooldowns();
 
-        while (!TempBlock.getRevertQueue().isEmpty())
-        {
+        while (!TempBlock.getRevertQueue().isEmpty()) {
             final TempBlock tempBlock = TempBlock.getRevertQueue().peek(); //Check if the top TempBlock is ready for reverting
             if (tempBlock.getRevertTime() < System.currentTimeMillis()) {
                 tempBlock.automaticRevert();
-            }
-            else{
+            } else {
                 break;
             }
         }
-        while (!TempDisplayBlock.getRevertQueue().isEmpty())
-        {
+        while (!TempDisplayBlock.getRevertQueue().isEmpty()) {
             final TempDisplayBlock tempDisplayBlock = TempDisplayBlock.getRevertQueue().peek(); //Check if the top TempBlock is ready for reverting
             if (tempDisplayBlock.getRevertTime() < System.currentTimeMillis()) {
                 tempDisplayBlock.automaticRevert();
-            }
-            else{
+            } else {
                 break;
             }
         }

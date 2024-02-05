@@ -1,7 +1,6 @@
 package com.sereneoasis.displays;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -18,8 +17,7 @@ public class SerenityBar {
 
     private final static Map<Player, BossBar> combatBar = new ConcurrentHashMap<>();
 
-    public SerenityBar()
-    {
+    public SerenityBar() {
         BossBar bossBar = Bukkit.getServer().createBossBar("Combat", BarColor.RED, BarStyle.SOLID);
     }
 

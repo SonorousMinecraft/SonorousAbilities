@@ -12,7 +12,6 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Sweep extends CoreAbility {
@@ -34,8 +33,8 @@ public class Sweep extends CoreAbility {
         this.loc2 = loc2.clone();
         this.origin = player.getEyeLocation().clone();
 
-        this.dir1 = Vectors.getDirectionBetweenLocations(origin,loc1).normalize();
-        this.dir2 = Vectors.getDirectionBetweenLocations(origin,loc2).normalize();
+        this.dir1 = Vectors.getDirectionBetweenLocations(origin, loc1).normalize();
+        this.dir2 = Vectors.getDirectionBetweenLocations(origin, loc2).normalize();
         abilityStatus = AbilityStatus.SHOT;
         start();
     }
@@ -47,10 +46,9 @@ public class Sweep extends CoreAbility {
             loc1.add(dir1.clone());
             loc2.add(dir2.clone());
 
-            List<Location> locs = Locations.getArc(loc1, loc2, origin,0.2);
+            List<Location> locs = Locations.getArc(loc1, loc2, origin, 0.2);
             //List<Location> locs = List.of(new Location[]{loc1, loc2});
-            for (Location loc : locs)
-            {
+            for (Location loc : locs) {
                 DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
             }
             Particles.playLocParticles(locs, particle, 1, 0, 0);

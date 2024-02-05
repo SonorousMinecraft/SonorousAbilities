@@ -9,7 +9,6 @@ import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,6 +20,7 @@ public class Rocket extends CoreAbility {
     private ShootItemDisplay rocket;
 
     private Location origin;
+
     public Rocket(Player player) {
         super(player);
 
@@ -29,7 +29,7 @@ public class Rocket extends CoreAbility {
         }
 
         origin = player.getEyeLocation().clone();
-        rocket = new ShootItemDisplay(player, name,origin , origin.getDirection().clone(), Material.FIREWORK_ROCKET, 3, false, false);
+        rocket = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.FIREWORK_ROCKET, 3, false, false);
         start();
     }
 
@@ -43,12 +43,10 @@ public class Rocket extends CoreAbility {
 
     }
 
-    public void setHasClicked()
-    {
+    public void setHasClicked() {
         Particles.spawnParticle(Particle.EXPLOSION_HUGE, rocket.getLoc(), 10, 0.2, 0);
         for (Entity e : Entities.getEntitiesAroundPoint(rocket.getLoc(), hitbox)) {
-            if (e instanceof LivingEntity target)
-            {
+            if (e instanceof LivingEntity target) {
                 DamageHandler.damageEntity(target, player, this, damage);
             }
         }

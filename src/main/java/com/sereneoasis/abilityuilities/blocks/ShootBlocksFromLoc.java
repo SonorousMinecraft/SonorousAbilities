@@ -30,7 +30,6 @@ public class ShootBlocksFromLoc extends CoreAbility {
 
     private Vector dir;
 
-    
 
     private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
 
@@ -54,7 +53,7 @@ public class ShootBlocksFromLoc extends CoreAbility {
 
         if (loc.distance(player.getEyeLocation()) > range) {
             abilityStatus = AbilityStatus.COMPLETE;
-            if (autoRemove){
+            if (autoRemove) {
                 this.remove();
             }
 
@@ -65,20 +64,18 @@ public class ShootBlocksFromLoc extends CoreAbility {
 
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
-            if (System.currentTimeMillis() > lastCurveTime+timeBetweenCurves) {
+            if (System.currentTimeMillis() > lastCurveTime + timeBetweenCurves) {
                 directions.put(dir, speed);
                 lastCurveTime = System.currentTimeMillis();
             }
             locs = Locations.getBezierCurveLocations(loc, 20, directions, speed);
 
-        }
-        else{
+        } else {
             locs = Locations.getShotLocations(loc, 20, dir, speed);
         }
 
 
-        for (Location point : locs)
-        {
+        for (Location point : locs) {
             new TempDisplayBlock(point, type, 200, Math.random() * hitbox);
         }
 

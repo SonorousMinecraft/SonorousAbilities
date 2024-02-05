@@ -3,19 +3,13 @@ package com.sereneoasis.abilityuilities.items;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Display;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class ShootItemDisplay extends CoreAbility {
 
@@ -50,7 +44,7 @@ public class ShootItemDisplay extends CoreAbility {
         oldPitch = tempLoc.getPitch();
 
 
-        Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(loc.getYaw()));
+        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
         Location offsetLocation = loc.clone().add(offsetFix);
         itemDisplay = Display.createItemDisplay(offsetLocation, material, size, diagonal);
         armorStand = Display.createArmorStand(offsetLocation);
@@ -76,10 +70,10 @@ public class ShootItemDisplay extends CoreAbility {
                 armorStand.setGravity(false);
 
                 abilityStatus = AbilityStatus.COMPLETE;
-                    if (!stick) {
-                        itemDisplay.remove();
-                    }
+                if (!stick) {
+                    itemDisplay.remove();
                 }
+            }
 
 
         }
@@ -95,9 +89,8 @@ public class ShootItemDisplay extends CoreAbility {
         return armorStand;
     }
 
-    public Location getLoc()
-    {
-        Vector offsetFix = new Vector(size/2, 0, size/2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
+    public Location getLoc() {
+        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
         return armorStand.getLocation().clone().subtract(offsetFix);
     }
 

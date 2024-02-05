@@ -15,6 +15,7 @@ public class Cyclone extends CoreAbility {
 
     private final String name = "Cyclone";
     private Skate skate;
+
     public Cyclone(Player player) {
         super(player);
 
@@ -28,25 +29,22 @@ public class Cyclone extends CoreAbility {
 
     @Override
     public void progress() {
-        if (skate.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (skate.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
 
-        List<Location> locs = Locations.getCircle(player.getLocation().add(0,1,0), radius, 20, player.getEyeLocation().getDirection(), Math.toRadians(90));
+        List<Location> locs = Locations.getCircle(player.getLocation().add(0, 1, 0), radius, 20, player.getEyeLocation().getDirection(), Math.toRadians(90));
         Particles.playLocParticles(locs, Particle.SPELL, 1, 0, 0);
     }
 
-    public void setHasClicked()
-    {
+    public void setHasClicked() {
         this.remove();
     }
 
     @Override
     public void remove() {
         super.remove();
-        if (skate != null)
-        {
+        if (skate != null) {
             skate.remove();
         }
         sPlayer.addCooldown(name, cooldown);

@@ -6,7 +6,6 @@ import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -20,6 +19,7 @@ public class Jab extends CoreAbility {
 
     private Location origin;
     private Vector dir;
+
     public Jab(Player player) {
         super(player);
 
@@ -30,8 +30,7 @@ public class Jab extends CoreAbility {
         target = Entities.getFacingEntity(player, range, hitbox);
         origin = player.getEyeLocation().clone();
         dir = origin.getDirection().clone().normalize();
-        if (target != null)
-        {
+        if (target != null) {
             DamageHandler.damageEntity(target, player, this, damage);
             start();
         }
@@ -49,13 +48,12 @@ public class Jab extends CoreAbility {
         player.setVelocity(dir.clone().multiply(speed));
         Particles.spawnParticle(Particle.ELECTRIC_SPARK, Locations.getMainHandLocation(player), 10, 0.2, 0);
 
-        if (player.getEyeLocation().distance(target.getEyeLocation()) < hitbox+3)
-        {
+        if (player.getEyeLocation().distance(target.getEyeLocation()) < hitbox + 3) {
             Particles.spawnParticle(Particle.EXPLOSION_HUGE, Locations.getMainHandLocation(player), 10, 0.2, 0);
             Vector orth = Vectors.getDirectionBetweenLocations(Locations.getLeftSide(player.getEyeLocation(), 0.5), Locations.getRightSide(player.getEyeLocation(), 0.5));
             dir.rotateAroundAxis(orth, -Math.toRadians(player.getEyeLocation().getPitch()));
             target.setVelocity(dir.clone().multiply(speed * 3));
-            player.setVelocity(new Vector(0,0,0));
+            player.setVelocity(new Vector(0, 0, 0));
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }

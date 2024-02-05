@@ -11,7 +11,7 @@ public class AbilityData {
     protected Archetype archetype;
 
     protected String description, instructions;
-    protected long chargetime, cooldown,  duration;
+    protected long chargetime, cooldown, duration;
 
     protected double damage, hitbox, radius, range, speed, sourceRange;
 

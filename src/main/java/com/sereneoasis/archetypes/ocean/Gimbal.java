@@ -1,7 +1,6 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
 import com.sereneoasis.abilityuilities.blocks.ShootBlocksFromLoc;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
@@ -11,10 +10,8 @@ import org.bukkit.entity.Player;
 
 /**
  * @author Sakrajin
- *
  */
-public class Gimbal extends CoreAbility
-{
+public class Gimbal extends CoreAbility {
 
     private final String name = "Gimbal";
 
@@ -37,14 +34,12 @@ public class Gimbal extends CoreAbility
     public Gimbal(Player player) {
         super(player);
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name))
-        {
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
             return;
         }
 
         sourceBlockToPlayer = new SourceBlockToPlayer(player, name, DisplayBlock.WATER, 4);
-        if (! (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE))
-        {
+        if (!(sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE)) {
             sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
             start();
         }
@@ -57,8 +52,7 @@ public class Gimbal extends CoreAbility
     @Override
     public void progress() {
 
-        if (!hasSourced && sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED)
-        {
+        if (!hasSourced && sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED) {
 
             hasSourced = true;
             blockRingAroundPlayer1 = new BlockRingAroundPlayer(player, name, sourceBlockToPlayer.getLocation(),
@@ -69,18 +63,14 @@ public class Gimbal extends CoreAbility
         }
 
 
-        if (hasShot1)
-        {
+        if (hasShot1) {
 
-            if (shootBlocksFromLoc1 !=null && shootBlocksFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE)
-            {
+            if (shootBlocksFromLoc1 != null && shootBlocksFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE) {
 
                 shootBlocksFromLoc1.remove();
             }
-            if (hasShot2)
-            {
-                if (shootBlocksFromLoc2 !=null && shootBlocksFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE)
-                {
+            if (hasShot2) {
+                if (shootBlocksFromLoc2 != null && shootBlocksFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE) {
 
                     shootBlocksFromLoc2.remove();
                     this.remove();
@@ -89,8 +79,7 @@ public class Gimbal extends CoreAbility
         }
     }
 
-    public void setHasClicked()
-    {
+    public void setHasClicked() {
         if (hasSourced) {
 
             if (!hasShot1) {
@@ -110,15 +99,13 @@ public class Gimbal extends CoreAbility
     @Override
     public void remove() {
         super.remove();
-        if (blockRingAroundPlayer1 != null)
-        {
+        if (blockRingAroundPlayer1 != null) {
             blockRingAroundPlayer1.remove();
         }
-        if (blockRingAroundPlayer2 != null)
-        {
+        if (blockRingAroundPlayer2 != null) {
             blockRingAroundPlayer2.remove();
         }
-        sPlayer.addCooldown(this.getName(),cooldown);
+        sPlayer.addCooldown(this.getName(), cooldown);
     }
 
     @Override

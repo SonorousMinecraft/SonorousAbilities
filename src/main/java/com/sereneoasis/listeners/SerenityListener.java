@@ -1,10 +1,9 @@
 package com.sereneoasis.listeners;
 
-import com.sereneoasis.*;
-import com.sereneoasis.ability.data.AbilityDataManager;
+import com.sereneoasis.Serenity;
+import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
-import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
@@ -14,7 +13,6 @@ import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,8 +24,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.UUID;
-
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
 
 /**
@@ -35,8 +31,6 @@ import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
  * Main listener for all serenity events
  */
 public class SerenityListener implements Listener {
-
-
 
 
     @EventHandler

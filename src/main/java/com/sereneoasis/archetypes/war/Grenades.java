@@ -5,14 +5,15 @@ import com.sereneoasis.abilityuilities.items.ThrowItemDisplay;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Grenades extends CoreAbility {
 
@@ -21,6 +22,7 @@ public class Grenades extends CoreAbility {
     private HashMap<ThrowItemDisplay, Long> grenades = new HashMap<>();
 
     private int shots = 0, maxShots = 6;
+
     public Grenades(Player player) {
         super(player);
 
@@ -35,8 +37,7 @@ public class Grenades extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
         Iterator<Map.Entry<ThrowItemDisplay, Long>> it = grenades.entrySet().iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Map.Entry<ThrowItemDisplay, Long> instance = it.next();
             ThrowItemDisplay grenade = instance.getKey();
             long explodeTime = instance.getValue();
@@ -53,15 +54,13 @@ public class Grenades extends CoreAbility {
             }
         }
 
-        if (shots==maxShots && grenades.isEmpty())
-        {
+        if (shots == maxShots && grenades.isEmpty()) {
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }
     }
 
-    public void setHasClicked()
-    {
+    public void setHasClicked() {
         if (player.isSneaking()) {
             Iterator<ThrowItemDisplay> it = grenades.keySet().iterator();
             while (it.hasNext()) {
@@ -75,12 +74,11 @@ public class Grenades extends CoreAbility {
                 grenade.remove();
                 it.remove();
             }
+        } else if (shots < maxShots) {
+            grenades.put(new ThrowItemDisplay(player, name, player.getEyeLocation(),
+                    player.getEyeLocation().getDirection().clone(), Material.FIREWORK_STAR, 1, true, true), System.currentTimeMillis() + chargeTime);
+            shots++;
         }
-        else if (shots < maxShots) {
-                grenades.put(new ThrowItemDisplay(player, name, player.getEyeLocation(),
-                        player.getEyeLocation().getDirection().clone(), Material.FIREWORK_STAR, 1, true, true), System.currentTimeMillis() + chargeTime);
-                shots++;
-            }
     }
 
     @Override

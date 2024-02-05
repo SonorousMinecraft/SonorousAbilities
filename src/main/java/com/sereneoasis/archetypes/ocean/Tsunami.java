@@ -4,19 +4,12 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Skate;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.BlockDisplay;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -36,8 +29,7 @@ public class Tsunami extends CoreAbility {
 
     public Tsunami(Player player) {
         super(player);
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name))
-        {
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
             return;
         }
 
@@ -54,32 +46,29 @@ public class Tsunami extends CoreAbility {
     public void progress() {
 
 
-        if (System.currentTimeMillis() > startTime+duration | skate.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (System.currentTimeMillis() > startTime + duration | skate.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
             return;
         }
 
         Vector dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
-        Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed *3));
+        Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed * 3));
         Set<Location> waveLocs = new HashSet<>();
-        for (double i = 0; i < radius; i +=0.5) {
-            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i,0), dir, i, 90, 270, 10));
+        for (double i = 0; i < radius; i += 0.5) {
+            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0, i, 0), dir, i, 90, 270, 10));
         }
-        wave = Entities.handleDisplayBlockEntities(wave,
+        Entities.handleDisplayBlockEntities(wave,
                 waveLocs,
                 DisplayBlock.WATER, 0.5);
     }
 
     @Override
-    public void remove()
-    {
+    public void remove() {
         super.remove();
         skate.remove();
-        sPlayer.addCooldown(name,cooldown);
-        for (TempDisplayBlock tb : wave.values())
-        {
+        sPlayer.addCooldown(name, cooldown);
+        for (TempDisplayBlock tb : wave.values()) {
             tb.revert();
         }
 

@@ -8,17 +8,16 @@ public class Jump extends CoreAbility {
 
     private boolean charged;
     private final String name;
+
     public Jump(Player player, String name, boolean charged) {
         super(player, name);
         this.charged = charged;
         this.name = name;
 
-        if (!charged)
-        {
+        if (!charged) {
             player.setVelocity(player.getEyeLocation().getDirection().clone().normalize().multiply(speed));
             abilityStatus = AbilityStatus.COMPLETE;
-        }
-        else {
+        } else {
             abilityStatus = AbilityStatus.CHARGING;
             start();
         }
@@ -26,14 +25,10 @@ public class Jump extends CoreAbility {
 
     @Override
     public void progress() {
-        if (abilityStatus != AbilityStatus.COMPLETE)
-        {
+        if (abilityStatus != AbilityStatus.COMPLETE) {
             if (!player.isSneaking()) {
                 abilityStatus = AbilityStatus.COMPLETE;
-            }
-
-            else if (System.currentTimeMillis() > startTime + chargeTime)
-            {
+            } else if (System.currentTimeMillis() > startTime + chargeTime) {
                 player.setVelocity(player.getEyeLocation().getDirection().clone().normalize().multiply(speed));
                 abilityStatus = AbilityStatus.COMPLETE;
             }

@@ -8,6 +8,7 @@ import org.bukkit.util.Vector;
 public class Jet extends CoreAbility {
 
     private final String name;
+
     public Jet(Player player, String name) {
         super(player, name);
 
@@ -24,7 +25,7 @@ public class Jet extends CoreAbility {
         }
 
 
-        Vector dir = player.getLocation().add(0,1,0).getDirection().normalize();
+        Vector dir = player.getLocation().add(0, 1, 0).getDirection().normalize();
         player.setVelocity(dir.multiply(speed));
 
     }

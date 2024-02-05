@@ -12,6 +12,7 @@ public class Nimbus extends CoreAbility {
     private final String name = "Nimbus";
 
     private Jet jet;
+
     public Nimbus(Player player) {
         super(player);
 
@@ -27,9 +28,8 @@ public class Nimbus extends CoreAbility {
     @Override
     public void progress() {
 
-        Particles.spawnParticle(Particle.SPELL, player.getEyeLocation().subtract(0,2,0), 5, 0.5, 0);
-        if (jet.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        Particles.spawnParticle(Particle.SPELL, player.getEyeLocation().subtract(0, 2, 0), 5, 0.5, 0);
+        if (jet.getAbilityStatus() == AbilityStatus.COMPLETE) {
             jet.remove();
             this.remove();
             sPlayer.addCooldown(name, cooldown);

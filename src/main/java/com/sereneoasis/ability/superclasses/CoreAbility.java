@@ -1,9 +1,9 @@
 package com.sereneoasis.ability.superclasses;
 
+import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
-import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.entity.Player;
 
@@ -60,8 +60,7 @@ public abstract class CoreAbility implements Ability {
 
     }
 
-    private void initialiseConfigVariables(AbilityData abilityData)
-    {
+    private void initialiseConfigVariables(AbilityData abilityData) {
 
         this.archetype = abilityData.getArchetype();
         this.startTime = System.currentTimeMillis();
@@ -79,8 +78,7 @@ public abstract class CoreAbility implements Ability {
     }
 
 
-    public void start()
-    {
+    public void start() {
 
         INSTANCES.add(this);
 
@@ -110,8 +108,7 @@ public abstract class CoreAbility implements Ability {
     }
 
     public static void progressAll() throws ReflectiveOperationException {
-        for (CoreAbility abil : INSTANCES)
-        {
+        for (CoreAbility abil : INSTANCES) {
             abil.progress();
         }
     }
@@ -171,7 +168,7 @@ public abstract class CoreAbility implements Ability {
      * by the specified player.
      *
      * @param player the player that created the instances
-     * @param clazz the class for the type of CoreAbilities
+     * @param clazz  the class for the type of CoreAbilities
      * @return a Collection of real instances
      */
     public static <T extends CoreAbility> Collection<T> getAbilities(final Player player, final Class<T> clazz) {
@@ -185,7 +182,7 @@ public abstract class CoreAbility implements Ability {
      * Returns true if the player has an active CoreAbility instance of type T.
      *
      * @param player the player that created the T instance
-     * @param clazz the class for the type of CoreAbility
+     * @param clazz  the class for the type of CoreAbility
      */
     public static <T extends CoreAbility> boolean hasAbility(final Player player, final Class<T> clazz) {
         return getAbility(player, clazz) != null;

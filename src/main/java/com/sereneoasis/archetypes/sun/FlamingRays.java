@@ -14,7 +14,7 @@ public class FlamingRays extends CoreAbility {
 
     private int currentShots = 0, shots = 5;
 
-    private HashMap<Integer, Blast>rays = new HashMap<>();
+    private HashMap<Integer, Blast> rays = new HashMap<>();
 
     public FlamingRays(Player player) {
         super(player);
@@ -29,25 +29,19 @@ public class FlamingRays extends CoreAbility {
 
     @Override
     public void progress() {
-        if (abilityStatus == AbilityStatus.CHARGING)
-        {
+        if (abilityStatus == AbilityStatus.CHARGING) {
             if (!player.isSneaking()) {
                 this.remove();
             }
-            if (System.currentTimeMillis() > chargeTime + startTime)
-            {
+            if (System.currentTimeMillis() > chargeTime + startTime) {
                 abilityStatus = AbilityStatus.CHARGED;
             }
         }
-        if (abilityStatus == AbilityStatus.CHARGED)
-        {
-            for (int i = 0 ; i < currentShots; i++)
-            {
+        if (abilityStatus == AbilityStatus.CHARGED) {
+            for (int i = 0; i < currentShots; i++) {
                 Blast blast = rays.get(i);
-                if (blast.getAbilityStatus() == AbilityStatus.COMPLETE)
-                {
-                    if (i == shots)
-                    {
+                if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                    if (i == shots) {
                         blast.remove();
                         this.remove();
                     }
@@ -64,10 +58,8 @@ public class FlamingRays extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    public void setHasClicked()
-    {
-        if (abilityStatus == AbilityStatus.CHARGED)
-        {
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.CHARGED) {
             Blast blast = new Blast(player, name, false, Particle.FLAME);
             rays.put(currentShots, blast);
             currentShots++;

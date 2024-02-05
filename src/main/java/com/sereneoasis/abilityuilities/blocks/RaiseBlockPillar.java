@@ -10,7 +10,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,23 +54,18 @@ public class RaiseBlockPillar extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
 
-        if (abilityStatus != AbilityStatus.COMPLETE)
-        {
-            if (currentHeight >= height)
-            {
-                for (TempDisplayBlock tdb : blocks)
-                {
+        if (abilityStatus != AbilityStatus.COMPLETE) {
+            if (currentHeight >= height) {
+                for (TempDisplayBlock tdb : blocks) {
                     new TempBlock(tdb.getBlockDisplay().getLocation().getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true);
                     tdb.revert();
                 }
                 abilityStatus = AbilityStatus.COMPLETE;
-            }
-            else{
-                for (TempDisplayBlock tdb : blocks)
-                {
-                    tdb.teleport(tdb.getBlockDisplay().getLocation().add(0,0.1*speed,0));
+            } else {
+                for (TempDisplayBlock tdb : blocks) {
+                    tdb.teleport(tdb.getBlockDisplay().getLocation().add(0, 0.1 * speed, 0));
                 }
-                currentHeight += 0.1*speed;
+                currentHeight += 0.1 * speed;
             }
         }
     }

@@ -1,13 +1,10 @@
 package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -40,25 +37,22 @@ public class Catapult extends CoreAbility {
                 abilityStatus = AbilityStatus.CHARGED;
             }
 
-            if (!player.isSneaking())
-            {
+            if (!player.isSneaking()) {
                 this.remove();
             }
         }
 
-        if (abilityStatus == AbilityStatus.CHARGED && !player.isSneaking())
-        {
-            if (!hasJumped)
-            {
+        if (abilityStatus == AbilityStatus.CHARGED && !player.isSneaking()) {
+            if (!hasJumped) {
                 Entities.setVelocity(player, (float) speed, 0);
                 hasJumped = true;
             }
-            if (currentRadius > radius){
+            if (currentRadius > radius) {
                 this.remove();
             }
-            currentRadius+=1;
+            currentRadius += 1;
             quake = Entities.handleDisplayBlockEntities(quake,
-                    Locations.getCircle(player.getLocation().add(0,1,0), currentRadius, 20, new Vector(0,1,0), 0).stream().collect(Collectors.toSet()),
+                    Locations.getCircle(player.getLocation().add(0, 1, 0), currentRadius, 20, new Vector(0, 1, 0), 0).stream().collect(Collectors.toSet()),
                     0.5);
         }
 
@@ -68,8 +62,7 @@ public class Catapult extends CoreAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        for (TempDisplayBlock tb : quake.values())
-        {
+        for (TempDisplayBlock tb : quake.values()) {
             tb.revert();
         }
     }

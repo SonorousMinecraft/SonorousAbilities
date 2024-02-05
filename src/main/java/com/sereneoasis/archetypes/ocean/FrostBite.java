@@ -6,7 +6,9 @@ import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -17,11 +19,10 @@ public class FrostBite extends CoreAbility {
     private boolean hasSetSource2 = false, hasBeganSourcing = false, hasSourced = false, hasShot = false, hasSpawnedShots = false;
 
     private SourceBlockToPlayer sourceBlockToPlayer1, sourceBlockToPlayer2;
-    
+
     private Location sourceLoc1, sourceLoc2;
 
     private ShootBlocksFromLoc shootBlocksFromLoc1, shootBlocksFromLoc2;
-
 
 
     public FrostBite(Player player) {
@@ -32,8 +33,7 @@ public class FrostBite extends CoreAbility {
         }
 
         sourceBlockToPlayer1 = new SourceBlockToPlayer(player, "FrostBite", DisplayBlock.WATER, 4);
-        if (! (sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.NO_SOURCE))
-        {
+        if (!(sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.NO_SOURCE)) {
             sourceBlockToPlayer1.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
             sourceLoc1 = sourceBlockToPlayer1.getLocation().clone();
 
@@ -44,17 +44,14 @@ public class FrostBite extends CoreAbility {
     @Override
     public void progress() {
 
-        if (hasSetSource2 & player.isSneaking() & !hasSourced)
-        {
+        if (hasSetSource2 & player.isSneaking() & !hasSourced) {
             if (!hasBeganSourcing) {
 
                 sourceBlockToPlayer1.setAbilityStatus(AbilityStatus.SOURCING);
                 sourceBlockToPlayer2.setAbilityStatus(AbilityStatus.SOURCING);
                 hasBeganSourcing = true;
-            }
-            else {
-                if (sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.SOURCED && sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.SOURCED )
-                {
+            } else {
+                if (sourceBlockToPlayer1.getSourceStatus() == AbilityStatus.SOURCED && sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.SOURCED) {
                     hasSourced = true;
 
                     sourceBlockToPlayer1.remove();
@@ -72,8 +69,7 @@ public class FrostBite extends CoreAbility {
                 shootBlocksFromLoc2 = new ShootBlocksFromLoc(player, "FrostBite", sourceLoc2
                         , DisplayBlock.ICE, false, false);
             } else {
-                if (shootBlocksFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE && shootBlocksFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE)
-                {
+                if (shootBlocksFromLoc1.getAbilityStatus() == AbilityStatus.COMPLETE && shootBlocksFromLoc2.getAbilityStatus() == AbilityStatus.COMPLETE) {
                     this.remove();
                 }
 
@@ -91,14 +87,11 @@ public class FrostBite extends CoreAbility {
         }
     }
 
-    public void setHasClicked()
-    {
-        if (hasSourced)
-        {
+    public void setHasClicked() {
+        if (hasSourced) {
             if (!hasShot) {
                 hasShot = true;
-            }
-            else if (hasSpawnedShots){
+            } else if (hasSpawnedShots) {
                 Location loc1 = shootBlocksFromLoc1.getLoc();
                 Location loc2 = shootBlocksFromLoc2.getLoc();
                 shootBlocksFromLoc1.setDir(Vectors.getDirectionBetweenLocations(loc1, loc2).normalize());
@@ -107,13 +100,10 @@ public class FrostBite extends CoreAbility {
         }
     }
 
-    public void setSourceBlock2()
-    {
-        if (!hasSetSource2)
-        {
+    public void setSourceBlock2() {
+        if (!hasSetSource2) {
             sourceBlockToPlayer2 = new SourceBlockToPlayer(player, "FrostBite", DisplayBlock.WATER, 4);
-            if (! (sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.NO_SOURCE))
-            {
+            if (!(sourceBlockToPlayer2.getSourceStatus() == AbilityStatus.NO_SOURCE)) {
                 hasSetSource2 = true;
                 sourceBlockToPlayer2.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
                 sourceLoc2 = sourceBlockToPlayer2.getLocation().clone();
@@ -124,13 +114,11 @@ public class FrostBite extends CoreAbility {
     }
 
     @Override
-    public void remove()
-    {
+    public void remove() {
         super.remove();
         sPlayer.addCooldown("FrostBite", cooldown);
 
-        if (shootBlocksFromLoc1 != null && shootBlocksFromLoc2 != null)
-        {
+        if (shootBlocksFromLoc1 != null && shootBlocksFromLoc2 != null) {
             shootBlocksFromLoc1.remove();
             shootBlocksFromLoc2.remove();
         }

@@ -9,16 +9,14 @@ import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * @author Sakrajin
- *
  */
 public class Spikes extends CoreAbility {
 
@@ -26,7 +24,7 @@ public class Spikes extends CoreAbility {
 
     private Location loc;
 
-    private HashMap<Integer, TempDisplayBlock>spike;
+    private HashMap<Integer, TempDisplayBlock> spike;
 
     private long starttime;
 
@@ -35,14 +33,12 @@ public class Spikes extends CoreAbility {
     public Spikes(Player player) {
         super(player);
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name))
-        {
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
             return;
         }
 
         Block source = Blocks.getSourceBlock(player, sPlayer, sourceRange);
-        if (source != null)
-        {
+        if (source != null) {
             loc = source.getLocation();
             starttime = System.currentTimeMillis();
             spike = new HashMap<>();
@@ -54,22 +50,17 @@ public class Spikes extends CoreAbility {
 
     @Override
     public void progress() {
-        if (player.isSneaking() && !hasShot)
-        {
+        if (player.isSneaking() && !hasShot) {
             Location targetLoc = player.getEyeLocation().
-                    add(player.getEyeLocation().getDirection().multiply(Math.max(radius+1,loc.distance(player.getEyeLocation()))));
-            if (loc.distance(targetLoc) > 1)
-            {
+                    add(player.getEyeLocation().getDirection().multiply(Math.max(radius + 1, loc.distance(player.getEyeLocation()))));
+            if (loc.distance(targetLoc) > 1) {
                 Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
                 loc.add(dir.clone().multiply(speed));
                 spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5), DisplayBlock.ICE, 0.5);
             }
 
-        }
-        else if (hasShot)
-        {
-            if (loc.distance(player.getLocation()) > range)
-            {
+        } else if (hasShot) {
+            if (loc.distance(player.getLocation()) > range) {
                 this.remove();
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
@@ -78,28 +69,23 @@ public class Spikes extends CoreAbility {
         }
 
 
-        if (!hasShot && System.currentTimeMillis() > starttime+duration)
-        {
+        if (!hasShot && System.currentTimeMillis() > starttime + duration) {
             this.remove();
         }
 
     }
 
     @Override
-    public void remove()
-    {
+    public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        for (TempDisplayBlock tb : spike.values())
-        {
+        for (TempDisplayBlock tb : spike.values()) {
             tb.revert();
         }
     }
 
-    public void setHasClicked()
-    {
-        if (!hasShot)
-        {
+    public void setHasClicked() {
+        if (!hasShot) {
             hasShot = true;
         }
     }
