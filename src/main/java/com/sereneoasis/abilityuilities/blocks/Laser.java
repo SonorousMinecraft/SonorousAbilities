@@ -1,10 +1,12 @@
-package com.sereneoasis.abilityuilities.particles;
+package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -23,13 +25,13 @@ public class Laser extends CoreAbility {
 
     private String name;
 
-    private Particle particle;
+    private DisplayBlock displayBlock;
 
-    public Laser(Player player, Location startLoc, String name, Particle particle) {
+    public Laser(Player player, Location startLoc, String name, DisplayBlock displayBlock) {
         super(player, name);
 
         this.name = name;
-        this.particle = particle;
+        this.displayBlock = displayBlock;
         this.loc = startLoc.clone();
         this.abilityStatus = AbilityStatus.SHOT;
         start();
@@ -56,7 +58,7 @@ public class Laser extends CoreAbility {
             }
 
             for (double d = 0; d < distance; d++) {
-                Particles.spawnParticle(particle, loc.clone().add(dir.clone().multiply(d)), 1, 0, 0);
+                new TempDisplayBlock(loc.clone().add(dir.clone().multiply(d)), displayBlock, 500, 0.1);
             }
         }
 

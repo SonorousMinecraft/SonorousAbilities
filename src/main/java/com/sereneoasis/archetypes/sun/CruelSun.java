@@ -73,6 +73,7 @@ public class CruelSun extends CoreAbility {
         if (blockSmash != null) {
             blockSmash.remove();
         }
+        sPlayer.addCooldown(name, cooldown);
     }
 
     @Override

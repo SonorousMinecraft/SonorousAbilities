@@ -40,7 +40,7 @@ public class Daybreak extends CoreAbility {
         if (!player.isSneaking() | jet.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
-        ParticleStyles.playSeveralHelixes(player.getEyeLocation(), player.getEyeLocation().getDirection().multiply(-1), 2, 20, 3, 0, true, 3);
+        ParticleStyles.playSeveralHelixes(player.getEyeLocation(), player.getEyeLocation().getDirection().multiply(-1), 5, 20, 5, 0, true, 3);
 
         for (Entity e : Entities.getEntitiesAroundPoint(player.getEyeLocation(), hitbox)) {
             if (e != null && e instanceof Player targetPlayer && e.getUniqueId() != player.getUniqueId()) {
