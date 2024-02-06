@@ -237,7 +237,9 @@ public class SerenityListener implements Listener {
             case "Wall":
                 new Wall(player);
                 break;
-
+            case "EarthSurf":
+                new EarthSurf(player);
+                break;
         }
 
     }

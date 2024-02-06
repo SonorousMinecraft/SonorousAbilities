@@ -391,6 +391,10 @@ public class ConfigManager {
                 0, 2000, 20000,
                 0, 1.0, 0, 10, 1, 10);
 
+        saveConfigValuesAbility(earth, "EarthSurf", EARTH.toString(), "description", "instructions",
+                0, 5000, 5000,
+                0, 0, 5, 0, 1.0, 0);
+
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);
 

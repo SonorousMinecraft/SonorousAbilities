@@ -1,6 +1,7 @@
 package com.sereneoasis.abilityuilities.velocity;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Entities;
 import org.bukkit.Location;
@@ -22,18 +23,17 @@ public class Skate extends CoreAbility {
 
     private Block floorBlock;
 
-    private Material floorType;
 
     private boolean any;
 
 
-    public Skate(Player player, String user, int maxHeightFromGround, boolean any, Material floorType) {
+    public Skate(Player player, String user, int maxHeightFromGround, boolean anyFloor) {
         super(player, user);
 
         this.user = user;
         this.maxHeightFromGround = maxHeightFromGround;
-        this.floorType = floorType;
-        this.any = any;
+
+        this.any = anyFloor;
 
         Location loc = player.getLocation();
         setFloorBlock();
@@ -60,7 +60,7 @@ public class Skate extends CoreAbility {
         floorBlock = null;
         for (int i = 0; i <= this.maxHeightFromGround; i++) {
             final Block block = this.player.getEyeLocation().getBlock().getRelative(BlockFace.DOWN, i);
-            if (block.getType() == floorType || any) {
+            if (ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getBlocks().contains(block.getType()) || any) {
                 this.floorBlock = block;
                 return;
             }

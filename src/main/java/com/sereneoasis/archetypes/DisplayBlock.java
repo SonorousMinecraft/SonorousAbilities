@@ -18,6 +18,7 @@ public enum DisplayBlock {
 
     FIRE(new ArrayList<>(List.of(new Material[]{Material.FIRE, Material.SOUL_FIRE})));
 
+
     List<Material> blocks = new ArrayList<>();
 
     DisplayBlock(List<Material> blocks) {
