@@ -49,7 +49,7 @@ public class RockKick extends CoreAbility {
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.SOURCED) {
             if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, 1)) {
-                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), true, false, 1);
+                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), true, false);
                 raiseBlock.remove();
                 abilityStatus = AbilityStatus.SHOT;
             }

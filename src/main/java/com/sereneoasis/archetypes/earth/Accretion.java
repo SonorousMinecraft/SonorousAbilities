@@ -31,7 +31,7 @@ public class Accretion extends CoreAbility {
         boolean hasSources = false;
         raiseBlocks = new ArrayList<>();
         for (int i = 0; i < shots; i++) {
-            RaiseBlock raiseBlock = new RaiseBlock(player, name, 1.5, false);
+            RaiseBlock raiseBlock = new RaiseBlock(player, name, 3-size, false);
             if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
                 raiseBlocks.add(raiseBlock);
                 hasSources = true;
@@ -64,7 +64,7 @@ public class Accretion extends CoreAbility {
 
             for (int i = 0; i < raiseBlocks.size(); i++) {
                 shootBlocksFromLoc.add(new ShootBlockFromLoc(player, name, raiseBlocks.get(i).getBlockEntity().getLocation().add(Vector.getRandom()),
-                        raiseBlocks.get(i).getBlockEntity().getBlock().getMaterial(), false, false, 1));
+                        raiseBlocks.get(i).getBlockEntity().getBlock().getMaterial(), false, false));
                 abilityStatus = AbilityStatus.SHOT;
             }
             raiseBlocks.forEach(RaiseBlock::remove);

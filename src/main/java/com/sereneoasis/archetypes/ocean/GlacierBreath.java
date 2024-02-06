@@ -149,7 +149,7 @@ public class GlacierBreath extends CoreAbility {
 
                     if (!Vectors.isObstructed(loc, helixloc)) {
                         //Particles.spawnColoredParticle(loc, 1, 0.1, 1, ArchetypeDataManager.getArchetypeData(Archetype.OCEAN).getColor());
-                        new TempDisplayBlock(helixloc, DisplayBlock.ICE, 100, 0.5);
+                        new TempDisplayBlock(helixloc, DisplayBlock.ICE, 100, size);
                     } else {
                         Block topBlock = helixloc.clone().add(0, 1, 0).getBlock();
                         if (topBlock.getType().isAir()) {

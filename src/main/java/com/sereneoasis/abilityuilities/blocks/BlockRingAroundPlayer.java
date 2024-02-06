@@ -60,7 +60,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
         loc = locs.get(locs.size() - 1);
 
         for (Location point : locs) {
-            new TempDisplayBlock(point, type, 200, Math.random() * hitbox);
+            new TempDisplayBlock(point, type, 200, Math.random() * size);
         }
 
         rotation += rotatePerTick;

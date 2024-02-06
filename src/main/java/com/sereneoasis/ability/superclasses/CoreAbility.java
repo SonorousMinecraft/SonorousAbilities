@@ -37,7 +37,7 @@ public abstract class CoreAbility implements Ability {
         return abilityStatus;
     }
 
-    protected double damage, hitbox, radius, range, speed, sourceRange;
+    protected double damage, hitbox, radius, range, speed, sourceRange, size;
 
     private int id;
 
@@ -75,6 +75,7 @@ public abstract class CoreAbility implements Ability {
         this.range = abilityData.getRange();
         this.speed = abilityData.getSpeed();
         this.sourceRange = abilityData.getSourceRange();
+        this.size = abilityData.getSize();
     }
 
 

@@ -47,7 +47,7 @@ public class CruelSun extends CoreAbility {
         else if (abilityStatus == AbilityStatus.CHARGED) {
             blockSmash = new BlockSmash(player, name,
                     DisplayBlock.SUN,
-                    Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius/2), 0.2);
+                    Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius/2));
             abilityStatus = AbilityStatus.NOT_SHOT;
         }
         else if (abilityStatus == AbilityStatus.SHOT){

@@ -29,19 +29,18 @@ public class BlockSmash extends CoreAbility {
     private boolean hasShot = false;
 
     private DisplayBlock displayBlock;
+    
 
-    private double cubeSize;
-
-    public BlockSmash(Player player, String name, DisplayBlock displayBlock, Location origin, double cubeSize) {
+    public BlockSmash(Player player, String name, DisplayBlock displayBlock, Location origin) {
         super(player, name);
 
         this.name = name;
         this.displayBlock = displayBlock;
-        this.cubeSize = cubeSize;
+        this.size = size;
 
         loc = origin.clone();
         smash = new HashMap<>();
-        smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, cubeSize), displayBlock, cubeSize);
+        smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
         start();
 
     }
@@ -54,7 +53,7 @@ public class BlockSmash extends CoreAbility {
             if (loc.distance(targetLoc) > 1) {
                 Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
                 loc.add(dir.clone().multiply(speed));
-                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, cubeSize), displayBlock, cubeSize);
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
             }
 
         } else if (hasShot) {
@@ -63,7 +62,7 @@ public class BlockSmash extends CoreAbility {
                 return;
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
-            smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, cubeSize), displayBlock, cubeSize);
+            smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
             DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         }
 

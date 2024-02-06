@@ -40,7 +40,7 @@ public class AbilityDataManager {
                     AbilityData abilityData = new AbilityData(archetype, abil.getString("description"), abil.getString("instructions"),
                             abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"),
                             abil.getDouble("damage"), abil.getDouble("hitbox"),
-                            abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"));
+                            abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abil.getDouble("size"));
                     abilityDataMap.put(ability, abilityData);
                 }
             }
@@ -63,7 +63,7 @@ public class AbilityDataManager {
                 ComboData comboData = new ComboData(archetype, abil.getString("description"), abil.getString("instructions"),
                         abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"),
                         abil.getDouble("damage"), abil.getDouble("hitbox"),
-                        abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abilities);
+                        abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abil.getDouble("size"), abilities);
                 abilityDataMap.put(combo, comboData);
                 comboDataMap.put(combo, comboData);
             }

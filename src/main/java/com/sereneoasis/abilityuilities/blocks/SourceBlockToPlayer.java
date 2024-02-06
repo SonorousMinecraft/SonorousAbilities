@@ -78,7 +78,7 @@ public class SourceBlockToPlayer extends CoreAbility {
             List<Location> locs = Locations.getShotLocations(loc, 20, dir, speed);
 
             for (Location point : locs) {
-                new TempDisplayBlock(point, type, 1000, Math.random() * hitbox);
+                new TempDisplayBlock(point, type, 1000, Math.random() * size);
             }
 
             if (loc.distance(player.getLocation()) <= distanceToStop) {

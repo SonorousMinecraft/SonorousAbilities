@@ -76,7 +76,7 @@ public class ShootBlocksFromLoc extends CoreAbility {
 
 
         for (Location point : locs) {
-            new TempDisplayBlock(point, type, 200, Math.random() * hitbox);
+            new TempDisplayBlock(point, type, 200, Math.random() * size);
         }
 
         DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
