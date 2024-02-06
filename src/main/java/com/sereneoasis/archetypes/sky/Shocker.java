@@ -51,9 +51,9 @@ public class Shocker extends CoreAbility {
         this.locright = Locations.getRightSide(loc, 0.5);
         this.closestright = locright.clone();
 
-        this.leftarcs = new ArrayList<Location>();
+        this.leftarcs = new ArrayList<>();
         leftarcs.add(closestleft);
-        this.rightarcs = new ArrayList<Location>();
+        this.rightarcs = new ArrayList<>();
         rightarcs.add(closestright);
 
         this.distance = 0;
@@ -146,7 +146,7 @@ public class Shocker extends CoreAbility {
 
     public void playParticlesBetweenPoints(Location start, Location end) {
         Vector difference = end.clone().subtract(start.clone()).toVector();
-        Double distance = difference.length();
+        double distance = difference.length();
         Vector normalised = difference.normalize();
 
         for (double d = 0; d < distance; d += 0.2) {

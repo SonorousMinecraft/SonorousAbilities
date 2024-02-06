@@ -28,7 +28,7 @@ public class Nimbus extends CoreAbility {
     @Override
     public void progress() {
 
-        Particles.spawnParticle(Particle.SPELL, player.getEyeLocation().subtract(0, 2, 0), 5, 0.5, 0);
+        Particles.spawnParticle(Particle.CLOUD, player.getEyeLocation().subtract(0, 2, 0), 5, 0.5, 0);
         if (jet.getAbilityStatus() == AbilityStatus.COMPLETE) {
             jet.remove();
             this.remove();
