@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.ShootBlocksFromLoc;
 import com.sereneoasis.archetypes.DisplayBlock;
+import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -16,7 +17,7 @@ public class Blizzard extends CoreAbility {
 
     private final String name = "Blizzard";
 
-    private int currentShots = 0, maxShots = 5;
+    private int currentShots = 0, shots = 5;
 
     private HashMap<Integer, TempDisplayBlock> dome;
 
@@ -40,9 +41,11 @@ public class Blizzard extends CoreAbility {
         if (!player.isSneaking()) {
             this.remove();
         }
-        if (maxShots == currentShots) {
+        if (shots == currentShots) {
             this.remove();
         }
+
+        AbilityUtils.showShots(this, currentShots, shots);
 
         dome = Entities.handleDisplayBlockEntities(dome, Locations.getOutsideSphereLocs(player.getEyeLocation(), radius, 0.5), DisplayBlock.ICE, 0.5);
     }

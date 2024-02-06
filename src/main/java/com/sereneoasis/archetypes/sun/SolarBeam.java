@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sun;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -33,6 +34,8 @@ public class SolarBeam extends CoreAbility {
                 abilityStatus = AbilityStatus.CHARGED;
             }
         }
+
+        AbilityUtils.showCharged(this);
 
         if (abilityStatus == AbilityStatus.SHOT) {
             if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {

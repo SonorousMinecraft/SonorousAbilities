@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.earth;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockCircle;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class EarthQuake extends CoreAbility {
             if (!player.isSneaking()) {
                 abilityStatus = AbilityStatus.SHOT;
             }
+            AbilityUtils.showCharged(this);
         }
 
         if (abilityStatus == AbilityStatus.SHOT) {

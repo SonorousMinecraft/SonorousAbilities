@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.war;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.items.ThrowItemDisplay;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Material;
@@ -21,7 +22,7 @@ public class Grenades extends CoreAbility {
 
     private HashMap<ThrowItemDisplay, Long> grenades = new HashMap<>();
 
-    private int shots = 0, maxShots = 6;
+    private int currentShots = 0, shots = 6;
 
     public Grenades(Player player) {
         super(player);
@@ -54,10 +55,13 @@ public class Grenades extends CoreAbility {
             }
         }
 
-        if (shots == maxShots && grenades.isEmpty()) {
+        if (currentShots == shots && grenades.isEmpty()) {
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }
+
+        AbilityUtils.showShots(this, currentShots, shots);
+
     }
 
     public void setHasClicked() {
@@ -74,10 +78,10 @@ public class Grenades extends CoreAbility {
                 grenade.remove();
                 it.remove();
             }
-        } else if (shots < maxShots) {
+        } else if (currentShots < shots) {
             grenades.put(new ThrowItemDisplay(player, name, player.getEyeLocation(),
                     player.getEyeLocation().getDirection().clone(), Material.FIREWORK_STAR, 1, true, true), System.currentTimeMillis() + chargeTime);
-            shots++;
+            currentShots++;
         }
     }
 

@@ -2,6 +2,7 @@ package com.sereneoasis.archetypes.war;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.Display;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
@@ -38,6 +39,8 @@ public class Katana extends CoreAbility {
         if (System.currentTimeMillis() > startTime + duration) {
             this.remove();
         }
+
+        AbilityUtils.showCharged(this);
 
         if (abilityStatus == AbilityStatus.CHARGING) {
             if (player.isSneaking()) {

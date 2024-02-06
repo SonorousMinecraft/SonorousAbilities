@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sun;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Blast;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -37,7 +38,9 @@ public class FlamingRays extends CoreAbility {
                 abilityStatus = AbilityStatus.CHARGED;
             }
         }
-        if (abilityStatus == AbilityStatus.CHARGED) {
+        AbilityUtils.showCharged(this);
+        AbilityUtils.showShots(this, currentShots, shots);
+        if (abilityStatus == AbilityStatus.SHOOTING) {
             for (int i = 0; i < currentShots; i++) {
                 Blast blast = rays.get(i);
                 if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
@@ -60,6 +63,9 @@ public class FlamingRays extends CoreAbility {
 
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.CHARGED) {
+            abilityStatus = AbilityStatus.SHOOTING;
+        }
+        if (abilityStatus == AbilityStatus.SHOOTING){
             Blast blast = new Blast(player, name, false, Particle.FLAME);
             rays.put(currentShots, blast);
             currentShots++;

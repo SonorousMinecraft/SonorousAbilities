@@ -2,6 +2,7 @@ package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -41,6 +42,8 @@ public class Catapult extends CoreAbility {
                 this.remove();
             }
         }
+
+        AbilityUtils.showCharged(this);
 
         if (abilityStatus == AbilityStatus.CHARGED && !player.isSneaking()) {
             if (!hasJumped) {
