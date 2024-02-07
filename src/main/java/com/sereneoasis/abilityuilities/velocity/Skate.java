@@ -46,6 +46,7 @@ public class Skate extends CoreAbility {
                 ArmorStand aStand = (ArmorStand) entity;
                 aStand.setInvulnerable(true);
                 aStand.setVisible(false);
+                aStand.setSmall(true);
             }));
             Entities.applyPotion(armorStand, PotionEffectType.INVISIBILITY, Math.round(duration));
 

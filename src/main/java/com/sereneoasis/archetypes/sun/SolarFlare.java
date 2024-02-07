@@ -42,7 +42,7 @@ public class SolarFlare extends CoreAbility {
         abilityStatus = AbilityStatus.NO_SOURCE;
         target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (target != null && target.getType().isSolid()) {
-            Blocks.selectSourceAnimation(target, sPlayer.getColor());
+            Blocks.selectSourceAnimation(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size,0), sPlayer.getColor(), size);
             long time = player.getWorld().getTime();
             if (time < 167 || (time > 1200 && time < 22300)) {
                 flareLoc = target.getLocation().clone().subtract(0, 10, 0);

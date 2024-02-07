@@ -34,8 +34,8 @@ public class RaiseBlockPillar extends CoreAbility {
         Block source = Blocks.getFacingBlock(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            Blocks.selectSourceAnimation(source, Color.GREEN);
             this.origin = source.getLocation();
+            Blocks.selectSourceAnimationBlock(source, Color.GREEN);
             this.loc = origin.clone();
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
                 TempDisplayBlock displayBlock = new TempDisplayBlock(loc, loc.getBlock().getType(), 60000, 1);
@@ -55,7 +55,7 @@ public class RaiseBlockPillar extends CoreAbility {
     public void progress() throws ReflectiveOperationException {
 
         if (abilityStatus != AbilityStatus.COMPLETE) {
-            if (currentHeight >= height) {
+            if (currentHeight > height+0.1*speed) {
                 for (TempDisplayBlock tdb : blocks) {
                     new TempBlock(tdb.getBlockDisplay().getLocation().getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true);
                     tdb.revert();

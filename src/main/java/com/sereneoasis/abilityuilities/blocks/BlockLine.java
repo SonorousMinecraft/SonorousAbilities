@@ -19,13 +19,14 @@ public class BlockLine extends CoreAbility {
 
     private Vector dir;
 
-    private Vector offsetAdjustment = new Vector(-0.5, 0, -0.5);
 
     private TempDisplayBlock glowingSource;
 
     private boolean directable;
 
     private Material type;
+
+    private Vector offsetAdjustment = new Vector(-size/2, size/4, -size/2);
 
     public BlockLine(Player player, String name, Color color, boolean directable) {
         super(player, name);
@@ -36,8 +37,8 @@ public class BlockLine extends CoreAbility {
         Block source = Blocks.getFacingBlock(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            glowingSource = Blocks.selectSourceAnimationManual(source, color);
-            this.origin = Blocks.getFacingBlockLoc(player, sourceRange);
+            this.origin = Blocks.getFacingBlockLoc(player, sourceRange).subtract(0,size,0);
+            glowingSource = Blocks.selectSourceAnimationManual(origin, color, size);
             this.loc = origin.clone();
             this.type = source.getType();
             start();
@@ -49,8 +50,8 @@ public class BlockLine extends CoreAbility {
         if (abilityStatus == AbilityStatus.SHOT) {
             getNextLoc();
             if (loc != null) {
-                new TempDisplayBlock(loc, type, 500, 1);
-                if (loc.distanceSquared(origin) > range) {
+                new TempDisplayBlock(loc.clone().add(offsetAdjustment), type, 500, size);
+                if (loc.distanceSquared(origin) > range*range) {
                     abilityStatus = AbilityStatus.COMPLETE;
                 }
             } else {
@@ -64,7 +65,7 @@ public class BlockLine extends CoreAbility {
             dir = player.getEyeLocation().getDirection().setY(0).normalize();
         }
         loc.add(dir.clone().multiply(speed));
-        Location middleLoc = loc.clone().add(offsetAdjustment);
+        Location middleLoc = loc.clone();
         Location topLoc = middleLoc.clone().add(0, 1, 0);
         Location bottomLoc = middleLoc.clone().subtract(0, 1, 0);
         if (middleLoc.getBlock().isLiquid() || middleLoc.getBlock().getType().isAir()) {

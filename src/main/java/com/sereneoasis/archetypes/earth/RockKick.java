@@ -22,7 +22,7 @@ public class RockKick extends CoreAbility {
             return;
         }
 
-        raiseBlock = new RaiseBlock(player, name, 1.5, true);
+        raiseBlock = new RaiseBlock(player, name, 2-size, true);
         if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             start();
@@ -49,7 +49,7 @@ public class RockKick extends CoreAbility {
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.SOURCED) {
             if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, 1)) {
-                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), true, false);
+                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
                 raiseBlock.remove();
                 abilityStatus = AbilityStatus.SHOT;
             }

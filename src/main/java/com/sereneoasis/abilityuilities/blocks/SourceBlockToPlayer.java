@@ -41,7 +41,7 @@ public class SourceBlockToPlayer extends CoreAbility {
             this.type = type;
             this.distanceToStop = distanceToStop;
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            Blocks.selectSourceAnimation(source, sPlayer.getColor());
+            Blocks.selectSourceAnimation(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size,0), sPlayer.getColor(), size);
             loc = source.getLocation();
             start();
         }

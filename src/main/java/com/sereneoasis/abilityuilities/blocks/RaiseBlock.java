@@ -25,7 +25,7 @@ public class RaiseBlock extends CoreAbility {
     private double height;
     private TempDisplayBlock block;
 
-    private Vector offsetAdjustment = new Vector(-0.5, -0.5, -0.5);
+    private Vector offsetAdjustment = new Vector(-size/2, 0, -size/2);
 
     public RaiseBlock(Player player, String name, double height, boolean mustLook) {
         super(player, name);
@@ -38,10 +38,11 @@ public class RaiseBlock extends CoreAbility {
             source = Blocks.getFacingBlock(player, sourceRange);
             if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
                 abilityStatus = AbilityStatus.SOURCE_SELECTED;
-                Blocks.selectSourceAnimation(source, Color.GREEN);
+
                 this.origin = Blocks.getFacingBlockLoc(player, sourceRange);
+                Blocks.selectSourceAnimation(origin.clone().subtract(0,size,0), Color.GREEN, size);
                 this.loc = origin.clone();
-                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, 1);
+                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, size);
                 start();
             }
         } else {
@@ -55,10 +56,10 @@ public class RaiseBlock extends CoreAbility {
                 Random rand = new Random();
                 source = sourcesByDistance.get(rand.nextInt(sourcesByDistance.size()));
                 abilityStatus = AbilityStatus.SOURCE_SELECTED;
-                Blocks.selectSourceAnimation(source, Color.GREEN);
                 this.origin = source.getLocation();
+                Blocks.selectSourceAnimation(origin.clone().subtract(0,size,0), Color.GREEN, size);
                 this.loc = origin.clone();
-                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, 1);
+                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, size);
                 start();
             }
         }

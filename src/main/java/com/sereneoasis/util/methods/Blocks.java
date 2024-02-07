@@ -8,6 +8,7 @@ import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
@@ -25,19 +26,32 @@ import java.util.Set;
  */
 public class Blocks {
 
-    public static void selectSourceAnimation(Block block, Color color) {
-        if (block.getType() == Material.WATER) {
-            new TempDisplayBlock(block.getLocation(), Material.BLUE_STAINED_GLASS, 1000, 1.0, true, color);
+    public static void selectSourceAnimation(Location loc, Color color, double size) {
+        Material type = loc.getBlock().getRelative(BlockFace.DOWN).getType();
+        Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
+        if (type == Material.WATER) {
+            new TempDisplayBlock(tempLoc, Material.BLUE_STAINED_GLASS, 1000, size, true, color);
         } else {
-            new TempDisplayBlock(block.getLocation(), block.getType(), 1000, 1.0, true, color);
+            new TempDisplayBlock(tempLoc,type, 1000, size, true, color);
         }
     }
 
-    public static TempDisplayBlock selectSourceAnimationManual(Block block, Color color) {
-        if (block.getType() == Material.WATER) {
-            return new TempDisplayBlock(block.getLocation(), Material.BLUE_STAINED_GLASS, 60000, 1.0, true, color);
+    public static void selectSourceAnimationBlock(Block block, Color color) {
+        Material type = block.getType();
+        if (type == Material.WATER) {
+            new TempDisplayBlock(block.getLocation(), Material.BLUE_STAINED_GLASS, 1000, 1, true, color);
         } else {
-            return new TempDisplayBlock(block.getLocation(), block.getType(), 60000, 1.0, true, color);
+            new TempDisplayBlock(block.getLocation(),type, 1000, 1, true, color);
+        }
+    }
+
+    public static TempDisplayBlock selectSourceAnimationManual(Location loc, Color color, double size) {
+        Material type = loc.getBlock().getRelative(BlockFace.DOWN).getType();
+        Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
+        if (type == Material.WATER) {
+            return new TempDisplayBlock(tempLoc, Material.BLUE_STAINED_GLASS, 30000, size, true, color);
+        } else {
+            return new TempDisplayBlock(tempLoc,type, 30000, size, true, color);
         }
     }
 
@@ -63,16 +77,18 @@ public class Blocks {
         Location loc = player.getEyeLocation().clone();
         Block block = null;
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER) != null) {
-            block = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER).getHitBlock();
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER);
+            block = rayTraceResult.getHitBlock();
         }
         return block;
     }
 
     public static Location getFacingBlockLoc(Player player, double distance) {
         Location loc = player.getEyeLocation().clone();
-        RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER);
-        if (rayTraceResult != null) {
-            return new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER);
+            Location hitLoc = new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
+            return hitLoc;
         }
         return null;
     }
@@ -92,12 +108,21 @@ public class Blocks {
 
 
     public static Block getFacingBlockOrLiquid(Player player, double distance) {
-        Location loc = player.getEyeLocation();
+        Location loc = player.getEyeLocation().clone();
         Block block = null;
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS) != null) {
             block = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS).getHitBlock();
         }
         return block;
+    }
+
+    public static Location getFacingBlockOrLiquidLoc(Player player, double distance) {
+        Location loc = player.getEyeLocation().clone();
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS);
+            return new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
+        }
+        return null;
     }
 
     public static Set<Block> getBlocksAroundPoint(Location loc, double radius) {

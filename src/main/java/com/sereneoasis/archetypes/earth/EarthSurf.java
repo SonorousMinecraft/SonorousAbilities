@@ -58,7 +58,7 @@ public class EarthSurf extends CoreAbility {
         Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed * 3));
         Set<Location> waveLocs = new HashSet<>();
         for (double i = 0; i < radius; i += 0.5) {
-            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().subtract(0,i,0), dir, i, 90, 270, 10));
+            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i,0), dir, i, 90, 270, 10));
         }
 
         if (skate.getFloorBlock() != null){
