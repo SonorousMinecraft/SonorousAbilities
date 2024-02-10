@@ -130,7 +130,7 @@ public class Entities {
             i++;
         }
         if (locs.size() < spike.size()) {
-            for (int n = locs.size(); n <= spike.size(); n++) {
+            for (int n = locs.size(); n < spike.size(); n++) {
                 TempDisplayBlock tb = spike.get(n);
                 if (tb != null) {
                     spike.get(n).revert();
@@ -154,7 +154,7 @@ public class Entities {
             i++;
         }
         if (locs.size() < spike.size()) {
-            for (int n = locs.size(); n <= spike.size(); n++) {
+            for (int n = locs.size(); n < spike.size(); n++) {
                 TempDisplayBlock tb = spike.get(n);
                 if (tb != null) {
                     spike.get(n).revert();

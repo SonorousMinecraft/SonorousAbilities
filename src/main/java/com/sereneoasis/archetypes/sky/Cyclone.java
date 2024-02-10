@@ -23,7 +23,7 @@ public class Cyclone extends CoreAbility {
             return;
         }
 
-        this.skate = new Skate(player, name, 1, true);
+        this.skate = new Skate(player, name, 3,3, true);
         start();
     }
 

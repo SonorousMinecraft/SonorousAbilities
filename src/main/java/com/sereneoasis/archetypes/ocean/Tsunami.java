@@ -33,7 +33,7 @@ public class Tsunami extends CoreAbility {
             return;
         }
 
-        skate = new Skate(player, name, 5, false);
+        skate = new Skate(player, name, 5,3, false);
         if (skate.getAbilityStatus() == AbilityStatus.MOVING) {
             wave = new HashMap<>();
 

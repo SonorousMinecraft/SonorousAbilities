@@ -379,7 +379,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(earth, "Accretion", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1.0, 0, 20, 1, 10, 0);
+                2, 1.0, 0, 20, 1, 10, 1.5);
 
         saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
                 0, 2000, 0,
@@ -400,6 +400,10 @@ public class ConfigManager {
         saveConfigValuesAbility(earth, "EarthSurf", EARTH.toString(), "description", "instructions",
                 0, 5000, 5000,
                 0, 0, 5, 0, 1.0, 0, 0.5);
+
+        saveConfigValuesAbility(earth, "Boulder", Archetype.EARTH.toString(), "description", "instructions",
+                0, 5000, 10000,
+                4, 0.5, 5, 20, 1, 10, 0.2);
 
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);

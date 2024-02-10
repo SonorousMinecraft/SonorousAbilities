@@ -45,7 +45,6 @@ public class RaiseBlockPillar extends CoreAbility {
             }
             this.height = height - currentHeight;
             currentHeight = 0;
-            Bukkit.broadcastMessage(String.valueOf(blocks));
             start();
         }
 

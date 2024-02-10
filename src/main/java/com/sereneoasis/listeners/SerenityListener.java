@@ -241,6 +241,11 @@ public class SerenityListener implements Listener {
             case "EarthSurf":
                 new EarthSurf(player);
                 break;
+            case "Boulder":
+                if (CoreAbility.hasAbility(e.getPlayer(), Boulder.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Boulder.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -342,6 +347,9 @@ public class SerenityListener implements Listener {
                 break;
             case "TerraLine":
                 new TerraLine(player);
+                break;
+            case "Boulder":
+                new Boulder(player);
                 break;
         }
     }

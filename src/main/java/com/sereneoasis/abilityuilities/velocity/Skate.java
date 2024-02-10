@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,16 +22,20 @@ public class Skate extends CoreAbility {
 
     private int maxHeightFromGround;
 
+    private int preferredHeightFromGround;
+
     private Block floorBlock;
 
 
     private boolean any;
 
 
-    public Skate(Player player, String user, int maxHeightFromGround, boolean anyFloor) {
+
+    public Skate(Player player, String user, int maxHeightFromGround,int preferredHeightFromGround, boolean anyFloor) {
         super(player, user);
 
         this.user = user;
+        this.preferredHeightFromGround = preferredHeightFromGround;
         this.maxHeightFromGround = maxHeightFromGround;
 
         this.any = anyFloor;
@@ -76,9 +81,8 @@ public class Skate extends CoreAbility {
             return;
         }
 
-        Vector dir = player.getEyeLocation().getDirection().setY(0).normalize();
+        Vector dir = player.getEyeLocation().getDirection().setY(Vectors.getDirectionBetweenLocations(armorStand.getLocation(), floorBlock.getLocation().add(0,preferredHeightFromGround,0)).getY()/10).normalize();
         armorStand.setVelocity(dir.clone().multiply(speed));
-
         setFloorBlock();
     }
 

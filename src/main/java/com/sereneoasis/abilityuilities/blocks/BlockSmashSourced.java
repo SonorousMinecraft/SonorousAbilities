@@ -10,6 +10,7 @@ import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -32,10 +33,17 @@ public class BlockSmashSourced extends CoreAbility {
 
     private DisplayBlock displayBlock;
 
+    private Material type;
+
+    private boolean preselectedType = false;
+
     public BlockSmashSourced(Player player, String name, DisplayBlock displayBlock) {
         super(player, name);
 
         this.name = name;
+        if (displayBlock != null){
+            preselectedType = true;
+        }
         this.displayBlock = displayBlock;
 
         Block source = Blocks.getSourceBlock(player, sPlayer, sourceRange);
@@ -43,7 +51,13 @@ public class BlockSmashSourced extends CoreAbility {
         if (source != null) {
             loc = source.getLocation();
             smash = new HashMap<>();
-            smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, 0.5), displayBlock, 0.5);
+            if (!preselectedType) {
+                type = source.getType();
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
+            }
+            else {
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
+            }
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             start();
         }
@@ -58,7 +72,12 @@ public class BlockSmashSourced extends CoreAbility {
             if (loc.distance(targetLoc) > 1) {
                 Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
                 loc.add(dir.clone().multiply(speed));
-                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, 0.5), displayBlock, 0.5);
+                if (preselectedType) {
+                    smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
+                }
+                else{
+                    smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
+                }
             }
 
         } else if (hasShot) {
@@ -67,7 +86,12 @@ public class BlockSmashSourced extends CoreAbility {
                 return;
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
-            smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, 0.5), displayBlock, 0.5);
+            if (preselectedType) {
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
+            }
+            else{
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
+            }
             DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
         }
 

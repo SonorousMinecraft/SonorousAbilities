@@ -35,7 +35,7 @@ public class EarthSurf extends CoreAbility {
             return;
         }
 
-        skate = new Skate(player, name, 5, false);
+        skate = new Skate(player, name, 5, 3, false);
         if (skate.getAbilityStatus() == AbilityStatus.MOVING) {
             wave = new HashMap<>();
 
@@ -55,10 +55,10 @@ public class EarthSurf extends CoreAbility {
 
         Vector dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
-        Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed * 3));
+        Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed * 3)).subtract(0,3,0);
         Set<Location> waveLocs = new HashSet<>();
         for (double i = 0; i < radius; i += 0.5) {
-            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i,0), dir, i, 90, 270, 10));
+            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i/5,0), dir, i, 45, 315, (int) (radius*10)));
         }
 
         if (skate.getFloorBlock() != null){
