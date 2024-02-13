@@ -5,10 +5,6 @@ import com.sereneoasis.abilityuilities.blocks.RaiseBlock;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
-import org.bukkit.block.Block;
-import org.bukkit.entity.BlockDisplay;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class RockKick extends CoreAbility {
@@ -18,6 +14,7 @@ public class RockKick extends CoreAbility {
     private ShootBlockFromLoc shootBlockFromLoc;
 
     private final String name = "RockKick";
+
     public RockKick(Player player) {
         super(player);
 
@@ -25,7 +22,7 @@ public class RockKick extends CoreAbility {
             return;
         }
 
-        raiseBlock = new RaiseBlock(player, name, 1.5, true);
+        raiseBlock = new RaiseBlock(player, name, 2-size, true);
         if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             start();
@@ -35,17 +32,13 @@ public class RockKick extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
 
-        if (abilityStatus == AbilityStatus.SOURCE_SELECTED)
-        {
-            if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCED)
-            {
+        if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
+            if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCED) {
                 abilityStatus = AbilityStatus.SOURCED;
             }
         }
-        if (abilityStatus == AbilityStatus.SHOT)
-        {
-            if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE)
-            {
+        if (abilityStatus == AbilityStatus.SHOT) {
+            if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE) {
                 this.remove();
                 shootBlockFromLoc.remove();
                 sPlayer.addCooldown(name, cooldown);
@@ -53,17 +46,15 @@ public class RockKick extends CoreAbility {
         }
     }
 
-    public void setHasClicked()
-    {
+    public void setHasClicked() {
         if (abilityStatus == AbilityStatus.SOURCED) {
             if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, 1)) {
-                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), true, false, 1);
+                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
                 raiseBlock.remove();
                 abilityStatus = AbilityStatus.SHOT;
             }
         }
     }
-
 
 
     @Override

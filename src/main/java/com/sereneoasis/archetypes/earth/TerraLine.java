@@ -11,6 +11,7 @@ public class TerraLine extends CoreAbility {
     private final String name = "TerraLine";
 
     private BlockLine blockLine;
+
     public TerraLine(Player player) {
         super(player);
 
@@ -27,18 +28,17 @@ public class TerraLine extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (blockLine.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (blockLine.getAbilityStatus() == AbilityStatus.COMPLETE) {
             blockLine.remove();
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }
     }
 
-    public void setHasClicked()
-    {
+    public void setHasClicked() {
         blockLine.setHasClicked();
     }
+
     @Override
     public Player getPlayer() {
         return player;

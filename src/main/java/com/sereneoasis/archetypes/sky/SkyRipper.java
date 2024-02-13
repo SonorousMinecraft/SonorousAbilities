@@ -31,33 +31,26 @@ public class SkyRipper extends CoreAbility {
 
     @Override
     public void progress() {
-        if ( !(abilityStatus == AbilityStatus.SHOT || abilityStatus == AbilityStatus.SOURCE_SELECTED)  && !player.isSneaking())
-        {
+        if (!(abilityStatus == AbilityStatus.SHOT || abilityStatus == AbilityStatus.SOURCE_SELECTED) && !player.isSneaking()) {
             this.remove();
         }
 
-        if (abilityStatus == AbilityStatus.SOURCE_SELECTED && !player.isSneaking())
-        {
+        if (abilityStatus == AbilityStatus.SOURCE_SELECTED && !player.isSneaking()) {
             abilityStatus = AbilityStatus.SHOT;
             blade = new Blade(player, name, Particle.SPELL, loc1, loc2);
         }
 
-        if (abilityStatus == AbilityStatus.SHOT && blade.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (abilityStatus == AbilityStatus.SHOT && blade.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
 
     }
 
-    public void setHasClicked()
-    {
-        if (!selected1)
-        {
+    public void setHasClicked() {
+        if (!selected1) {
             loc1 = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange).clone();
             selected1 = true;
-        }
-        else if(!selected2)
-        {
+        } else if (!selected2) {
             loc2 = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange).clone();
             selected2 = true;
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
@@ -68,8 +61,7 @@ public class SkyRipper extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        if (blade != null)
-        {
+        if (blade != null) {
             blade.remove();
         }
         sPlayer.addCooldown(name, cooldown);

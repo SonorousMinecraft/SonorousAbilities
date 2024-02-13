@@ -19,6 +19,7 @@ public enum AbilityStatus {
     CHARGING,
 
     MOVING,
-    ATTACKING
+    ATTACKING,
+    SHOOTING
 
 }

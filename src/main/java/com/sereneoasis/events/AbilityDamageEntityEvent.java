@@ -34,8 +34,7 @@ public class AbilityDamageEntityEvent extends Event implements Cancellable {
         return null;
     }
 
-    public AbilityDamageEntityEvent(Player attacker, LivingEntity target, CoreAbility coreAbility, double damage)
-    {
+    public AbilityDamageEntityEvent(Player attacker, LivingEntity target, CoreAbility coreAbility, double damage) {
         this.attacker = attacker;
         this.target = target;
         this.coreAbility = coreAbility;

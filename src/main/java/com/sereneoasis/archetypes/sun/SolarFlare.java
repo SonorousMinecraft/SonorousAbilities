@@ -4,18 +4,18 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Colors;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Sakrajin
- *
  */
 public class SolarFlare extends CoreAbility {
 
@@ -29,9 +29,8 @@ public class SolarFlare extends CoreAbility {
 
     private Location flareLoc;
 
-    
 
-    private HashMap<Integer, TempDisplayBlock>flares = new HashMap<>();
+    private HashMap<Integer, TempDisplayBlock> flares = new HashMap<>();
 
     public SolarFlare(Player player) {
         super(player);
@@ -43,27 +42,23 @@ public class SolarFlare extends CoreAbility {
         abilityStatus = AbilityStatus.NO_SOURCE;
         target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (target != null && target.getType().isSolid()) {
-            Blocks.selectSourceAnimation(target, sPlayer.getColor());
+            Blocks.selectSourceAnimation(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size,0), sPlayer.getColor(), size);
             long time = player.getWorld().getTime();
-            if (time < 167 || (time > 1200 && time < 22300))
-            {
-                flareLoc = target.getLocation().clone().subtract(0,10,0);
+            if (time < 167 || (time > 1200 && time < 22300)) {
+                flareLoc = target.getLocation().clone().subtract(0, 10, 0);
                 isDayTime = false;
-            }
-            else{
-                flareLoc = target.getLocation().clone().add(0,10,0);
+            } else {
+                flareLoc = target.getLocation().clone().add(0, 10, 0);
                 isDayTime = true;
             }
             Set<Location> locs = new HashSet<>();
-            for (Block block : Blocks.getBlocksAroundPoint(flareLoc, radius))
-            {
+            for (Block block : Blocks.getBlocksAroundPoint(flareLoc, radius)) {
                 Location b = block.getLocation();
-                if (b.getY() == flareLoc.getY())
-                {
+                if (b.getY() == flareLoc.getY()) {
                     locs.add(b);
                 }
             }
-            flares = Entities.handleDisplayBlockEntities(flares,locs, DisplayBlock.SUN, 0.5);
+            flares = Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, 0.5);
             startTime = System.currentTimeMillis();
             start();
         }
@@ -72,43 +67,35 @@ public class SolarFlare extends CoreAbility {
     @Override
     public void progress() {
 
-        if (!started && System.currentTimeMillis() > startTime + chargeTime)
-        {
+        if (!started && System.currentTimeMillis() > startTime + chargeTime) {
             started = true;
         }
 
 
-        if (started)
-        {
+        if (started) {
 
 
-            if (isDayTime)
-            {
-                flareLoc.subtract(0,1,0);
-                if (flareLoc.getY() <= target.getY())
-                {
+            if (isDayTime) {
+                flareLoc.subtract(0, 1, 0);
+                if (flareLoc.getY() <= target.getY()) {
                     this.remove();
                 }
-            }
-            else{
-                flareLoc.add(0,1,0);
-                if (flareLoc.getY() >= target.getY())
-                {
+            } else {
+                flareLoc.add(0, 1, 0);
+                if (flareLoc.getY() >= target.getY()) {
                     this.remove();
                 }
             }
 
             Set<Location> locs = new HashSet<>();
-            for (Block block : Blocks.getBlocksAroundPoint(flareLoc, radius))
-            {
+            for (Block block : Blocks.getBlocksAroundPoint(flareLoc, radius)) {
                 Location b = block.getLocation();
-                if (b.getY() == flareLoc.getY())
-                {
+                if (b.getY() == flareLoc.getY()) {
                     locs.add(b);
                 }
             }
 
-            flares = Entities.handleDisplayBlockEntities(flares,locs, DisplayBlock.SUN, 0.5);
+            flares = Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, 0.5);
         }
     }
 

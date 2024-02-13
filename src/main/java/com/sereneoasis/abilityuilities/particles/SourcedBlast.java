@@ -1,9 +1,7 @@
 package com.sereneoasis.abilityuilities.particles;
 
-import com.sereneoasis.ability.superclasses.Ability;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
@@ -28,6 +26,7 @@ public class SourcedBlast extends CoreAbility {
     private String name;
 
     private Particle particle;
+
     public SourcedBlast(Player player, String name, boolean directable, Particle particle, boolean selfPush) {
         super(player, name);
         this.shot = false;
@@ -65,7 +64,7 @@ public class SourcedBlast extends CoreAbility {
 
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
             shot = true;
             this.origin = player.getEyeLocation().clone();

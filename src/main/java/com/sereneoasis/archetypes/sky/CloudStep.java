@@ -14,6 +14,7 @@ public class CloudStep extends CoreAbility {
     private Levitate levitate;
 
     private final String name = "CloudStep";
+
     public CloudStep(Player player) {
         super(player);
 
@@ -27,22 +28,18 @@ public class CloudStep extends CoreAbility {
 
     @Override
     public void progress() {
-        if (levitate.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (levitate.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
 
-        if (jump != null && jump.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
-            Particles.spawnParticle(Particle.CLOUD, player.getLocation().subtract(0,1,0), 5, 0.5, 0);
+        if (jump != null && jump.getAbilityStatus() == AbilityStatus.COMPLETE) {
+            Particles.spawnParticle(Particle.CLOUD, player.getLocation().subtract(0, 1, 0), 5, 0.5, 0);
         }
 
     }
 
-    public void setHasShifted()
-    {
-        if (jump == null || jump.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+    public void setHasShifted() {
+        if (jump == null || jump.getAbilityStatus() == AbilityStatus.COMPLETE) {
             jump = new Jump(player, name, true);
         }
     }
@@ -50,15 +47,13 @@ public class CloudStep extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        if (jump != null)
-        {
+        if (jump != null) {
             jump.remove();
         }
-        if (levitate != null)
-        {
+        if (levitate != null) {
             levitate.remove();
         }
-        sPlayer.addCooldown(name,cooldown);
+        sPlayer.addCooldown(name, cooldown);
     }
 
     @Override

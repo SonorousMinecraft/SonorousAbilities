@@ -9,23 +9,19 @@ public class ParticleStyles {
 
     public static double PI = Math.PI;
 
-    public static void playHelix(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise)
-    {
+    public static void playHelix(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise) {
         double tempDistance = 0;
-        for (double d = 0+startAngle; d < (2*PI)+startAngle ; d+=(2*PI/points))
-        {
+        for (double d = 0 + startAngle; d < (2 * PI) + startAngle; d += (2 * PI / points)) {
             Location tempLoc = loc.clone();
             Vector tempDir = dir.clone();
-            tempDistance += distance/points;
+            tempDistance += distance / points;
             Vector orthoDir = Vectors.getOrthogonalVector(tempDir, d, tempDistance);
-            if (anticlockwise)
-            {
+            if (anticlockwise) {
                 tempLoc.add(orthoDir.rotateAroundAxis(tempDir, d));
-            }
-            else{
+            } else {
                 tempLoc.add(orthoDir.rotateAroundAxis(tempDir, -d));
             }
-            loc.add(tempDir.multiply(height/points));
+            loc.add(tempDir.multiply(height / points));
 
             new TempDisplayBlock(tempLoc, DisplayBlock.SUN, 200, 0.1);
         }
@@ -33,9 +29,9 @@ public class ParticleStyles {
 
     public static void playSeveralHelixes(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise, int helixes) {
         int currentAngle = 0;
-        for (int i = 0 ; i < helixes ; i++) {
+        for (int i = 0; i < helixes; i++) {
             playHelix(loc, dir, distance, points, height, currentAngle, anticlockwise);
-            currentAngle += 360/helixes;
+            currentAngle += 360 / helixes;
         }
     }
 

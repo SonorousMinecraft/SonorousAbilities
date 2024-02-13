@@ -3,9 +3,11 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
-import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -20,7 +22,6 @@ import java.util.List;
  */
 public class SourceBlockToPlayer extends CoreAbility {
 
-    
 
     private Location loc;
 
@@ -31,17 +32,16 @@ public class SourceBlockToPlayer extends CoreAbility {
     private DisplayBlock type;
 
     public SourceBlockToPlayer(Player player, String user, DisplayBlock type, double distanceToStop) {
-        super(player,user);
+        super(player, user);
 
         abilityStatus = AbilityStatus.NO_SOURCE;
         Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
-        if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType()))
-        {
+        if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             this.user = user;
             this.type = type;
             this.distanceToStop = distanceToStop;
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            Blocks.selectSourceAnimation(source, sPlayer.getColor());
+            Blocks.selectSourceAnimation(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size,0), sPlayer.getColor(), size);
             loc = source.getLocation();
             start();
         }
@@ -58,19 +58,16 @@ public class SourceBlockToPlayer extends CoreAbility {
     @Override
     public void progress() {
 
-        if (abilityStatus == AbilityStatus.SOURCE_SELECTED)
-        {
-            Particles.spawnColoredParticle(loc.getBlock().getLocation().add(0,1,0),
+        if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
+            Particles.spawnColoredParticle(loc.getBlock().getLocation().add(0, 1, 0),
                     5, 0.2, 1, sPlayer.getColor());
         }
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500);
         //loc.getBlock().setBlockData(Material.DIRT.createBlockData());
         //loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5);
 
-        if (abilityStatus == AbilityStatus.SOURCING)
-        {
-            if (!player.isSneaking() )
-            {
+        if (abilityStatus == AbilityStatus.SOURCING) {
+            if (!player.isSneaking()) {
                 this.remove();
             }
 
@@ -80,13 +77,11 @@ public class SourceBlockToPlayer extends CoreAbility {
 
             List<Location> locs = Locations.getShotLocations(loc, 20, dir, speed);
 
-            for (Location point : locs)
-            {
-                new TempDisplayBlock(point, type, 1000, Math.random() * hitbox);
+            for (Location point : locs) {
+                new TempDisplayBlock(point, type, 1000, Math.random() * size);
             }
 
-            if (loc.distance(player.getLocation()) <= distanceToStop)
-            {
+            if (loc.distance(player.getLocation()) <= distanceToStop) {
                 abilityStatus = AbilityStatus.SOURCED;
             }
         }

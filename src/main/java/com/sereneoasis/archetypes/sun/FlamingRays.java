@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sun;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Blast;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,7 @@ public class FlamingRays extends CoreAbility {
 
     private int currentShots = 0, shots = 5;
 
-    private HashMap<Integer, Blast>rays = new HashMap<>();
+    private HashMap<Integer, Blast> rays = new HashMap<>();
 
     public FlamingRays(Player player) {
         super(player);
@@ -29,25 +30,21 @@ public class FlamingRays extends CoreAbility {
 
     @Override
     public void progress() {
-        if (abilityStatus == AbilityStatus.CHARGING)
-        {
+        if (abilityStatus == AbilityStatus.CHARGING) {
             if (!player.isSneaking()) {
                 this.remove();
             }
-            if (System.currentTimeMillis() > chargeTime + startTime)
-            {
+            if (System.currentTimeMillis() > chargeTime + startTime) {
                 abilityStatus = AbilityStatus.CHARGED;
             }
         }
-        if (abilityStatus == AbilityStatus.CHARGED)
-        {
-            for (int i = 0 ; i < currentShots; i++)
-            {
+        AbilityUtils.showCharged(this);
+        AbilityUtils.showShots(this, currentShots, shots);
+        if (abilityStatus == AbilityStatus.SHOOTING) {
+            for (int i = 0; i < currentShots; i++) {
                 Blast blast = rays.get(i);
-                if (blast.getAbilityStatus() == AbilityStatus.COMPLETE)
-                {
-                    if (i == shots)
-                    {
+                if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                    if (i == shots) {
                         blast.remove();
                         this.remove();
                     }
@@ -64,10 +61,11 @@ public class FlamingRays extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    public void setHasClicked()
-    {
-        if (abilityStatus == AbilityStatus.CHARGED)
-        {
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.CHARGED) {
+            abilityStatus = AbilityStatus.SHOOTING;
+        }
+        if (abilityStatus == AbilityStatus.SHOOTING){
             Blast blast = new Blast(player, name, false, Particle.FLAME);
             rays.put(currentShots, blast);
             currentShots++;

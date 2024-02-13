@@ -24,16 +24,12 @@ public class BlackIce extends CoreAbility {
             return;
         }
 
-        if (CoreAbility.hasAbility(player, GlacierBreath.class))
-        {
-            glacierBreath = CoreAbility.getAbility(player,GlacierBreath.class);
-            if (glacierBreath.getAbilityStatus() == AbilityStatus.CHARGED)
-            {
+        if (CoreAbility.hasAbility(player, GlacierBreath.class)) {
+            glacierBreath = CoreAbility.getAbility(player, GlacierBreath.class);
+            if (glacierBreath.getAbilityStatus() == AbilityStatus.CHARGED) {
                 if (Blocks.getFacingBlock(player, sourceRange) != null && DisplayBlock.ICE.getBlocks().contains(Blocks.getFacingBlock(player, sourceRange).getType())) {
-                    for (Block b : Blocks.getBlocksAroundPoint(player.getLocation(), radius, Material.WATER ))
-                    {
-                        if (b.getLocation().clone().add(0,1,0).getBlock().getType() == Material.AIR)
-                        {
+                    for (Block b : Blocks.getBlocksAroundPoint(player.getLocation(), radius, Material.WATER)) {
+                        if (b.getLocation().clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
                             new TempBlock(b, DisplayBlock.ICE, duration, true);
                         }
                     }
@@ -47,14 +43,15 @@ public class BlackIce extends CoreAbility {
         }
 
 
-
-
     }
 
     @Override
     public void progress() {
-        if (System.currentTimeMillis() > starttime + duration)
-        {
+        if (System.currentTimeMillis() > starttime + duration) {
+            this.remove();
+        }
+
+        if (!Blocks.isBelowArchetype(player.getLocation().getBlock(), radius, sPlayer)) {
             this.remove();
         }
     }

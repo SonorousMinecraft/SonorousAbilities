@@ -10,16 +10,14 @@ import org.bukkit.util.Vector;
  */
 public class Vectors {
 
-    public static Vector getDirectionBetweenLocations(Location start, Location end)
-    {
+    public static Vector getDirectionBetweenLocations(Location start, Location end) {
         return end.clone().subtract(start.clone()).toVector();
     }
 
-    public static double getAngleBetweenVectors(Vector vec1, Vector vec2)
-    {
+    public static double getAngleBetweenVectors(Vector vec1, Vector vec2) {
         double num = vec1.dot(vec2);
         double den = vec1.length() * vec2.length();
-        double d = Math.acos(num/den);
+        double d = Math.acos(num / den);
         return d;
     }
 
@@ -55,8 +53,7 @@ public class Vectors {
         return rotateVectorAroundVector(axis, ortho, degrees);
     }
 
-    public static Vector getOrthFrom2Vectors(final Vector vec1, final Vector vec2)
-    {
+    public static Vector getOrthFrom2Vectors(final Vector vec1, final Vector vec2) {
         return vec1.clone().crossProduct(vec2.clone()).normalize();
     }
 

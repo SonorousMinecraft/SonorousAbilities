@@ -15,11 +15,12 @@ public class ChargeSphere extends CoreAbility {
 
     private String name;
 
-    
+
     private long startTime;
 
     private double startRadius, increment;
     private Particle particle;
+
     public ChargeSphere(Player player, String name, double startRadius, Particle particle) {
         super(player, name);
 
@@ -28,18 +29,17 @@ public class ChargeSphere extends CoreAbility {
 
         this.startRadius = startRadius;
         this.startTime = System.currentTimeMillis();
-        this.increment = ((radius - startRadius)/ chargeTime) * 50;
+        this.increment = ((radius - startRadius) / chargeTime) * 50;
         this.particle = particle;
         start();
     }
 
     @Override
     public void progress() {
-        if (System.currentTimeMillis() > startTime+ chargeTime)
-        {
+        if (System.currentTimeMillis() > startTime + chargeTime) {
             this.abilityStatus = AbilityStatus.CHARGED;
         }
-        Particles.playSphere(Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius+1),
+        Particles.playSphere(Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius + 1),
                 startRadius, 12, particle);
         startRadius += increment;
     }

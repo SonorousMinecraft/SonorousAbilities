@@ -7,7 +7,6 @@ import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
 import com.sereneoasis.util.methods.Colors;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.attribute.AttributeModifier;
@@ -35,36 +34,31 @@ public class SerenityPlayer {
     }
 
 
-    private HashMap<String, HashMap<Integer,String>> presets;
+    private HashMap<String, HashMap<Integer, String>> presets;
 
-    public void setPreset(String name, HashMap<Integer, String> abilities)
-    {
-        HashMap<Integer,String> clonedAbilities = new HashMap<>();
-        abilities.forEach((slot,abil) ->
+    public void setPreset(String name, HashMap<Integer, String> abilities) {
+        HashMap<Integer, String> clonedAbilities = new HashMap<>();
+        abilities.forEach((slot, abil) ->
         {
             String tempString = abil;
-            clonedAbilities.put(slot,tempString);
+            clonedAbilities.put(slot, tempString);
         });
-        presets.put(name,clonedAbilities);
+        presets.put(name, clonedAbilities);
     }
 
-    public boolean existsPreset(String name)
-    {
+    public boolean existsPreset(String name) {
 
-        if (presets.containsKey(name))
-        {
+        if (presets.containsKey(name)) {
             return true;
         }
         return false;
     }
 
-    public HashMap<Integer,String> getPreset(String name)
-    {
+    public HashMap<Integer, String> getPreset(String name) {
         return presets.get(name);
     }
 
-    public Set<String> getPresetNames()
-    {
+    public Set<String> getPresetNames() {
         return presets.keySet();
     }
 
@@ -72,8 +66,7 @@ public class SerenityPlayer {
         return presets;
     }
 
-    public void deletePreset(String name)
-    {
+    public void deletePreset(String name) {
         presets.remove(name);
     }
 
@@ -126,10 +119,9 @@ public class SerenityPlayer {
     }
 
 
-
     private Player player;
 
-    public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player, HashMap<String, HashMap<Integer,String>> presets) {
+    public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player, HashMap<String, HashMap<Integer, String>> presets) {
         this.name = name;
         this.abilities = abilities;
         this.archetype = archetype;
@@ -137,8 +129,7 @@ public class SerenityPlayer {
         this.presets = presets;
     }
 
-    public static void initialisePlayer(Player player)
-    {
+    public static void initialisePlayer(Player player) {
         SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
         SerenityBoard board = SerenityBoard.createScore(player, serenityPlayer);
         board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
@@ -291,8 +282,7 @@ public class SerenityPlayer {
         return ArchetypeDataManager.getArchetypeData(this.getArchetype()).getColor();
     }
 
-    public Color getColor()
-    {
+    public Color getColor() {
         return Colors.hexToColor(ArchetypeDataManager.getArchetypeData(this.getArchetype()).getColor());
     }
 

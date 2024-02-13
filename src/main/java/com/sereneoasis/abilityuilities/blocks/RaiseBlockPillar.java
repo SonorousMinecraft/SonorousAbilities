@@ -10,7 +10,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +34,8 @@ public class RaiseBlockPillar extends CoreAbility {
         Block source = Blocks.getFacingBlock(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            Blocks.selectSourceAnimation(source, Color.GREEN);
             this.origin = source.getLocation();
+            Blocks.selectSourceAnimationBlock(source, Color.GREEN);
             this.loc = origin.clone();
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
                 TempDisplayBlock displayBlock = new TempDisplayBlock(loc, loc.getBlock().getType(), 60000, 1);
@@ -46,7 +45,6 @@ public class RaiseBlockPillar extends CoreAbility {
             }
             this.height = height - currentHeight;
             currentHeight = 0;
-            Bukkit.broadcastMessage(String.valueOf(blocks));
             start();
         }
 
@@ -55,23 +53,18 @@ public class RaiseBlockPillar extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
 
-        if (abilityStatus != AbilityStatus.COMPLETE)
-        {
-            if (currentHeight >= height)
-            {
-                for (TempDisplayBlock tdb : blocks)
-                {
+        if (abilityStatus != AbilityStatus.COMPLETE) {
+            if (currentHeight > height+0.1*speed) {
+                for (TempDisplayBlock tdb : blocks) {
                     new TempBlock(tdb.getBlockDisplay().getLocation().getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true);
                     tdb.revert();
                 }
                 abilityStatus = AbilityStatus.COMPLETE;
-            }
-            else{
-                for (TempDisplayBlock tdb : blocks)
-                {
-                    tdb.teleport(tdb.getBlockDisplay().getLocation().add(0,0.1*speed,0));
+            } else {
+                for (TempDisplayBlock tdb : blocks) {
+                    tdb.teleport(tdb.getBlockDisplay().getLocation().add(0, 0.1 * speed, 0));
                 }
-                currentHeight += 0.1*speed;
+                currentHeight += 0.1 * speed;
             }
         }
     }

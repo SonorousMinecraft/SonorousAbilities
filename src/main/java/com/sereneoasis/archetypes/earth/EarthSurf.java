@@ -1,4 +1,4 @@
-package com.sereneoasis.archetypes.ocean;
+package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Skate;
@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Tsunami extends CoreAbility {
+public class EarthSurf extends CoreAbility {
 
-    private final String name = "Tsunami";
+    private final String name = "EarthSurf";
 
 
     private HashMap<Integer, TempDisplayBlock> wave;
@@ -27,13 +27,15 @@ public class Tsunami extends CoreAbility {
 
     private long startTime;
 
-    public Tsunami(Player player) {
+    private Material type;
+
+    public EarthSurf(Player player) {
         super(player);
         if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
             return;
         }
 
-        skate = new Skate(player, name, 5,3, false);
+        skate = new Skate(player, name, 5, 3, false);
         if (skate.getAbilityStatus() == AbilityStatus.MOVING) {
             wave = new HashMap<>();
 
@@ -53,14 +55,18 @@ public class Tsunami extends CoreAbility {
 
         Vector dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
-        Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed * 3));
+        Location waveLoc = player.getLocation().clone().subtract(dir.clone().multiply(speed * 3)).subtract(0,3,0);
         Set<Location> waveLocs = new HashSet<>();
         for (double i = 0; i < radius; i += 0.5) {
-            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0, i, 0), dir, i, 90, 270, 10));
+            waveLocs.addAll(Locations.getPerpArcFromVector(waveLoc.clone().add(0,i/5,0), dir, i, 45, 315, (int) (radius*10)));
+        }
+
+        if (skate.getFloorBlock() != null){
+            type = skate.getFloorBlock().getType();
         }
         Entities.handleDisplayBlockEntities(wave,
                 waveLocs,
-                DisplayBlock.WATER, 0.5);
+                type, 0.5);
     }
 
     @Override

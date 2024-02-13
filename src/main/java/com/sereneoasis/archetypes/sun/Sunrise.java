@@ -10,6 +10,7 @@ public class Sunrise extends CoreAbility {
     private final String name = "Sunrise";
 
     private Levitate levitate;
+
     public Sunrise(Player player) {
         super(player);
 
@@ -20,8 +21,7 @@ public class Sunrise extends CoreAbility {
     @Override
     public void progress() {
 
-        if (player.isSneaking() | levitate.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (player.isSneaking() | levitate.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
 

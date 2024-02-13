@@ -3,7 +3,6 @@ package com.sereneoasis.ability.data;
 import com.sereneoasis.ability.ComboManager;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.config.ConfigManager;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.inventory.ClickType;
@@ -23,10 +22,10 @@ public class AbilityDataManager {
 
     private static final Map<String, ComboData> comboDataMap = new ConcurrentHashMap<>();
 
-    public static Map<String, ComboData> getComboDataMap()
-    {
+    public static Map<String, ComboData> getComboDataMap() {
         return comboDataMap;
     }
+
     private FileConfiguration config;
 
 
@@ -35,13 +34,13 @@ public class AbilityDataManager {
         for (Archetype archetype : Archetype.values()) {
 
             config = ConfigManager.getConfig(archetype).getConfig();
-            if (config.getConfigurationSection(archetype.toString()+ ".ability") != null) {
+            if (config.getConfigurationSection(archetype.toString() + ".ability") != null) {
                 for (String ability : config.getConfigurationSection(archetype.toString() + ".ability").getKeys(false)) {
                     ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".ability" + "." + ability);
                     AbilityData abilityData = new AbilityData(archetype, abil.getString("description"), abil.getString("instructions"),
                             abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"),
                             abil.getDouble("damage"), abil.getDouble("hitbox"),
-                            abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"));
+                            abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abil.getDouble("size"));
                     abilityDataMap.put(ability, abilityData);
                 }
             }
@@ -52,20 +51,19 @@ public class AbilityDataManager {
         Archetype archetype = Archetype.OCEAN;
         config = ConfigManager.getConfig(archetype).getConfig();
 
-        if (config.getConfigurationSection(archetype.toString()+ ".combo") != null) {
+        if (config.getConfigurationSection(archetype.toString() + ".combo") != null) {
             for (String combo : config.getConfigurationSection(archetype.toString() + ".combo").getKeys(false)) {
                 ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".combo" + "." + combo);
 
                 ArrayList<ComboManager.AbilityInformation> abilities = new ArrayList<>();
-                for (String usageAbilities : abil.getStringList(".usage"))
-                {
+                for (String usageAbilities : abil.getStringList(".usage")) {
                     abilities.add(new ComboManager.AbilityInformation(usageAbilities.split(":")[0], ClickType.valueOf(usageAbilities.split(":")[1])));
                 }
 
                 ComboData comboData = new ComboData(archetype, abil.getString("description"), abil.getString("instructions"),
                         abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"),
                         abil.getDouble("damage"), abil.getDouble("hitbox"),
-                        abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abilities);
+                        abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abil.getDouble("size"), abilities);
                 abilityDataMap.put(combo, comboData);
                 comboDataMap.put(combo, comboData);
             }
@@ -73,9 +71,7 @@ public class AbilityDataManager {
     }
 
 
-
-    public static AbilityData getAbilityData(String ability)
-    {
+    public static AbilityData getAbilityData(String ability) {
         return abilityDataMap.get(ability);
     }
 
@@ -87,14 +83,11 @@ public class AbilityDataManager {
     }
 
 
-    public static List<String> getArchetypeAbilities(Archetype archetype)
-    {
+    public static List<String> getArchetypeAbilities(Archetype archetype) {
         if (archetype != null) {
             List<String> archetypeAbilities = new ArrayList<>();
-            for (String ability : abilityDataMap.keySet())
-            {
-                if (abilityDataMap.get(ability).getArchetype().equals(archetype))
-                {
+            for (String ability : abilityDataMap.keySet()) {
+                if (abilityDataMap.get(ability).getArchetype().equals(archetype)) {
                     archetypeAbilities.add(ability);
                 }
             }
@@ -103,10 +96,8 @@ public class AbilityDataManager {
         return null;
     }
 
-    public static boolean isCombo(String ability)
-    {
-        if (comboDataMap.containsKey(ability))
-        {
+    public static boolean isCombo(String ability) {
+        if (comboDataMap.containsKey(ability)) {
             return true;
         }
         return false;

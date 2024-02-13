@@ -13,6 +13,7 @@ public class SolarBarrage extends CoreAbility {
 
 
     private BlockSphereBlast leftSphere, centerSphere, rightSphere;
+
     public SolarBarrage(Player player) {
         super(player);
 
@@ -24,37 +25,33 @@ public class SolarBarrage extends CoreAbility {
 
         Vector dir = player.getEyeLocation().getDirection().clone();
 
-        Location aboveLoc = player.getEyeLocation().clone().add(0,radius + 2, 0)
+        Location aboveLoc = player.getEyeLocation().clone().add(0, radius + 2, 0)
                 .subtract(dir);
 
         leftSphere = new BlockSphereBlast(player, name,
-                Locations.getLeftSide(aboveLoc, radius), true );
+                Locations.getLeftSide(aboveLoc, radius), true);
 
         centerSphere = new BlockSphereBlast(player, name, aboveLoc, true);
 
         rightSphere = new BlockSphereBlast(player, name,
-                Locations.getRightSide(aboveLoc, radius), true );
+                Locations.getRightSide(aboveLoc, radius), true);
         start();
 
     }
 
     @Override
     public void progress() {
-        if (abilityStatus == AbilityStatus.SHOT)
-        {
+        if (abilityStatus == AbilityStatus.SHOT) {
             if (leftSphere.getAbilityStatus() == AbilityStatus.COMPLETE &&
                     centerSphere.getAbilityStatus() == AbilityStatus.COMPLETE &&
-                    rightSphere.getAbilityStatus() == AbilityStatus.COMPLETE)
-            {
+                    rightSphere.getAbilityStatus() == AbilityStatus.COMPLETE) {
                 this.remove();
             }
         }
     }
 
-    public void setHasClicked()
-    {
-        if (abilityStatus == AbilityStatus.NOT_SHOT)
-        {
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.NOT_SHOT) {
             abilityStatus = AbilityStatus.SHOT;
             leftSphere.setAbilityStatus(AbilityStatus.SHOT);
             rightSphere.setAbilityStatus(AbilityStatus.SHOT);

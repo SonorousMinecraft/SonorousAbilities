@@ -1,19 +1,14 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * @author Sakrajin
@@ -31,7 +26,7 @@ public class ShootBlockFromLoc extends CoreAbility {
     private TempDisplayBlock block;
 
 
-    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove, double size) {
+    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
         super(player, user);
         this.user = user;
         this.loc = startLoc;

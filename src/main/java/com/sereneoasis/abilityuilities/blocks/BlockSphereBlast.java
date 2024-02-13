@@ -6,11 +6,8 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -74,14 +71,12 @@ public class BlockSphereBlast extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        for (TempDisplayBlock tb : spike.values())
-        {
+        for (TempDisplayBlock tb : spike.values()) {
             tb.revert();
         }
     }
 
-    public void setAbilityStatus(AbilityStatus abilityStatus)
-    {
+    public void setAbilityStatus(AbilityStatus abilityStatus) {
         this.abilityStatus = abilityStatus;
     }
 

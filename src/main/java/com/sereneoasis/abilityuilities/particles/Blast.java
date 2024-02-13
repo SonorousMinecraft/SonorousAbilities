@@ -2,7 +2,6 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-
 import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -20,11 +19,11 @@ public class Blast extends CoreAbility {
     private Location loc, origin;
     private Vector dir;
 
-    
 
     private String name;
 
     private Particle particle;
+
     public Blast(Player player, String name, boolean directable, Particle particle) {
         super(player, name);
         this.name = name;
@@ -40,15 +39,14 @@ public class Blast extends CoreAbility {
 
     @Override
     public void progress() {
-        if (loc.distance(origin) > range)
-        {
+        if (loc.distance(origin) > range) {
             this.abilityStatus = AbilityStatus.COMPLETE;
         }
 
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
         }
-        
+
         loc.add(dir.clone().multiply(speed));
         Particles.spawnParticle(particle, loc, 5, hitbox, 0);
 

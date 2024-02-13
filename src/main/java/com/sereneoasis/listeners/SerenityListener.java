@@ -1,10 +1,9 @@
 package com.sereneoasis.listeners;
 
-import com.sereneoasis.*;
-import com.sereneoasis.ability.data.AbilityDataManager;
+import com.sereneoasis.Serenity;
+import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
-import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
@@ -14,20 +13,19 @@ import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.UUID;
-
+import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
 
 /**
@@ -35,8 +33,6 @@ import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
  * Main listener for all serenity events
  */
 public class SerenityListener implements Listener {
-
-
 
 
     @EventHandler
@@ -104,9 +100,9 @@ public class SerenityListener implements Listener {
                     new Gimbal(player);
                 }
                 break;
-            case "Spikes":
-                if (CoreAbility.hasAbility(e.getPlayer(), Spikes.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Spikes.class).setHasClicked();
+            case "Iceberg":
+                if (CoreAbility.hasAbility(e.getPlayer(), Iceberg.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Iceberg.class).setHasClicked();
                 }
                 break;
             case "FrostBite":
@@ -129,6 +125,11 @@ public class SerenityListener implements Listener {
                 break;
             case "Tsunami":
                 new Tsunami(player);
+                break;
+            case "CruelSun":
+                if (CoreAbility.hasAbility(e.getPlayer(), CruelSun.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), CruelSun.class).setHasClicked();
+                }
                 break;
             case "FlamingRays":
                 if (CoreAbility.hasAbility(e.getPlayer(), FlamingRays.class)) {
@@ -238,6 +239,14 @@ public class SerenityListener implements Listener {
             case "Wall":
                 new Wall(player);
                 break;
+            case "EarthSurf":
+                new EarthSurf(player);
+                break;
+            case "Boulder":
+                if (CoreAbility.hasAbility(e.getPlayer(), Boulder.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Boulder.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -272,8 +281,8 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasSourced();
                 }
                 break;
-            case "Spikes":
-                new Spikes(player);
+            case "Iceberg":
+                new Iceberg(player);
                 break;
             case "Blizzard":
                 new Blizzard(player);
@@ -340,6 +349,9 @@ public class SerenityListener implements Listener {
             case "TerraLine":
                 new TerraLine(player);
                 break;
+            case "Boulder":
+                new Boulder(player);
+                break;
         }
     }
 
@@ -349,4 +361,45 @@ public class SerenityListener implements Listener {
             event.setCancelled(true);
         }
     }
+
+    @EventHandler
+    public void noFallDamage(EntityDamageEvent event){
+        if (event.getEntity() instanceof Player player){
+            if (event.getCause() == EntityDamageEvent.DamageCause.FALL){
+                SerenityPlayer sPlayer = getSerenityPlayer(player);
+                if (sPlayer.getArchetype() == Archetype.EARTH && sPlayer.getHeldAbility().equals("EarthQuake")) {
+                    if (!CoreAbility.hasAbility(player, EarthQuake.class))
+                    {
+                        EarthQuake earthQuake = new EarthQuake(player);
+                        earthQuake.setCharged();
+                    }
+                }
+                event.setCancelled(true);
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

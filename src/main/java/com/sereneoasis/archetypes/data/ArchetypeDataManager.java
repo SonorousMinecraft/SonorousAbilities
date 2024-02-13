@@ -7,11 +7,13 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -24,8 +26,7 @@ public class ArchetypeDataManager {
 
     private static final Map<Archetype, ArchetypeData> ARCHETYPE_DATA_MAP = new ConcurrentHashMap<>();
 
-    public static ArchetypeData getArchetypeData(Archetype archetype)
-    {
+    public static ArchetypeData getArchetypeData(Archetype archetype) {
         return ARCHETYPE_DATA_MAP.get(archetype);
     }
 
@@ -35,18 +36,17 @@ public class ArchetypeDataManager {
 
             ConfigurationSection section = config.getConfigurationSection(archetype.toString() + ".attribute");
             HashMap<Attribute, Double> attributeValues = new HashMap<>();
-            for (String att : section.getKeys(false) )
-            {
+            for (String att : section.getKeys(false)) {
                 Attribute attribute = Attribute.valueOf(att);
                 attributeValues.put(attribute, section.getDouble(attribute.toString()));
             }
             ConfigurationSection section2 = config.getConfigurationSection(archetype.toString());
 
-            Set<String>archetypeBlocksString = new HashSet<>(section2.getStringList("blocks"));
-            Set<Material>archetypeBlocks = archetypeBlocksString.stream().map(s -> Material.valueOf(s)).collect(Collectors.toSet());
+            Set<String> archetypeBlocksString = new HashSet<>(section2.getStringList("blocks"));
+            Set<Material> archetypeBlocks = archetypeBlocksString.stream().map(s -> Material.valueOf(s)).collect(Collectors.toSet());
 
             section2.getStringList("tags").forEach(tag -> {
-                Tag<Material>tagBlocks = Bukkit.getTag(Tag.REGISTRY_BLOCKS,NamespacedKey.fromString(tag),  Material.class);
+                Tag<Material> tagBlocks = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.fromString(tag), Material.class);
                 archetypeBlocks.addAll(tagBlocks.getValues());
             });
 

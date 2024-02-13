@@ -1,22 +1,25 @@
 package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.abilityuilities.blocks.BlockSmash;
 import com.sereneoasis.abilityuilities.particles.ChargeSphere;
 import com.sereneoasis.abilityuilities.particles.SphereBlast;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import org.bukkit.Bukkit;
+import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 /**
  * @author Sakrajin
- *
  */
 public class CruelSun extends CoreAbility {
 
     private ChargeSphere chargeSphere;
-    private SphereBlast sphereBlast;
-    private boolean hasCharged = false, hasShot = false;
+    private BlockSmash blockSmash;
+
+    private final String name = "CruelSun";
+
     public CruelSun(Player player) {
         super(player);
 
@@ -24,33 +27,31 @@ public class CruelSun extends CoreAbility {
             return;
         }
 
-        chargeSphere = new ChargeSphere(player, "CruelSun", 0, Particle.FLAME);
+        chargeSphere = new ChargeSphere(player, name, 0, Particle.FLAME);
+        abilityStatus = AbilityStatus.CHARGING;
         start();
 
     }
 
     @Override
     public void progress() {
-        if (!hasShot)
-        {
-            if (!player.isSneaking())
-            {
+        if (abilityStatus == AbilityStatus.CHARGING) {
+            if (!player.isSneaking()) {
                 this.remove();
             }
-            if (chargeSphere.getAbilityStatus() == AbilityStatus.CHARGED)
-            {
-                hasCharged = true;
-            }
-            if (hasCharged)
-            {
-                sphereBlast = new SphereBlast(player, "CruelSun", false, Particle.FLAME);
-                hasShot = true;
+            if (chargeSphere.getAbilityStatus() == AbilityStatus.CHARGED) {
+                abilityStatus = AbilityStatus.CHARGED;
+                chargeSphere.remove();
             }
         }
-        if (hasShot)
-        {
-            if (sphereBlast.getAbilityStatus() == AbilityStatus.COMPLETE)
-            {
+        else if (abilityStatus == AbilityStatus.CHARGED) {
+            blockSmash = new BlockSmash(player, name,
+                    DisplayBlock.SUN,
+                    Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius/2));
+            abilityStatus = AbilityStatus.NOT_SHOT;
+        }
+        else if (abilityStatus == AbilityStatus.SHOT){
+            if (blockSmash.getAbilityStatus() == AbilityStatus.COMPLETE) {
                 this.remove();
             }
         }
@@ -58,17 +59,21 @@ public class CruelSun extends CoreAbility {
 
     }
 
+    public void setHasClicked() {
+        blockSmash.setHasClicked();
+        abilityStatus = AbilityStatus.SHOT;
+    }
+
     @Override
     public void remove() {
         super.remove();
-        if (chargeSphere != null)
-        {
+        if (chargeSphere != null) {
             chargeSphere.remove();
         }
-        if (sphereBlast != null)
-        {
-            sphereBlast.remove();
+        if (blockSmash != null) {
+            blockSmash.remove();
         }
+        sPlayer.addCooldown(name, cooldown);
     }
 
     @Override
@@ -78,6 +83,6 @@ public class CruelSun extends CoreAbility {
 
     @Override
     public String getName() {
-        return "CruelSun";
+        return name;
     }
 }

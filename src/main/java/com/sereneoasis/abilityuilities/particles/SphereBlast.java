@@ -4,9 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -23,11 +21,11 @@ public class SphereBlast extends CoreAbility {
     private Location loc, origin;
     private Vector dir;
 
-    
 
     private String name;
 
     private Particle particle;
+
     public SphereBlast(Player player, String name, boolean directable, Particle particle) {
         super(player, name);
 
@@ -46,8 +44,7 @@ public class SphereBlast extends CoreAbility {
     @Override
     public void progress() {
 
-        if (loc.distance(origin) > range)
-        {
+        if (loc.distance(origin) > range) {
             this.abilityStatus = AbilityStatus.COMPLETE;
         }
 

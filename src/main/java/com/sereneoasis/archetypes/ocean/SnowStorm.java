@@ -5,18 +5,15 @@ import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class SnowStorm extends CoreAbility {
 
     private static String name = "SnowStorm";
 
-    private HashMap<Integer,TempDisplayBlock> explosion = new HashMap<>();
+    private HashMap<Integer, TempDisplayBlock> explosion = new HashMap<>();
 
     private double currentRadius = 0;
 
@@ -36,16 +33,17 @@ public class SnowStorm extends CoreAbility {
     @Override
     public void progress() {
 
-        currentRadius+=speed;
-        if (currentRadius < radius)
-        {
+        currentRadius += speed;
+        if (currentRadius < radius) {
             explosion = Entities.handleDisplayBlockEntities(explosion, Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, 0.5), DisplayBlock.SNOW, 0.5);
-        }
-        else{
+        } else {
+            explosion.values().forEach(tb -> tb.setRevertTime(duration));
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }
     }
+
+
 
 
     @Override

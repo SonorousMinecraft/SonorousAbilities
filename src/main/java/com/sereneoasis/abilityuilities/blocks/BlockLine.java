@@ -3,7 +3,6 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -12,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class BlockLine extends CoreAbility{
+public class BlockLine extends CoreAbility {
 
     private final String name;
 
@@ -20,13 +19,14 @@ public class BlockLine extends CoreAbility{
 
     private Vector dir;
 
-    private Vector offsetAdjustment = new Vector(-0.5,0,-0.5);
 
     private TempDisplayBlock glowingSource;
 
     private boolean directable;
 
     private Material type;
+
+    private Vector offsetAdjustment = new Vector(-size/2, size/4, -size/2);
 
     public BlockLine(Player player, String name, Color color, boolean directable) {
         super(player, name);
@@ -37,8 +37,8 @@ public class BlockLine extends CoreAbility{
         Block source = Blocks.getFacingBlock(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            glowingSource = Blocks.selectSourceAnimationManual(source, color);
-            this.origin = Blocks.getFacingBlockLoc(player,sourceRange);
+            this.origin = Blocks.getFacingBlockLoc(player, sourceRange).subtract(0,size,0);
+            glowingSource = Blocks.selectSourceAnimationManual(origin, color, size);
             this.loc = origin.clone();
             this.type = source.getType();
             start();
@@ -47,61 +47,48 @@ public class BlockLine extends CoreAbility{
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (abilityStatus == AbilityStatus.SHOT){
+        if (abilityStatus == AbilityStatus.SHOT) {
             getNextLoc();
-            if (loc != null)
-            {
-                new TempDisplayBlock(loc, type, 500, 1);
-                if (loc.distanceSquared(origin) > range)
-                {
+            if (loc != null) {
+                new TempDisplayBlock(loc.clone().add(offsetAdjustment), type, 500, size);
+                if (loc.distanceSquared(origin) > range*range) {
                     abilityStatus = AbilityStatus.COMPLETE;
                 }
-            }
-            else{
+            } else {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
         }
     }
 
-    private void getNextLoc(){
-        if (directable)
-        {
+    private void getNextLoc() {
+        if (directable) {
             dir = player.getEyeLocation().getDirection().setY(0).normalize();
         }
         loc.add(dir.clone().multiply(speed));
-        Location middleLoc = loc.clone().add(offsetAdjustment);
-        Location topLoc = middleLoc.clone().add(0,1,0);
-        Location bottomLoc = middleLoc.clone().subtract(0,1,0);
-        if (middleLoc.getBlock().isLiquid() || middleLoc.getBlock().getType().isAir())
-        {
-            if (!(topLoc.getBlock().isLiquid() || topLoc.getBlock().getType().isAir()))
-            {
+        Location middleLoc = loc.clone();
+        Location topLoc = middleLoc.clone().add(0, 1, 0);
+        Location bottomLoc = middleLoc.clone().subtract(0, 1, 0);
+        if (middleLoc.getBlock().isLiquid() || middleLoc.getBlock().getType().isAir()) {
+            if (!(topLoc.getBlock().isLiquid() || topLoc.getBlock().getType().isAir())) {
                 loc = topLoc;
-            }
-            else if (!(bottomLoc.getBlock().isLiquid() || bottomLoc.getBlock().getType().isAir())){
+            } else if (!(bottomLoc.getBlock().isLiquid() || bottomLoc.getBlock().getType().isAir())) {
                 loc = bottomLoc;
-            }
-            else{
+            } else {
                 loc = null;
             }
-        }
-        else if (!Blocks.isTopBlock(middleLoc.getBlock()))
-        {
-            middleLoc.add(0,1,0);
-            if (!Blocks.isTopBlock(middleLoc.getBlock())){
+        } else if (!Blocks.isTopBlock(middleLoc.getBlock())) {
+            middleLoc.add(0, 1, 0);
+            if (!Blocks.isTopBlock(middleLoc.getBlock())) {
                 loc = null;
-            }
-            else{
+            } else {
                 loc = middleLoc;
             }
         }
 
     }
 
-    public void setHasClicked()
-    {
-        if (abilityStatus == AbilityStatus.SOURCE_SELECTED)
-        {
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
             abilityStatus = AbilityStatus.SHOT;
             glowingSource.revert();
         }

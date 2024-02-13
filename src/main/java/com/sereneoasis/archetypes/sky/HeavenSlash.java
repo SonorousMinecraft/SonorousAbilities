@@ -19,15 +19,14 @@ public class HeavenSlash extends CoreAbility {
         }
 
         Location forwardLoc = player.getEyeLocation().clone().add(player.getEyeLocation().getDirection().clone().normalize().multiply(0.5));
-        this.sweep = new Sweep(player,name,Particle.SPELL, forwardLoc.clone().subtract(0,0.3,0), forwardLoc.clone().add(0,0.3,0));
+        this.sweep = new Sweep(player, name, Particle.SPELL, forwardLoc.clone().subtract(0, 0.3, 0), forwardLoc.clone().add(0, 0.3, 0));
         start();
 
     }
 
     @Override
     public void progress() {
-        if (sweep.getAbilityStatus() == AbilityStatus.COMPLETE)
-        {
+        if (sweep.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
     }
@@ -35,8 +34,7 @@ public class HeavenSlash extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        if (sweep != null)
-        {
+        if (sweep != null) {
             sweep.remove();
         }
         sPlayer.addCooldown(name, cooldown);

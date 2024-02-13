@@ -5,8 +5,6 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.block.data.type.Light;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
@@ -29,23 +27,20 @@ public class ThunderStrike extends CoreAbility {
         abilityStatus = AbilityStatus.CHARGING;
         start();
     }
+
     @Override
     public void progress() {
 
-        if (abilityStatus == AbilityStatus.CHARGING && !player.isSneaking())
-        {
+        if (abilityStatus == AbilityStatus.CHARGING && !player.isSneaking()) {
             this.remove();
         }
 
-        if (abilityStatus == AbilityStatus.CHARGING && System.currentTimeMillis() > startTime + duration)
-        {
+        if (abilityStatus == AbilityStatus.CHARGING && System.currentTimeMillis() > startTime + duration) {
             abilityStatus = AbilityStatus.CHARGED;
         }
 
-        if (abilityStatus == AbilityStatus.SHOT)
-        {
-            if (loc.distance(origin) > range)
-            {
+        if (abilityStatus == AbilityStatus.SHOT) {
+            if (loc.distance(origin) > range) {
                 this.remove();
             }
             loc.add(dir.clone().multiply(speed));
@@ -53,19 +48,14 @@ public class ThunderStrike extends CoreAbility {
         }
     }
 
-    public void setHasClicked()
-    {
-        if (abilityStatus == AbilityStatus.CHARGED)
-        {
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.CHARGED) {
             this.loc = player.getEyeLocation().clone();
             this.origin = loc.clone();
             this.dir = loc.getDirection().clone().normalize();
             abilityStatus = AbilityStatus.SHOT;
 
-        }
-
-        else if (abilityStatus == AbilityStatus.SHOT)
-        {
+        } else if (abilityStatus == AbilityStatus.SHOT) {
             LightningStrike strike = (LightningStrike) loc.getWorld().spawn(loc, EntityType.LIGHTNING.getEntityClass(), ((entity) ->
             {
                 LightningStrike lightning = (LightningStrike) entity;

@@ -1,21 +1,19 @@
 package com.sereneoasis.displays;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.util.methods.Colors;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * @author Sakrajin
  * Handles scoreboards for serenity.
  * Used to store, create, and modify them.
- *
  */
 public class SerenityBoard {
 
@@ -54,15 +52,13 @@ public class SerenityBoard {
             team.addEntry(genEntry(i));
         }
         // Above text
-        for (int i = 10; i <= 14; i++)
-        {
+        for (int i = 10; i <= 14; i++) {
             Team team = scoreboard.registerNewTeam("SLOT_" + i);
             team.addEntry(genEntry(i));
         }
 
         // Combos and text
-        for (int i = 15; i <= 19; i++)
-        {
+        for (int i = 15; i <= 19; i++) {
             Team team = scoreboard.registerNewTeam("SLOT_" + -i);
             team.addEntry(genEntry(i));
         }
@@ -75,69 +71,63 @@ public class SerenityBoard {
 //        sidebar.setDisplayName(title.length()>32 ? title.substring(0, 32) : title);
 //    }
 
-    public void setAllAbilitySlots(HashMap<Integer, String> abilities)
-    {
-        for (int slot : abilities.keySet())
-        {
+    public void setAllAbilitySlots(HashMap<Integer, String> abilities) {
+        for (int slot : abilities.keySet()) {
             String ability = abilities.get(slot);
-            setAbilitySlot(slot,ability);
+            setAbilitySlot(slot, ability);
         }
     }
 
     public void setAbilitySlot(int slot, String text) {
-        Team team = scoreboard.getTeam("SLOT_" +- slot);
+        Team team = scoreboard.getTeam("SLOT_" + -slot);
         String entry = genEntry(slot);
-        if(!scoreboard.getEntries().contains(entry)) {
+        if (!scoreboard.getEntries().contains(entry)) {
             sidebar.getScore(entry).setScore(-slot);
         }
         //text = Colors.hexToString(sPlayer.getColor()  + " " + text);
 
-        String pre = color + getFirstSplit( text);
+        String pre = color + getFirstSplit(text);
         String suf = color + getSecondSplit(text);
 
         team.setPrefix(pre);
         team.setSuffix(suf);
     }
 
-    public void setAboveSlot(int slot, String text)
-    {
+    public void setAboveSlot(int slot, String text) {
         slot += 9;
         Team team = scoreboard.getTeam("SLOT_" + slot);
         String entry = genEntry(slot);
-        if(!scoreboard.getEntries().contains(entry)) {
-            sidebar.getScore(entry).setScore(slot-9);
+        if (!scoreboard.getEntries().contains(entry)) {
+            sidebar.getScore(entry).setScore(slot - 9);
         }
 
         text = color + text;
-        String pre = color + getFirstSplit( text);
+        String pre = color + getFirstSplit(text);
         String suf = color + getSecondSplit(text);
         team.setPrefix(pre);
         team.setSuffix(suf);
     }
 
-    public void setBelowSlot(int slot, String text)
-    {
+    public void setBelowSlot(int slot, String text) {
         slot += 14;
         Team team = scoreboard.getTeam("SLOT_" + -slot);
         String entry = genEntry(slot);
-        if(!scoreboard.getEntries().contains(entry)) {
-            sidebar.getScore(entry).setScore( -9 - (slot-14));
+        if (!scoreboard.getEntries().contains(entry)) {
+            sidebar.getScore(entry).setScore(-9 - (slot - 14));
         }
 
         text = color + text;
-        String pre = color + getFirstSplit( text);
+        String pre = color + getFirstSplit(text);
         String suf = color + getSecondSplit(text);
 
         team.setPrefix(pre);
         team.setSuffix(suf);
     }
 
-    public String getBelowComboSlot(int slot)
-    {
+    public String getBelowComboSlot(int slot) {
         slot += 14;
         Team team = scoreboard.getTeam("SLOT_" + -slot);
-        if (team.getPrefix() != null)
-        {
+        if (team.getPrefix() != null) {
             return team.getPrefix();
         }
         return "";
@@ -145,7 +135,7 @@ public class SerenityBoard {
 
     public void removeSlot(int slot) {
         String entry = genEntry(slot);
-        if(scoreboard.getEntries().contains(entry)) {
+        if (scoreboard.getEntries().contains(entry)) {
             scoreboard.resetScores(entry);
         }
     }
@@ -156,16 +146,15 @@ public class SerenityBoard {
     }
 
     private String getFirstSplit(String s) {
-        return s.length()>16 ? s.substring(0, 16) : s;
+        return s.length() > 16 ? s.substring(0, 16) : s;
     }
 
     private String getSecondSplit(String s) {
-        if(s.length()>32) {
+        if (s.length() > 32) {
             s = s.substring(0, 32);
         }
-        return s.length()>16 ? s.substring(16) : "";
+        return s.length() > 16 ? s.substring(16) : "";
     }
-
 
 
 }

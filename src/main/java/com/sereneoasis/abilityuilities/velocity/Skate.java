@@ -1,8 +1,10 @@
 package com.sereneoasis.abilityuilities.velocity;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,32 +22,36 @@ public class Skate extends CoreAbility {
 
     private int maxHeightFromGround;
 
-    private Block floorBlock;
-    private AbilityStatus abilityStatus = AbilityStatus.NO_SOURCE;
+    private int preferredHeightFromGround;
 
-    private Material floorType;
+    private Block floorBlock;
+
 
     private boolean any;
 
 
-    public Skate(Player player, String user, int maxHeightFromGround, boolean any, Material floorType) {
+
+    public Skate(Player player, String user, int maxHeightFromGround,int preferredHeightFromGround, boolean anyFloor) {
         super(player, user);
 
         this.user = user;
+        this.preferredHeightFromGround = preferredHeightFromGround;
         this.maxHeightFromGround = maxHeightFromGround;
-        this.floorType = floorType;
-        this.any = any;
+
+        this.any = anyFloor;
 
         Location loc = player.getLocation();
         setFloorBlock();
 
-        if (floorBlock != null)
-        {
+        abilityStatus = AbilityStatus.NO_SOURCE;
+
+        if (floorBlock != null) {
             armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
             {
                 ArmorStand aStand = (ArmorStand) entity;
                 aStand.setInvulnerable(true);
                 aStand.setVisible(false);
+                aStand.setSmall(true);
             }));
             Entities.applyPotion(armorStand, PotionEffectType.INVISIBILITY, Math.round(duration));
 
@@ -56,12 +62,11 @@ public class Skate extends CoreAbility {
         }
     }
 
-    private void setFloorBlock()
-    {
+    private void setFloorBlock() {
         floorBlock = null;
         for (int i = 0; i <= this.maxHeightFromGround; i++) {
             final Block block = this.player.getEyeLocation().getBlock().getRelative(BlockFace.DOWN, i);
-            if (block.getType() == floorType || any) {
+            if (ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getBlocks().contains(block.getType()) || any) {
                 this.floorBlock = block;
                 return;
             }
@@ -71,20 +76,17 @@ public class Skate extends CoreAbility {
     @Override
     public void progress() {
 
-        if (floorBlock == null || player.isSneaking())
-        {
+        if (floorBlock == null || player.isSneaking()) {
             abilityStatus = AbilityStatus.COMPLETE;
             return;
         }
 
-        Vector dir = player.getEyeLocation().getDirection().setY(0).normalize();
+        Vector dir = player.getEyeLocation().getDirection().setY(Vectors.getDirectionBetweenLocations(armorStand.getLocation(), floorBlock.getLocation().add(0,preferredHeightFromGround,0)).getY()/10).normalize();
         armorStand.setVelocity(dir.clone().multiply(speed));
-
         setFloorBlock();
     }
 
-    public Block getFloorBlock()
-    {
+    public Block getFloorBlock() {
         return this.floorBlock;
     }
 
