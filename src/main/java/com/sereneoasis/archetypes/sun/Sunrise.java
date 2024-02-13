@@ -14,6 +14,10 @@ public class Sunrise extends CoreAbility {
     public Sunrise(Player player) {
         super(player);
 
+        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+            return;
+        }
+
         levitate = new Levitate(player, name);
         start();
     }
