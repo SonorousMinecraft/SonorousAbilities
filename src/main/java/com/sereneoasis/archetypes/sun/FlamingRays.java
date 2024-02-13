@@ -44,7 +44,7 @@ public class FlamingRays extends CoreAbility {
             for (int i = 0; i < currentShots; i++) {
                 Blast blast = rays.get(i);
                 if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
-                    if (i == shots) {
+                    if (i == shots-1) {
                         blast.remove();
                         this.remove();
                     }
@@ -65,8 +65,8 @@ public class FlamingRays extends CoreAbility {
         if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.SHOOTING;
         }
-        if (abilityStatus == AbilityStatus.SHOOTING){
-            Blast blast = new Blast(player, name, false, Particle.FLAME);
+        if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
+            Blast blast = new Blast(player, name, false, Particle.WAX_ON);
             rays.put(currentShots, blast);
             currentShots++;
         }

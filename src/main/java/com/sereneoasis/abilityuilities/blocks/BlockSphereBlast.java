@@ -39,8 +39,8 @@ public class BlockSphereBlast extends CoreAbility {
         this.origin = player.getEyeLocation().clone();
         this.dir = origin.getDirection().normalize();
         this.loc = startLoc.clone();
-        spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5),
-                DisplayBlock.SUN, 0.5);
+        spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, size),
+                DisplayBlock.SUN, size);
         this.abilityStatus = AbilityStatus.CHARGED;
         start();
     }
@@ -60,8 +60,8 @@ public class BlockSphereBlast extends CoreAbility {
 
             loc.add(dir.clone().multiply(speed));
 
-            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, 0.5),
-                    DisplayBlock.SUN, 0.5);
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, size),
+                    DisplayBlock.SUN, size);
 
             DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
 

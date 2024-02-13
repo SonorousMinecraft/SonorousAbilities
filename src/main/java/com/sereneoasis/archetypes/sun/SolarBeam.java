@@ -47,7 +47,7 @@ public class SolarBeam extends CoreAbility {
 
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.CHARGED) {
-            blast = new SphereBlast(player, name, false, Particle.FLAME);
+            blast = new SphereBlast(player, name, false, Particle.WAX_ON);
             abilityStatus = AbilityStatus.SHOT;
         }
     }

@@ -376,6 +376,12 @@ public class SerenityListener implements Listener {
                 }
                 event.setCancelled(true);
             }
+            else if (event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK){
+                SerenityPlayer sPlayer = getSerenityPlayer(player);
+                if (sPlayer.getArchetype() == Archetype.SUN){
+                    event.setCancelled(true);
+                }
+            }
         }
     }
 }

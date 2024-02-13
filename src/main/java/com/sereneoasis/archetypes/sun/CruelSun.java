@@ -27,7 +27,7 @@ public class CruelSun extends CoreAbility {
             return;
         }
 
-        chargeSphere = new ChargeSphere(player, name, 0, Particle.FLAME);
+        chargeSphere = new ChargeSphere(player, name, 0, Particle.WAX_ON);
         abilityStatus = AbilityStatus.CHARGING;
         start();
 
