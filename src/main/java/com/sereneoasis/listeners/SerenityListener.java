@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
 
 /**
@@ -365,6 +366,14 @@ public class SerenityListener implements Listener {
     public void noFallDamage(EntityDamageEvent event){
         if (event.getEntity() instanceof Player player){
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL){
+                SerenityPlayer sPlayer = getSerenityPlayer(player);
+                if (sPlayer.getArchetype() == Archetype.EARTH && sPlayer.getHeldAbility().equals("EarthQuake")) {
+                    if (!CoreAbility.hasAbility(player, EarthQuake.class))
+                    {
+                        EarthQuake earthQuake = new EarthQuake(player);
+                        earthQuake.setCharged();
+                    }
+                }
                 event.setCancelled(true);
             }
         }

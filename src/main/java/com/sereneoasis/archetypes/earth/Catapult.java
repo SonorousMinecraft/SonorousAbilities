@@ -66,6 +66,7 @@ public class Catapult extends CoreAbility {
 
     }
 
+
     @Override
     public void remove() {
         super.remove();

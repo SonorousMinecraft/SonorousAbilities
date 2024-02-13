@@ -66,6 +66,13 @@ public class EarthQuake extends CoreAbility {
         }
     }
 
+    public void setCharged(){
+        if (this.abilityStatus == AbilityStatus.CHARGING)
+        {
+            abilityStatus = AbilityStatus.CHARGED;
+        }
+    }
+
     @Override
     public void remove() {
         super.remove();
