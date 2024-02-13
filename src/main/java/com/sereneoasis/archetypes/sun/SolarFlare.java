@@ -5,6 +5,7 @@ import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -52,13 +53,12 @@ public class SolarFlare extends CoreAbility {
                 isDayTime = true;
             }
             Set<Location> locs = new HashSet<>();
-            for (Block block : Blocks.getBlocksAroundPoint(flareLoc, radius)) {
-                Location b = block.getLocation();
-                if (b.getY() == flareLoc.getY()) {
+            for (Location b : Locations.getOutsideSphereLocs(flareLoc, radius, size)) {
+                if ((int)b.getY() == flareLoc.getY()) {
                     locs.add(b);
                 }
             }
-            flares = Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, 0.5);
+            flares = Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, size);
             startTime = System.currentTimeMillis();
             start();
         }
@@ -88,14 +88,13 @@ public class SolarFlare extends CoreAbility {
             }
 
             Set<Location> locs = new HashSet<>();
-            for (Block block : Blocks.getBlocksAroundPoint(flareLoc, radius)) {
-                Location b = block.getLocation();
-                if (b.getY() == flareLoc.getY()) {
+            for (Location b : Locations.getOutsideSphereLocs(flareLoc, radius, size)) {
+                if ((int)b.getY() == flareLoc.getY()) {
                     locs.add(b);
                 }
             }
 
-            flares = Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, 0.5);
+            Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, size);
         }
     }
 

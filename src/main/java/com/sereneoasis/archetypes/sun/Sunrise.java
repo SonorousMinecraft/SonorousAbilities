@@ -25,7 +25,7 @@ public class Sunrise extends CoreAbility {
     @Override
     public void progress() {
 
-        if (player.isSneaking() | levitate.getAbilityStatus() == AbilityStatus.COMPLETE) {
+        if (player.isSneaking() && sPlayer.getHeldAbility().equals(name) | levitate.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
 
