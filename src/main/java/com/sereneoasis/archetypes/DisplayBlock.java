@@ -20,7 +20,7 @@ public enum DisplayBlock {
 
     AIR(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.GRAY_STAINED_GLASS, Material.LIGHT_GRAY_STAINED_GLASS}))),
 
-    LIGHTNING(new ArrayList<>(List.of(new Material[]{Material.SCULK_VEIN})));
+    LIGHTNING(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.LIGHT_BLUE_STAINED_GLASS})));
 
     List<Material> blocks = new ArrayList<>();
 

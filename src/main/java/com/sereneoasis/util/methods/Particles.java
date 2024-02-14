@@ -31,6 +31,10 @@ public class Particles {
         loc.getWorld().spawnParticle(particle, loc, count, offset, offset, offset, extra);
     }
 
+    public static void spawnParticleOffset(Particle particle, Location loc, int count, double x, double y, double z, double extra) {
+        loc.getWorld().spawnParticle(particle, loc, count, x, y, z, extra);
+    }
+
     public static void spawnShriekParticle(Location loc, int count, double offset, double extra, int timeInTicks) {
         loc.getWorld().spawnParticle(Particle.SHRIEK, loc, count, offset, offset, offset, extra, timeInTicks);
     }

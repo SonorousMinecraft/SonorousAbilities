@@ -12,10 +12,10 @@ public class TDBs {
     public static void playTDBs(Location loc, DisplayBlock type, int amount, double size, double radius){
         for (int i = 0; i<=amount; i++) {
             if (radius!=0) {
-                new TempDisplayBlock(loc.clone().add(Vector.getRandom().normalize().multiply(radius)), type, 200, size);
+                new TempDisplayBlock(loc.clone().add(Vector.getRandom().normalize().multiply(radius)), type, 100, size);
             }
             else{
-                new TempDisplayBlock(loc.clone(), type, 200, size);
+                new TempDisplayBlock(loc.clone(), type, 100, size);
             }
         }
     }

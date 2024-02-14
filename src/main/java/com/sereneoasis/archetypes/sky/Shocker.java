@@ -8,6 +8,7 @@ import com.sereneoasis.util.methods.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -154,10 +155,18 @@ public class Shocker extends CoreAbility {
         double distance = difference.length();
         Vector normalised = difference.clone().normalize();
 
-        for (double d = 0; d < distance; d += 0.2) {
+
+
+        for (double d = 0; d < distance; d += size) {
             Location temploc = start.clone().add(normalised.clone().multiply(d));
             //Particles.spawnColoredParticle(temploc, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
-            TDBs.playTDBs(temploc, DisplayBlock.LIGHTNING, 1, size, 0);
+            TDBs.playTDBs(temploc, DisplayBlock.LIGHTNING, 1, size, Math.log(d+1));
+            //Particles.spawnColoredParticle(temploc, 11, 1, 1, Color.fromRGB(1, 225, 255));
+
+            Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5)).normalize().add(dir.clone().multiply(0.2)).normalize().multiply(0.4);
+            Particles.spawnParticleOffset(Particle.END_ROD, temploc, 0, random.getX(), random.getY(), random.getZ(), 0.15);
+            Particles.spawnColoredParticle(temploc, 1, Math.log(d+1), size*3, Color.fromRGB(1, 225, 255));
+            Particles.spawnParticle(Particle.ELECTRIC_SPARK, temploc, 1,Math.log(d+1),0);
         }
     }
 
