@@ -1,12 +1,16 @@
 package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.methods.TDBs;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -60,7 +64,8 @@ public class SourcedBlast extends CoreAbility {
             }
             loc.add(dir.clone().multiply(speed));
         }
-        Particles.spawnParticle(particle, loc, 5, hitbox, 0);
+        TDBs.playTDBs(loc, DisplayBlock.AIR, 5, size, hitbox);
+        //Particles.spawnParticle(particle, loc, 5, hitbox, 0);
 
     }
 

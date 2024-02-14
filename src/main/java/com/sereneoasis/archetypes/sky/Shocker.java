@@ -2,10 +2,10 @@ package com.sereneoasis.archetypes.sky;
 
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.methods.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -87,7 +87,7 @@ public class Shocker extends CoreAbility {
                 btarget = SerenityPlayer.getSerenityPlayer(target);
                 if (btarget != null) {
                     if (btarget.getHeldAbility().equalsIgnoreCase(name) && target.isSneaking()) {
-                        Particles.spawnColoredParticle(target.getLocation(), 10, 1, 1, Color.fromRGB(1, 225, 255));
+//                        Particles.spawnColoredParticle(target.getLocation(), 10, 1, 1, Color.fromRGB(1, 225, 255));
                         new Shocker(target);
                         this.remove();
                     } else {
@@ -107,7 +107,9 @@ public class Shocker extends CoreAbility {
         locleft.add(dir.clone().multiply(speed));
         if (locleft.distance(closestleft) > 1) {
             closestleft = randomMidwayVertex(locleft, closestleft);
-            leftarcs.add(closestleft);
+            if (closestleft != null) {
+                leftarcs.add(closestleft);
+            }
         }
 
         for (int i = 0; i < leftarcs.size() - 2; i++) {
@@ -118,15 +120,15 @@ public class Shocker extends CoreAbility {
         locright.add(dir.clone().multiply(speed));
         if (locright.distance(closestright) > 1) {
             closestright = randomMidwayVertex(locright, closestright);
-            rightarcs.add(closestright);
+            if (closestright != null) {
+                rightarcs.add(closestright);
+            }
         }
 
         for (int i = 0; i < rightarcs.size() - 2; i++) {
             playParticlesBetweenPoints(rightarcs.get(i), rightarcs.get(i + 1));
         }
 
-        Particles.spawnColoredParticle(locleft, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
-        Particles.spawnColoredParticle(locright, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
 
 
         if (distance > range) {
@@ -140,18 +142,22 @@ public class Shocker extends CoreAbility {
 
     public Location randomMidwayVertex(Location start, Location end) {
         Vector midpoint = end.clone().subtract(start.clone()).toVector().multiply(0.5);
-        Vector random = new Vector(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize().multiply(Math.log(distance));
+        Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5));
+        if (distance > 0){
+            random.multiply(Math.log(distance));
+        }
         return (start.clone().add(midpoint).add(random));
     }
 
     public void playParticlesBetweenPoints(Location start, Location end) {
-        Vector difference = end.clone().subtract(start.clone()).toVector();
+        Vector difference = Vectors.getDirectionBetweenLocations(start,end);
         double distance = difference.length();
-        Vector normalised = difference.normalize();
+        Vector normalised = difference.clone().normalize();
 
         for (double d = 0; d < distance; d += 0.2) {
             Location temploc = start.clone().add(normalised.clone().multiply(d));
-            Particles.spawnColoredParticle(temploc, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
+            //Particles.spawnColoredParticle(temploc, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
+            TDBs.playTDBs(temploc, DisplayBlock.LIGHTNING, 1, size, 0);
         }
     }
 

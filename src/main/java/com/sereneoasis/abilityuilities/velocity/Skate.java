@@ -66,7 +66,7 @@ public class Skate extends CoreAbility {
         floorBlock = null;
         for (int i = 0; i <= this.maxHeightFromGround; i++) {
             final Block block = this.player.getEyeLocation().getBlock().getRelative(BlockFace.DOWN, i);
-            if (ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getBlocks().contains(block.getType()) || any) {
+            if (ArchetypeDataManager.getArchetypeData(sPlayer.getArchetype()).getBlocks().contains(block.getType()) || any && block.getType() != Material.AIR) {
                 this.floorBlock = block;
                 return;
             }
@@ -80,6 +80,7 @@ public class Skate extends CoreAbility {
             abilityStatus = AbilityStatus.COMPLETE;
             return;
         }
+
 
         Vector dir = player.getEyeLocation().getDirection().setY(Vectors.getDirectionBetweenLocations(armorStand.getLocation(), floorBlock.getLocation().add(0,preferredHeightFromGround,0)).getY()/10).normalize();
         armorStand.setVelocity(dir.clone().multiply(speed));

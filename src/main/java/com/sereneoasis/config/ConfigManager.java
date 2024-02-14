@@ -286,7 +286,7 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(sky, "SkyBlast", SKY.toString(), "description", "instructions",
                 0, 5000, 0,
-                0, 1.0, 0.5, 20, 1, 1, 0);
+                0, 1.0, 0.5, 20, 1, 1, 0.5);
 
         saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "instructions",
                 0, 5000, 3000,
@@ -310,7 +310,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sky, "Shocker", SKY.toString(), "description", "instructions",
                 0, 2000, 5000,
-                2, 1.0, 0, 20, 1, 0, 0);
+                2, 1.0, 0, 20, 1, 0, 0.1);
 
         saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "instructions",
                 1000, 5000, 0,
