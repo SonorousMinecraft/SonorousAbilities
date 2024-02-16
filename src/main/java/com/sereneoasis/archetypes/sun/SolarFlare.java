@@ -6,10 +6,13 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +25,6 @@ public class SolarFlare extends CoreAbility {
 
     private long startTime = System.currentTimeMillis();
 
-    private boolean isDayTime;
 
     private boolean started = false;
 
@@ -43,23 +45,20 @@ public class SolarFlare extends CoreAbility {
         abilityStatus = AbilityStatus.NO_SOURCE;
         target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (target != null && target.getType().isSolid()) {
-            Blocks.selectSourceAnimation(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size,0), sPlayer.getColor(), size);
-            long time = player.getWorld().getTime();
-            if (time < 167 || (time > 1200 && time < 22300)) {
-                flareLoc = target.getLocation().clone().subtract(0, 10, 0);
-                isDayTime = false;
-            } else {
+            Location sourceLoc = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
+
+            Blocks.selectSourceAnimationShape( Locations.getCircleLocsAroundPoint(sourceLoc, radius, size), sPlayer.getColor(), size);
                 flareLoc = target.getLocation().clone().add(0, 10, 0);
-                isDayTime = true;
-            }
             Set<Location> locs = new HashSet<>();
             for (Location b : Locations.getOutsideSphereLocs(flareLoc, radius, size)) {
                 if ((int)b.getY() == flareLoc.getY()) {
                     locs.add(b);
                 }
             }
+
             flares = Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, size);
-            startTime = System.currentTimeMillis();
+
+
             start();
         }
     }
@@ -74,24 +73,21 @@ public class SolarFlare extends CoreAbility {
 
         if (started) {
 
-
-            if (isDayTime) {
                 flareLoc.subtract(0, 1, 0);
                 if (flareLoc.getY() <= target.getY()) {
                     this.remove();
                 }
-            } else {
-                flareLoc.add(0, 1, 0);
-                if (flareLoc.getY() >= target.getY()) {
-                    this.remove();
-                }
-            }
 
             Set<Location> locs = new HashSet<>();
             for (Location b : Locations.getOutsideSphereLocs(flareLoc, radius, size)) {
                 if ((int)b.getY() == flareLoc.getY()) {
                     locs.add(b);
                 }
+            }
+
+            for (Location particleLoc : Locations.getCircleLocsAroundPoint(flareLoc, radius-size, size))
+            {
+                Particles.spawnParticle(Particle.WAX_ON, particleLoc, 1, size, 0);
             }
 
             Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, size);
@@ -101,6 +97,12 @@ public class SolarFlare extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
+        for (TempDisplayBlock tb : flares.values())
+        {
+            if (tb != null){
+                tb.revert();
+            }
+        }
         sPlayer.addCooldown("SolarFlare", cooldown);
     }
 

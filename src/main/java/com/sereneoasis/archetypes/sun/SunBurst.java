@@ -48,8 +48,8 @@ public class SunBurst extends CoreAbility {
             currentRadius += speed;
             if (currentRadius < radius) {
                 explosion = Entities.handleDisplayBlockEntities(explosion,
-                        Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, 0.5),
-                        DisplayBlock.SUN, 0.5);
+                        Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, size),
+                        DisplayBlock.SUN, size);
 
                 for (Block b : Blocks.getBlocksAroundPoint(player.getLocation(), radius)) {
                     Block topBlock = b.getLocation().add(0, 1, 0).getBlock();

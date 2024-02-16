@@ -15,16 +15,19 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Sakrajin
  * Methods which are related to blocks
  */
 public class Blocks {
+
+    public static void selectSourceAnimationShape(Collection<Location> locs, Color color, double size) {
+        for (Location loc : locs){
+            selectSourceAnimation(loc, color, size);
+        }
+    }
 
     public static void selectSourceAnimation(Location loc, Color color, double size) {
         Material type = loc.getBlock().getRelative(BlockFace.DOWN).getType();

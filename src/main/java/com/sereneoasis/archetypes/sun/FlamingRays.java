@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Blast;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -66,7 +67,7 @@ public class FlamingRays extends CoreAbility {
             abilityStatus = AbilityStatus.SHOOTING;
         }
         if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
-            Blast blast = new Blast(player, name, false, Particle.WAX_ON);
+            Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SunVisual());
             rays.put(currentShots, blast);
             currentShots++;
         }

@@ -247,23 +247,23 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "FlamingRays", Archetype.SUN.toString(), "description", "instructions",
                 3000, 5000, 0,
-                2, 0.5, 0.5, 15, 1, 0, 0);
+                2, 0.5, 0.5, 15, 1, 0, 0.2);
 
         saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "instructions",
                 4000, 5000, 0,
-                2, 0.5, 2.0, 30, 0.5, 0, 0);
+                2, 0.5, 2.0, 30, 0.5, 0, 0.2);
 
         saveConfigValuesAbility(sun, "SunBurst", Archetype.SUN.toString(), "description", "instructions",
                 4000, 5000, 0,
-                2, 0.5, 20.0, 30, 1.0, 0, 0);
+                2, 0.5, 20.0, 30, 1.0, 0, 0.5);
 
         saveConfigValuesAbility(sun, "MeltingGlare", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 10000,
-                2, 0.5, 0, 20, 0, 0, 0.1);
+                2, 0.5, 0, 20, 0, 0, 0.2);
 
         saveConfigValuesAbility(sun, "SolarBarrage", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 2, 2, 20, 1, 0, 0.1);
+                2, 2, 2, 20, 1, 0, 0.3);
 
         saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 5000,
@@ -271,7 +271,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 5000,
-                2, 2, 0, 0, 1, 0, 0);
+                2, 2, 1, 0, 1, 0, 0.2);
 
         sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");
         saveAttributeValuesArchetype(sun, Archetype.SUN, 0, 0, 0, 0,

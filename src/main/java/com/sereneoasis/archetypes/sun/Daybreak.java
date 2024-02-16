@@ -4,9 +4,12 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Jet;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.ParticleStyles;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -21,6 +24,8 @@ public class Daybreak extends CoreAbility {
     private HashMap<Integer, TempDisplayBlock> trail = new HashMap<>();
 
     private Jet jet;
+
+    private ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
 
     public Daybreak(Player player) {
         super(player);
@@ -40,7 +45,10 @@ public class Daybreak extends CoreAbility {
         if (!player.isSneaking() | jet.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
-        ParticleStyles.playSeveralHelixes(player.getEyeLocation(), player.getEyeLocation().getDirection().multiply(-1), 5, 20, 5, 0, true, 3);
+        for (Location loc: Locations.getSeveralHelixes(player.getEyeLocation(), player.getEyeLocation().getDirection().multiply(-1), 5, 20, 5, 0, true, 3))
+        {
+            sunVisual.playVisual(loc, size, 0, 1 , 1 , 1);
+        }
 
         for (Entity e : Entities.getEntitiesAroundPoint(player.getEyeLocation(), hitbox)) {
             if (e != null && e instanceof Player targetPlayer && e.getUniqueId() != player.getUniqueId()) {
