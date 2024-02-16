@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -47,7 +48,7 @@ public class SolarBeam extends CoreAbility {
 
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.CHARGED) {
-            blast = new SphereBlast(player, name, false, Particle.WAX_ON);
+            blast = new SphereBlast(player, name, false, new ArchetypeVisuals.SunVisual());
             abilityStatus = AbilityStatus.SHOT;
         }
     }

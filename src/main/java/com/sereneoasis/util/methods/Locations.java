@@ -229,16 +229,32 @@ public class Locations {
         for (double y = -radius; y < radius; y += distance) {
             for (double x = -radius; x < radius; x += distance) {
                 for (double z = -radius; z < radius; z += distance) {
-                    locs.add(loc.clone().add(x, y, z));
+                    Location temploc = loc.clone().add(x, y, z);
+                    if (temploc.distanceSquared(loc) <= radius * radius) {
+                        locs.add(loc.clone().add(x, y, z));
+                    }
                 }
             }
         }
         return locs;
     }
 
-    public static Set<Location> getOutsideSphereLocs(Location loc, double radius, double distance) {
+    public static Set<Location> getCircleLocsAroundPoint(Location loc, double radius, double distance) {
         Set<Location> locs = new HashSet<>();
         radius -= radius / 2;
+            for (double x = -radius; x < radius; x += distance) {
+                for (double z = -radius; z < radius; z += distance) {
+                    Location temploc = loc.clone().add(x, 0, z);
+                    if (temploc.distanceSquared(loc) <= radius * radius) {
+                        locs.add(loc.clone().add(x, 0, z));
+                    }
+                }
+            }
+        return locs;
+    }
+
+    public static Set<Location> getOutsideSphereLocs(Location loc, double radius, double distance) {
+        Set<Location> locs = new HashSet<>();
         for (double y = -radius; y < radius; y += distance) {
             for (double x = -radius; x < radius; x += distance) {
                 for (double z = -radius; z < radius; z += distance) {
@@ -282,5 +298,37 @@ public class Locations {
             return getRightSide(player.getLocation(), .55).add(0, y, 0)
                     .add(player.getLocation().getDirection().multiply(0.8));
         }
+    }
+
+    public static double PI = Math.PI;
+
+    public static List<Location> getHelix(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise) {
+        double tempDistance = 0;
+        List<Location>locs = new ArrayList<>();
+        for (double d = startAngle; d < (2 * PI) + startAngle; d += (2 * PI / points)) {
+            Location tempLoc = loc.clone();
+            Vector tempDir = dir.clone();
+            tempDistance += distance / points;
+            Vector orthoDir = Vectors.getOrthogonalVector(tempDir, d, tempDistance);
+            if (anticlockwise) {
+                tempLoc.add(orthoDir.rotateAroundAxis(tempDir, d));
+            } else {
+                tempLoc.add(orthoDir.rotateAroundAxis(tempDir, -d));
+            }
+            loc.add(tempDir.multiply(height / points));
+
+            locs.add(tempLoc);
+        }
+        return locs;
+    }
+
+    public  static List<Location> getSeveralHelixes(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise, int helixes) {
+        int currentAngle = startAngle;
+        List<Location>locs = new ArrayList<>();
+        for (int i = 0; i < helixes; i++) {
+            locs.addAll(getHelix(loc.clone(), dir, distance, points, height, currentAngle, anticlockwise));
+            currentAngle += 360 / helixes;
+        }
+        return locs;
     }
 }

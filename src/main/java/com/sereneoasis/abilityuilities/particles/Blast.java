@@ -2,6 +2,7 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -22,13 +23,13 @@ public class Blast extends CoreAbility {
 
     private String name;
 
-    private Particle particle;
+    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    public Blast(Player player, String name, boolean directable, Particle particle) {
+    public Blast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual) {
         super(player, name);
         this.name = name;
         this.directable = directable;
-        this.particle = particle;
+        this.archetypeVisual = archetypeVisual;
         this.loc = player.getEyeLocation();
         this.origin = loc.clone();
         this.dir = loc.getDirection();
@@ -48,7 +49,7 @@ public class Blast extends CoreAbility {
         }
 
         loc.add(dir.clone().multiply(speed));
-        Particles.spawnParticle(particle, loc, 5, hitbox, 0);
+        archetypeVisual.playVisual(loc, size, radius, 10, 1, 5);
 
     }
 

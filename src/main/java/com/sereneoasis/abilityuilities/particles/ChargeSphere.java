@@ -2,8 +2,10 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -19,9 +21,9 @@ public class ChargeSphere extends CoreAbility {
     private long startTime;
 
     private double startRadius, increment;
-    private Particle particle;
+    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    public ChargeSphere(Player player, String name, double startRadius, Particle particle) {
+    public ChargeSphere(Player player, String name, double startRadius, ArchetypeVisuals.ArchetypeVisual archetypeVisual) {
         super(player, name);
 
         this.name = name;
@@ -30,7 +32,7 @@ public class ChargeSphere extends CoreAbility {
         this.startRadius = startRadius;
         this.startTime = System.currentTimeMillis();
         this.increment = ((radius - startRadius) / chargeTime) * 50;
-        this.particle = particle;
+        this.archetypeVisual = archetypeVisual;
         start();
     }
 
@@ -39,8 +41,13 @@ public class ChargeSphere extends CoreAbility {
         if (System.currentTimeMillis() > startTime + chargeTime) {
             this.abilityStatus = AbilityStatus.CHARGED;
         }
-        Particles.playSphere(Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius + 1),
-                startRadius, 12, particle);
+
+        for (Location loc : Locations.getSphere(Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius + 1),
+                startRadius, 12))
+        {
+            archetypeVisual.playVisual(loc, size, 0, 1, 1, 1);
+        }
+
         startRadius += increment;
     }
 

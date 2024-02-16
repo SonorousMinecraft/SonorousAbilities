@@ -3,7 +3,9 @@ package com.sereneoasis.abilityuilities.particles;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -24,22 +26,19 @@ public class SphereBlast extends CoreAbility {
 
     private String name;
 
-    private Particle particle;
+    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    public SphereBlast(Player player, String name, boolean directable, Particle particle) {
+    public SphereBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual) {
         super(player, name);
-
         this.name = name;
         this.directable = directable;
-        this.particle = particle;
-
-        this.origin = player.getEyeLocation();
-        this.dir = origin.getDirection().normalize();
-        this.loc = origin.clone().add(dir.clone().multiply(radius));
+        this.archetypeVisual = archetypeVisual;
+        this.loc = player.getEyeLocation();
+        this.origin = loc.clone();
+        this.dir = loc.getDirection();
         this.abilityStatus = AbilityStatus.SHOT;
         start();
     }
-
 
     @Override
     public void progress() {
@@ -53,7 +52,12 @@ public class SphereBlast extends CoreAbility {
         }
 
         loc.add(dir.clone().multiply(speed));
-        Particles.playSphere(loc, radius, 12, particle);
+
+
+        for (Location loc : Locations.getSphere(loc, radius, 12))
+        {
+            archetypeVisual.playVisual(loc, size, 0, 1, 1, 1);
+        }
 
         DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
 

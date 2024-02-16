@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sun;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Levitate;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.entity.Player;
 
 public class Sunrise extends CoreAbility {
@@ -25,6 +26,7 @@ public class Sunrise extends CoreAbility {
     @Override
     public void progress() {
 
+        new ArchetypeVisuals.SunVisual().playVisual(player.getEyeLocation().subtract(0, radius, 0), size, radius, 10, 5, 1);
         if (player.isSneaking() && sPlayer.getHeldAbility().equals(name) | levitate.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }

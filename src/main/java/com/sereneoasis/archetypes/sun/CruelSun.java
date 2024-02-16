@@ -6,6 +6,7 @@ import com.sereneoasis.abilityuilities.particles.ChargeSphere;
 import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class CruelSun extends CoreAbility {
             return;
         }
 
-        chargeSphere = new ChargeSphere(player, name, 0, Particle.WAX_ON);
+        chargeSphere = new ChargeSphere(player, name, 0, new ArchetypeVisuals.SunVisual());
         abilityStatus = AbilityStatus.CHARGING;
         start();
 
