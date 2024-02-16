@@ -3,10 +3,16 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Jump;
 import com.sereneoasis.abilityuilities.velocity.Levitate;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.methods.TDBs;
+import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class CloudStep extends CoreAbility {
 
@@ -33,7 +39,9 @@ public class CloudStep extends CoreAbility {
         }
 
         if (jump != null && jump.getAbilityStatus() == AbilityStatus.COMPLETE) {
-            Particles.spawnParticle(Particle.CLOUD, player.getLocation().subtract(0, 1, 0), 5, 0.5, 0);
+
+            Location loc = player.getLocation().subtract(0, radius, 0);
+            new ArchetypeVisuals.AirVisual().playVisual(loc, size, radius, 10, 5, 1);
         }
 
     }

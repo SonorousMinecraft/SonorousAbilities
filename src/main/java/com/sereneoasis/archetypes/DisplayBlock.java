@@ -18,7 +18,7 @@ public enum DisplayBlock {
 
     FIRE(new ArrayList<>(List.of(new Material[]{Material.FIRE, Material.SOUL_FIRE}))),
 
-    AIR(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.GRAY_STAINED_GLASS, Material.LIGHT_GRAY_STAINED_GLASS}))),
+    AIR(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.LIGHT_GRAY_STAINED_GLASS}))),
 
     LIGHTNING(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.LIGHT_BLUE_STAINED_GLASS})));
 

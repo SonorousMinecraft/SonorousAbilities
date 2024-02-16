@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Jet;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -28,7 +29,7 @@ public class Nimbus extends CoreAbility {
     @Override
     public void progress() {
 
-        Particles.spawnParticle(Particle.CLOUD, player.getEyeLocation().subtract(0, 2, 0), 5, 0.5, 0);
+        new ArchetypeVisuals.AirVisual().playVisual(player.getEyeLocation().subtract(0, radius, 0), size, radius, 10, 5, 1);
         if (jet.getAbilityStatus() == AbilityStatus.COMPLETE) {
             jet.remove();
             this.remove();

@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Sweep;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public class HeavenSlash extends CoreAbility {
         }
 
         Location forwardLoc = player.getEyeLocation().clone().add(player.getEyeLocation().getDirection().clone().normalize().multiply(0.5));
-        this.sweep = new Sweep(player, name, Particle.SPELL, forwardLoc.clone().subtract(0, 0.3, 0), forwardLoc.clone().add(0, 0.3, 0));
+        this.sweep = new Sweep(player, name, new ArchetypeVisuals.AirVisual(), forwardLoc.clone().subtract(0, 0.3, 0), forwardLoc.clone().add(0, 0.3, 0));
         start();
 
     }

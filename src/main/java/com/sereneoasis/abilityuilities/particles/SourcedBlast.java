@@ -4,10 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.TDBs;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,16 +26,16 @@ public class SourcedBlast extends CoreAbility {
 
     private String name;
 
-    private Particle particle;
+    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    public SourcedBlast(Player player, String name, boolean directable, Particle particle, boolean selfPush) {
+    public SourcedBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean selfPush) {
         super(player, name);
         this.shot = false;
         this.selfPush = selfPush;
         this.name = name;
         this.directable = directable;
-        this.particle = particle;
-        this.loc = Locations.getFacingLocationObstructed(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange);
+        this.archetypeVisual = archetypeVisual;
+        this.loc = Locations.getFacingLocationObstructed(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange).subtract(player.getEyeLocation().getDirection().clone().multiply(radius));
         this.abilityStatus = AbilityStatus.SOURCE_SELECTED;
         start();
     }
@@ -64,7 +61,8 @@ public class SourcedBlast extends CoreAbility {
             }
             loc.add(dir.clone().multiply(speed));
         }
-        TDBs.playTDBs(loc, DisplayBlock.AIR, 5, size, hitbox);
+        archetypeVisual.playVisual(loc, size, radius, 10, 1, 5);
+        //TDBs.playTDBs(loc, DisplayBlock.AIR, 5, size, hitbox);
         //Particles.spawnParticle(particle, loc, 5, hitbox, 0);
 
     }

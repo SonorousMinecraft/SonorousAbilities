@@ -1,8 +1,11 @@
 package com.sereneoasis.archetypes.sky;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.methods.TDBs;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.EntityType;
@@ -45,6 +48,12 @@ public class ThunderStrike extends CoreAbility {
             }
             loc.add(dir.clone().multiply(speed));
             Particles.spawnParticle(Particle.SONIC_BOOM, loc, 1, 0, 0);
+            TDBs.playTDBs(loc.clone().subtract(dir.clone().multiply(speed)), DisplayBlock.LIGHTNING, 10, size, radius);
+
+            Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5)).normalize().add(dir.clone().multiply(0.2)).normalize().multiply(0.4);
+            Particles.spawnParticleOffset(Particle.END_ROD, loc, 0, random.getX(), random.getY(), random.getZ(), 0.15);
+            Particles.spawnColoredParticle(loc, 1, radius, size*3, Color.fromRGB(1, 225, 255));
+            Particles.spawnParticle(Particle.ELECTRIC_SPARK, loc, 1,radius,0);
         }
     }
 
