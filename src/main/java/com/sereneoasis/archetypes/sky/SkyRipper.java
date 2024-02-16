@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Blade;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -37,7 +38,7 @@ public class SkyRipper extends CoreAbility {
 
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED && !player.isSneaking()) {
             abilityStatus = AbilityStatus.SHOT;
-            blade = new Blade(player, name, Particle.SPELL, loc1, loc2);
+            blade = new Blade(player, name, new ArchetypeVisuals.AirVisual(), loc1, loc2);
         }
 
         if (abilityStatus == AbilityStatus.SHOT && blade.getAbilityStatus() == AbilityStatus.COMPLETE) {

@@ -3,10 +3,7 @@ package com.sereneoasis.abilityuilities.particles;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.methods.*;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -20,14 +17,14 @@ public class Sweep extends CoreAbility {
 
     private Location origin, loc1, loc2;
 
-    private Particle particle;
+    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
     private Vector dir1, dir2;
 
-    public Sweep(Player player, String name, Particle particle, Location loc1, Location loc2) {
+    public Sweep(Player player, String name, ArchetypeVisuals.ArchetypeVisual archetypeVisual, Location loc1, Location loc2) {
         super(player, name);
 
-        this.particle = particle;
+        this.archetypeVisual = archetypeVisual;
         this.name = name;
         this.loc1 = loc1.clone();
         this.loc2 = loc2.clone();
@@ -50,8 +47,8 @@ public class Sweep extends CoreAbility {
             //List<Location> locs = List.of(new Location[]{loc1, loc2});
             for (Location loc : locs) {
                 DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+                archetypeVisual.playVisual(loc, size, 0.1, 10, 1, 5);
             }
-            Particles.playLocParticles(locs, particle, 1, 0, 0);
 
             if (origin.distance(Locations.getMidpoint(loc1, loc2)) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;
