@@ -21,7 +21,7 @@ public class Display {
             iDisplay.setBillboard(org.bukkit.entity.Display.Billboard.FIXED);
             Transformation transformation = iDisplay.getTransformation();
             transformation.getScale().set(size);
-            transformation.getTranslation().set(new Vector3d(-size / 2, 0, -size / 2));
+          //  transformation.getTranslation().set(new Vector3d(-size / 2, 0, -size / 2));
             Quaternionf quaternionf = transformation.getLeftRotation();
 
             double faceForward;

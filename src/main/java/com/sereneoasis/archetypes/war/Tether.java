@@ -41,7 +41,7 @@ public class Tether extends CoreAbility {
         tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true, true);
         armorStand1 = tether1.getArmorStand();
 
-        guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), armorStand1.getLocation(), -1, 50);
+        guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), tether1.getLoc(), -1, 50);
         guardianLaser.start(Serenity.getPlugin());
 
         start();
@@ -53,20 +53,20 @@ public class Tether extends CoreAbility {
         if (!hasShot2) {
             guardianLaser.moveStart(Locations.getMainHandLocation(player));
         } else {
-            guardianLaser.moveStart(armorStand2.getLocation());
+            guardianLaser.moveStart(tether2.getLoc());
         }
-        guardianLaser.moveEnd(armorStand1.getLocation());
+        guardianLaser.moveEnd(tether1.getLoc());
 
 
         if (player.isSneaking() && tether1.getAbilityStatus() == AbilityStatus.COMPLETE) {
             if (hasShot2) {
                 if (tether2.getAbilityStatus() == AbilityStatus.COMPLETE) {
-                    Entity between = Entities.getEntityBetweenPoints(armorStand2.getLocation(), armorStand1.getLocation());
+                    Entity between = Entities.getEntityBetweenPoints(tether2.getLoc(), tether1.getLoc());
                     if (between instanceof Player zipliner && zipliner.equals(player)) {
-                        Particles.spawnParticle(Particle.SMOKE_NORMAL, armorStand1.getLocation(), 1, 0, 0);
-                        Particles.spawnParticle(Particle.SMOKE_NORMAL, armorStand2.getLocation(), 1, 0, 0);
+                        Particles.spawnParticle(Particle.SMOKE_NORMAL, tether1.getLoc(), 1, 0, 0);
+                        Particles.spawnParticle(Particle.SMOKE_NORMAL, tether2.getLoc(), 1, 0, 0);
                         Vector playerLooking = player.getEyeLocation().getDirection().clone();
-                        Vector vec1to2 = Vectors.getDirectionBetweenLocations(armorStand1.getLocation(), armorStand2.getLocation()).normalize().multiply(0.5);
+                        Vector vec1to2 = Vectors.getDirectionBetweenLocations(tether1.getLoc(), tether2.getLoc()).normalize();
                         Vector vec2to1 = vec1to2.clone().multiply(-1);
                         if (Vectors.getAngleBetweenVectors(playerLooking, vec1to2) < Vectors.getAngleBetweenVectors(playerLooking, vec2to1)) {
                             player.setVelocity(vec1to2);
@@ -76,8 +76,8 @@ public class Tether extends CoreAbility {
                     }
                 }
             } else {
-                player.setVelocity(Vectors.getDirectionBetweenLocations(player.getLocation(), armorStand1.getLocation()).normalize());
-                if (armorStand1.getLocation().distance(player.getLocation()) < 2) {
+                player.setVelocity(Vectors.getDirectionBetweenLocations(player.getLocation(),  tether1.getLoc()).normalize());
+                if ( tether1.getLoc().distance(player.getLocation()) < 2) {
                     this.remove();
                 }
             }

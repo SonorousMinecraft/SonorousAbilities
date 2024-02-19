@@ -55,20 +55,21 @@ public class Katana extends CoreAbility {
                 this.remove();
             }
         } else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.ATTACKING) {
-            Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
-            katana1.teleport(Locations.getMainHandLocation(player).clone().add(offsetFix));
-            katana2.teleport(Locations.getOffHandLocation(player).clone().add(offsetFix));
+            //Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
+            katana1.teleport(Locations.getMainHandLocation(player));
+            katana2.teleport(Locations.getOffHandLocation(player));
+
         }
         if (abilityStatus == AbilityStatus.ATTACKING) {
             Transformation transformation = katana1.getTransformation();
             Quaternionf quaternionf = transformation.getLeftRotation();
-            quaternionf.rotateZ((float) Math.toRadians(32));
-            currentArcAngle += 32;
+            quaternionf.rotateZ((float) -Math.toRadians(16));
+            currentArcAngle += 16;
             katana1.setTransformation(transformation);
 
             Transformation transformation2 = katana2.getTransformation();
-            Quaternionf quaternionf2 = transformation2.getLeftRotation();
-            quaternionf2.rotateZ((float) -Math.toRadians(32));
+            Quaternionf quaternionf2 = transformation2.getRightRotation();
+            quaternionf2.rotateZ((float) -Math.toRadians(16));
             katana2.setTransformation(transformation2);
 
             Particles.spawnParticle(Particle.SWEEP_ATTACK, katana1.getLocation().clone().add(player.getEyeLocation().getDirection()),
@@ -87,12 +88,12 @@ public class Katana extends CoreAbility {
         if (abilityStatus == AbilityStatus.CHARGED) {
             Transformation transformation = katana1.getTransformation();
             Quaternionf quaternionf = transformation.getLeftRotation();
-            quaternionf.rotateXYZ(0, (float) -Math.toRadians(90), (float) -Math.toRadians(80));
+
+
             katana1.setTransformation(transformation);
 
             Transformation transformation2 = katana2.getTransformation();
             Quaternionf quaternionf2 = transformation2.getLeftRotation();
-            quaternionf2.rotateXYZ(0, (float) -Math.toRadians(90), (float) Math.toRadians(80));
             katana2.setTransformation(transformation2);
 
             currentArcAngle = 0;
