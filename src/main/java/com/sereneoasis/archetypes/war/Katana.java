@@ -20,7 +20,7 @@ public class Katana extends CoreAbility {
 
     private ItemDisplay katana1, katana2;
 
-    private double arcAngle = 160, currentArcAngle, size = 1.5;
+    private double arcAngle = 144, currentArcAngle, size = 1.5;
 
     private Transformation defaultTransformation;
 
@@ -55,26 +55,27 @@ public class Katana extends CoreAbility {
                 this.remove();
             }
         } else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.ATTACKING) {
-            //Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
-            katana1.teleport(Locations.getMainHandLocation(player));
-            katana2.teleport(Locations.getOffHandLocation(player));
-
+            Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
+            katana1.teleport(Locations.getMainHandLocation(player).clone().add(offsetFix));
+            katana2.teleport(Locations.getOffHandLocation(player).clone().add(offsetFix));
         }
         if (abilityStatus == AbilityStatus.ATTACKING) {
             Transformation transformation = katana1.getTransformation();
             Quaternionf quaternionf = transformation.getLeftRotation();
-            quaternionf.rotateZ((float) -Math.toRadians(16));
+            quaternionf.rotateZ((float) Math.toRadians(16));
             currentArcAngle += 16;
             katana1.setTransformation(transformation);
 
             Transformation transformation2 = katana2.getTransformation();
-            Quaternionf quaternionf2 = transformation2.getRightRotation();
+            Quaternionf quaternionf2 = transformation2.getLeftRotation();
             quaternionf2.rotateZ((float) -Math.toRadians(16));
             katana2.setTransformation(transformation2);
 
-            Particles.spawnParticle(Particle.SWEEP_ATTACK, katana1.getLocation().clone().add(player.getEyeLocation().getDirection()),
+
+            Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
+            Particles.spawnParticle(Particle.SWEEP_ATTACK, Locations.getMainHandLocation(player).clone().add(player.getEyeLocation().getDirection()),
                     1, 0, 0);
-            Particles.spawnParticle(Particle.SWEEP_ATTACK, katana2.getLocation().clone().add(player.getEyeLocation().getDirection()),
+            Particles.spawnParticle(Particle.SWEEP_ATTACK, Locations.getOffHandLocation(player).clone().add(player.getEyeLocation().getDirection()),
                     1, 0, 0);
             if (currentArcAngle > arcAngle) {
                 abilityStatus = AbilityStatus.CHARGED;
@@ -88,12 +89,12 @@ public class Katana extends CoreAbility {
         if (abilityStatus == AbilityStatus.CHARGED) {
             Transformation transformation = katana1.getTransformation();
             Quaternionf quaternionf = transformation.getLeftRotation();
-
-
+            quaternionf.rotateXYZ(0, (float) -Math.toRadians(90), (float) -Math.toRadians(90));
             katana1.setTransformation(transformation);
 
             Transformation transformation2 = katana2.getTransformation();
             Quaternionf quaternionf2 = transformation2.getLeftRotation();
+            quaternionf2.rotateXYZ(0, (float) -Math.toRadians(90), (float) Math.toRadians(0));
             katana2.setTransformation(transformation2);
 
             currentArcAngle = 0;
@@ -105,6 +106,7 @@ public class Katana extends CoreAbility {
     public void remove() {
         super.remove();
         katana1.remove();
+        katana2.remove();
     }
 
     @Override

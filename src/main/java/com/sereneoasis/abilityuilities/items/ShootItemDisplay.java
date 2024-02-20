@@ -44,10 +44,10 @@ public class ShootItemDisplay extends CoreAbility {
         oldPitch = tempLoc.getPitch();
 
 
-        //Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
-        //Location offsetLocation = loc.clone().add(offsetFix);
-        itemDisplay = Display.createItemDisplay(loc, material, size, diagonal);
-        armorStand = Display.createArmorStand(loc);
+        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
+        Location offsetLocation = loc.clone().add(offsetFix);
+        itemDisplay = Display.createItemDisplay(offsetLocation, material, size, diagonal);
+        armorStand = Display.createArmorStand(offsetLocation);
         armorStand.addPassenger(itemDisplay);
         armorStand.setVelocity(dir.clone().multiply(speed));
         start();
