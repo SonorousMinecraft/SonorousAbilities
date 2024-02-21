@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class Catapult extends CoreAbility {

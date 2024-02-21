@@ -4,7 +4,6 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.SourcedBlast;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class SkyBlast extends CoreAbility {

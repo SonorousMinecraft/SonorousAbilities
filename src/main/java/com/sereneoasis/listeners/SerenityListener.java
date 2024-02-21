@@ -19,11 +19,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.*;
 
 import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
@@ -334,6 +332,9 @@ public class SerenityListener implements Listener {
             case "Katana":
                 new Katana(player);
                 break;
+            case "Wings":
+                new Wings(player);
+                break;
             case "RockKick":
                 new RockKick(player);
                 break;
@@ -379,6 +380,41 @@ public class SerenityListener implements Listener {
             else if (event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK){
                 SerenityPlayer sPlayer = getSerenityPlayer(player);
                 if (sPlayer.getArchetype() == Archetype.SUN){
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMoveEvent(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        if (sPlayer == null) {
+            return;
+        }
+        String ability = sPlayer.getHeldAbility();
+//        if (CoreAbility.hasAbility(player, Wings.class)){
+//            CoreAbility.getAbility(player, Wings.class).setWingLocation(event.getTo());
+//        }
+    }
+
+    @EventHandler
+    public void onPlayerToggleFlight(EntityToggleGlideEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (player == null) {
+                return;
+            }
+            SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+            if (sPlayer == null) {
+                return;
+            }
+            String ability = sPlayer.getHeldAbility();
+            if (CoreAbility.hasAbility(player, Wings.class)) {
+                if (!event.isGliding()) {
                     event.setCancelled(true);
                 }
             }

@@ -38,7 +38,7 @@ public class Tether extends CoreAbility {
 
         Location loc = player.getEyeLocation().clone();
         Vector dir = loc.getDirection().clone();
-        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true, true);
+        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, 2.0, true, true);
         armorStand1 = tether1.getArmorStand();
 
         guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), tether1.getLoc(), -1, 200);
@@ -66,7 +66,7 @@ public class Tether extends CoreAbility {
                         Particles.spawnParticle(Particle.SMOKE_NORMAL, tether1.getLoc(), 1, 0, 0);
                         Particles.spawnParticle(Particle.SMOKE_NORMAL, tether2.getLoc(), 1, 0, 0);
                         Vector playerLooking = player.getEyeLocation().getDirection().clone();
-                        Vector vec1to2 = Vectors.getDirectionBetweenLocations(tether1.getLoc(), tether1.getLoc()).normalize().multiply(0.5);
+                        Vector vec1to2 = Vectors.getDirectionBetweenLocations(tether1.getLoc(), tether2.getLoc()).normalize().multiply(0.5);
                         Vector vec2to1 = vec1to2.clone().multiply(-1);
                         if (Vectors.getAngleBetweenVectors(playerLooking, vec1to2) < Vectors.getAngleBetweenVectors(playerLooking, vec2to1)) {
                             player.setVelocity(vec1to2);

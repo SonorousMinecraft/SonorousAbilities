@@ -5,7 +5,6 @@ import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class SolarBeam extends CoreAbility {

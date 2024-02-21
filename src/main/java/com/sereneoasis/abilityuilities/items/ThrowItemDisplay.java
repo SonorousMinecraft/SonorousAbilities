@@ -4,9 +4,9 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Display;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
@@ -74,7 +74,8 @@ public class ThrowItemDisplay extends CoreAbility {
 
 
                 if (stick) {
-                    if (Blocks.getBlocksAroundPoint(getLoc(), 1).stream().anyMatch(block -> block.getType().isSolid())) {
+                    if (!getLoc().getBlock().isPassable()) {
+                        Bukkit.broadcastMessage("stuck");
                         armorStand.setVelocity(new Vector(0, 0, 0));
                         armorStand.setGravity(false);
 

@@ -37,6 +37,11 @@ public class Entities {
         player.addPotionEffect(ef);
     }
 
+    public static void applyPotionPlayerAmplifier(Player player, PotionEffectType effect, int amplifier, int durationinms) {
+        PotionEffect ef = new PotionEffect(effect, durationinms / 1000 * 20, amplifier, false, false, false);
+        player.addPotionEffect(ef);
+    }
+
     /*
      * Used to set the velocity of a player.
      *
