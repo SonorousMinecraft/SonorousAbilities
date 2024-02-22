@@ -8,8 +8,10 @@ import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.command.SerenityCommand;
 import com.sereneoasis.config.ConfigManager;
+import com.sereneoasis.listeners.PacketListener;
 import com.sereneoasis.listeners.SerenityListener;
 import com.sereneoasis.storage.PlayerData;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 
@@ -62,6 +64,11 @@ public class Serenity extends JavaPlugin {
 
     private static ConfigManager configManager;
 
+    private static PacketListener packetListener;
+
+    public static PacketListener getPacketListener() {
+        return packetListener;
+    }
 
     public static void main(String[] args) {
 
@@ -74,7 +81,6 @@ public class Serenity extends JavaPlugin {
         plugin = this;
         Serenity.log = this.getLogger();
 
-
         this.getServer().getPluginManager().registerEvents(new SerenityListener(), this);
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BendingManager(), 0, 1);
 
@@ -83,7 +89,7 @@ public class Serenity extends JavaPlugin {
         archetypeDataManager = new ArchetypeDataManager();
         comboManager = new ComboManager();
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
-
+        packetListener = new PacketListener();
         this.getCommand("serenity").setExecutor(new SerenityCommand());
         //this.getCommand("serenity").setTabCompleter(new TabAutoCompletion());
     }

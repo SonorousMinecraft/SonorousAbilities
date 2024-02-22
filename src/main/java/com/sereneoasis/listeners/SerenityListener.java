@@ -1,5 +1,6 @@
 package com.sereneoasis.listeners;
 
+import com.mojang.datafixers.util.Pair;
 import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
@@ -11,8 +12,19 @@ import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.archetypes.war.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
+import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
+import net.minecraft.network.protocol.game.ServerboundSwingPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerConnectionListener;
+import net.minecraft.server.network.ServerPlayerConnection;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +33,11 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
@@ -31,6 +47,7 @@ import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
  * Main listener for all serenity events
  */
 public class SerenityListener implements Listener {
+
 
 
     @EventHandler
@@ -43,6 +60,8 @@ public class SerenityListener implements Listener {
             SerenityPlayer.initialisePlayer(player);
 
         }, 150L);
+
+        Serenity.getPacketListener().injectPlayer(player);
     }
 
 
@@ -60,6 +79,7 @@ public class SerenityListener implements Listener {
 
         removeAttributePlayer(player, serenityPlayer);
 
+        Serenity.getPacketListener().removePlayer(player);
 
     }
 
@@ -69,6 +89,8 @@ public class SerenityListener implements Listener {
         if (player == null) {
             return;
         }
+
+
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
         if (sPlayer == null) {
             return;
@@ -397,9 +419,7 @@ public class SerenityListener implements Listener {
             return;
         }
         String ability = sPlayer.getHeldAbility();
-//        if (CoreAbility.hasAbility(player, Wings.class)){
-//            CoreAbility.getAbility(player, Wings.class).setWingLocation(event.getTo());
-//        }
+
     }
 
     @EventHandler
@@ -420,6 +440,25 @@ public class SerenityListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onPlayerOpenInventory(InventoryOpenEvent event) {
+            Player player = (Player) event.getPlayer();
+            if (player == null) {
+                return;
+            }
+            SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+            if (sPlayer == null) {
+                return;
+            }
+            String ability = sPlayer.getHeldAbility();
+            if (CoreAbility.hasAbility(player, Wings.class)) {
+                player.closeInventory();
+                event.setCancelled(true);
+            }
+
+    }
+
 }
 
 

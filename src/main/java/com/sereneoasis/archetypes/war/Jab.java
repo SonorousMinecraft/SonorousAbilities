@@ -1,15 +1,18 @@
 package com.sereneoasis.archetypes.war;
 
+import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.methods.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftSpider;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 public class Jab extends CoreAbility {
@@ -27,12 +30,20 @@ public class Jab extends CoreAbility {
             return;
         }
 
+
+
         target = Entities.getFacingEntity(player, range, hitbox);
         origin = player.getEyeLocation().clone();
         dir = origin.getDirection().clone().normalize();
         if (target != null) {
-            DamageHandler.damageEntity(target, player, this, damage);
-            start();
+            PacketUtils.setCamera(player, ((CraftEntity) target).getHandle());
+            BukkitScheduler scheduler = Bukkit.getScheduler();
+            scheduler.runTaskLater(Serenity.getPlugin(), () -> {
+                PacketUtils.setCamera(player, ((CraftEntity) player).getHandle());
+//            DamageHandler.damageEntity(target, player, this, damage);
+//            player.teleport(player.getEyeLocation());
+//            start();
+            }, 600L /*<-- the delay */);
         }
 
     }
@@ -47,6 +58,8 @@ public class Jab extends CoreAbility {
 
         player.setVelocity(dir.clone().multiply(speed));
         Particles.spawnParticle(Particle.ELECTRIC_SPARK, Locations.getMainHandLocation(player), 10, 0.2, 0);
+        PacketUtils.playRiptide(player, 20);
+
 
         if (player.getEyeLocation().distance(target.getEyeLocation()) < hitbox + 3) {
             Particles.spawnParticle(Particle.EXPLOSION_HUGE, Locations.getMainHandLocation(player), 10, 0.2, 0);
