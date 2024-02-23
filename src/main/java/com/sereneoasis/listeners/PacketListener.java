@@ -12,17 +12,18 @@ import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
+import org.bukkit.craftbukkit.v1_20_R2.entity.*;
+import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 public class PacketListener {
@@ -43,7 +44,6 @@ public class PacketListener {
                 //Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "PACKET READ: " + ChatColor.RED + packet.toString());
 
                 if (packet instanceof ServerboundPlayerInputPacket moveInputPacket){
-                    Bukkit.broadcastMessage("yes");
                     ServerPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
 
                     Player spigotPlayer = player.getPlayer();
@@ -58,33 +58,67 @@ public class PacketListener {
                     float sidewards = moveInputPacket.getXxa(); // Sidewards
                     float forewards = moveInputPacket.getZza(); //forewards
 
+                    if (spigotPlayer.getVehicle() instanceof org.bukkit.entity.LivingEntity livingEntity){
+                        LivingEntity rideable = ((CraftLivingEntity)livingEntity).getHandle();
 
-                    String ability = sPlayer.getHeldAbility();
-                    Bukkit.broadcastMessage(ability);
-                    switch (ability){
-                        case "Cyclone":
-                            if (CoreAbility.hasAbility(player, Cyclone.class)){
-                                ArmorStand spigotStand = CoreAbility.getAbility(player, Cyclone.class).getArmorStand();
-                                net.minecraft.world.entity.decoration.ArmorStand nmsStand = ((CraftArmorStand) spigotStand).getHandle();
+                        if (livingEntity instanceof Blaze | livingEntity instanceof Wither |livingEntity instanceof Phantom |livingEntity instanceof Ghast |livingEntity instanceof EnderDragon |livingEntity instanceof Allay |
+                                livingEntity instanceof Ghast |livingEntity instanceof Bee |livingEntity instanceof Vex){
+                            Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() ));
+                            rideable.setDeltaMovement(newMovement);
+                            rideable.setYRot(nmsPlayer.getBukkitYaw());
+                            rideable.setXRot(spigotPlayer.getEyeLocation().getPitch());
 
-                                nmsStand.setDeltaMovement(new Vec3(sidewards, 0, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() )));
-
+                            if (moveInputPacket.isJumping()){
+                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F ));
                             }
-                            break;
-                        case "Wings":
-                            Bukkit.broadcastMessage("womgs");
-                            if (CoreAbility.hasAbility(player, Wings.class)){
-                                Bukkit.broadcastMessage("wtf");
-                                if (moveInputPacket.isShiftKeyDown()){
-                                    Bukkit.broadcastMessage("what the fuck");
-                                }
-                                if (moveInputPacket.isJumping()){
-                                    Bukkit.broadcastMessage("happeing");
-                                    player.setVelocity(new Vector(0,1,0));
-                                }
+                            if (moveInputPacket.isShiftKeyDown()){
+                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F ));
                             }
-                            break;
+
+
+
+
+                        }
+                        else{
+
+                            Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() ));
+                            rideable.setDeltaMovement(newMovement);
+
+                            rideable.setYRot(nmsPlayer.getBukkitYaw());
+                            rideable.setXRot(spigotPlayer.getEyeLocation().getPitch());
+                            if (moveInputPacket.isJumping() && livingEntity.isOnGround()){
+                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F ));
+                            }
+
+                        }
                     }
+
+//                    String ability = sPlayer.getHeldAbility();
+//                    Bukkit.broadcastMessage(ability);
+//                    switch (ability){
+//                        case "Cyclone":
+//                            if (CoreAbility.hasAbility(player, Cyclone.class)){
+//                                ArmorStand spigotStand = CoreAbility.getAbility(player, Cyclone.class).getArmorStand();
+//                                net.minecraft.world.entity.decoration.ArmorStand nmsStand = ((CraftArmorStand) spigotStand).getHandle();
+//
+//                                nmsStand.setDeltaMovement(new Vec3(sidewards, 0, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() )));
+//
+//                            }
+//                            break;
+//                        case "Wings":
+//                            Bukkit.broadcastMessage("womgs");
+//                            if (CoreAbility.hasAbility(player, Wings.class)){
+//                                Bukkit.broadcastMessage("wtf");
+//                                if (moveInputPacket.isShiftKeyDown()){
+//                                    Bukkit.broadcastMessage("what the fuck");
+//                                }
+//                                if (moveInputPacket.isJumping()){
+//                                    Bukkit.broadcastMessage("happeing");
+//                                    player.setVelocity(new Vector(0,1,0));
+//                                }
+//                            }
+//                            break;
+//                    }
 
                 }
                 super.channelRead(channelHandlerContext, packet);

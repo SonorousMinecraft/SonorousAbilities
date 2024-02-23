@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,6 +36,7 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -459,6 +461,19 @@ public class SerenityListener implements Listener {
 
     }
 
+    @EventHandler
+    public void onPlayerTryToRide(PlayerInteractEntityEvent event){
+        if (event.getRightClicked() instanceof LivingEntity rideable){
+            Player player = event.getPlayer();
+            rideable.addPassenger(player);
+
+        }
+    }
+
+    @EventHandler
+    public void onEntityDismount(EntityDismountEvent event){
+        event.setCancelled(true);
+    }
 }
 
 
