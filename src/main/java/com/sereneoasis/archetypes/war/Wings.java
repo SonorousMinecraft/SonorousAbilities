@@ -14,8 +14,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerPlayerConnection;
 
 import net.minecraft.world.entity.EquipmentSlot;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
 import org.bukkit.entity.HumanEntity;
@@ -38,6 +42,10 @@ public class Wings extends CoreAbility {
 
     private Transformation defaultTransformation;
 
+
+    private BossBar barduration;
+
+
     public Wings(Player player) {
         super(player);
 
@@ -50,7 +58,7 @@ public class Wings extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (System.currentTimeMillis() > startTime + duration) {
+        if (System.currentTimeMillis() > startTime + chargeTime + duration) {
             this.remove();
         }
 
@@ -62,6 +70,9 @@ public class Wings extends CoreAbility {
                     abilityStatus = AbilityStatus.CHARGED;
 
                     PacketUtils.setClientChestplate(player, Material.ELYTRA);
+
+                    barduration = Bukkit.getServer().createBossBar(name, BarColor.BLUE, BarStyle.SEGMENTED_10);
+
                 }
             } else {
                 this.remove();
@@ -78,6 +89,15 @@ public class Wings extends CoreAbility {
             else if (player.getLocation().subtract(0,0.5,0).getBlock().getType().isSolid()){
                 player.setGliding(false);
                 player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+            }
+
+            Long timeelapsed = System.currentTimeMillis() - (startTime + chargeTime);
+            Double progress = 1 - (double) timeelapsed / (double) duration;
+
+            if (progress < 0) {
+                barduration.setProgress(0);
+            } else {
+                barduration.setProgress(progress);
             }
         }
 

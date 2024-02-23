@@ -7,6 +7,7 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.TDBs;
 import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -45,6 +46,10 @@ public class Cyclone extends CoreAbility {
 
     public void setHasClicked() {
         this.remove();
+    }
+
+    public ArmorStand getArmorStand(){
+        return skate.getArmorStand();
     }
 
     @Override

@@ -1,18 +1,13 @@
 package com.sereneoasis.archetypes.war;
 
-import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftSpider;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 public class Jab extends CoreAbility {
@@ -31,19 +26,13 @@ public class Jab extends CoreAbility {
         }
 
 
-
         target = Entities.getFacingEntity(player, range, hitbox);
         origin = player.getEyeLocation().clone();
         dir = origin.getDirection().clone().normalize();
         if (target != null) {
-            PacketUtils.setCamera(player, ((CraftEntity) target).getHandle());
-            BukkitScheduler scheduler = Bukkit.getScheduler();
-            scheduler.runTaskLater(Serenity.getPlugin(), () -> {
-                PacketUtils.setCamera(player, ((CraftEntity) player).getHandle());
-//            DamageHandler.damageEntity(target, player, this, damage);
-//            player.teleport(player.getEyeLocation());
-//            start();
-            }, 600L /*<-- the delay */);
+            DamageHandler.damageEntity(target, player, this, damage);
+            player.teleport(player.getEyeLocation());
+            start();
         }
 
     }
