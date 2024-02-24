@@ -22,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_20_R2.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
@@ -64,6 +65,7 @@ public class PacketListener {
                         if (livingEntity instanceof Blaze | livingEntity instanceof Wither |livingEntity instanceof Phantom |livingEntity instanceof Ghast |livingEntity instanceof EnderDragon |livingEntity instanceof Allay |
                                 livingEntity instanceof Ghast |livingEntity instanceof Bee |livingEntity instanceof Vex){
                             Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() ));
+                            newMovement.normalize().scale(livingEntity.getAttribute(Attribute.GENERIC_FLYING_SPEED).getValue());
                             rideable.setDeltaMovement(newMovement);
                             rideable.setYRot(nmsPlayer.getBukkitYaw());
                             rideable.setXRot(spigotPlayer.getEyeLocation().getPitch());
@@ -72,7 +74,7 @@ public class PacketListener {
                                 livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F ));
                             }
                             if (moveInputPacket.isShiftKeyDown()){
-                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F ));
+                                livingEntity.setVelocity(livingEntity.getVelocity().setY(-0.42F ));
                             }
 
 
@@ -82,12 +84,13 @@ public class PacketListener {
                         else{
 
                             Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() ));
+                            newMovement.normalize().scale(livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue());
                             rideable.setDeltaMovement(newMovement);
 
                             rideable.setYRot(nmsPlayer.getBukkitYaw());
                             rideable.setXRot(spigotPlayer.getEyeLocation().getPitch());
                             if (moveInputPacket.isJumping() && livingEntity.isOnGround()){
-                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F ));
+                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F + rideable.getJumpBoostPower() ));
                             }
 
                         }

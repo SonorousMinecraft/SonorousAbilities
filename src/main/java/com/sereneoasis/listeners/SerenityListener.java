@@ -463,16 +463,22 @@ public class SerenityListener implements Listener {
 
     @EventHandler
     public void onPlayerTryToRide(PlayerInteractEntityEvent event){
-        if (event.getRightClicked() instanceof LivingEntity rideable){
+        if (event.getRightClicked() instanceof LivingEntity rideable && event.getPlayer().getVehicle() ==null ){
             Player player = event.getPlayer();
             rideable.addPassenger(player);
-
+            //rideable.setAI(false);
         }
     }
 
     @EventHandler
     public void onEntityDismount(EntityDismountEvent event){
-        event.setCancelled(true);
+        if (event.getEntity() instanceof Player player && player.isSneaking()) {
+            event.setCancelled(true);
+        } else{
+            if (event.getEntity() instanceof LivingEntity rideable){
+                //rideable.setAI(true);
+            }
+        }
     }
 }
 

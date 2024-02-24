@@ -23,10 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftSpider;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.ShulkerBullet;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 
 import java.util.Arrays;
 
@@ -44,7 +41,12 @@ public class SerenityCommand implements CommandExecutor {
             SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
             if (sPlayer != null) {
                 switch (strings[0]) {
+                    case "dismount":
+                        if (player.getVehicle() instanceof LivingEntity rideable){
+                            rideable.eject();
 
+                        }
+                        return true;
                     case "swing":
                         CraftPlayer craftPlayer = (CraftPlayer) player;
                         ServerPlayerConnection playerConnection = craftPlayer.getHandle().connection;
