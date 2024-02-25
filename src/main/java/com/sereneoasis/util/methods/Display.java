@@ -1,13 +1,9 @@
 package com.sereneoasis.util.methods;
 
-import net.minecraft.util.datafix.fixes.EntityArmorStandSilentFix;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.AABB;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftVex;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
@@ -15,8 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
-
-import java.lang.reflect.Field;
 
 public class Display {
 
@@ -72,6 +66,18 @@ public class Display {
         }));
         Entity nmsStand = ((CraftArmorStand)armorStand).getHandle();
         nmsStand.noPhysics = true;
+        return armorStand;
+    }
+
+    public static ArmorStand createArmorStandClip(Location loc) {
+
+        ArmorStand armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
+        {
+            ArmorStand aStand = (ArmorStand) entity;
+            aStand.setInvulnerable(true);
+            aStand.setSmall(true);
+            aStand.setVisible(false);
+        }));
         return armorStand;
     }
 

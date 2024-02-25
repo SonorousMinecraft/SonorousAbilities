@@ -5,27 +5,18 @@ import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.sky.Cyclone;
-import com.sereneoasis.archetypes.war.Wings;
+import com.sereneoasis.archetypes.war.Jetpack;
 import io.netty.channel.*;
 import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
-import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
-import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_20_R2.entity.*;
 import org.bukkit.entity.*;
-import org.bukkit.util.Vector;
 
 public class PacketListener {
 
@@ -44,8 +35,8 @@ public class PacketListener {
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 //Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "PACKET READ: " + ChatColor.RED + packet.toString());
 
-                if (packet instanceof ServerboundPlayerInputPacket moveInputPacket){
-                    ServerPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
+                if (packet instanceof ServerboundPlayerInputPacket moveInputPacket) {
+                    ServerPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
 
                     Player spigotPlayer = player.getPlayer();
                     if (spigotPlayer == null) {
@@ -59,70 +50,65 @@ public class PacketListener {
                     float sidewards = moveInputPacket.getXxa(); // Sidewards
                     float forewards = moveInputPacket.getZza(); //forewards
 
-                    if (spigotPlayer.getVehicle() instanceof org.bukkit.entity.LivingEntity livingEntity){
-                        LivingEntity rideable = ((CraftLivingEntity)livingEntity).getHandle();
 
-                        if (livingEntity instanceof Blaze | livingEntity instanceof Wither |livingEntity instanceof Phantom |livingEntity instanceof Ghast |livingEntity instanceof EnderDragon |livingEntity instanceof Allay |
-                                livingEntity instanceof Ghast |livingEntity instanceof Bee |livingEntity instanceof Vex){
-                            Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() ));
+                    // For riding any entity
+                    if (spigotPlayer.getVehicle() instanceof org.bukkit.entity.LivingEntity livingEntity) {
+                        LivingEntity rideable = ((CraftLivingEntity) livingEntity).getHandle();
+
+                        if (livingEntity instanceof Blaze | livingEntity instanceof Wither | livingEntity instanceof Phantom | livingEntity instanceof Ghast | livingEntity instanceof EnderDragon | livingEntity instanceof Allay |
+                                livingEntity instanceof Ghast | livingEntity instanceof Bee | livingEntity instanceof Vex) {
+                            Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw()));
                             newMovement.normalize().scale(livingEntity.getAttribute(Attribute.GENERIC_FLYING_SPEED).getValue());
                             rideable.setDeltaMovement(newMovement);
                             rideable.setYRot(nmsPlayer.getBukkitYaw());
                             rideable.setXRot(spigotPlayer.getEyeLocation().getPitch());
 
-                            if (moveInputPacket.isJumping()){
-                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F ));
+                            if (moveInputPacket.isJumping()) {
+                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F));
                             }
-                            if (moveInputPacket.isShiftKeyDown()){
-                                livingEntity.setVelocity(livingEntity.getVelocity().setY(-0.42F ));
+                            if (moveInputPacket.isShiftKeyDown()) {
+                                livingEntity.setVelocity(livingEntity.getVelocity().setY(-0.42F));
                             }
+                        } else {
+                            boolean isRidingAbility = false;
+                            if (CoreAbility.hasAbility(player, Cyclone.class)) {
+                                ArmorStand spigotStand = CoreAbility.getAbility(player, Cyclone.class).getArmorStand();
+                                net.minecraft.world.entity.decoration.ArmorStand nmsStand = ((CraftArmorStand) spigotStand).getHandle();
 
-
-
-
-                        }
-                        else{
-
-                            Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() ));
-                            newMovement.normalize().scale(livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue());
-                            rideable.setDeltaMovement(newMovement);
-
-                            rideable.setYRot(nmsPlayer.getBukkitYaw());
-                            rideable.setXRot(spigotPlayer.getEyeLocation().getPitch());
-                            if (moveInputPacket.isJumping() && livingEntity.isOnGround()){
-                                livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F + rideable.getJumpBoostPower() ));
+                                nmsStand.setDeltaMovement(new Vec3(sidewards, 0, forewards).yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw())));
+                                isRidingAbility = true;
                             }
+                            else if (CoreAbility.hasAbility(player, Jetpack.class)) {
+                                ArmorStand spigotStand = CoreAbility.getAbility(player, Jetpack.class).getArmorStand();
+                                net.minecraft.world.entity.decoration.ArmorStand nmsStand = ((CraftArmorStand) spigotStand).getHandle();
 
+                                Vec3 newMovement = new Vec3(sidewards, nmsStand.getDeltaMovement().y, forewards).yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw()));
+                                newMovement.normalize().scale(CoreAbility.getAbility(player, Jetpack.class).getSpeed());
+                                nmsStand.setDeltaMovement(newMovement);
+                                nmsStand.setYRot(nmsPlayer.getBukkitYaw());
+                                nmsStand.setXRot(spigotPlayer.getEyeLocation().getPitch());
+
+                                if (moveInputPacket.isJumping()) {
+                                    spigotStand.setVelocity(spigotStand.getVelocity().setY(0.42F));
+                                }
+                                if (moveInputPacket.isShiftKeyDown()) {
+                                    spigotStand.setVelocity(spigotStand.getVelocity().setY(-0.42F));
+                                }
+                                isRidingAbility = true;
+                            }
+                            if (!isRidingAbility) {
+                                Vec3 newMovement = new Vec3(sidewards, rideable.getDeltaMovement().y, forewards).yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw()));
+                                newMovement.normalize().scale(livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue());
+                                rideable.setDeltaMovement(newMovement);
+
+                                rideable.setYRot(nmsPlayer.getBukkitYaw());
+                                rideable.setXRot(spigotPlayer.getEyeLocation().getPitch());
+                                if (moveInputPacket.isJumping() && livingEntity.isOnGround()) {
+                                    livingEntity.setVelocity(livingEntity.getVelocity().setY(0.42F + rideable.getJumpBoostPower()));
+                                }
+                            }
                         }
                     }
-
-//                    String ability = sPlayer.getHeldAbility();
-//                    Bukkit.broadcastMessage(ability);
-//                    switch (ability){
-//                        case "Cyclone":
-//                            if (CoreAbility.hasAbility(player, Cyclone.class)){
-//                                ArmorStand spigotStand = CoreAbility.getAbility(player, Cyclone.class).getArmorStand();
-//                                net.minecraft.world.entity.decoration.ArmorStand nmsStand = ((CraftArmorStand) spigotStand).getHandle();
-//
-//                                nmsStand.setDeltaMovement(new Vec3(sidewards, 0, forewards).yRot((float) - Math.toRadians(nmsPlayer.getBukkitYaw() )));
-//
-//                            }
-//                            break;
-//                        case "Wings":
-//                            Bukkit.broadcastMessage("womgs");
-//                            if (CoreAbility.hasAbility(player, Wings.class)){
-//                                Bukkit.broadcastMessage("wtf");
-//                                if (moveInputPacket.isShiftKeyDown()){
-//                                    Bukkit.broadcastMessage("what the fuck");
-//                                }
-//                                if (moveInputPacket.isJumping()){
-//                                    Bukkit.broadcastMessage("happeing");
-//                                    player.setVelocity(new Vector(0,1,0));
-//                                }
-//                            }
-//                            break;
-//                    }
-
                 }
                 super.channelRead(channelHandlerContext, packet);
             }
@@ -130,8 +116,8 @@ public class PacketListener {
             @Override
             public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) throws Exception {
                 //Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "PACKET WRITE: " + ChatColor.GREEN + packet.toString());
-                if (packet instanceof ClientboundMoveEntityPacket moveEntityPacket){
-                    ServerPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
+                if (packet instanceof ClientboundMoveEntityPacket moveEntityPacket) {
+                    ServerPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
                     Serenity.getPlugin().getServer().getScheduler().runTask(Serenity.getPlugin(), () -> {
 
                         Entity packetEntity = moveEntityPacket.getEntity(nmsPlayer.getCommandSenderWorld());

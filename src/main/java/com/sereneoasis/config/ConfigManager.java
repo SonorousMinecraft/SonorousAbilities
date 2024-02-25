@@ -354,7 +354,7 @@ public class ConfigManager {
                 2000, 1000, 0,
                 4, 2.0, 0, 30, 1.5, 0, 1);
 
-        saveConfigValuesAbility(war, "Wings", Archetype.WAR.toString(), "description", "instructions",
+        saveConfigValuesAbility(war, "Jetpack", Archetype.WAR.toString(), "description", "instructions",
                 2000, 5000, 30000,
                 0, 0, 0, 0, 1, 0, 1.5);
 

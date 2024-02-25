@@ -1,6 +1,5 @@
 package com.sereneoasis.listeners;
 
-import com.mojang.datafixers.util.Pair;
 import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
@@ -12,19 +11,8 @@ import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.archetypes.war.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
-import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
-import net.minecraft.network.protocol.game.ServerboundSwingPacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerConnectionListener;
-import net.minecraft.server.network.ServerPlayerConnection;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Server;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,9 +25,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.spigotmc.event.entity.EntityDismountEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
@@ -356,8 +341,8 @@ public class SerenityListener implements Listener {
             case "Katana":
                 new Katana(player);
                 break;
-            case "Wings":
-                new Wings(player);
+            case "Jetpack":
+                new Jetpack(player);
                 break;
             case "RockKick":
                 new RockKick(player);
@@ -435,11 +420,11 @@ public class SerenityListener implements Listener {
                 return;
             }
             String ability = sPlayer.getHeldAbility();
-            if (CoreAbility.hasAbility(player, Wings.class)) {
-                if (!event.isGliding()) {
-                    event.setCancelled(true);
-                }
-            }
+//            if (CoreAbility.hasAbility(player, Jetpack.class)) {
+//                if (!event.isGliding()) {
+//                    event.setCancelled(true);
+//                }
+//            }
         }
     }
 
@@ -454,7 +439,7 @@ public class SerenityListener implements Listener {
                 return;
             }
             String ability = sPlayer.getHeldAbility();
-            if (CoreAbility.hasAbility(player, Wings.class)) {
+            if (CoreAbility.hasAbility(player, Jetpack.class)) {
                 player.closeInventory();
                 event.setCancelled(true);
             }
