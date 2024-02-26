@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Transformation;
@@ -86,6 +87,11 @@ public class ThrowItemDisplay extends CoreAbility {
         }
     }
 
+
+    public void stopGravity(){
+        armorStand.setVelocity(new Vector(0, 0, 0));
+        armorStand.setGravity(false);
+    }
 
     public ArmorStand getArmorStand() {
         return armorStand;

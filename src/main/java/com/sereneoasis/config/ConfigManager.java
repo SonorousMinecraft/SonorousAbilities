@@ -328,7 +328,7 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(war, "Tether", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                0, 1.0, 0.5, 20, 2, 0, 0);
+                0, 1.0, 0.5, 20, 2, 0, 2.0);
 
         saveConfigValuesAbility(war, "Jab", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
@@ -336,7 +336,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                4, 3.0, 0, 30, 0.8, 0, 0);
+                4, 3.0, 0, 30, 0.8, 0, 3.0);
 
         saveConfigValuesAbility(war, "Formless", Archetype.WAR.toString(), "description", "instructions",
                 2000, 5000, 30000,

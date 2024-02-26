@@ -29,7 +29,7 @@ public class Rocket extends CoreAbility {
         }
 
         origin = player.getEyeLocation().clone();
-        rocket = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.FIREWORK_ROCKET, 3, false, false);
+        rocket = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.FIREWORK_ROCKET, size, false, false);
         start();
     }
 

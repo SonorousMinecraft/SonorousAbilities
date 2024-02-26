@@ -23,7 +23,7 @@ public class Spear extends CoreAbility {
         }
 
         origin = player.getEyeLocation().clone();
-        spear = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.TRIDENT, 3, false, false);
+        spear = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.TRIDENT, size, false, false);
         abilityStatus = AbilityStatus.SHOT;
         start();
     }
