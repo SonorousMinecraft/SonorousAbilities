@@ -8,6 +8,7 @@ import com.sereneoasis.archetypes.sky.Cyclone;
 import com.sereneoasis.archetypes.war.Jetpack;
 import io.netty.channel.*;
 import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEntityLinkPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -135,8 +136,12 @@ public class PacketListener {
                             }
                         }
                     });
-
-
+                }
+                if (packet instanceof ClientboundSetEntityLinkPacket clientboundSetEntityLinkPacket){
+                    Bukkit.broadcastMessage(String.valueOf(clientboundSetEntityLinkPacket.getSourceId()));
+                    if (clientboundSetEntityLinkPacket.getSourceId() == -1){
+                        return;
+                    }
                 }
                 //if the server is sending a packet, the function "write" will be called. If you want to cancel a specific packet, just use return; Please keep in mind that using the return thing can break the intire server when using the return thing without knowing what you are doing.
                 super.write(channelHandlerContext, packet, channelPromise);

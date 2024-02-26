@@ -49,11 +49,6 @@ public class Formless extends CoreAbility {
         }
 
         if (abilityStatus == AbilityStatus.CHARGED) {
-            if (sPlayer.getHeldAbility().equals("Formless")) {
-                if (player.isSneaking() && !player.isOnGround()) {
-                    player.setVelocity(new Vector(0, -1, 0));
-                }
-            }
             for (ThrowItemDisplay shot : arrows) {
                 if (shot.getAbilityStatus() == AbilityStatus.COMPLETE) {
                     shot.remove();

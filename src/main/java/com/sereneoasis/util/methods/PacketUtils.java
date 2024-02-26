@@ -3,7 +3,9 @@ package com.sereneoasis.util.methods;
 import com.mojang.datafixers.util.Pair;
 import com.sereneoasis.Serenity;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
+import net.minecraft.network.protocol.game.ClientboundSetEntityLinkPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerPlayerConnection;
 import net.minecraft.world.entity.Entity;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -64,6 +67,14 @@ public class PacketUtils {
         CraftPlayer craftPlayer = (CraftPlayer) player;
         ServerPlayer nmsPlayer = craftPlayer.getHandle();
         nmsPlayer.setCamera(target);
+    }
 
+    public static void leashEntity(Player player, org.bukkit.entity.Entity target){
+        CraftPlayer craftPlayer = (CraftPlayer) player;
+        ServerPlayer nmsPlayer = craftPlayer.getHandle();
+        ServerPlayerConnection playerConnection = craftPlayer.getHandle().connection;
+        Entity nmsTarget = ((CraftEntity) target).getHandle();
+        ClientboundSetEntityLinkPacket clientboundSetEntityLinkPacket = new ClientboundSetEntityLinkPacket(nmsTarget, nmsPlayer);
+        playerConnection.send(clientboundSetEntityLinkPacket);
     }
 }

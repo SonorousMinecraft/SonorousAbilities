@@ -50,6 +50,7 @@ public class ShootItemDisplay extends CoreAbility {
         armorStand = Display.createArmorStand(offsetLocation);
         armorStand.addPassenger(itemDisplay);
         armorStand.setVelocity(dir.clone().multiply(speed));
+        abilityStatus = AbilityStatus.SHOT;
         start();
     }
 

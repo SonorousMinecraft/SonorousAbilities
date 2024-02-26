@@ -344,6 +344,9 @@ public class SerenityListener implements Listener {
             case "Jetpack":
                 new Jetpack(player);
                 break;
+            case "Crossbow":
+                new Crossbow(player);
+                break;
             case "RockKick":
                 new RockKick(player);
                 break;

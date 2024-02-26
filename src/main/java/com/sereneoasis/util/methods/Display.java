@@ -8,6 +8,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
@@ -44,9 +45,8 @@ public class Display {
         {
             ItemDisplay iDisplay = (ItemDisplay) entity;
             ItemStack itemStack = new ItemStack(material);
-
             iDisplay.setItemStack(itemStack);
-            iDisplay.setBillboard(billboard);
+//            iDisplay.setBillboard(billboard);
             iDisplay.setItemDisplayTransform(transform);
             Transformation transformation = iDisplay.getTransformation();
             transformation.getScale().set(size);

@@ -37,6 +37,10 @@ public abstract class CoreAbility implements Ability {
         return abilityStatus;
     }
 
+    public void setAbilityStatus(AbilityStatus abilityStatus) {
+        this.abilityStatus = abilityStatus;
+    }
+
     protected double damage, hitbox, radius, range, speed, sourceRange, size;
 
     private int id;

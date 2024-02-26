@@ -75,7 +75,7 @@ public class ThrowItemDisplay extends CoreAbility {
 
 
                 if (stick) {
-                    if (!getLoc().getBlock().isPassable()) {
+                    if (getLoc().getBlock().getType().isSolid()) {
                         Bukkit.broadcastMessage("stuck");
                         armorStand.setVelocity(new Vector(0, 0, 0));
                         armorStand.setGravity(false);
