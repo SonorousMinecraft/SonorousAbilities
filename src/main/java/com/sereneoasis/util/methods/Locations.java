@@ -32,7 +32,7 @@ public class Locations {
         return loc1.clone().add(loc2.clone()).multiply(0.5);
     }
 
-    public static List<Location> getLocationsBetweenLocs(Location loc1, Location loc2, double distance) {
+    public static List<Location> getPointsAlongLine(Location loc1, Location loc2, double distance) {
         Location startLoc = loc1.clone();
         Vector differenceVec = Vectors.getDirectionBetweenLocations(loc1, loc2);
         List<Location> locs = new ArrayList<>();
@@ -276,6 +276,14 @@ public class Locations {
     public static Location getRightSide(final Location location, final double distance) {
         final float angle = (float) Math.toRadians(location.getYaw());
         return location.clone().subtract(new Vector(Math.cos(angle), 0, Math.sin(angle)).normalize().multiply(distance));
+    }
+
+    public static Location getLeftSide(final Location location, Vector dir, double distance){
+        return location.clone().add(dir.clone().rotateAroundY(Math.toRadians(90)).normalize().multiply(distance));
+    }
+
+    public static Location getRightSide(final Location location, Vector dir, double distance){
+        return location.clone().add(dir.clone().rotateAroundY(Math.toRadians(270)).normalize().multiply(distance));
     }
 
     public static Location getMainHandLocation(final Player player) {

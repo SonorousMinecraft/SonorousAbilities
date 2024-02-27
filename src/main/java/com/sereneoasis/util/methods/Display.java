@@ -8,8 +8,8 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.bukkit.util.Transformation;
+import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
 
@@ -89,5 +89,10 @@ public class Display {
             aStand.setVisible(false);
         }));
         return armorStand;
+    }
+
+    public static Location getItemDisplaySpawnLoc(Location loc, double size){
+        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
+        return loc.clone().add(offsetFix);
     }
 }

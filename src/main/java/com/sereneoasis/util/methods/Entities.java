@@ -17,10 +17,8 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Sakrajin
@@ -59,9 +57,13 @@ public class Entities {
         target.setVelocity(direction);
     }
 
+//    public static Collection<Entity>getNearbyEntities(Location loc, double radius){
+//        return loc.getWorld().getNearbyEntities(loc, radius, radius, radius).stream().filter(entity -> !(entity instanceof ArmorStand)).collect(Collectors.toSet());
+//    }
+
     public static Entity getAffected(Location loc, double radius) {
         Entity target = null;
-        for (Entity potential : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
+        for (Entity potential : getEntitiesAroundPoint(loc, radius)) {
             if (target == null) {
                 target = potential;
             } else {
@@ -75,7 +77,7 @@ public class Entities {
 
     public static Entity getAffected(Location loc, double radius, Player player) {
         Entity target = null;
-        for (Entity potential : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
+        for (Entity potential : getEntitiesAroundPoint(loc, radius)) {
             if (potential.getUniqueId() != player.getUniqueId()) {
                 if (target == null) {
                     target = potential;
@@ -174,7 +176,7 @@ public class Entities {
         Location loc = player.getEyeLocation().clone();
         Vector dir = player.getEyeLocation().getDirection().clone().normalize();
         RayTraceResult rayTraceResult = (loc.getWorld().rayTraceEntities(loc, dir, distance, hitbox, entity -> {
-            if (entity instanceof LivingEntity && entity != player) {
+            if (entity instanceof LivingEntity && entity != player && ! (entity instanceof ArmorStand)) {
                 return true;
             }
             return false;
@@ -198,7 +200,7 @@ public class Entities {
 
     public static LivingEntity getFacingEntity(Location loc, Vector dir, double distance) {
         if (loc.getWorld().rayTraceEntities(loc, dir, distance) != null) {
-            if (loc.getWorld().rayTraceEntities(loc, dir, distance).getHitEntity() instanceof LivingEntity entity) {
+            if (loc.getWorld().rayTraceEntities(loc, dir, distance).getHitEntity() instanceof LivingEntity entity  && ! (entity instanceof ArmorStand)) {
                 return entity;
             }
         }

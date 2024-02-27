@@ -200,6 +200,12 @@ public class SerenityListener implements Listener {
             case "Jab":
                 new Jab(player);
                 break;
+            case "Hook":
+                new Hook(player);
+                break;
+            case "Cross":
+                new Cross(player);
+                break;
 
             case "Rocket":
                 if (CoreAbility.hasAbility(e.getPlayer(), Rocket.class)) {
@@ -344,9 +350,9 @@ public class SerenityListener implements Listener {
             case "Jetpack":
                 new Jetpack(player);
                 break;
-            case "Crossbow":
-                new Crossbow(player);
-                break;
+//            case "Crossbow":
+//                new Crossbow(player);
+//                break;
             case "RockKick":
                 new RockKick(player);
                 break;

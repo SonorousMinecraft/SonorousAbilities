@@ -3,13 +3,22 @@ package com.sereneoasis.abilityuilities.items;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Display;
+import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShootItemDisplay extends CoreAbility {
 
@@ -26,6 +35,10 @@ public class ShootItemDisplay extends CoreAbility {
     private double oldPitch, size;
 
     private boolean stick;
+
+    private List<ItemDisplay>visuals = new ArrayList<>();
+
+    private Vector offsetFix;
 
     public ShootItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double size, boolean stick, boolean diagonal) {
         super(player, name);
@@ -44,11 +57,12 @@ public class ShootItemDisplay extends CoreAbility {
         oldPitch = tempLoc.getPitch();
 
 
-        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
+        offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
         Location offsetLocation = loc.clone().add(offsetFix);
-        itemDisplay = Display.createItemDisplay(offsetLocation, material, size, diagonal);
+        itemDisplay = Display.createItemDisplay(loc, material, size, diagonal);
         armorStand = Display.createArmorStand(offsetLocation);
         armorStand.addPassenger(itemDisplay);
+
         armorStand.setVelocity(dir.clone().multiply(speed));
         abilityStatus = AbilityStatus.SHOT;
         start();
@@ -60,6 +74,26 @@ public class ShootItemDisplay extends CoreAbility {
         if (abilityStatus != AbilityStatus.COMPLETE) {
 
             armorStand.setVelocity(dir.clone().multiply(speed));
+
+            for (Location tempItemDisplays : Locations.getPointsAlongLine(Locations.getLeftSide(getLoc(), dir,(size/2)), Locations.getRightSide(getLoc(), dir,(size/2)), size/16)) {
+                double sizeRatio =  ( (size/2) - Math.abs(getLoc().distance(tempItemDisplays)) ) / (size/2);
+                double distanceRatio = 1-sizeRatio; // the distance from the midpoint as a ratio
+                double tempSize = size * sizeRatio;
+
+                Vector toMidpoint = Vectors.getDirectionBetweenLocations(tempItemDisplays, getLoc()).normalize();
+                double internalFixing = (15.5/16 * 15.5/16 * 15.5/16 ) /3;
+                double actualDistance = (distanceRatio+internalFixing)  * (distanceRatio+internalFixing) *(distanceRatio+internalFixing) / 3;
+                double noSizeDiffLength = Vectors.getDirectionBetweenLocations(tempItemDisplays, getLoc()).length();
+                double correction = noSizeDiffLength - actualDistance;
+                Vector offsetCorrection = toMidpoint.clone().multiply(correction ); //Subtract this from the loc
+
+
+                //Particles.spawnParticle(Particle.FLAME, tempItemDisplays, 1, 0, 0);
+
+                Location finalLoc = tempItemDisplays.clone().subtract(offsetCorrection);
+                finalLoc.setY(getLoc().getY());
+                Display.createItemDisplay(Display.getItemDisplaySpawnLoc(finalLoc, size), Material.FIREWORK_ROCKET, tempSize  , false);
+            }
 
             if (armorStand.getLocation().distance(origin) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;
@@ -80,7 +114,6 @@ public class ShootItemDisplay extends CoreAbility {
         }
     }
 
-
     public void setDir(Vector dir) {
         this.dir = dir;
     }
@@ -91,7 +124,6 @@ public class ShootItemDisplay extends CoreAbility {
     }
 
     public Location getLoc() {
-        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
         return armorStand.getLocation().clone().subtract(offsetFix);
     }
 

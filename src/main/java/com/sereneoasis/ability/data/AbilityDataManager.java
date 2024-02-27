@@ -48,24 +48,26 @@ public class AbilityDataManager {
 
         }
 
-        Archetype archetype = Archetype.OCEAN;
-        config = ConfigManager.getConfig(archetype).getConfig();
+        List<Archetype> comboHaving = List.of(new Archetype[]{Archetype.OCEAN, Archetype.WAR});
+        for (Archetype archetype : comboHaving) {
+            config = ConfigManager.getConfig(archetype).getConfig();
 
-        if (config.getConfigurationSection(archetype.toString() + ".combo") != null) {
-            for (String combo : config.getConfigurationSection(archetype.toString() + ".combo").getKeys(false)) {
-                ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".combo" + "." + combo);
+            if (config.getConfigurationSection(archetype.toString() + ".combo") != null) {
+                for (String combo : config.getConfigurationSection(archetype.toString() + ".combo").getKeys(false)) {
+                    ConfigurationSection abil = config.getConfigurationSection(archetype.toString() + ".combo" + "." + combo);
 
-                ArrayList<ComboManager.AbilityInformation> abilities = new ArrayList<>();
-                for (String usageAbilities : abil.getStringList(".usage")) {
-                    abilities.add(new ComboManager.AbilityInformation(usageAbilities.split(":")[0], ClickType.valueOf(usageAbilities.split(":")[1])));
+                    ArrayList<ComboManager.AbilityInformation> abilities = new ArrayList<>();
+                    for (String usageAbilities : abil.getStringList(".usage")) {
+                        abilities.add(new ComboManager.AbilityInformation(usageAbilities.split(":")[0], ClickType.valueOf(usageAbilities.split(":")[1])));
+                    }
+
+                    ComboData comboData = new ComboData(archetype, abil.getString("description"), abil.getString("instructions"),
+                            abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"),
+                            abil.getDouble("damage"), abil.getDouble("hitbox"),
+                            abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abil.getDouble("size"), abilities);
+                    abilityDataMap.put(combo, comboData);
+                    comboDataMap.put(combo, comboData);
                 }
-
-                ComboData comboData = new ComboData(archetype, abil.getString("description"), abil.getString("instructions"),
-                        abil.getLong("chargetime"), abil.getLong("cooldown"), abil.getLong("duration"),
-                        abil.getDouble("damage"), abil.getDouble("hitbox"),
-                        abil.getDouble("radius"), abil.getDouble("range"), abil.getDouble("speed"), abil.getDouble("sourcerange"), abil.getDouble("size"), abilities);
-                abilityDataMap.put(combo, comboData);
-                comboDataMap.put(combo, comboData);
             }
         }
     }

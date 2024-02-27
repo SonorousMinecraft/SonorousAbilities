@@ -88,6 +88,8 @@ public class Jetpack extends CoreAbility {
             } else {
                 barduration.setProgress(progress);
             }
+
+            
         }
 
     }

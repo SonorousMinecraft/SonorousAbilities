@@ -15,7 +15,7 @@ import java.util.List;
 public class Particles {
 
     public static void playParticlesBetweenPoints(Particle particle, Location loc1, Location loc2, double difference, int count, double offset, double extra) {
-        for (Location loc : Locations.getLocationsBetweenLocs(loc1, loc2, difference)) {
+        for (Location loc : Locations.getPointsAlongLine(loc1, loc2, difference)) {
             spawnParticle(particle, loc, count, offset, extra);
         }
     }

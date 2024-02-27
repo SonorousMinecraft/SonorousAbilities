@@ -336,16 +336,19 @@ public class ConfigManager {
 
         saveConfigValuesAbility(war, "Cross", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1, 0, 10, 1.5, 0, 0);
+                2, 1.2, 0, 10, 0.4, 0, 0);
 
         saveConfigValuesAbility(war, "Hook", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1, 0, 10, 1.5, 0, 0);
+                2, 1.2, 0, 10, 0.2, 0, 0);
 
+        ArrayList<ComboManager.AbilityInformation> uppercutAbilities = new ArrayList<>();
+        uppercutAbilities.add(0, new ComboManager.AbilityInformation("Jab", ClickType.SHIFT_LEFT));
+        uppercutAbilities.add(1, new ComboManager.AbilityInformation("Hook", ClickType.SHIFT_LEFT));
 
-        saveConfigValuesCombo(war, "Uppercut", Archetype.WAR.toString(), "description", "instructions",
+        saveConfigValuesCombo(war, "Uppercut", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 1, 0, 0, 0.5, 0, 0, new ArrayList<>());
+                2, 1, 0, 10, 0.5, 0, 0, new ArrayList<>());
 
         saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
@@ -371,9 +374,9 @@ public class ConfigManager {
                 2000, 5000, 30000,
                 0, 0, 0, 0, 1, 0, 1.5);
 
-        saveConfigValuesAbility(war, "Crossbow", Archetype.WAR.toString(), "description", "instructions",
-                2000, 5000, 30000,
-                0, 0, 0, 0, 1, 0, 1.5);
+//        saveConfigValuesAbility(war, "Crossbow", Archetype.WAR.toString(), "description", "instructions",
+//                2000, 5000, 30000,
+//                0, 0, 0, 0, 1, 0, 1.5);
 
         saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
                 1.0, 0.5, 0.1);

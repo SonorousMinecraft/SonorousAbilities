@@ -50,11 +50,11 @@ public class Cross extends CoreAbility {
         PacketUtils.playRiptide(player, 20);
 
 
-        if (player.getEyeLocation().distance(target.getEyeLocation()) < hitbox + 3) {
+        if (player.getEyeLocation().distance(target.getEyeLocation()) <= hitbox) {
             Particles.spawnParticle(Particle.EXPLOSION_NORMAL, Locations.getMainHandLocation(player), 10, 0.2, 0);
             Vector orth = Vectors.getDirectionBetweenLocations(Locations.getLeftSide(player.getEyeLocation(), 0.5), Locations.getRightSide(player.getEyeLocation(), 0.5));
             dir.rotateAroundAxis(orth, -Math.toRadians(player.getEyeLocation().getPitch()));
-            target.setVelocity(dir.clone().multiply(speed * 3));
+            target.setVelocity(dir.clone().multiply(speed));
             player.setVelocity(new Vector(0, 0, 0));
             this.remove();
             sPlayer.addCooldown(name, cooldown);

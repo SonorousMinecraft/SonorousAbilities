@@ -8,6 +8,7 @@ import com.sereneoasis.archetypes.ocean.BlackIce;
 import com.sereneoasis.archetypes.ocean.SnowStorm;
 import com.sereneoasis.archetypes.war.Hook;
 import com.sereneoasis.archetypes.war.Uppercut;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
@@ -59,7 +60,7 @@ public class ComboManager {
         for (String ability : COMBO_ABILITIES.keySet()) {
             ArrayList<String> abilities = new ArrayList<>(COMBO_ABILITIES.get(ability).getAbilities()
                     .stream().map(AbilityInformation::getName).collect(Collectors.toList()));
-            if (abilities.get(abilities.size() - 1).equals(sPlayer.getHeldAbility())) {
+            if (abilities.isEmpty() ||  abilities.get(abilities.size() - 1).equals(sPlayer.getHeldAbility())) {
 
                 Set<String> recentlyUsedStrings = RECENTLY_USED.get(player).stream().map(AbilityInformation::getName).collect(Collectors.toSet());
                 if (recentlyUsedStrings.containsAll(abilities)) {
@@ -72,7 +73,8 @@ public class ComboManager {
                             break;
                         case "Uppercut":
                             if (CoreAbility.hasAbility(player, Hook.class) && player.isSneaking()){
-                                new Uppercut(player);
+                                Bukkit.broadcastMessage("true");
+                                new Uppercut(player, CoreAbility.getAbility(player, Hook.class).getTarget());
                             }
                             break;
                     }

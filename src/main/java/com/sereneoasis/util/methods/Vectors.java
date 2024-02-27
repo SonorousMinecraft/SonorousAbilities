@@ -80,4 +80,11 @@ public class Vectors {
         return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getOffHandLocation(player));
     }
 
+    public static Vector getLeftSideNormalisedVector(Player player){
+        return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getLeftSide(player.getEyeLocation(), 1));
+    }
+
+    public static Vector getRightSideNormalisedVector(Player player){
+        return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getRightSide(player.getEyeLocation(), 1));
+    }
 }
