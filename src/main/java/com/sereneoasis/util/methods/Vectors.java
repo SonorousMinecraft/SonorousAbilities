@@ -2,6 +2,7 @@ package com.sereneoasis.util.methods;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
@@ -67,6 +68,16 @@ public class Vectors {
         final Vector thirdaxis = rotation.crossProduct(rotate).normalize().multiply(rotate.length());
 
         return rotate.multiply(Math.cos(angle)).add(thirdaxis.multiply(Math.sin(angle)));
+    }
+
+    public static Vector getVectorToMainHand(Player player){
+        double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
+        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getMainHandLocation(player));
+    }
+
+    public static Vector getVectorToOffHand(Player player){
+        double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
+        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getOffHandLocation(player));
     }
 
 }

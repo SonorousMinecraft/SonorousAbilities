@@ -332,7 +332,20 @@ public class ConfigManager {
 
         saveConfigValuesAbility(war, "Jab", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 0, 0, 10, 1.5, 0, 0);
+                2, 1, 0, 10, 1.5, 0, 0);
+
+        saveConfigValuesAbility(war, "Cross", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1, 0, 10, 1.5, 0, 0);
+
+        saveConfigValuesAbility(war, "Hook", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1, 0, 10, 1.5, 0, 0);
+
+
+        saveConfigValuesCombo(war, "Uppercut", Archetype.WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1, 0, 0, 0.5, 0, 0, new ArrayList<>());
 
         saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
                 0, 5000, 0,

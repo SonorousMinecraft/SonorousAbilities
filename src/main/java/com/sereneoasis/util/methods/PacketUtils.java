@@ -2,6 +2,7 @@ package com.sereneoasis.util.methods;
 
 import com.mojang.datafixers.util.Pair;
 import com.sereneoasis.Serenity;
+import io.papermc.paper.entity.LookAnchor;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityLinkPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
@@ -76,5 +77,11 @@ public class PacketUtils {
         Entity nmsTarget = ((CraftEntity) target).getHandle();
         ClientboundSetEntityLinkPacket clientboundSetEntityLinkPacket = new ClientboundSetEntityLinkPacket(nmsTarget, nmsPlayer);
         playerConnection.send(clientboundSetEntityLinkPacket);
+    }
+
+    public static void lookAtEntity(Player player, org.bukkit.entity.Entity target){
+        CraftPlayer craftPlayer = (CraftPlayer) player;
+        CraftEntity nmsTarget = ((CraftEntity) target);
+        craftPlayer.lookAt(nmsTarget, LookAnchor.EYES, LookAnchor.EYES);
     }
 }

@@ -30,8 +30,10 @@ public class Jab extends CoreAbility {
         origin = player.getEyeLocation().clone();
         dir = origin.getDirection().clone().normalize();
         if (target != null) {
+            Particles.spawnParticle(Particle.ELECTRIC_SPARK, Locations.getMainHandLocation(player), 10, 0.2, 0);
             DamageHandler.damageEntity(target, player, this, damage);
-            player.teleport(player.getEyeLocation());
+            //player.teleport(player.getEyeLocation());
+            player.setVelocity(Vectors.getVectorToMainHand(player).multiply(speed));
             start();
         }
 
@@ -40,25 +42,7 @@ public class Jab extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
 
-        if (player.getEyeLocation().distance(origin) > range) {
-            this.remove();
-            sPlayer.addCooldown(name, cooldown);
-        }
-
-        player.setVelocity(dir.clone().multiply(speed));
-        Particles.spawnParticle(Particle.ELECTRIC_SPARK, Locations.getMainHandLocation(player), 10, 0.2, 0);
-        PacketUtils.playRiptide(player, 20);
-
-
-        if (player.getEyeLocation().distance(target.getEyeLocation()) < hitbox + 3) {
-            Particles.spawnParticle(Particle.EXPLOSION_NORMAL, Locations.getMainHandLocation(player), 10, 0.2, 0);
-            Vector orth = Vectors.getDirectionBetweenLocations(Locations.getLeftSide(player.getEyeLocation(), 0.5), Locations.getRightSide(player.getEyeLocation(), 0.5));
-            dir.rotateAroundAxis(orth, -Math.toRadians(player.getEyeLocation().getPitch()));
-            target.setVelocity(dir.clone().multiply(speed * 3));
-            player.setVelocity(new Vector(0, 0, 0));
-            this.remove();
-            sPlayer.addCooldown(name, cooldown);
-        }
+        this.remove();
     }
 
     @Override
