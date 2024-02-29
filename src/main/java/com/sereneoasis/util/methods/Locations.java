@@ -282,8 +282,16 @@ public class Locations {
         return location.clone().add(dir.clone().rotateAroundY(Math.toRadians(90)).normalize().multiply(distance));
     }
 
+    public static Location getLeftSideFromPlayerView(final Location location, Player player, double distance){
+        return location.clone().add(Vectors.getLeftSideNormalisedVector(player).multiply(distance));
+    }
+
     public static Location getRightSide(final Location location, Vector dir, double distance){
         return location.clone().add(dir.clone().rotateAroundY(Math.toRadians(270)).normalize().multiply(distance));
+    }
+
+    public static Location getRightSideFromPlayerView(final Location location, Player player, double distance){
+        return location.clone().add(Vectors.getRightSideNormalisedVector(player).multiply(distance));
     }
 
     public static Location getMainHandLocation(final Player player) {

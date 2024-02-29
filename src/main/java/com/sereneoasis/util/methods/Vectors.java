@@ -75,6 +75,8 @@ public class Vectors {
         return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getMainHandLocation(player));
     }
 
+
+
     public static Vector getVectorToOffHand(Player player){
         double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
         return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getOffHandLocation(player));

@@ -17,10 +17,7 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ShootItemDisplay extends CoreAbility {
 
@@ -38,7 +35,7 @@ public class ShootItemDisplay extends CoreAbility {
 
     private boolean stick;
 
-    private Map<ItemDisplay, Vector> visuals = new HashMap<>();
+    private Set<ItemDisplay>displays = new HashSet<>();
 
     private Vector offsetFix;
 
@@ -68,22 +65,41 @@ public class ShootItemDisplay extends CoreAbility {
         armorStand.setVelocity(dir.clone().multiply(speed));
         abilityStatus = AbilityStatus.SHOT;
 
-        visuals.put(Display.createItemDisplay(Display.getItemDisplaySpawnLoc(getLoc(), size) , Material.FIREWORK_ROCKET, size, false), Vectors.getDirectionBetweenLocations(loc, Display.getItemDisplaySpawnLoc(getLoc(), size)));
+
+        Location straightLoc = loc.clone();
+        straightLoc.setPitch(0);
+        Vector straightDir = straightLoc.getDirection().normalize();
+        Vector relativeUpright = straightDir.getCrossProduct(new Vector(0,1,0));
+        Bukkit.broadcastMessage(String.valueOf(relativeUpright));
+        Vector pitchFixMiddle = relativeUpright.clone().rotateAroundAxis(dir, Math.toRadians(90)).multiply(size/2 * loc.getPitch() /90);
+
+
+
+        ItemDisplay middle = Display.createItemDisplay(Display.getItemDisplaySpawnLoc(getLoc().add(pitchFixMiddle), size ) , material, size , false);
+        displays.add(middle);
 
         double currentDistance = 0;
         double currentSize = size;
-        for (int i = 0; i < 8; i++) {
-            double distance = currentSize * 0.5/16 + currentDistance;
-            currentDistance = distance;
-            double tempSize = currentSize - size/16;
-            currentSize = tempSize;
-            Location leftLoc = Locations.getLeftSide(getLoc(), dir, distance);
-            leftLoc.setY(getLoc().getY());
-            visuals.put(Display.createItemDisplay(Display.getItemDisplaySpawnLoc(leftLoc, tempSize) , Material.FIREWORK_ROCKET, tempSize, false), Vectors.getDirectionBetweenLocations(loc, Display.getItemDisplaySpawnLoc(leftLoc, tempSize)));
+        double pixelDimension = 32;
 
-            Location rightLoc = Locations.getRightSide(getLoc(), dir, distance);
-            rightLoc.setY(getLoc().getY());
-            visuals.put(Display.createItemDisplay(Display.getItemDisplaySpawnLoc(rightLoc, tempSize) , Material.FIREWORK_ROCKET, tempSize, false), Vectors.getDirectionBetweenLocations(loc, Display.getItemDisplaySpawnLoc(rightLoc, tempSize)));
+        for (int i = 0; i < pixelDimension/4; i++) {
+            double distance = currentSize * 2/pixelDimension + currentDistance;
+            currentDistance = distance;
+            double tempSize = currentSize - size*4/(pixelDimension) ;
+            currentSize = tempSize;
+
+
+            Vector pitchFix = relativeUpright.clone().rotateAroundAxis(dir, Math.toRadians(90)).multiply(tempSize/2 * loc.getPitch() / 90);
+
+            Location leftLoc = Locations.getLeftSideFromPlayerView(getLoc(), player, distance).add(pitchFix);
+
+
+            ItemDisplay left = Display.createItemDisplay(Display.getItemDisplaySpawnLoc(leftLoc, tempSize ) ,material, tempSize, false);
+            displays.add(left);
+            Location rightLoc = Locations.getRightSideFromPlayerView(getLoc(), player, distance).add(pitchFix);
+
+            ItemDisplay right = Display.createItemDisplay(Display.getItemDisplaySpawnLoc(rightLoc, tempSize ) , material, tempSize, false);
+            displays.add(right);
         }
 
 
@@ -95,11 +111,19 @@ public class ShootItemDisplay extends CoreAbility {
 
         if (abilityStatus != AbilityStatus.COMPLETE) {
 
+
+
+            for (ItemDisplay currentDisplay : displays){
+
+
+                Location tempLoc = currentDisplay.getLocation().add(dir.clone().multiply(speed));
+                //tempLoc.setY(getLoc().getY() + (size - currentDisplay.getHeight())/2);
+                currentDisplay.teleport(tempLoc);
+
+            }
+
             armorStand.setVelocity(dir.clone().multiply(speed));
 
-            for (ItemDisplay itemDisplays : visuals.keySet()){
-                itemDisplays.teleport(getLoc().add(visuals.get(itemDisplays)));
-            }
 
 //            for (Location tempItemDisplays : Locations.getPointsAlongLine(Locations.getLeftSide(getLoc(), dir,(size/2)), Locations.getRightSide(getLoc(), dir,(size/2)), size/16)) {
 //                double sizeRatio =  ( (size/2) - Math.abs(getLoc().distance(tempItemDisplays)) ) / (size/2);
@@ -135,8 +159,8 @@ public class ShootItemDisplay extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
                 if (!stick) {
                     itemDisplay.remove();
-                    for (ItemDisplay itemDisplays : visuals.keySet()){
-                        itemDisplays.remove();
+                    for (ItemDisplay currentDisplay : displays){
+                        currentDisplay.remove();
                     }
                 }
             }
