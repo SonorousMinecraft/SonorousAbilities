@@ -5,6 +5,7 @@ import com.sereneoasis.abilityuilities.items.ShootItemDisplay;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -27,7 +28,7 @@ public class Spear extends CoreAbility {
         }
 
         origin = player.getEyeLocation().clone();
-        spear = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.TRIDENT, size, true, false);
+        spear = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.ARROW, size/2, size*2, true, false, false);
         abilityStatus = AbilityStatus.SHOT;
         start();
     }
@@ -36,7 +37,8 @@ public class Spear extends CoreAbility {
     public void progress() throws ReflectiveOperationException {
 
         if (spear.getAbilityStatus() == AbilityStatus.SHOT){
-            if (Entities.getAffected(spear.getLoc(), hitbox, player) instanceof LivingEntity livingEntity) {
+            if (Entities.getAffected(spear.getArmorStand().getLocation(), hitbox, player) instanceof LivingEntity livingEntity) {
+                Bukkit.broadcastMessage("this");
                 DamageHandler.damageEntity(livingEntity, player, this, damage);
                 spear.setAbilityStatus(AbilityStatus.COMPLETE);
             }

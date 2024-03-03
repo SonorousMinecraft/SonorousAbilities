@@ -2,117 +2,129 @@ package com.sereneoasis.abilityuilities.items;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Display;
+import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+
+import java.util.*;
 
 public class ThrowItemDisplay extends CoreAbility {
 
     private final String name;
 
-    private ItemDisplay itemDisplay;
-
     private ArmorStand armorStand;
 
+    private Location origin;
 
-    private double oldPitch, size;
+    private Vector dir;
 
-    private boolean mightHaveStopped = false, stick;
+    private boolean stick;
 
-    public ThrowItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double size, boolean stick, boolean diagonal) {
+    private Set<ItemDisplay>displays = new HashSet<>();
+
+    public ThrowItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double width, double length, boolean stick, boolean diagonal, boolean sphere) {
         super(player, name);
 
         this.name = name;
+        this.dir = dir.clone();
         this.stick = stick;
-        this.size = size;
 
         abilityStatus = AbilityStatus.SHOT;
 
+        this.origin = loc.clone();
 
-        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
-        Location offsetLocation = loc.clone().add(offsetFix);
-        itemDisplay = Display.createItemDisplay(offsetLocation, material, size, diagonal);
-        armorStand = Display.createArmorStand(offsetLocation);
-        armorStand.addPassenger(itemDisplay);
+        armorStand = Display.createArmorStand(loc);
+
+        double height = width;
+
+
+
+        double scale = 1;
+
+        double pixelWidth = width * 1/16;
+        double distance = pixelWidth/2;
+        // 0, 1, 0, 1, 2, 2
+        int[] numbers = {0, 1, 0, 1, 2, 2};
+        for (int i : numbers) {
+
+
+            scale -= (double) i*2 * pixelWidth;
+            ItemDisplay leftDisplay = Display.createItemDisplayOffset(loc, material, width  , height * scale, length * scale, diagonal, distance, 0, 0);
+            ItemDisplay rightDisplay = Display.createItemDisplayOffset(loc, material, width , height * scale,length * scale, diagonal, -distance, 0, 0);
+            armorStand.addPassenger(leftDisplay);
+            armorStand.addPassenger(rightDisplay);
+            distance += pixelWidth;
+        }
+
         armorStand.setVelocity(dir.clone().multiply(speed));
-
-        Location tempLoc = armorStand.getLocation().clone().setDirection(armorStand.getVelocity().clone());
-        oldPitch = tempLoc.getPitch();
+        abilityStatus = AbilityStatus.SHOT;
 
         start();
     }
+
+
 
     @Override
     public void progress() {
 
         if (abilityStatus != AbilityStatus.COMPLETE) {
-            if (armorStand.getVelocity().length() < 0.01) {
-                if (mightHaveStopped) {
-                    this.abilityStatus = AbilityStatus.COMPLETE;
-                }
-                mightHaveStopped = true;
-            } else {
-
-                Transformation transformation = itemDisplay.getTransformation();
-                Quaternionf quaternionf = transformation.getLeftRotation();
-                Location tempLoc = armorStand.getLocation().clone().setDirection(armorStand.getVelocity().clone());
-                quaternionf.rotateZ((float) -Math.toRadians(tempLoc.getPitch() - oldPitch));
 
 
-                oldPitch = tempLoc.getPitch();
-                transformation.getLeftRotation().set(quaternionf);
+            if (armorStand.getLocation().distance(origin) > range) {
+                abilityStatus = AbilityStatus.COMPLETE;
+            }
 
-                itemDisplay.setTransformation(transformation);
+            Block b = armorStand.getLocation().getBlock();
+            if (b.getType().isSolid()) {
+                armorStand.setVelocity(new Vector(0, 0, 0));
+                armorStand.setGravity(false);
 
-
-                if (stick) {
-                    if (getLoc().getBlock().getType().isSolid()) {
-                        Bukkit.broadcastMessage("stuck");
-                        armorStand.setVelocity(new Vector(0, 0, 0));
-                        armorStand.setGravity(false);
-
-                        abilityStatus = AbilityStatus.COMPLETE;
+                abilityStatus = AbilityStatus.COMPLETE;
+                if (!stick) {
+                    for (ItemDisplay currentDisplay : displays){
+                        currentDisplay.remove();
                     }
                 }
             }
+
+
         }
     }
 
 
-    public void stopGravity(){
-        armorStand.setVelocity(new Vector(0, 0, 0));
-        armorStand.setGravity(false);
+    public Location getLoc(){
+        return armorStand.getLocation();
     }
+    public void setDir(Vector dir) {
+        this.dir = dir;
+    }
+
 
     public ArmorStand getArmorStand() {
         return armorStand;
     }
 
-    public Location getLoc() {
-        Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(armorStand.getLocation().getYaw()));
-        return armorStand.getLocation().clone().subtract(offsetFix);
-    }
+
 
     @Override
     public void remove() {
         super.remove();
-
-        if (itemDisplay != null) {
-            itemDisplay.remove();
-        }
+        sPlayer.addCooldown(name, cooldown);
         if (armorStand != null) {
             armorStand.remove();
         }
-
     }
 
     @Override

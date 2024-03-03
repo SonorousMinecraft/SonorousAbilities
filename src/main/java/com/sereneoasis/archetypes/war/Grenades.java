@@ -80,7 +80,7 @@ public class Grenades extends CoreAbility {
             }
         } else if (currentShots < shots) {
             grenades.put(new ThrowItemDisplay(player, name, player.getEyeLocation(),
-                    player.getEyeLocation().getDirection().clone(), Material.FIREWORK_STAR, 1, true, true), System.currentTimeMillis() + chargeTime);
+                    player.getEyeLocation().getDirection().clone(), Material.FIREWORK_STAR, size, size, true, true, true), System.currentTimeMillis() + chargeTime);
             currentShots++;
         }
     }

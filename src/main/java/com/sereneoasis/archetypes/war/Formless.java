@@ -64,7 +64,7 @@ public class Formless extends CoreAbility {
             ItemStack holding = player.getInventory().getItemInMainHand();
             if (holding.getType() == Material.ARROW) {
                 arrows.add(new ThrowItemDisplay(player, name, player.getEyeLocation(),
-                        player.getEyeLocation().getDirection().clone(), Material.ARROW, 1, false, true));
+                        player.getEyeLocation().getDirection().clone(), Material.ARROW, size, size, false, true, false));
             }
         } else if (action == Action.LEFT_CLICK_AIR) {
             if (isAgainstWall()) {

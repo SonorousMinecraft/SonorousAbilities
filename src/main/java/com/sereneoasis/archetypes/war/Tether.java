@@ -40,7 +40,7 @@ public class Tether extends CoreAbility {
 
         Location loc = player.getEyeLocation().clone();
         Vector dir = loc.getDirection().clone();
-        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.SPECTRAL_ARROW, size, true, true);
+        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.SPECTRAL_ARROW, size, size, true, true, false);
         armorStand1 = tether1.getArmorStand();
 
         guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), tether1.getLoc(), -1, 200);
@@ -128,7 +128,7 @@ public class Tether extends CoreAbility {
             hasShot2 = true;
             Location loc = player.getEyeLocation().clone();
             Vector dir = loc.getDirection().clone();
-            tether2 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, size, true, true);
+            tether2 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, size, size, true, true, false);
             armorStand2 = tether2.getArmorStand();
         } else {
             this.remove();

@@ -29,7 +29,7 @@ public class Rocket extends CoreAbility {
         }
 
         origin = player.getEyeLocation().clone();
-        rocket = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.FIREWORK_ROCKET, size, false, false);
+        rocket = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.FIREWORK_ROCKET, size/2, size * 1.5,false, false, false);
         start();
     }
 
@@ -44,8 +44,8 @@ public class Rocket extends CoreAbility {
     }
 
     public void setHasClicked() {
-        Particles.spawnParticle(Particle.EXPLOSION_HUGE, rocket.getLoc(), 10, 0.2, 0);
-        for (Entity e : Entities.getEntitiesAroundPoint(rocket.getLoc(), hitbox)) {
+        Particles.spawnParticle(Particle.EXPLOSION_HUGE, rocket.getArmorStand().getLocation(), 10, 0.2, 0);
+        for (Entity e : Entities.getEntitiesAroundPoint(rocket.getArmorStand().getLocation(), hitbox)) {
             if (e instanceof LivingEntity target) {
                 DamageHandler.damageEntity(target, player, this, damage);
             }
