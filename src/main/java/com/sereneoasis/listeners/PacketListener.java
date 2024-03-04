@@ -7,11 +7,11 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.sky.Cyclone;
 import com.sereneoasis.archetypes.war.Jetpack;
 import io.netty.channel.*;
-import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundSetEntityLinkPacket;
-import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
+import net.minecraft.core.Rotations;
+import net.minecraft.network.protocol.game.*;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
@@ -111,38 +111,63 @@ public class PacketListener {
                         }
                     }
                 }
+
+                if (packet instanceof ServerboundMoveVehiclePacket serverboundMoveVehiclePacket){
+
+                    ServerPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+
+                    Player spigotPlayer = player.getPlayer();
+                    if (spigotPlayer == null) {
+                        return;
+                    }
+                    Entity riding = spigotPlayer.getVehicle();
+//                    if (!riding.isInvulnerable()){
+//                        return;
+//                    }
+                    net.minecraft.world.entity.Entity nmsEntity = ((CraftEntity)riding).getHandle();
+
+                    float sidewards = (float) (serverboundMoveVehiclePacket.getX() - ((CraftEntity) riding).getX());
+                    float forewards = (float) (serverboundMoveVehiclePacket.getZ() - ((CraftEntity) riding).getZ());
+                    Bukkit.broadcastMessage("test");
+                    Vec3 dir = new Vec3(sidewards, 0, forewards);
+                    if (dir.length() > 0.1F) {
+                        Bukkit.broadcastMessage("test2");
+                        nmsEntity.setDeltaMovement(dir.yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw())));
+                        nmsEntity.setRot(nmsPlayer.getBukkitYaw(), 0);
+                    }
+                }
+
                 super.channelRead(channelHandlerContext, packet);
             }
 
             @Override
             public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) throws Exception {
                 //Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "PACKET WRITE: " + ChatColor.GREEN + packet.toString());
-                if (packet instanceof ClientboundMoveEntityPacket moveEntityPacket) {
-                    ServerPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-                    Serenity.getPlugin().getServer().getScheduler().runTask(Serenity.getPlugin(), () -> {
 
-                        Entity packetEntity = moveEntityPacket.getEntity(nmsPlayer.getCommandSenderWorld());
-                        //Bukkit.broadcastMessage("1");
-                        //Bukkit.broadcastMessage(String.valueOf(packetEntity));
-
-                        if (packetEntity == nmsPlayer) {
-                            Bukkit.broadcastMessage("2");
-                            Entity target = nmsPlayer.getCamera();
-                            if (target != nmsPlayer) {
-                                Bukkit.broadcastMessage("3");
-                                if (target instanceof LivingEntity livingEntity) {
-
-                                }
-                            }
-                        }
-                    });
-                }
                 if (packet instanceof ClientboundSetEntityLinkPacket clientboundSetEntityLinkPacket){
                     Bukkit.broadcastMessage(String.valueOf(clientboundSetEntityLinkPacket.getSourceId()));
                     if (clientboundSetEntityLinkPacket.getSourceId() == -1){
                         return;
                     }
                 }
+//                if (packet instanceof ServerboundMovePlayerPacket){
+//                    Bukkit.broadcastMessage("happening");
+//                    return;
+//                }
+//                if (packet instanceof ClientboundPlayerLookAtPacket){
+//                    Bukkit.broadcastMessage("happening2");
+//                    return;
+//                }
+//                if (packet instanceof ClientboundSetEntityDataPacket clientboundSetEntityDataPacket){
+//                    SynchedEntityData.DataValue<?> value = new SynchedEntityData.DataValue<>(9, EntityDataSerializers.ROTATIONS, new Rotations(0, 0, 90F));
+//                    if ( ! clientboundSetEntityDataPacket.packedItems().contains(value)){
+//                        return;
+//                    }
+//                    Bukkit.broadcastMessage("packet sent properly");
+//                }
+
+
+
                 //if the server is sending a packet, the function "write" will be called. If you want to cancel a specific packet, just use return; Please keep in mind that using the return thing can break the intire server when using the return thing without knowing what you are doing.
                 super.write(channelHandlerContext, packet, channelPromise);
             }

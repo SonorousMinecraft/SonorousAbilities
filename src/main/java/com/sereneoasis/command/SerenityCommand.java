@@ -5,6 +5,8 @@ import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.displays.SerenityBoard;
+import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.PacketUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,6 +43,14 @@ public class SerenityCommand implements CommandExecutor {
             SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
             if (sPlayer != null) {
                 switch (strings[0]) {
+                    case "test":
+                        PacketUtils.upsideDownArmorStand(player);
+                        return true;
+                    case "flip":
+                        for (Entity e : Entities.getEntitiesAroundPoint(player.getLocation(), 10)){
+                            PacketUtils.flipEntity(player, e);
+                        }
+                        return true;
                     case "dismount":
                         if (player.getVehicle() instanceof LivingEntity rideable){
                             rideable.eject();
