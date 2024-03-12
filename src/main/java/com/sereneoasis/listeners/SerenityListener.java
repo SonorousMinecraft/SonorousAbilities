@@ -67,6 +67,7 @@ public class SerenityListener implements Listener {
         removeAttributePlayer(player, serenityPlayer);
 
         Serenity.getPacketListener().removePlayer(player);
+        SerenityPlayer.removePlayerFromMap(player);
 
     }
 
@@ -83,6 +84,7 @@ public class SerenityListener implements Listener {
             return;
         }
         String ability = sPlayer.getHeldAbility();
+        Bukkit.broadcastMessage(ability);
 
         if (ability != null) {
             if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {

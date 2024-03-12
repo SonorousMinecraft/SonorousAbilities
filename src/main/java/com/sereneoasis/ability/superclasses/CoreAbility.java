@@ -114,7 +114,13 @@ public abstract class CoreAbility implements Ability {
 
     public static void progressAll() throws ReflectiveOperationException {
         for (CoreAbility abil : INSTANCES) {
-            abil.progress();
+            if (abil.player.isOnline()){
+                abil.progress();
+            }
+            else{
+                abil.remove();
+            }
+
         }
     }
 
