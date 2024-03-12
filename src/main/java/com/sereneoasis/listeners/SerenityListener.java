@@ -72,6 +72,7 @@ public class SerenityListener implements Listener {
 
     }
 
+    @EventHandler
     public void onHitEntity(EntityDamageByEntityEvent e){
         if (! (e.getDamager() instanceof Player)){
             return;
@@ -102,6 +103,7 @@ public class SerenityListener implements Listener {
 
         if (isValidAttack) {
             Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+            e.setCancelled(true);
         }
     }
 

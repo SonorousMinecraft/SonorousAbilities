@@ -12,6 +12,7 @@ import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 public class Display {
 
@@ -76,8 +77,8 @@ public class Display {
             Transformation transformation = iDisplay.getTransformation();
             // first one is height, second length, third width
             transformation.getScale().set(height , length , width);
-            transformation.getTranslation().set(new Vector3d( x, y , z));
-
+            
+            transformation.getTranslation().set(width/2, 0, 0);
             Quaternionf quaternionf = transformation.getLeftRotation();
 
             double faceForward;
@@ -87,7 +88,9 @@ public class Display {
                 faceForward = 90;
             }
             quaternionf.rotateXYZ(0, (float) -Math.toRadians(90), (float) -Math.toRadians(faceForward));
+            
             transformation.getLeftRotation().set(quaternionf);
+            transformation.getTranslation().set(new Vector3d( x, y , z));
             iDisplay.setTransformation(transformation);
         });
         return itemDisplay;
@@ -109,6 +112,17 @@ public class Display {
         return itemDisplay;
     }
 
+    public static void rotateItemDisplayProperly(ItemDisplay itemDisplay, double width,
+                                                 float xRads, float yRads, float zRads ) {
+        Transformation oldDisplayTransformation = itemDisplay.getTransformation();
+        Vector3f oldDisplayTranslation = new Vector3f(oldDisplayTransformation.getTranslation());
+        oldDisplayTransformation.getTranslation().set(-width/2, 0 ,0 );
+        oldDisplayTransformation.getLeftRotation().rotateXYZ(xRads, yRads, zRads);
+        oldDisplayTransformation.getTranslation().set(oldDisplayTranslation);
+        itemDisplay.setTransformation(oldDisplayTransformation);
+    }
+    
+    
     public static ArmorStand createArmorStand(Location loc) {
 
         ArmorStand armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
