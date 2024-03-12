@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -71,6 +72,39 @@ public class SerenityListener implements Listener {
 
     }
 
+    public void onHitEntity(EntityDamageByEntityEvent e){
+        if (! (e.getDamager() instanceof Player)){
+            return;
+        }
+        Player player = (Player) e.getDamager();
+
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        if (sPlayer == null) {
+            return;
+        }
+        String ability = sPlayer.getHeldAbility();
+
+        boolean isValidAttack = true;
+
+        switch (ability){
+            case "Jab":
+                new Jab(player);
+                break;
+            case "Hook":
+                new Hook(player);
+                break;
+            case "Cross":
+                new Cross(player);
+                break;
+            default:
+                isValidAttack = false;
+        }
+
+        if (isValidAttack) {
+            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+        }
+    }
+
     @EventHandler
     public void onSwing(PlayerInteractEvent e) throws ReflectiveOperationException {
         Player player = e.getPlayer();
@@ -84,7 +118,6 @@ public class SerenityListener implements Listener {
             return;
         }
         String ability = sPlayer.getHeldAbility();
-        Bukkit.broadcastMessage(ability);
 
         if (ability != null) {
             if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
