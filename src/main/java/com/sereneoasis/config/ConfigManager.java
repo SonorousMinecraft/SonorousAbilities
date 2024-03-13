@@ -360,7 +360,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(war, "Katana", Archetype.WAR.toString(), "description", "instructions",
                 2000, 5000, 30000,
-                0, 0, 0, 0, 1, 0, 1.5);
+                2, 1, 0, 0, 1, 0, 1.5);
 
         saveConfigValuesAbility(war, "Spear", WAR.toString(), "description", "instructions",
                 0, 5000, 0,

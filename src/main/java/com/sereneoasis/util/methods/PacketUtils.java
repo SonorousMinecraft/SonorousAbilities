@@ -24,6 +24,7 @@ import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Boat;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -122,6 +123,7 @@ public class PacketUtils {
         nmsStand.setXRot(-180F);
 
         Boat boat = Vehicle.createBoatVehicle(player.getEyeLocation());
+
         boat.addPassenger(player);
         boat.addPassenger(armorStand);
 
@@ -130,4 +132,5 @@ public class PacketUtils {
 
 
     }
+
 }

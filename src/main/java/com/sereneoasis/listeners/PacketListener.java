@@ -129,12 +129,12 @@ public class PacketListener {
                     float sidewards = (float) (serverboundMoveVehiclePacket.getX() - ((CraftEntity) riding).getX());
                     float forewards = (float) (serverboundMoveVehiclePacket.getZ() - ((CraftEntity) riding).getZ());
                     Bukkit.broadcastMessage("test");
-                    Vec3 dir = new Vec3(sidewards, 0, forewards);
-                    if (dir.length() > 0.1F) {
-                        Bukkit.broadcastMessage("test2");
-                        nmsEntity.setDeltaMovement(dir.yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw())));
-                        nmsEntity.setRot(nmsPlayer.getBukkitYaw(), 0);
-                    }
+//                    Vec3 dir = new Vec3(sidewards, 0, forewards);
+//                    if (dir.length() > 0.1F) {
+//                        Bukkit.broadcastMessage("test2");
+//                        nmsEntity.setDeltaMovement(dir.yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw())));
+//                        nmsEntity.setRot(nmsPlayer.getBukkitYaw(), 0);
+//                    }
                 }
 
                 super.channelRead(channelHandlerContext, packet);

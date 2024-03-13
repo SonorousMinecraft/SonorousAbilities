@@ -78,7 +78,7 @@ public class Display {
             // first one is height, second length, third width
             transformation.getScale().set(height , length , width);
             
-            transformation.getTranslation().set(width/2, 0, 0);
+            transformation.getTranslation().set(-width/2, 0, 0);
             Quaternionf quaternionf = transformation.getLeftRotation();
 
             double faceForward;
@@ -135,6 +135,19 @@ public class Display {
         Entity nmsStand = ((CraftArmorStand)armorStand).getHandle();
         nmsStand.noPhysics = true;
         return armorStand;
+    }public static ArmorStand createArmorStandNoGrav(Location loc) {
+
+        ArmorStand armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
+        {
+            ArmorStand aStand = (ArmorStand) entity;
+            aStand.setInvulnerable(true);
+            aStand.setSmall(true);
+            aStand.setVisible(false);
+        }));
+        Entity nmsStand = ((CraftArmorStand)armorStand).getHandle();
+        nmsStand.setNoGravity(true);
+        nmsStand.noPhysics = true;
+        return armorStand;
     }
 
     public static ArmorStand createArmorStandClip(Location loc) {
@@ -162,5 +175,12 @@ public class Display {
     public static Location getItemDisplaySpawnLoc(Location loc, double size){
         Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
         return loc.clone().add(offsetFix);
+    }
+
+    public static void rotateItemDisplay(ItemDisplay display, double xDegs, double yDegs, double zDegs) {
+        Transformation transformation = display.getTransformation();
+        Quaternionf quaternionf = transformation.getLeftRotation();
+        quaternionf.rotateXYZ((float) Math.toRadians(xDegs), (float) Math.toRadians(yDegs), (float) Math.toRadians(zDegs));
+        display.setTransformation(transformation);
     }
 }

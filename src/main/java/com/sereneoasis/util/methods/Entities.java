@@ -91,6 +91,10 @@ public class Entities {
         return target;
     }
 
+    public static List<LivingEntity> getAffectedList(Location loc, double radius, Player player) {
+        return getEntitiesAroundPoint(loc,radius).stream().filter(entity -> entity != player).filter(entity -> entity instanceof LivingEntity).map(entity -> (LivingEntity)entity).toList();
+    }
+
     public static List<Entity> getEntitiesAroundPoint(Location loc, double rad) {
         return new ArrayList<>(loc.getWorld().getNearbyEntities(loc, rad, rad, rad,
                 entity -> !(entity.isDead() || (entity instanceof Player && ((Player) entity).getGameMode().equals(GameMode.SPECTATOR))
