@@ -52,10 +52,13 @@ public class PacketUtils {
         HumanoidArm mainHand = nmsPlayer.getMainArm();
         HumanoidArm offHand = mainHand.getOpposite();
 
+        ClientboundAnimatePacket clientboundAnimatePacket = new ClientboundAnimatePacket(craftPlayer.getHandle(),0 );
+        playerConnection.send(clientboundAnimatePacket);
+
         scheduler.runTaskLater(Serenity.getPlugin(), () -> {
             nmsPlayer.setMainArm(offHand);
-            ClientboundAnimatePacket clientboundAnimatePacket = new ClientboundAnimatePacket(craftPlayer.getHandle(),0 );
-            playerConnection.send(clientboundAnimatePacket);
+            ClientboundAnimatePacket clientboundAnimatePacket2 = new ClientboundAnimatePacket(craftPlayer.getHandle(),0 );
+            playerConnection.send(clientboundAnimatePacket2);
 
         }, 10L /*<-- the delay */);
         scheduler.runTaskLater(Serenity.getPlugin(), () -> {

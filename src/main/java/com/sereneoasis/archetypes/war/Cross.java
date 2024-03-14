@@ -30,8 +30,8 @@ public class Cross extends CoreAbility {
         origin = player.getEyeLocation().clone();
         dir = origin.getDirection().clone().normalize();
         if (target != null) {
-            DamageHandler.damageEntity(target, player, this, damage);
             player.teleport(player.getEyeLocation());
+            DamageHandler.damageEntity(target, player, this, damage);
             start();
         }
 
@@ -47,7 +47,7 @@ public class Cross extends CoreAbility {
 
         player.setVelocity(dir.clone().multiply(speed));
         Particles.spawnParticle(Particle.ELECTRIC_SPARK, Locations.getMainHandLocation(player), 10, 0.2, 0);
-        PacketUtils.playRiptide(player, 20);
+        PacketUtils.playRiptide(player, 1);
 
 
         if (player.getEyeLocation().distance(target.getEyeLocation()) <= hitbox) {

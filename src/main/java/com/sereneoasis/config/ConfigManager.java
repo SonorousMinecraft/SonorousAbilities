@@ -328,11 +328,21 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(war, "Tether", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                0, 1.0, 0.5, 20, 2, 0, 2.0);
+                0, 1.0, 0.5, 40, 3, 0, 2.0);
 
         saveConfigValuesAbility(war, "Jab", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
                 2, 1, 0, 10, 1.5, 0, 0);
+
+
+        ArrayList<ComboManager.AbilityInformation> flickerJabAbilities = new ArrayList<>();
+        flickerJabAbilities.add(0, new ComboManager.AbilityInformation("Jab", ClickType.LEFT));
+        flickerJabAbilities.add(1, new ComboManager.AbilityInformation("Jab", ClickType.LEFT));
+        flickerJabAbilities.add(2, new ComboManager.AbilityInformation("Jab", ClickType.SHIFT_LEFT));
+
+        saveConfigValuesCombo(war, "FlickerJab", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1, 0, 10, 0.5, 0, 0, flickerJabAbilities);
 
         saveConfigValuesAbility(war, "Cross", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
@@ -342,13 +352,17 @@ public class ConfigManager {
                 0, 2000, 0,
                 2, 1.2, 0, 10, 0.2, 0, 0);
 
-        ArrayList<ComboManager.AbilityInformation> uppercutAbilities = new ArrayList<>();
-        uppercutAbilities.add(0, new ComboManager.AbilityInformation("Jab", ClickType.SHIFT_LEFT));
-        uppercutAbilities.add(1, new ComboManager.AbilityInformation("Hook", ClickType.SHIFT_LEFT));
-
+//        ArrayList<ComboManager.AbilityInformation> uppercutAbilities = new ArrayList<>();
+//        uppercutAbilities.add(0, new ComboManager.AbilityInformation("Jab", ClickType.SHIFT_LEFT));
+//        uppercutAbilities.add(1, new ComboManager.AbilityInformation("Hook", ClickType.SHIFT_LEFT));
+//
         saveConfigValuesCombo(war, "Uppercut", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
                 2, 1, 0, 10, 0.5, 0, 0, new ArrayList<>());
+
+
+
+
 
         saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
@@ -363,16 +377,16 @@ public class ConfigManager {
                 2, 1, 0, 0, 1, 0, 1.5);
 
         saveConfigValuesAbility(war, "Spear", WAR.toString(), "description", "instructions",
-                0, 5000, 0,
+                0, 3000, 0,
                 4, 1.0, 0, 30, 1.5, 0, 1.5);
 
         saveConfigValuesAbility(war, "Grenades", WAR.toString(), "description", "instructions",
                 2000, 1000, 0,
-                4, 2.0, 0, 30, 1.5, 0, 1);
+                4, 2.0, 0, 30, 1.5, 0, 2.0);
 
         saveConfigValuesAbility(war, "Jetpack", Archetype.WAR.toString(), "description", "instructions",
-                2000, 5000, 30000,
-                0, 0, 0, 0, 1, 0, 1.5);
+                1000, 10000, 5000,
+                0, 0, 0, 0, 0.5, 0, 1.5);
 
 //        saveConfigValuesAbility(war, "Crossbow", Archetype.WAR.toString(), "description", "instructions",
 //                2000, 5000, 30000,

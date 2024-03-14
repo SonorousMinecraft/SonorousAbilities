@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
@@ -77,6 +78,7 @@ public class SerenityListener implements Listener {
         if (! (e.getDamager() instanceof Player)){
             return;
         }
+
         Player player = (Player) e.getDamager();
 
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
@@ -84,36 +86,35 @@ public class SerenityListener implements Listener {
             return;
         }
         String ability = sPlayer.getHeldAbility();
-
-        boolean isValidAttack = true;
-
-        switch (ability){
-            case "Jab":
-                new Jab(player);
-                break;
-            case "Hook":
-                new Hook(player);
-                break;
-            case "Cross":
-                new Cross(player);
-                break;
-            default:
-                isValidAttack = false;
-        }
-
-        if (isValidAttack) {
-            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
-            e.setCancelled(true);
-        }
+//        boolean isValidAttack = true;
+//
+//        switch (ability){
+//            case "Jab":
+//                new Jab(player);
+//                break;
+//            case "Hook":
+//                new Hook(player);
+//                break;
+//            case "Cross":
+//                new Cross(player);
+//                break;
+//            default:
+//                isValidAttack = false;
+//        }
+//
+//        if (isValidAttack) {
+//            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+//            e.setCancelled(true);
+//        }
+       // Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, player.getInventory().getItemInMainHand(), null, null, EquipmentSlot.HAND));
     }
 
     @EventHandler
-    public void onSwing(PlayerInteractEvent e) throws ReflectiveOperationException {
+    public void onRightClick(PlayerInteractEvent e ) throws ReflectiveOperationException{
         Player player = e.getPlayer();
         if (player == null) {
             return;
         }
-
 
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
         if (sPlayer == null) {
@@ -128,6 +129,33 @@ public class SerenityListener implements Listener {
             if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.RIGHT);
             }
+        }
+
+        switch(ability) {
+            case "Formless":
+                if (CoreAbility.hasAbility(e.getPlayer(), Formless.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Formless.class).setHasClicked(e.getAction());
+                }
+                break;
+        }
+    }
+
+    @EventHandler
+    public void onSwing(PlayerAnimationEvent e) throws ReflectiveOperationException {
+        Player player = e.getPlayer();
+        if (player == null) {
+            return;
+        }
+
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        if (sPlayer == null) {
+            return;
+        }
+        String ability = sPlayer.getHeldAbility();
+
+
+        if (ability != null) {
+            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
         }
         switch (ability) {
             case "Torrent":
@@ -251,11 +279,7 @@ public class SerenityListener implements Listener {
                     new Rocket(player);
                 }
                 break;
-            case "Formless":
-                if (CoreAbility.hasAbility(e.getPlayer(), Formless.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Formless.class).setHasClicked(e.getAction());
-                }
-                break;
+
             case "Katana":
                 if (CoreAbility.hasAbility(e.getPlayer(), Katana.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Katana.class).setHasClicked();

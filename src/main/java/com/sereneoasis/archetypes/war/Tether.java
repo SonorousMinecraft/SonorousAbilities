@@ -8,6 +8,7 @@ import com.sereneoasis.util.Laser;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -40,7 +41,7 @@ public class Tether extends CoreAbility {
 
         Location loc = player.getEyeLocation().clone();
         Vector dir = loc.getDirection().clone();
-        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.SPECTRAL_ARROW, size, size, true, true, false);
+        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.SPECTRAL_ARROW, size/3, size*2, true, false, false);
         armorStand1 = tether1.getArmorStand();
 
         guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), tether1.getLoc(), -1, 200);
@@ -60,16 +61,17 @@ public class Tether extends CoreAbility {
 //            }
 
             if (!hasTarget){
-                if (Entities.getAffected(tether1.getLoc(), hitbox, player) instanceof LivingEntity livingEntity &&
-                        !(livingEntity instanceof ArmorStand)){
+                if (Entities.getAffected(tether1.getLoc(), hitbox, player) instanceof LivingEntity livingEntity){
+
                     tether1.remove();
                     target = livingEntity;
                     hasTarget = true;
-                    endLoc = target.getLocation();
+                    endLoc = target.getLocation().add(0,1,0);
                 }
             } else{
                 endLoc = target.getLocation();
-                if (Vectors.isObstructed(Locations.getMainHandLocation(player),target.getLocation())){
+                if (Vectors.isObstructed(Locations.getMainHandLocation(player),target.getLocation().add(0,1,0))){
+                    Bukkit.broadcastMessage("obstructed");
                     this.remove();
                 }
             }
@@ -94,9 +96,9 @@ public class Tether extends CoreAbility {
                             Vector vec1to2 = Vectors.getDirectionBetweenLocations(tether1.getLoc(), tether2.getLoc()).normalize().multiply(0.5);
                             Vector vec2to1 = vec1to2.clone().multiply(-1);
                             if (Vectors.getAngleBetweenVectors(playerLooking, vec1to2) < Vectors.getAngleBetweenVectors(playerLooking, vec2to1)) {
-                                player.setVelocity(vec1to2);
+                                player.setVelocity(vec1to2.clone().multiply(speed));
                             } else {
-                                player.setVelocity(vec2to1);
+                                player.setVelocity(vec2to1.clone().multiply(speed));
                             }
                         }
                     }
@@ -111,8 +113,8 @@ public class Tether extends CoreAbility {
             }
 
             if (hasTarget) {
-                Vector targetVec = Vectors.getDirectionBetweenLocations(player.getEyeLocation(), tether1.getLoc()).normalize();
-                if (! Vectors.isObstructed(player.getEyeLocation(), tether1.getLoc())) {
+                Vector targetVec = Vectors.getDirectionBetweenLocations(target.getLocation().add(0,1,0), player.getEyeLocation()).normalize();
+                if (! Vectors.isObstructed(player.getEyeLocation(), target.getLocation().add(0,1,0))) {
                     target.setVelocity(targetVec);
                 }
 
@@ -128,7 +130,7 @@ public class Tether extends CoreAbility {
             hasShot2 = true;
             Location loc = player.getEyeLocation().clone();
             Vector dir = loc.getDirection().clone();
-            tether2 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, size, size, true, true, false);
+            tether2 = new ThrowItemDisplay(player, name, loc, dir, Material.SPECTRAL_ARROW, size/3, size*2, true, false, false);
             armorStand2 = tether2.getArmorStand();
         } else {
             this.remove();

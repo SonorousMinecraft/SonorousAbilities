@@ -26,8 +26,9 @@ public class Uppercut extends CoreAbility {
 
         this.target = target;
         origin = player.getEyeLocation().clone();
+        //player.teleport(player.getEyeLocation());
         DamageHandler.damageEntity(target, player, this, damage);
-        player.teleport(player.getEyeLocation());
+
         start();
 
     }
@@ -49,7 +50,7 @@ public class Uppercut extends CoreAbility {
 
         player.setVelocity(dir.clone().multiply(speed));
         Particles.spawnParticle(Particle.ELECTRIC_SPARK, Locations.getMainHandLocation(player), 10, 0.2, 0);
-        PacketUtils.playRiptide(player, 20);
+        PacketUtils.playRiptide(player, 1);
 
 
 
@@ -61,6 +62,8 @@ public class Uppercut extends CoreAbility {
             sPlayer.addCooldown(name, cooldown);
         }
     }
+
+
 
     @Override
     public Player getPlayer() {

@@ -35,10 +35,10 @@ public class Rocket extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
+        Particles.spawnParticleOffset(Particle.FIREWORKS_SPARK, rocket.getArmorStand().getLocation(), 10, size/4, size/4, size/4, 0);
         if (rocket.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
-            sPlayer.addCooldown(name, cooldown);
-            rocket.remove();
+
         }
 
     }
@@ -51,8 +51,15 @@ public class Rocket extends CoreAbility {
             }
         }
         this.remove();
+
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
         sPlayer.addCooldown(name, cooldown);
         rocket.remove();
+
     }
 
     @Override

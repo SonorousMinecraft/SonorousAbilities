@@ -28,7 +28,7 @@ public class Spear extends CoreAbility {
         }
 
         origin = player.getEyeLocation().clone();
-        spear = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.ARROW, size/2, size*2, true, false, false);
+        spear = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.ARROW, size/3, size*2, true, false, false);
         abilityStatus = AbilityStatus.SHOT;
         start();
     }
@@ -38,7 +38,6 @@ public class Spear extends CoreAbility {
 
         if (spear.getAbilityStatus() == AbilityStatus.SHOT){
             if (Entities.getAffected(spear.getArmorStand().getLocation(), hitbox, player) instanceof LivingEntity livingEntity) {
-                Bukkit.broadcastMessage("this");
                 DamageHandler.damageEntity(livingEntity, player, this, damage);
                 spear.setAbilityStatus(AbilityStatus.COMPLETE);
             }

@@ -2,13 +2,11 @@ package com.sereneoasis.archetypes.war;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.AbilityUtils;
-import com.sereneoasis.util.methods.Display;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.PacketUtils;
+import com.sereneoasis.util.methods.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -29,6 +27,7 @@ public class Jetpack extends CoreAbility {
 
 
     private BossBar barduration;
+
 
     private ArmorStand jetpack;
 
@@ -60,6 +59,7 @@ public class Jetpack extends CoreAbility {
                     barduration = Bukkit.getServer().createBossBar(name, BarColor.BLUE, BarStyle.SEGMENTED_10);
                     barduration.addPlayer(player);
                     this.jetpack = Display.createArmorStandClip(player.getLocation());
+
                     jetpack.addPassenger(player);
                     AbilityUtils.showCharged(this);
                 }
@@ -79,6 +79,8 @@ public class Jetpack extends CoreAbility {
 //                player.setGliding(false);
 //                player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
 //            }
+
+            Particles.spawnParticleOffset(Particle.FLAME, player.getLocation().subtract(0,1,0), 10, size/6, size/6, size/6, 0);
 
             Long timeelapsed = System.currentTimeMillis() - (startTime + chargeTime);
             Double progress = 1 - (double) timeelapsed / (double) duration;
@@ -100,7 +102,9 @@ public class Jetpack extends CoreAbility {
     public void remove() {
         super.remove();
         PacketUtils.setClientChestplate(player, Material.AIR);
+        jetpack.eject();
         jetpack.remove();
+
     }
 
     public ArmorStand getArmorStand(){

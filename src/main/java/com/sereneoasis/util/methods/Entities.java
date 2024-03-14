@@ -2,15 +2,9 @@ package com.sereneoasis.util.methods;
 
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BoundingBox;
@@ -88,6 +82,9 @@ public class Entities {
                 }
             }
         }
+        if (target != null){
+            Bukkit.broadcastMessage(target.getName());
+        }
         return target;
     }
 
@@ -98,7 +95,7 @@ public class Entities {
     public static List<Entity> getEntitiesAroundPoint(Location loc, double rad) {
         return new ArrayList<>(loc.getWorld().getNearbyEntities(loc, rad, rad, rad,
                 entity -> !(entity.isDead() || (entity instanceof Player && ((Player) entity).getGameMode().equals(GameMode.SPECTATOR))
-                        || entity instanceof ArmorStand)));
+                        || entity instanceof ArmorStand || entity instanceof ItemDisplay)));
     }
 
 

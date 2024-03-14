@@ -83,7 +83,7 @@ public class Display {
 
             double faceForward;
             if (diagonal) {
-                faceForward = 45;
+                faceForward = 75;
             } else {
                 faceForward = 90;
             }

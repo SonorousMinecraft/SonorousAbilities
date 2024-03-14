@@ -2,6 +2,7 @@ package com.sereneoasis.abilityuilities.items;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Display;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
@@ -10,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Transformation;
@@ -32,6 +34,8 @@ public class ShootItemDisplay extends CoreAbility {
 
     private boolean stick;
 
+    private double height;
+
     private Set<ItemDisplay>displays = new HashSet<>();
 
     public ShootItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double width, double length, boolean stick, boolean diagonal, boolean sphere) {
@@ -43,29 +47,56 @@ public class ShootItemDisplay extends CoreAbility {
 
         abilityStatus = AbilityStatus.SHOT;
 
-        this.origin = loc.clone();
-
-        armorStand = Display.createArmorStand(loc);
+        this.origin = loc.clone().subtract(0,1,0);
+        this.height = width;
+        armorStand = Display.createArmorStand(origin);
 
         double height = width;
 
-        ItemDisplay middleDisplay = Display.createItemDisplayOffset(loc, material, width, height, length, diagonal, 0, 0, 0);
-        armorStand.addPassenger(middleDisplay);
 
-        double distance = 0;
-        double scale = 1;
-        int radius = 8;
+        if (sphere){
+            double scale = 1;
 
-        for (int i = 1; i < radius;i++) {
-            scale -= (double) 1 / radius;
-            distance += width * scale / (radius*2);
-            ItemDisplay leftDisplay = Display.createItemDisplayOffset(loc, material, width  , height * scale, length * scale, diagonal, distance, 0, 0);
-            ItemDisplay rightDisplay = Display.createItemDisplayOffset(loc, material, width , height * scale,length * scale, diagonal, -distance, 0, 0);
-            armorStand.addPassenger(leftDisplay);
-            armorStand.addPassenger(rightDisplay);
+            double pixelWidth = width * 1/16;
+            double distance = pixelWidth/2;
+            // 0, 1, 0, 1, 2, 2
+            int[] numbers = {0, 1, 0, 1, 2, 0};
+            for (int i : numbers) {
 
+                scale -= (double) i*2 * pixelWidth;
+                ItemDisplay leftDisplay = Display.createItemDisplayOffset(loc, material, width  , height * scale, length * scale, diagonal, distance, 0, 0);
+                ItemDisplay rightDisplay = Display.createItemDisplayOffset(loc, material, width , height * scale,length * scale, diagonal, -distance, 0, 0);
 
+                displays.add(leftDisplay);
+                displays.add(rightDisplay);
+                armorStand.addPassenger(leftDisplay);
+                armorStand.addPassenger(rightDisplay);
+                distance += pixelWidth;
+            }
         }
+        else {
+            double distance = 0;
+            double scale = 1;
+            int radius = 8;
+
+            ItemDisplay middleDisplay = Display.createItemDisplayOffset(loc, material, width, height, length , diagonal, 0, 0, 0);
+            displays.add(middleDisplay);
+            armorStand.addPassenger(middleDisplay);
+
+            for (int i = 1; i < radius; i++) {
+                scale -= (double) 1 / radius;
+                distance += width * scale / (radius * 2);
+
+                ItemDisplay leftDisplay = Display.createItemDisplayOffset(loc, material, width, height * scale, length * scale, diagonal, distance, 0, 0);
+                ItemDisplay rightDisplay = Display.createItemDisplayOffset(loc, material, width, height * scale, length * scale, diagonal, -distance, 0, 0);
+
+                displays.add(leftDisplay);
+                displays.add(rightDisplay);
+                armorStand.addPassenger(leftDisplay);
+                armorStand.addPassenger(rightDisplay);
+            }
+        }
+
         armorStand.setVelocity(dir.clone().multiply(speed));
         abilityStatus = AbilityStatus.SHOT;
 
@@ -87,17 +118,19 @@ public class ShootItemDisplay extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
 
-            Block b = armorStand.getLocation().getBlock();
-            if (b.getType().isSolid()) {
-                armorStand.setVelocity(new Vector(0, 0, 0));
-                armorStand.setGravity(false);
+            for (Block b : Blocks.getBlocksAroundPoint(armorStand.getLocation(), height/2)) {
+                if (b.getType().isSolid()) {
+                    armorStand.setVelocity(new Vector(0, 0, 0));
+                    armorStand.setGravity(false);
 
-                abilityStatus = AbilityStatus.COMPLETE;
-                if (!stick) {
-                    for (ItemDisplay currentDisplay : displays){
-                        currentDisplay.remove();
+                    abilityStatus = AbilityStatus.COMPLETE;
+                    if (!stick) {
+                        for (ItemDisplay currentDisplay : displays) {
+                            currentDisplay.remove();
+                        }
                     }
                 }
+
             }
 
 
@@ -122,6 +155,8 @@ public class ShootItemDisplay extends CoreAbility {
         if (armorStand != null) {
             armorStand.remove();
         }
+
+        displays.forEach(Entity::remove);
     }
 
     @Override

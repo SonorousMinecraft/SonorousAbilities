@@ -62,7 +62,7 @@ public class Hook extends CoreAbility {
             if (player.getEyeLocation().distance(target.getEyeLocation()) <= hitbox + 0.5  ) {
                 DamageHandler.damageEntity(target, player, this, damage);
                 Particles.spawnParticle(Particle.EXPLOSION_NORMAL, Locations.getMainHandLocation(player), 10, 0.2, 0);
-                Vector orth = Vectors.getDirectionBetweenLocations(Locations.getLeftSide(player.getEyeLocation(), 0.5), Locations.getRightSide(player.getEyeLocation(), 0.5));
+                Vector orth = Vectors.getDirectionBetweenLocations(Locations.getLeftSide(player.getEyeLocation(), 0.5), Locations.getRightSide(player.getEyeLocation(), 1));
                 dir.rotateAroundAxis(orth, -Math.toRadians(player.getEyeLocation().getPitch()));
                 target.setVelocity(dir.clone().multiply(speed));
                 player.setVelocity(new Vector(0, 0, 0));
