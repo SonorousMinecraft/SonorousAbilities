@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
@@ -38,6 +39,8 @@ public class ThrowItemDisplay extends CoreAbility {
 
     private double height;
 
+    private double oldPitch;
+
     public ThrowItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double width, double length, boolean stick, boolean diagonal, boolean sphere) {
         super(player, name);
 
@@ -48,7 +51,6 @@ public class ThrowItemDisplay extends CoreAbility {
         abilityStatus = AbilityStatus.SHOT;
 
         this.origin = loc.clone().subtract(0,1,0);
-        this.height = width;
         armorStand = Display.createArmorStand(origin);
 
         double height = width;
@@ -61,7 +63,7 @@ public class ThrowItemDisplay extends CoreAbility {
             double pixelWidth = width * 1/16;
             double distance = pixelWidth/2;
             // 0, 1, 0, 1, 2, 2
-            int[] numbers = {0, 1, 0, 1, 2, 0};
+            int[] numbers = { 0, 1, 0, 0, 1};
             for (int i : numbers) {
 
                 scale -= (double) i*2 * pixelWidth;
@@ -101,6 +103,12 @@ public class ThrowItemDisplay extends CoreAbility {
         armorStand.setVelocity(dir.clone().multiply(speed));
         abilityStatus = AbilityStatus.SHOT;
 
+        this.height = width;
+        if (this.height < 2){
+            this.height = 2;
+        }
+
+        this.oldPitch = dir.toLocation(player.getWorld()).getPitch();
         start();
     }
 
@@ -110,17 +118,25 @@ public class ThrowItemDisplay extends CoreAbility {
     public void progress() {
 
         if (abilityStatus != AbilityStatus.COMPLETE) {
+            Location tempLoc = player.getLocation();
+            double newPitch = tempLoc.setDirection(armorStand.getVelocity()).getPitch();
+            double deltaPitch = newPitch - oldPitch;
 
+            oldPitch = newPitch;
+
+            for (ItemDisplay currentDisplay : displays) {
+                Display.rotateItemDisplay(currentDisplay, 0, 0, deltaPitch);
+            }
 
             if (armorStand.getLocation().distance(origin) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
 
-            for (Block b : Blocks.getBlocksAroundPoint(armorStand.getLocation(), height/2)) {
+            for (Block b : Blocks.getBlocksAroundPoint(armorStand.getLocation(), height/2 )) {
                 if (b.getType().isSolid()) {
                     armorStand.setVelocity(new Vector(0, 0, 0));
                     armorStand.setGravity(false);
-
+                    ((CraftArmorStand)armorStand).getHandle().noPhysics = false;
                     abilityStatus = AbilityStatus.COMPLETE;
                     if (!stick) {
                         for (ItemDisplay currentDisplay : displays) {

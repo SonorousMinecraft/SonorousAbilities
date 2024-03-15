@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
@@ -48,7 +49,7 @@ public class ShootItemDisplay extends CoreAbility {
         abilityStatus = AbilityStatus.SHOT;
 
         this.origin = loc.clone().subtract(0,1,0);
-        this.height = width;
+
         armorStand = Display.createArmorStand(origin);
 
         double height = width;
@@ -100,6 +101,10 @@ public class ShootItemDisplay extends CoreAbility {
         armorStand.setVelocity(dir.clone().multiply(speed));
         abilityStatus = AbilityStatus.SHOT;
 
+        this.height = width;
+        if (this.height < 2){
+            this.height = 2;
+        }
         start();
     }
 
@@ -118,11 +123,11 @@ public class ShootItemDisplay extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
 
-            for (Block b : Blocks.getBlocksAroundPoint(armorStand.getLocation(), height/2)) {
+            for (Block b : Blocks.getBlocksAroundPoint(armorStand.getLocation(), height/2 )) {
                 if (b.getType().isSolid()) {
                     armorStand.setVelocity(new Vector(0, 0, 0));
                     armorStand.setGravity(false);
-
+                    ((CraftArmorStand)armorStand).getHandle().noPhysics = false;
                     abilityStatus = AbilityStatus.COMPLETE;
                     if (!stick) {
                         for (ItemDisplay currentDisplay : displays) {

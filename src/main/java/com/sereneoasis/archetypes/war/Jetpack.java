@@ -80,7 +80,7 @@ public class Jetpack extends CoreAbility {
 //                player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
 //            }
 
-            Particles.spawnParticleOffset(Particle.FLAME, player.getLocation().subtract(0,1,0), 10, size/6, size/6, size/6, 0);
+            Particles.spawnParticleOffset(Particle.FLAME, player.getLocation().subtract(0,2,0), 10, size/20, size/6, size/20, 0);
 
             Long timeelapsed = System.currentTimeMillis() - (startTime + chargeTime);
             Double progress = 1 - (double) timeelapsed / (double) duration;
@@ -102,6 +102,7 @@ public class Jetpack extends CoreAbility {
     public void remove() {
         super.remove();
         PacketUtils.setClientChestplate(player, Material.AIR);
+        barduration.removeAll();
         jetpack.eject();
         jetpack.remove();
 

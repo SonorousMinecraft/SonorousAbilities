@@ -5,16 +5,22 @@ import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.sky.Cyclone;
+import com.sereneoasis.archetypes.war.Formless;
 import com.sereneoasis.archetypes.war.Jetpack;
+import com.sereneoasis.util.methods.Particles;
 import io.netty.channel.*;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.core.Rotations;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_20_R2.entity.*;
 import org.bukkit.entity.*;
@@ -35,6 +41,50 @@ public class PacketListener {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 //Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "PACKET READ: " + ChatColor.RED + packet.toString());
+
+                /*if (packet instanceof ServerboundMovePlayerPacket movePlayerPacket){
+                    ServerPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+
+                    Player spigotPlayer = player.getPlayer();
+                    if (spigotPlayer == null) {
+                        return;
+                    }
+
+                    SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(spigotPlayer);
+                    if (sPlayer == null) {
+                        return;
+                    }
+
+//                    if (!movePlayerPacket.hasPos){
+//                        return;
+//                    }
+
+                    if (CoreAbility.hasAbility(player, Formless.class) && movePlayerPacket.hasPos && movePlayerPacket.hasRot){
+
+                        float sidewards = nmsPlayer.xxa; // Sidewards
+                        float forewards = nmsPlayer.zza; //forewards
+
+                        double speedMultiplier = CoreAbility.getAbility(player, Formless.class).getSpeed();
+
+
+//                        Vec3 newMovement = nmsPlayer.getMoveVector().add(0,1,0);
+//                        nmsPlayer.setDeltaMovement(newMovement);
+
+                        Vec3 newMovement = new Vec3(sidewards , nmsPlayer.getDeltaMovement().y, forewards).yRot((float) -Math.toRadians(nmsPlayer.getBukkitYaw()));
+
+                        newMovement.normalize().scale(nmsPlayer.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+                       // nmsPlayer.setDeltaMovement(newMovement);
+                        Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 1, 0, 0);
+                        Vec3 newPos = new Vec3(movePlayerPacket.x, movePlayerPacket.y, movePlayerPacket.z).add(newMovement);
+                        ServerboundMovePlayerPacket newMovePlayerPacket = new ServerboundMovePlayerPacket.PosRot(newPos.x, newPos.y, newPos.z, movePlayerPacket.yRot, movePlayerPacket.xRot, movePlayerPacket.isOnGround());
+//                        ServerboundMovePlayerPacket newMovePlayerPacket = new ServerboundMovePlayerPacket.PosRot(movePlayerPacket.x, movePlayerPacket.y, movePlayerPacket.z, movePlayerPacket.yRot , movePlayerPacket.xRot, movePlayerPacket.isOnGround());
+
+
+                        super.channelRead(channelHandlerContext, newMovePlayerPacket);
+                        return;
+
+                    }
+                }*/
 
                 if (packet instanceof ServerboundPlayerInputPacket moveInputPacket) {
                     ServerPlayer nmsPlayer = ((CraftPlayer) player).getHandle();

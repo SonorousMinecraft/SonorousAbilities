@@ -370,11 +370,11 @@ public class ConfigManager {
 
         saveConfigValuesAbility(war, "Formless", Archetype.WAR.toString(), "description", "instructions",
                 2000, 5000, 30000,
-                0, 0, 0, 0, 1, 0, 0);
+                0.5, 1.0, 0, 30, 1.3, 0, 0.8);
 
         saveConfigValuesAbility(war, "Katana", Archetype.WAR.toString(), "description", "instructions",
-                2000, 5000, 30000,
-                2, 1, 0, 0, 1, 0, 1.5);
+                2000, 5000, 10000,
+                2, 1, 0, 0, 0, 0, 1.2);
 
         saveConfigValuesAbility(war, "Spear", WAR.toString(), "description", "instructions",
                 0, 3000, 0,

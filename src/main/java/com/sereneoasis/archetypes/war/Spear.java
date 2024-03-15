@@ -38,6 +38,7 @@ public class Spear extends CoreAbility {
 
         if (spear.getAbilityStatus() == AbilityStatus.SHOT){
             if (Entities.getAffected(spear.getArmorStand().getLocation(), hitbox, player) instanceof LivingEntity livingEntity) {
+                livingEntity.setVelocity(spear.getArmorStand().getVelocity());
                 DamageHandler.damageEntity(livingEntity, player, this, damage);
                 spear.setAbilityStatus(AbilityStatus.COMPLETE);
             }

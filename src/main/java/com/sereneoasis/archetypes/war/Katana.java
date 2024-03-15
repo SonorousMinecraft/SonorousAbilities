@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftItemDisplay;
 import org.bukkit.entity.*;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
@@ -25,15 +26,17 @@ public class Katana extends CoreAbility {
 
     private ItemDisplay katana1, katana2;
 
-    private double arcAngle = 144, currentArcAngle, size = 1.5;
+    private double arcAngle = 144, currentArcAngle;
 
-    private Transformation defaultTransformation;
-    
-    private ArmorStand armorStand1, armorStand2;
 
-    private float previousYaw;
+    private ArmorStand armorStand;
 
-    private float previousPitch;
+    private long lastSwingTime;
+
+    private long swingCooldown = 2000;
+
+
+
 
     public Katana(Player player) {
         super(player);
@@ -42,9 +45,10 @@ public class Katana extends CoreAbility {
             return;
         }
         abilityStatus = AbilityStatus.CHARGING;
-        
-        
+
+
         start();
+
     }
 
     @Override
@@ -59,50 +63,47 @@ public class Katana extends CoreAbility {
             if (player.isSneaking()) {
                 if (System.currentTimeMillis() > startTime + chargeTime) {
                     abilityStatus = AbilityStatus.CHARGED;
-                    katana1 = Display.createItemDisplay(Locations.getMainHandLocation(player), Material.IRON_SWORD, size, true);
-                    armorStand1 = Display.createArmorStandNoGrav(Locations.getMainHandLocation(player));
-                    armorStand1.addPassenger(katana1);
+                    this.armorStand = Display.createArmorStandClip(player.getEyeLocation());
+                    katana1 = Display.createItemDisplayOffset(player.getEyeLocation(), Material.IRON_SWORD, size, size, size, true, -0.55, -1.3, size/2);
+                    katana2 = Display.createItemDisplayOffset(player.getEyeLocation(), Material.IRON_SWORD, size, size, size, true, 0.55, -1.3, size/2);
+                    armorStand.addPassenger(katana1);
+                    armorStand.addPassenger(katana2);
+                    player.addPassenger(armorStand);
 
-                    katana2 = Display.createItemDisplay(Locations.getOffHandLocation(player), Material.IRON_SWORD, size, true);
-                    armorStand2 = Display.createArmorStandNoGrav(Locations.getOffHandLocation(player));
-                    armorStand2.addPassenger(katana2);
-
-
-                    this.previousYaw = player.getEyeLocation().getYaw();
-                    this.previousPitch = player.getEyeLocation().getPitch();
-                    defaultTransformation = katana1.getTransformation();
+                    this.lastSwingTime = System.currentTimeMillis();
                     player.setGlowing(true);
                 }
+
             } else {
                 this.remove();
             }
-        } else if ((abilityStatus == AbilityStatus.CHARGED ) ) {
-            Vector offsetFix = new Vector(0, 0, 0).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
+        } else if ((abilityStatus == AbilityStatus.CHARGED ) || (abilityStatus == AbilityStatus.ATTACKING) ) {
 
-            net.minecraft.world.entity.decoration.ArmorStand nmsStand1 = ((CraftArmorStand)armorStand1).getHandle();
-            net.minecraft.world.entity.decoration.ArmorStand nmsStand2 = ((CraftArmorStand)armorStand2).getHandle();
-            Location mainHand = Locations.getMainHandLocation(player).clone().add(offsetFix).subtract(0,0.7,0);
-            Location offHand = Locations.getOffHandLocation(player).clone().add(offsetFix).subtract(0,0.7,0);
             float yaw = player.getEyeLocation().getYaw();
-            float yawDiff = yaw - previousYaw;
             float pitch = player.getEyeLocation().getPitch();
-            float pitchDiff = pitch - previousPitch;
-            nmsStand1.absMoveTo(mainHand.getX(), mainHand.getY(), mainHand.getZ() , yaw, pitch );
+            katana1.setRotation(yaw, pitch);
+            katana2.setRotation(yaw, pitch);
 
-            Display.rotateItemDisplay(katana1, yawDiff,  0, -pitchDiff);
-
-
-            nmsStand2.absMoveTo(offHand.getX(), offHand.getY(), offHand.getZ() , yaw,pitch);
-            Display.rotateItemDisplay(katana2, yawDiff, 0 , -pitchDiff);
-
-            previousPitch = pitch;
-            previousYaw = yaw;
         }
+        if (abilityStatus == AbilityStatus.CHARGED){
+            if (System.currentTimeMillis() - lastSwingTime > swingCooldown){
+
+                Location attackLoc1 =  Locations.getMainHandLocation(player).clone().add(player.getEyeLocation().getDirection());
+                Location attackLoc2 =  Locations.getOffHandLocation(player).clone().add(player.getEyeLocation().getDirection());
+
+                Particles.spawnParticle(Particle.CRIT, attackLoc1,
+                        1, 0, 0);
+                Particles.spawnParticle(Particle.CRIT, attackLoc2,
+                        1, 0, 0);
+            }
+        }
+
         if (abilityStatus == AbilityStatus.ATTACKING) {
-            Display.rotateItemDisplay(katana1, 0, 0, -16);
+
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 + 1 , 0, 0, -16 );
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, -0.55, -1.3, size/2 + 1, 0, 0, -16 );
             currentArcAngle += 16;
 
-            Display.rotateItemDisplay(katana2, 0, 0, -16);
 
             Location attackLoc1 =  Locations.getMainHandLocation(player).clone().add(player.getEyeLocation().getDirection());
             Location attackLoc2 =  Locations.getOffHandLocation(player).clone().add(player.getEyeLocation().getDirection());
@@ -115,21 +116,23 @@ public class Katana extends CoreAbility {
             if (currentArcAngle > arcAngle) {
                 abilityStatus = AbilityStatus.CHARGED;
 
-                Display.rotateItemDisplay(katana1, 0, 0, currentArcAngle);
-                Display.rotateItemDisplay(katana1, 0, -90, 0);
-                Display.rotateItemDisplay(katana2, 0, 0, currentArcAngle);
-                Display.rotateItemDisplay(katana2, 0, 90, 0);
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 , 0, 0, (float) currentArcAngle );
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 , 0, -90, 0 );
 
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, 0.55, -1.3, size/2 , 0, 0, (float) currentArcAngle );
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, 0.55, -1.3, size/2 , 0, 90, 0 );
             }
         }
     }
 
     public void setHasClicked() {
-        if (abilityStatus == AbilityStatus.CHARGED) {
+        if (abilityStatus == AbilityStatus.CHARGED && System.currentTimeMillis() - lastSwingTime > swingCooldown) {
 
-            Display.rotateItemDisplay(katana1, 0, 90, 0);
+            lastSwingTime = System.currentTimeMillis();
 
-            Display.rotateItemDisplay(katana2, 0, -90, 0);
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 , 0, 90, 0 );
+
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, 0.55, -1.3, size/2 , 0, -90, 0 );
 
             currentArcAngle = 0;
             abilityStatus = AbilityStatus.ATTACKING;
