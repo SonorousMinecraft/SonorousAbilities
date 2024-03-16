@@ -2,12 +2,16 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -51,6 +55,14 @@ public class BlockLine extends CoreAbility {
             getNextLoc();
             if (loc != null) {
                 new TempDisplayBlock(loc.clone().add(offsetAdjustment), type, 500, size);
+                Entity target = Entities.getAffected(loc.clone().add(0,size/2,0), hitbox, player);
+                if (target instanceof  LivingEntity) {
+                    DamageHandler.damageEntity(target, player, this, damage);
+                    target.setVelocity(dir.clone().multiply(speed));
+                    abilityStatus = AbilityStatus.COMPLETE;
+                }
+
+
                 if (loc.distanceSquared(origin) > range*range) {
                     abilityStatus = AbilityStatus.COMPLETE;
                 }

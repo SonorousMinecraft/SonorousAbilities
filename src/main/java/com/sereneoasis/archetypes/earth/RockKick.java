@@ -36,6 +36,10 @@ public class RockKick extends CoreAbility {
             if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCED) {
                 abilityStatus = AbilityStatus.SOURCED;
             }
+
+            if (! sPlayer.getHeldAbility().equals(name)) {
+                this.remove();
+            }
         }
         if (abilityStatus == AbilityStatus.SHOT) {
             if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE) {

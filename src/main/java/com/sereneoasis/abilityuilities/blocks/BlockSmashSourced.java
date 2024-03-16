@@ -37,6 +37,8 @@ public class BlockSmashSourced extends CoreAbility {
 
     private boolean preselectedType = false;
 
+    private Vector dir;
+
     public BlockSmashSourced(Player player, String name, DisplayBlock displayBlock) {
         super(player, name);
 
@@ -85,7 +87,7 @@ public class BlockSmashSourced extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
                 return;
             }
-            loc.add(player.getEyeLocation().getDirection().multiply(speed));
+            loc.add(dir.clone().multiply(speed));
             if (preselectedType) {
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
             }
@@ -113,6 +115,7 @@ public class BlockSmashSourced extends CoreAbility {
     public void setHasClicked() {
         if (!hasShot) {
             hasShot = true;
+            dir = player.getEyeLocation().getDirection();
         }
     }
 

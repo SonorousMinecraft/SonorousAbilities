@@ -5,6 +5,7 @@ import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.data.ComboData;
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.earth.Bulwark;
 import com.sereneoasis.archetypes.ocean.BlackIce;
 import com.sereneoasis.archetypes.ocean.SnowStorm;
 import com.sereneoasis.archetypes.war.FlickerJab;
@@ -85,7 +86,10 @@ public class ComboManager {
                         break;
                     case "FlickerJab":
                         new FlickerJab(player);
-                        Bukkit.broadcastMessage("flicker jab");
+                        break;
+
+                    case "Bulwark":
+                        new Bulwark(player);
                         break;
                     default:
                         hasDoneAbility = false;

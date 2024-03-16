@@ -406,42 +406,56 @@ public class ConfigManager {
         earthTags.add(Tag.DIRT);
         earthTags.add(Tag.STONE_BRICKS);
         earthTags.add(Tag.SAND);
+        earthTags.add(Tag.TERRACOTTA);
+        earthTags.add(Tag.CONCRETE_POWDER);
+        earthTags.add(Tag.BASE_STONE_OVERWORLD);
+        earthTags.add(Tag.BASE_STONE_NETHER);
         Set<Material> earthBlocks = new HashSet<>();
         earthBlocks.add(Material.GRASS_BLOCK);
+        earthBlocks.add(Material.GRAVEL);
 
         saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
 
         saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 0, 20, 1, 10, 0.8);
+                0, 1000, 0,
+                2, 1.0, 0, 30, 2.0, 10, 0.8);
 
         saveConfigValuesAbility(earth, "Accretion", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 0, 20, 1, 10, 1.5);
+                0, 5000, 0,
+                1, 0.6, 0, 40, 1.2, 5, 1.5);
 
         saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 15, 0, 1, 0, 0.4);
+                3000, 10000, 0,
+                2, 1.0, 15, 0, 3, 0, 0.4);
 
         saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
+                0, 3000, 0,
                 2, 1.0, 15, 0, 3, 0, 0);
 
         saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 0, 20, 1, 10, 1.2);
+                0, 5000, 0,
+                2, 1.0, 0, 35, 2, 10, 1.0);
 
         saveConfigValuesAbility(earth, "Wall", EARTH.toString(), "description", "instructions",
                 0, 2000, 20000,
-                0, 1.0, 0, 10, 1, 10, 1);
+                0, 1.5, 0, 6, 5, 10, 1);
+
+
+        ArrayList<ComboManager.AbilityInformation> bulwarkAbilities = new ArrayList<>();
+        bulwarkAbilities.add(0, new ComboManager.AbilityInformation("Wall", ClickType.SHIFT_LEFT));
+
+
+        saveConfigValuesCombo(earth, "Bulwark", EARTH.toString(), "description", "instructions",
+                0, 2000, 20000,
+                0, 1.5, 0, 6, 5, 10, 1, bulwarkAbilities);
 
         saveConfigValuesAbility(earth, "EarthSurf", EARTH.toString(), "description", "instructions",
-                0, 5000, 5000,
+                0, 5000, 10000,
                 0, 0, 5, 0, 1.0, 0, 0.5);
 
         saveConfigValuesAbility(earth, "Boulder", Archetype.EARTH.toString(), "description", "instructions",
-                0, 5000, 10000,
-                4, 0.5, 5, 20, 1, 10, 0.2);
+                0, 15000, 20000,
+                4, 0, 3, 50, 1, 10, 0.5);
 
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);

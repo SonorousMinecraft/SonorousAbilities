@@ -16,12 +16,8 @@ import java.util.stream.Collectors;
 public class Catapult extends CoreAbility {
 
     private final String name = "Catapult";
-    private double currentRadius = 0;
-    private HashMap<Integer, TempDisplayBlock> quake = new HashMap<>();
-
     private boolean hasJumped = false;
 
-    private Location origin;
 
     public Catapult(Player player) {
         super(player);
@@ -52,15 +48,9 @@ public class Catapult extends CoreAbility {
             if (!hasJumped) {
                 Entities.setVelocity(player, (float) speed, 0);
                 hasJumped = true;
-                origin = player.getLocation();
-            }
-            if (currentRadius > radius) {
                 this.remove();
             }
-            currentRadius += 1;
-            quake = Entities.handleDisplayBlockEntities(quake,
-                Locations.getCircle(origin, currentRadius, (int) currentRadius * 12, new Vector(0, 1, 0), 0).stream().map(location -> location.setDirection(location.getBlock().getLocation().getDirection())).collect(Collectors.toSet()),
-                    0.5);
+
         }
 
     }
@@ -70,9 +60,6 @@ public class Catapult extends CoreAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        for (TempDisplayBlock tb : quake.values()) {
-            tb.revert();
-        }
     }
 
     @Override
