@@ -70,7 +70,7 @@ public class RaiseBlock extends CoreAbility {
         if (abilityStatus != AbilityStatus.SOURCED) {
             if (loc.getY() - origin.getY() < height) {
                 loc.add(new Vector(0, 0.1 * speed, 0));
-                block.teleport(loc.clone().add(offsetAdjustment));
+                block.moveTo(loc.clone().add(offsetAdjustment));
             } else {
                 abilityStatus = AbilityStatus.SOURCED;
             }

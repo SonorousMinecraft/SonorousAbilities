@@ -457,6 +457,11 @@ public class ConfigManager {
                 0, 15000, 20000,
                 4, 0, 3, 50, 1, 10, 0.5);
 
+
+        saveConfigValuesAbility(earth, "StoneShred", Archetype.EARTH.toString(), "description", "instructions",
+                0, 15000, 20000,
+                4, 0, 3, 50, 1, 10, 0);
+
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);
 

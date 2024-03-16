@@ -61,7 +61,7 @@ public class RaiseBlockCircle extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCING) {
             if (currentHeight < height) {
                 for (TempDisplayBlock tb : block) {
-                    tb.teleport(tb.getBlockDisplay().getLocation().clone().add(0, 0.1, 0));
+                    tb.moveTo(tb.getBlockDisplay().getLocation().clone().add(0, 0.1, 0));
                 }
                 currentHeight += 0.1;
             } else {
@@ -70,7 +70,7 @@ public class RaiseBlockCircle extends CoreAbility {
         } else if (abilityStatus == AbilityStatus.SOURCED && shouldFall) {
             if (currentHeight > 0.1) {
                 for (TempDisplayBlock tb : block) {
-                    tb.teleport(tb.getBlockDisplay().getLocation().clone().subtract(0, 0.1, 0));
+                    tb.moveTo(tb.getBlockDisplay().getLocation().clone().subtract(0, 0.1, 0));
                 }
                 currentHeight -= 0.1;
             } else {

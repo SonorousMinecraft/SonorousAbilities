@@ -47,7 +47,7 @@ public class ShootBlockFromLoc extends CoreAbility {
         if (abilityStatus == AbilityStatus.SHOT) {
 
             loc.add(dir.clone().multiply(speed));
-            block.teleport(loc);
+            block.moveTo(loc);
 
             if (directable) {
                 dir = player.getEyeLocation().getDirection().normalize();

@@ -68,7 +68,7 @@ public class BlockSmashSourced extends CoreAbility {
 
     @Override
     public void progress() {
-        if (player.isSneaking() && !hasShot) {
+        if (player.isSneaking() && !hasShot && sPlayer.getHeldAbility().equals(name)) {
             Location targetLoc = player.getEyeLocation().
                     add(player.getEyeLocation().getDirection().multiply(Math.max(radius + 1, loc.distance(player.getEyeLocation()))));
             if (loc.distance(targetLoc) > 1) {

@@ -91,7 +91,7 @@ public class RaiseBlockPillar extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
             } else {
                 for (TempDisplayBlock tdb : blocks) {
-                    tdb.teleport(tdb.getBlockDisplay().getLocation().add(0, 0.1 * speed, 0));
+                    tdb.moveTo(tdb.getBlockDisplay().getLocation().add(0, 0.1 * speed, 0));
                 }
                 currentHeight += 0.1 * speed;
 
@@ -101,7 +101,7 @@ public class RaiseBlockPillar extends CoreAbility {
 
         if (isFalling && currentHeight > 0 && abilityStatus !=AbilityStatus.DROPPED) {
             for (TempDisplayBlock tdb : blocks) {
-                tdb.teleport(tdb.getBlockDisplay().getLocation().subtract(0, 0.1 * speed, 0));
+                tdb.moveTo(tdb.getBlockDisplay().getLocation().subtract(0, 0.1 * speed, 0));
             }
             currentHeight -= 0.1 * speed;
         }

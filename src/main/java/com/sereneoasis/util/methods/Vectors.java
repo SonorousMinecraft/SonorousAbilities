@@ -1,5 +1,6 @@
 package com.sereneoasis.util.methods;
 
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -89,4 +90,34 @@ public class Vectors {
     public static Vector getRightSideNormalisedVector(Player player){
         return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getRightSide(player.getEyeLocation(), 1));
     }
+
+    public static Vec3 getVec3FromVector(Vector vector) {
+        return new Vec3(vector.getX(), vector.getY(), vector.getZ());
+    }
+    
+    public static double getPitchDiff(Vector previousVec, Vector newVec, Player player){
+        return Math.toRadians(player.getLocation().setDirection(newVec).getPitch() - player.getLocation().setDirection(previousVec).getPitch());
+    }
+    
+    public static double getYawDiff(Vector previousVec, Vector newVec, Player player){
+        return Math.toRadians(player.getLocation().setDirection(newVec).getYaw() - player.getLocation().setDirection(previousVec).getYaw());
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

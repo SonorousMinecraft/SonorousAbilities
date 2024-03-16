@@ -12,7 +12,6 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Sakrajin
@@ -106,7 +105,7 @@ public class Entities {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
                 spike.put(i, tempDisplayBlock);
             } else {
-                spike.get(i).teleport(l);
+                spike.get(i).moveTo(l);
             }
             i++;
         }
@@ -130,7 +129,7 @@ public class Entities {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
                 spike.put(i, tempDisplayBlock);
             } else {
-                spike.get(i).teleport(l);
+                spike.get(i).moveTo(l);
             }
             i++;
         }
@@ -154,7 +153,7 @@ public class Entities {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, Blocks.getBelowBlock(l.getBlock(), 10).getType(), 50000, size);
                 spike.put(i, tempDisplayBlock);
             } else {
-                spike.get(i).teleport(l);
+                spike.get(i).moveTo(l);
             }
             i++;
         }

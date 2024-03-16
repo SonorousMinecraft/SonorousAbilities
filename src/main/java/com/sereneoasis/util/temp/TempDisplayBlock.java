@@ -5,6 +5,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftBlockDisplay;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Transformation;
@@ -112,12 +113,14 @@ public class TempDisplayBlock {
         return revertTime;
     }
 
-    public void teleport(Location newLoc) {
-        this.blockDisplay.teleport(newLoc);
+    public void moveTo(Location newLoc) {
+        //this.blockDisplay.teleport(newLoc);
+        ((CraftBlockDisplay)blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), newLoc.getPitch(), newLoc.getYaw());
     }
 
     public BlockDisplay getBlockDisplay() {
         return blockDisplay;
     }
+
 }
 

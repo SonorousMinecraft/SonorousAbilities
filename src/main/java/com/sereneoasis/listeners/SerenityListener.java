@@ -321,6 +321,11 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Boulder.class).setHasClicked();
                 }
                 break;
+            case "StoneShred":
+                if (CoreAbility.hasAbility(e.getPlayer(), StoneShred.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), StoneShred.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -431,6 +436,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Boulder":
                 new Boulder(player);
+                break;
+            case "StoneShred":
+                new StoneShred(player);
                 break;
         }
     }
