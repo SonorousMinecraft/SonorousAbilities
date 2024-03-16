@@ -103,6 +103,14 @@ public class Vectors {
         return Math.toRadians(player.getLocation().setDirection(newVec).getYaw() - player.getLocation().setDirection(previousVec).getYaw());
     }
 
+    public static float getYaw(Vector vec, Player player){
+        return player.getLocation().setDirection(vec).getYaw();
+    }
+
+    public static float getPitch(Vector vec, Player player){
+        return player.getLocation().setDirection(vec).getPitch();
+    }
+
 }
 
 

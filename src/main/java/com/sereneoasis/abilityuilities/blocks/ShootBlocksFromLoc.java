@@ -30,6 +30,7 @@ public class ShootBlocksFromLoc extends CoreAbility {
 
     private Vector dir;
 
+    private long revertTime = 500;
 
     private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
 
@@ -76,7 +77,7 @@ public class ShootBlocksFromLoc extends CoreAbility {
 
 
         for (Location point : locs) {
-            new TempDisplayBlock(point, type, 200, Math.random() * size);
+            new TempDisplayBlock(point, type, revertTime,  size);
         }
 
         DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);

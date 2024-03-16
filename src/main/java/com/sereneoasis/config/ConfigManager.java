@@ -176,46 +176,50 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.8, 3, 30, 1.5, 10, 0.3);
+                2, 0.9, 3, 40, 1.3, 10, 0.9);
 
         saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.6, 2.0, 20, 1.7, 10, 0.3);
+                2, 0.9, 2.0, 20, 1.2, 10, 0.9);
 
-        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 10000,
-                4, 0.5, 5, 20, 1, 10, 0.2);
+//        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 10000,
+//                4, 0.5, 2, 20, 1, 10, 0.4);
 
         saveConfigValuesAbility(ocean, "FrostBite", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 0,
-                2, 1.0, 8, 20, 2.0, 10, 0);
+                2, 1.0, 8, 20, 2.0, 10, 0.9);
 
-        saveConfigValuesAbility(ocean, "GlacierBreath", Archetype.OCEAN.toString(), "description", "instructions",
-                2000, 5000, 10000,
-                2, 0.5, 2, 10, 1, 0, 0.5);
-
-        saveConfigValuesAbility(ocean, "Blizzard", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "WaterWhip", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                1, 0.8, 6, 15, 1.5, 0, 0.2);
+                2, 1.2, 0, 30, 1.7, 10, 1.2);
 
-        saveConfigValuesAbility(ocean, "Tsunami", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 5000,
-                0, 0, 5, 0, 1.0, 0, 0.4);
+//        saveConfigValuesAbility(ocean, "GlacierBreath", Archetype.OCEAN.toString(), "description", "instructions",
+//                2000, 5000, 10000,
+//                2, 0.5, 2, 10, 1, 0, 0.5);
 
-        ArrayList<ComboManager.AbilityInformation> snowStormAbilities = new ArrayList<>();
-        snowStormAbilities.add(0, new ComboManager.AbilityInformation("Blizzard", ClickType.SHIFT_LEFT));
-        snowStormAbilities.add(1, new ComboManager.AbilityInformation("Torrent", ClickType.LEFT));
-
-        saveConfigValuesCombo(ocean, "SnowStorm", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 5000,
-                0, 0, 15, 0, 0.5, 0, 0, snowStormAbilities);
-
-        ArrayList<ComboManager.AbilityInformation> blackIceAbilities = new ArrayList<>();
-        blackIceAbilities.add(0, new ComboManager.AbilityInformation("GlacierBreath", ClickType.RIGHT));
-
-        saveConfigValuesCombo(ocean, "BlackIce", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 15000,
-                0, 0, 20, 0, 0.5, 5, 0, blackIceAbilities);
+//        saveConfigValuesAbility(ocean, "Blizzard", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 0,
+//                1, 0.8, 6, 15, 1.5, 0, 0.2);
+//
+//        saveConfigValuesAbility(ocean, "Tsunami", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 5000,
+//                0, 0, 5, 0, 1.0, 0, 0.4);
+//
+//        ArrayList<ComboManager.AbilityInformation> snowStormAbilities = new ArrayList<>();
+//        snowStormAbilities.add(0, new ComboManager.AbilityInformation("Blizzard", ClickType.SHIFT_LEFT));
+//        snowStormAbilities.add(1, new ComboManager.AbilityInformation("Torrent", ClickType.LEFT));
+//
+//        saveConfigValuesCombo(ocean, "SnowStorm", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 5000,
+//                0, 0, 15, 0, 0.5, 0, 0, snowStormAbilities);
+//
+//        ArrayList<ComboManager.AbilityInformation> blackIceAbilities = new ArrayList<>();
+//        blackIceAbilities.add(0, new ComboManager.AbilityInformation("GlacierBreath", ClickType.RIGHT));
+//
+//        saveConfigValuesCombo(ocean, "BlackIce", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 15000,
+//                0, 0, 20, 0, 0.5, 5, 0, blackIceAbilities);
 
         Set<Tag<Material>> oceanTags = new HashSet<>();
         oceanTags.add(Tag.ICE);

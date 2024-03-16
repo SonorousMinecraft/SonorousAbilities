@@ -172,11 +172,11 @@ public class SerenityListener implements Listener {
                     new Gimbal(player);
                 }
                 break;
-            case "Iceberg":
-                if (CoreAbility.hasAbility(e.getPlayer(), Iceberg.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Iceberg.class).setHasClicked();
-                }
-                break;
+//            case "Iceberg":
+//                if (CoreAbility.hasAbility(e.getPlayer(), Iceberg.class)) {
+//                    CoreAbility.getAbility(e.getPlayer(), Iceberg.class).setHasClicked();
+//                }
+//                break;
             case "FrostBite":
                 if (CoreAbility.hasAbility(e.getPlayer(), FrostBite.class)) {
                     CoreAbility.getAbility(e.getPlayer(), FrostBite.class).setSourceBlock2();
@@ -185,18 +185,23 @@ public class SerenityListener implements Listener {
                     new FrostBite(player);
                 }
                 break;
-            case "GlacierBreath":
-                if (CoreAbility.hasAbility(player, GlacierBreath.class)) {
-                    CoreAbility.getAbility(player, GlacierBreath.class).onClick();
+//            case "GlacierBreath":
+//                if (CoreAbility.hasAbility(player, GlacierBreath.class)) {
+//                    CoreAbility.getAbility(player, GlacierBreath.class).onClick();
+//                }
+//                break;
+//            case "Blizzard":
+//                if (CoreAbility.hasAbility(e.getPlayer(), Blizzard.class)) {
+//                    CoreAbility.getAbility(e.getPlayer(), Blizzard.class).setHasClicked();
+//                }
+//                break;
+//            case "Tsunami":
+//                new Tsunami(player);
+//                break;
+            case "WaterWhip":
+                if (CoreAbility.hasAbility(e.getPlayer(), WaterWhip.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), WaterWhip.class).setHasClicked();
                 }
-                break;
-            case "Blizzard":
-                if (CoreAbility.hasAbility(e.getPlayer(), Blizzard.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Blizzard.class).setHasClicked();
-                }
-                break;
-            case "Tsunami":
-                new Tsunami(player);
                 break;
             case "CruelSun":
                 if (CoreAbility.hasAbility(e.getPlayer(), CruelSun.class)) {
@@ -360,15 +365,18 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasSourced();
                 }
                 break;
-            case "Iceberg":
-                new Iceberg(player);
+            case "WaterWhip":
+                new WaterWhip(player);
                 break;
-            case "Blizzard":
-                new Blizzard(player);
-                break;
-            case "GlacierBreath":
-                new GlacierBreath(player);
-                break;
+//            case "Iceberg":
+//                new Iceberg(player);
+//                break;
+//            case "Blizzard":
+//                new Blizzard(player);
+//                break;
+//            case "GlacierBreath":
+//                new GlacierBreath(player);
+//                break;
             case "CruelSun":
                 new CruelSun(player);
                 break;

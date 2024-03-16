@@ -8,7 +8,7 @@ import java.util.List;
 public enum DisplayBlock {
 
 
-    WATER(new ArrayList<>(List.of(new Material[]{Material.BLUE_STAINED_GLASS, Material.LIGHT_BLUE_STAINED_GLASS, Material.CYAN_STAINED_GLASS}))),
+    WATER(new ArrayList<>(List.of(new Material[]{Material.BLUE_STAINED_GLASS}))),
 
     ICE(new ArrayList<>(List.of(new Material[]{Material.ICE, Material.BLUE_ICE, Material.FROSTED_ICE, Material.PACKED_ICE}))),
 
