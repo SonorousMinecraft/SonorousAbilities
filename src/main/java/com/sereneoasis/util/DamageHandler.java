@@ -23,7 +23,7 @@ public class DamageHandler {
     public static void damageEntity(Entity entity, Player source, CoreAbility ability, double damage) {
         if (entity != null) {
             if (entity instanceof LivingEntity livingEntity) {
-
+                // needd to add some damage cooldown
                 livingEntity.damage(damage, source);
                 net.minecraft.world.entity.player.Player nmsPlayer = ((CraftPlayer)source).getHandle();
                 net.minecraft.world.entity.LivingEntity nmsTarget = ((CraftLivingEntity)livingEntity).getHandle();

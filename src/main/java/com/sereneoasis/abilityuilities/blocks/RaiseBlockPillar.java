@@ -17,16 +17,16 @@ import java.util.List;
 
 public class RaiseBlockPillar extends CoreAbility {
 
-    private final String name;
-    private Location origin, loc;
+    protected final String name;
+    protected Location origin, loc;
 
-    private double currentHeight;
-    private double height;
-    private List<TempDisplayBlock> blocks = new ArrayList<>();
+    protected double currentHeight;
+    protected double height;
+    protected List<TempDisplayBlock> blocks = new ArrayList<>();
 
-    private List<TempBlock> solidBlocks = new ArrayList<>();
+    protected List<TempBlock> solidBlocks = new ArrayList<>();
 
-    private boolean isFalling = false;
+    protected boolean isFalling = false;
 
     public RaiseBlockPillar(Player player, String name, double height) {
         super(player, name);

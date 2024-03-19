@@ -4,15 +4,19 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Sakrajin
@@ -29,6 +33,8 @@ public class BlockSmash extends CoreAbility {
     private boolean hasShot = false;
 
     private DisplayBlock displayBlock;
+
+    private Set<LivingEntity> damagedSet = new HashSet<>();
     
 
     public BlockSmash(Player player, String name, DisplayBlock displayBlock, Location origin) {
@@ -63,7 +69,8 @@ public class BlockSmash extends CoreAbility {
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
             smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
-            DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
+            damagedSet.addAll(AbilityDamage.damageSeveralExceptReturnHit(loc, this, player, damagedSet, true, player.getEyeLocation().getDirection()));
+
         }
 
 
