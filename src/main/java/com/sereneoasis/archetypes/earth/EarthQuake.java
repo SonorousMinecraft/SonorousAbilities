@@ -12,7 +12,7 @@ import java.util.List;
 public class EarthQuake extends CoreAbility {
 
     private final String name = "EarthQuake";
-    private double currentRadius = 1;
+    private double currentRadius = 0.5;
     private List<RaiseBlockCircle> quakes;
 
     public EarthQuake(Player player) {
@@ -51,7 +51,7 @@ public class EarthQuake extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
             currentRadius += speed;
-            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, 3, currentRadius, 1.0, true);
+            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, 3, currentRadius, true);
             quakes.add(shockwaveRing);
         }
         if (abilityStatus == AbilityStatus.COMPLETE) {

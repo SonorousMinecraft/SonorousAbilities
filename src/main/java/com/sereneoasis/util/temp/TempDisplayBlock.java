@@ -100,7 +100,7 @@ public class TempDisplayBlock {
         REVERT_QUEUE.remove();
     }
 
-    public void setRevertTime(long newRevertTime){
+    public void setRevertTime(long newRevertTime) {
         revertTime = newRevertTime;
     }
 
@@ -115,9 +115,12 @@ public class TempDisplayBlock {
 
     public void moveTo(Location newLoc) {
         //this.blockDisplay.teleport(newLoc);
-        ((CraftBlockDisplay)blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), newLoc.getPitch(), newLoc.getYaw());
+        ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), newLoc.getPitch(), newLoc.getYaw());
     }
 
+    public void rotate(float yaw, float pitch){
+        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(yaw, pitch);
+    }
     public BlockDisplay getBlockDisplay() {
         return blockDisplay;
     }

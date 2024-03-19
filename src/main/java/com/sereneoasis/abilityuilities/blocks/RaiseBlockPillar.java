@@ -14,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RaiseBlockPillar extends CoreAbility {
 
@@ -83,27 +84,31 @@ public class RaiseBlockPillar extends CoreAbility {
     public void progress() throws ReflectiveOperationException {
 
         if (abilityStatus != AbilityStatus.COMPLETE && !isFalling) {
-            if (currentHeight >= height+0.1*speed) {
-                for (TempDisplayBlock tdb : blocks) {
-                    solidBlocks.add(new TempBlock(tdb.getBlockDisplay().getLocation().getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true));
-                    tdb.revert();
-                }
+            if (currentHeight >= height+0.2*speed) {
                 abilityStatus = AbilityStatus.COMPLETE;
+                revertAllTempDisplayBlocks();
             } else {
                 for (TempDisplayBlock tdb : blocks) {
-                    tdb.moveTo(tdb.getBlockDisplay().getLocation().add(0, 0.1 * speed, 0));
+                    tdb.moveTo(tdb.getBlockDisplay().getLocation().add(0, 0.2 * speed, 0));
                 }
-                currentHeight += 0.1 * speed;
 
-                Entities.getEntitiesAroundPoint(origin.clone().add(0,currentHeight,0), hitbox).forEach(entity -> entity.setVelocity(new Vector(0, 0.1 * speed, 0)));
+                if ( ! solidBlocks.stream().map(tempBlock -> tempBlock.getBlock()).collect(Collectors.toSet()).contains(origin.clone().add(0,currentHeight,0).getBlock())) {
+                    if (((int) currentHeight) >= 1) {
+                        TempDisplayBlock tdb = blocks.get(((int) currentHeight) - 1);
+                        solidBlocks.add(new TempBlock(tdb.getBlockDisplay().getLocation().getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true));
+                    }
+                }
+                currentHeight += 0.2 * speed;
+
+                Entities.getEntitiesAroundPoint(origin.clone().add(0,currentHeight,0), hitbox).forEach(entity -> entity.setVelocity(new Vector(0, 0.2 * speed, 0)));
             }
         }
 
         if (isFalling && currentHeight > 0 && abilityStatus !=AbilityStatus.DROPPED) {
             for (TempDisplayBlock tdb : blocks) {
-                tdb.moveTo(tdb.getBlockDisplay().getLocation().subtract(0, 0.1 * speed, 0));
+                tdb.moveTo(tdb.getBlockDisplay().getLocation().subtract(0, 0.2 * speed, 0));
             }
-            currentHeight -= 0.1 * speed;
+            currentHeight -= 0.2 * speed;
         }
         if (isFalling && currentHeight <= 0){
             abilityStatus = AbilityStatus.DROPPED;
@@ -127,6 +132,12 @@ public class RaiseBlockPillar extends CoreAbility {
         for (TempDisplayBlock tdb : blocks) {
             tdb.revert();
         }
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        revertAllTempDisplayBlocks();
     }
 
     @Override

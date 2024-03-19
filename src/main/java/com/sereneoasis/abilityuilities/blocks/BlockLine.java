@@ -18,20 +18,20 @@ import org.bukkit.util.Vector;
 
 public class BlockLine extends CoreAbility {
 
-    private final String name;
+    protected final String name;
 
-    private Location origin, loc;
+    protected Location origin, loc;
 
-    private Vector dir;
+    protected Vector dir;
 
 
-    private TempDisplayBlock glowingSource;
+    protected TempDisplayBlock glowingSource;
 
-    private boolean directable;
+    protected boolean directable;
 
-    private Material type;
+    protected Material type;
 
-    private Vector offsetAdjustment = new Vector(-size/2, size/4, -size/2);
+    protected Vector offsetAdjustment = new Vector(-size/2, size/4, -size/2);
 
     public BlockLine(Player player, String name, Color color, boolean directable) {
         super(player, name);
@@ -71,7 +71,7 @@ public class BlockLine extends CoreAbility {
         }
     }
 
-    private void getNextLoc() {
+    protected void getNextLoc() {
         if (directable) {
             dir = player.getEyeLocation().getDirection().setY(0).normalize();
         }

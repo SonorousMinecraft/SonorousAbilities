@@ -437,7 +437,7 @@ public class ConfigManager {
                 2, 1.0, 15, 0, 3, 0, 0);
 
         saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "description", "instructions",
-                0, 5000, 0,
+                0, 5000, 20000,
                 2, 1.0, 0, 35, 2, 10, 1.0);
 
         saveConfigValuesAbility(earth, "Wall", EARTH.toString(), "description", "instructions",

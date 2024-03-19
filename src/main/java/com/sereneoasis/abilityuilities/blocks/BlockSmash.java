@@ -10,6 +10,7 @@ import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -34,6 +35,8 @@ public class BlockSmash extends CoreAbility {
 
     private DisplayBlock displayBlock;
 
+    private Material type;
+
     private Set<LivingEntity> damagedSet = new HashSet<>();
     
 
@@ -42,14 +45,23 @@ public class BlockSmash extends CoreAbility {
 
         this.name = name;
         this.displayBlock = displayBlock;
-        this.size = size;
-
         loc = origin.clone();
         smash = new HashMap<>();
         smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
         start();
-
     }
+
+    public BlockSmash(Player player, String name,Location origin, Material type ) {
+        super(player, name);
+
+        this.name = name;
+        this.type = type;
+        loc = origin.clone();
+        smash = new HashMap<>();
+        smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
+        start();
+    }
+
 
     @Override
     public void progress() {
@@ -68,7 +80,12 @@ public class BlockSmash extends CoreAbility {
                 return;
             }
             loc.add(player.getEyeLocation().getDirection().multiply(speed));
-            smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
+            if (displayBlock != null) {
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
+            }
+            else {
+                smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
+            }
             damagedSet.addAll(AbilityDamage.damageSeveralExceptReturnHit(loc, this, player, damagedSet, true, player.getEyeLocation().getDirection()));
 
         }

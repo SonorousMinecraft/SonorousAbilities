@@ -81,6 +81,10 @@ public class RaiseBlock extends CoreAbility {
         return block.getBlockDisplay();
     }
 
+    public TempDisplayBlock getBlock() {
+        return block;
+    }
+
     @Override
     public void remove() {
         super.remove();
