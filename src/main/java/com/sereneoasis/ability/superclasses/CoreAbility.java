@@ -43,18 +43,6 @@ public abstract class CoreAbility implements Ability {
 
     protected double damage, hitbox, radius, range, speed, sourceRange, size;
 
-    public double getHitbox() {
-        return hitbox;
-    }
-
-    public double getDamage() {
-        return damage;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
     private int id;
 
     private static int idCounter = Integer.MIN_VALUE;
@@ -64,8 +52,6 @@ public abstract class CoreAbility implements Ability {
         this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
 
         initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
-
-
     }
 
     public CoreAbility(final Player player, String name) {

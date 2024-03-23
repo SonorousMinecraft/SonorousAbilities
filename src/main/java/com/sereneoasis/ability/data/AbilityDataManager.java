@@ -44,12 +44,9 @@ public class AbilityDataManager {
                     abilityDataMap.put(ability, abilityData);
                 }
             }
-
-
         }
-
-        List<Archetype> comboHaving = List.of(new Archetype[]{Archetype.OCEAN, Archetype.WAR, Archetype.EARTH});
-        for (Archetype archetype : comboHaving) {
+        
+        for (Archetype archetype : Archetype.values()) {
             config = ConfigManager.getConfig(archetype).getConfig();
 
             if (config.getConfigurationSection(archetype.toString() + ".combo") != null) {
