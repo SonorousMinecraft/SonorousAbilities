@@ -3,16 +3,10 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Jump;
 import com.sereneoasis.abilityuilities.velocity.Levitate;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.TDBs;
-import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class CloudStep extends CoreAbility {
 

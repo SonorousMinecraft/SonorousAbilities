@@ -7,7 +7,6 @@ import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.ParticleStyles;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

@@ -6,9 +6,7 @@ import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 

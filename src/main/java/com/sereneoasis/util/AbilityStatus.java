@@ -20,6 +20,8 @@ public enum AbilityStatus {
 
     MOVING,
     ATTACKING,
-    SHOOTING
+    SHOOTING,
+    ATTACHED,
+    DROPPED
 
 }

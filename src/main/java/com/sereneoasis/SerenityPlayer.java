@@ -192,6 +192,10 @@ public class SerenityPlayer {
         }
     }
 
+    public static void removePlayerFromMap(Player player){
+        SERENITY_PLAYER_MAP.remove(player.getUniqueId());
+    }
+
 
     public static void upsertPlayer(SerenityPlayer serenityPlayer) {
 

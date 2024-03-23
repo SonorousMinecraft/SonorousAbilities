@@ -5,7 +5,6 @@ import com.sereneoasis.abilityuilities.particles.Sweep;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class HeavenSlash extends CoreAbility {

@@ -9,7 +9,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Sakrajin
@@ -35,6 +38,8 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private boolean clockwise;
 
+    private List<TempDisplayBlock>blocks = new ArrayList<>();
+
     public BlockRingAroundPlayer(Player player, String user, Location startLoc, DisplayBlock type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
 
@@ -47,6 +52,11 @@ public class BlockRingAroundPlayer extends CoreAbility {
         loc = startLoc;
         this.dir = Vectors.getDirectionBetweenLocations(startLoc, player.getEyeLocation()).setY(0).normalize();
         rotation = Math.round(player.getEyeLocation().getYaw());
+
+        for (int i = 0; i < rotatePerTick; i++){
+            blocks.add(new TempDisplayBlock(startLoc, type, 60000,  size));
+        }
+
         start();
     }
 
@@ -54,14 +64,15 @@ public class BlockRingAroundPlayer extends CoreAbility {
     public void progress() {
 
         dir = player.getEyeLocation().getDirection().setY(0).normalize();
-
+        int arcDegrees = (int) ( (rotatePerTick * size/3 * 360) / (2 * Math.PI * ringSize));
         List<Location> locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
-                rotation, rotation + rotatePerTick, clockwise);
+                rotation, rotation + arcDegrees, clockwise);
         loc = locs.get(locs.size() - 1);
 
-        for (Location point : locs) {
-            new TempDisplayBlock(point, type, 200, Math.random() * size);
+        for (int i = 0; i < rotatePerTick; i++){
+            blocks.get(i).moveTo(locs.get(i));
         }
+
 
         rotation += rotatePerTick;
 //        List<Location> currentLocs = Locations.getCircle(player.getEyeLocation(), radius, 360)
@@ -74,6 +85,12 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
         //new TempDisplayBlock(loc, type.createBlockData(), 500, 1);
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500, false);
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        blocks.forEach(TempDisplayBlock::revert);
     }
 
     public void setOrientation(int orientation) {

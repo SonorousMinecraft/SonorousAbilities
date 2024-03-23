@@ -1,14 +1,10 @@
 package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.*;
-import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;

@@ -176,46 +176,50 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.8, 3, 30, 1.5, 10, 0.3);
+                2, 0.9, 3, 40, 1.3, 10, 0.9);
 
         saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.6, 2.0, 20, 1.7, 10, 0.3);
+                2, 0.9, 2.0, 20, 1.2, 10, 0.9);
 
-        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 10000,
-                4, 0.5, 5, 20, 1, 10, 0.2);
+//        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 10000,
+//                4, 0.5, 2, 20, 1, 10, 0.4);
 
         saveConfigValuesAbility(ocean, "FrostBite", Archetype.OCEAN.toString(), "description", "instructions",
                 5000, 5000, 0,
-                2, 1.0, 8, 20, 2.0, 10, 0);
+                2, 1.0, 8, 20, 2.0, 10, 0.9);
 
-        saveConfigValuesAbility(ocean, "GlacierBreath", Archetype.OCEAN.toString(), "description", "instructions",
-                2000, 5000, 10000,
-                2, 0.5, 2, 10, 1, 0, 0.5);
-
-        saveConfigValuesAbility(ocean, "Blizzard", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "WaterWhip", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                1, 0.8, 6, 15, 1.5, 0, 0.2);
+                2, 1.2, 0, 30, 1.7, 10, 1.2);
 
-        saveConfigValuesAbility(ocean, "Tsunami", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 5000,
-                0, 0, 5, 0, 1.0, 0, 0.4);
+//        saveConfigValuesAbility(ocean, "GlacierBreath", Archetype.OCEAN.toString(), "description", "instructions",
+//                2000, 5000, 10000,
+//                2, 0.5, 2, 10, 1, 0, 0.5);
 
-        ArrayList<ComboManager.AbilityInformation> snowStormAbilities = new ArrayList<>();
-        snowStormAbilities.add(0, new ComboManager.AbilityInformation("Blizzard", ClickType.SHIFT_LEFT));
-        snowStormAbilities.add(1, new ComboManager.AbilityInformation("Torrent", ClickType.LEFT));
-
-        saveConfigValuesCombo(ocean, "SnowStorm", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 5000,
-                0, 0, 15, 0, 0.5, 0, 0, snowStormAbilities);
-
-        ArrayList<ComboManager.AbilityInformation> blackIceAbilities = new ArrayList<>();
-        blackIceAbilities.add(0, new ComboManager.AbilityInformation("GlacierBreath", ClickType.RIGHT));
-
-        saveConfigValuesCombo(ocean, "BlackIce", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 15000,
-                0, 0, 20, 0, 0.5, 5, 0, blackIceAbilities);
+//        saveConfigValuesAbility(ocean, "Blizzard", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 0,
+//                1, 0.8, 6, 15, 1.5, 0, 0.2);
+//
+//        saveConfigValuesAbility(ocean, "Tsunami", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 5000,
+//                0, 0, 5, 0, 1.0, 0, 0.4);
+//
+//        ArrayList<ComboManager.AbilityInformation> snowStormAbilities = new ArrayList<>();
+//        snowStormAbilities.add(0, new ComboManager.AbilityInformation("Blizzard", ClickType.SHIFT_LEFT));
+//        snowStormAbilities.add(1, new ComboManager.AbilityInformation("Torrent", ClickType.LEFT));
+//
+//        saveConfigValuesCombo(ocean, "SnowStorm", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 5000,
+//                0, 0, 15, 0, 0.5, 0, 0, snowStormAbilities);
+//
+//        ArrayList<ComboManager.AbilityInformation> blackIceAbilities = new ArrayList<>();
+//        blackIceAbilities.add(0, new ComboManager.AbilityInformation("GlacierBreath", ClickType.RIGHT));
+//
+//        saveConfigValuesCombo(ocean, "BlackIce", Archetype.OCEAN.toString(), "description", "instructions",
+//                0, 5000, 15000,
+//                0, 0, 20, 0, 0.5, 5, 0, blackIceAbilities);
 
         Set<Tag<Material>> oceanTags = new HashSet<>();
         oceanTags.add(Tag.ICE);
@@ -328,31 +332,69 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(war, "Tether", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                0, 1.0, 0.5, 20, 2, 0, 0);
+                0, 1.0, 0.5, 40, 3, 0, 2.0);
 
         saveConfigValuesAbility(war, "Jab", WAR.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 0, 0, 10, 1.5, 0, 0);
+                2, 1, 0, 10, 1.5, 0, 0);
+
+
+        ArrayList<ComboManager.AbilityInformation> flickerJabAbilities = new ArrayList<>();
+        flickerJabAbilities.add(0, new ComboManager.AbilityInformation("Jab", ClickType.LEFT));
+        flickerJabAbilities.add(1, new ComboManager.AbilityInformation("Jab", ClickType.LEFT));
+        flickerJabAbilities.add(2, new ComboManager.AbilityInformation("Jab", ClickType.SHIFT_LEFT));
+
+        saveConfigValuesCombo(war, "FlickerJab", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1, 0, 10, 0.5, 0, 0, flickerJabAbilities);
+
+        saveConfigValuesAbility(war, "Cross", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.2, 0, 10, 0.4, 0, 0);
+
+        saveConfigValuesAbility(war, "Hook", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.2, 0, 10, 0.2, 0, 0);
+
+//        ArrayList<ComboManager.AbilityInformation> uppercutAbilities = new ArrayList<>();
+//        uppercutAbilities.add(0, new ComboManager.AbilityInformation("Jab", ClickType.SHIFT_LEFT));
+//        uppercutAbilities.add(1, new ComboManager.AbilityInformation("Hook", ClickType.SHIFT_LEFT));
+//
+        saveConfigValuesCombo(war, "Uppercut", WAR.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1, 0, 10, 0.5, 0, 0, new ArrayList<>());
+
+
+
+
 
         saveConfigValuesAbility(war, "Rocket", WAR.toString(), "description", "instructions",
                 0, 5000, 0,
-                4, 3.0, 0, 30, 0.8, 0, 0);
+                4, 3.0, 0, 30, 0.8, 0, 3.0);
 
         saveConfigValuesAbility(war, "Formless", Archetype.WAR.toString(), "description", "instructions",
                 2000, 5000, 30000,
-                0, 0, 0, 0, 1, 0, 0);
+                0.5, 1.0, 0, 30, 1.3, 0, 0.8);
 
         saveConfigValuesAbility(war, "Katana", Archetype.WAR.toString(), "description", "instructions",
-                2000, 5000, 30000,
-                0, 0, 0, 0, 1, 0, 1.5);
+                2000, 5000, 10000,
+                2, 1, 0, 0, 0, 0, 1.2);
 
         saveConfigValuesAbility(war, "Spear", WAR.toString(), "description", "instructions",
-                0, 5000, 0,
+                0, 3000, 0,
                 4, 1.0, 0, 30, 1.5, 0, 1.5);
 
         saveConfigValuesAbility(war, "Grenades", WAR.toString(), "description", "instructions",
                 2000, 1000, 0,
-                4, 2.0, 0, 30, 1.5, 0, 1);
+                4, 2.0, 0, 30, 1.5, 0, 2.0);
+
+        saveConfigValuesAbility(war, "Jetpack", Archetype.WAR.toString(), "description", "instructions",
+                1000, 10000, 5000,
+                0, 0, 0, 0, 0.5, 0, 1.5);
+
+//        saveConfigValuesAbility(war, "Crossbow", Archetype.WAR.toString(), "description", "instructions",
+//                2000, 5000, 30000,
+//                0, 0, 0, 0, 1, 0, 1.5);
 
         saveAttributeValuesArchetype(war, WAR, 0.5, 0.5, 0.5, 0.5,
                 1.0, 0.5, 0.1);
@@ -368,42 +410,61 @@ public class ConfigManager {
         earthTags.add(Tag.DIRT);
         earthTags.add(Tag.STONE_BRICKS);
         earthTags.add(Tag.SAND);
+        earthTags.add(Tag.TERRACOTTA);
+        earthTags.add(Tag.CONCRETE_POWDER);
+        earthTags.add(Tag.BASE_STONE_OVERWORLD);
+        earthTags.add(Tag.BASE_STONE_NETHER);
         Set<Material> earthBlocks = new HashSet<>();
         earthBlocks.add(Material.GRASS_BLOCK);
+        earthBlocks.add(Material.GRAVEL);
 
         saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
 
         saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 0, 20, 1, 10, 0.8);
+                0, 1000, 0,
+                2, 1.0, 0, 30, 2.0, 10, 0.8);
 
         saveConfigValuesAbility(earth, "Accretion", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 0, 20, 1, 10, 1.5);
+                0, 5000, 0,
+                1, 0.6, 0, 40, 1.2, 5, 1.5);
 
         saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 15, 0, 1, 0, 0.4);
+                3000, 10000, 0,
+                2, 1.0, 15, 0, 3, 0, 0.4);
 
         saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
+                0, 3000, 0,
                 2, 1.0, 15, 0, 3, 0, 0);
 
         saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "description", "instructions",
-                0, 2000, 0,
-                2, 1.0, 0, 20, 1, 10, 1.2);
+                0, 5000, 20000,
+                2, 1.0, 0, 35, 2, 10, 1.0);
 
         saveConfigValuesAbility(earth, "Wall", EARTH.toString(), "description", "instructions",
                 0, 2000, 20000,
-                0, 1.0, 0, 10, 1, 10, 1);
+                0, 1.5, 0, 6, 5, 10, 1);
+
+
+        ArrayList<ComboManager.AbilityInformation> bulwarkAbilities = new ArrayList<>();
+        bulwarkAbilities.add(0, new ComboManager.AbilityInformation("Wall", ClickType.SHIFT_LEFT));
+
+
+        saveConfigValuesCombo(earth, "Bulwark", EARTH.toString(), "description", "instructions",
+                0, 2000, 20000,
+                0, 1.5, 0, 6, 5, 10, 1, bulwarkAbilities);
 
         saveConfigValuesAbility(earth, "EarthSurf", EARTH.toString(), "description", "instructions",
-                0, 5000, 5000,
+                0, 5000, 10000,
                 0, 0, 5, 0, 1.0, 0, 0.5);
 
         saveConfigValuesAbility(earth, "Boulder", Archetype.EARTH.toString(), "description", "instructions",
-                0, 5000, 10000,
-                4, 0.5, 5, 20, 1, 10, 0.2);
+                0, 15000, 20000,
+                4, 0, 3, 50, 1, 10, 0.5);
+
+
+        saveConfigValuesAbility(earth, "StoneShred", Archetype.EARTH.toString(), "description", "instructions",
+                0, 15000, 20000,
+                4, 0, 3, 50, 1, 10, 0);
 
         saveAttributeValuesArchetype(earth, EARTH, 0.5, 0.5, 0.5, 0.5,
                 1.0, 1.0, 0.2);

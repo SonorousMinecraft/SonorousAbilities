@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.HashSet;

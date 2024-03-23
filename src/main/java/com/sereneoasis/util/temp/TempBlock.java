@@ -1,6 +1,7 @@
 package com.sereneoasis.util.temp;
 
 import com.sereneoasis.archetypes.DisplayBlock;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -97,5 +98,13 @@ public class TempBlock {
 
     public long getRevertTime() {
         return revertTime;
+    }
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public Location getLoc(){
+        return block.getLocation();
     }
 }

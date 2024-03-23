@@ -5,11 +5,27 @@ import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.displays.SerenityBoard;
+import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.PacketUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerConnection;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.WalkAnimationState;
+import net.minecraft.world.entity.monster.Spider;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftSpider;
+import org.bukkit.entity.*;
 
 import java.util.Arrays;
 
@@ -27,6 +43,39 @@ public class SerenityCommand implements CommandExecutor {
             SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
             if (sPlayer != null) {
                 switch (strings[0]) {
+                    case "test":
+                        PacketUtils.upsideDownArmorStand(player);
+                        return true;
+                    case "flip":
+                        for (Entity e : Entities.getEntitiesAroundPoint(player.getLocation(), 10)){
+                            PacketUtils.flipEntity(player, e);
+                        }
+                        return true;
+                    case "dismount":
+                        if (player.getVehicle() instanceof LivingEntity rideable){
+                            rideable.eject();
+
+                        }
+                        return true;
+                    case "swing":
+                        CraftPlayer craftPlayer = (CraftPlayer) player;
+                        ServerPlayerConnection playerConnection = craftPlayer.getHandle().connection;
+
+                        //ClientboundAnimatePacket clientboundAnimatePacket = new ClientboundAnimatePacket(craftPlayer.getHandle(),0 );
+//                        ClientboundAnimatePacket clientboundAnimatePacket2 = new ClientboundAnimatePacket(craftPlayer.getHandle(),3 );
+//
+//                        //playerConnection.send(clientboundAnimatePacket);
+//                        playerConnection.send(clientboundAnimatePacket2);
+
+                        //craftPlayer.playEffect(player.getEyeLocation().add(player.getEyeLocation().getDirection()), Effect.END_PORTAL_FRAME_FILL, null );
+                        ServerPlayer nmsPlayer = craftPlayer.getHandle();
+                        //nmsPlayer.setMainArm(HumanoidArm.LEFT);
+                        //nmsPlayer.setDiscardFriction(true);
+                        //nmsPlayer.startAutoSpinAttack(100);
+                        //nmsPlayer.swing(InteractionHand.OFF_HAND, true);
+                        //nmsPlayer.startSleeping(BlockPos.containing(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+                        //player.swingOffHand();
+                        return true;
                     case "choose":
                         if (strings.length == 1) {
                             player.sendMessage("What archetype do you want to choose?");

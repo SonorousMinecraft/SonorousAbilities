@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -63,7 +64,11 @@ public class BlockSphereBlast extends CoreAbility {
             spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, size),
                     DisplayBlock.SUN, size);
 
-            DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+            boolean isFinished = AbilityDamage.damageSeveral(loc, this, player, true, player.getEyeLocation().getDirection());
+
+            if (isFinished){
+                this.abilityStatus = AbilityStatus.COMPLETE;
+            }
 
         }
     }

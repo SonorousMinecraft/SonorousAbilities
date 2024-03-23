@@ -13,17 +13,20 @@ import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
@@ -33,6 +36,7 @@ import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
  * Main listener for all serenity events
  */
 public class SerenityListener implements Listener {
+
 
 
     @EventHandler
@@ -45,6 +49,8 @@ public class SerenityListener implements Listener {
             SerenityPlayer.initialisePlayer(player);
 
         }, 150L);
+
+        Serenity.getPacketListener().injectPlayer(player);
     }
 
 
@@ -62,15 +68,54 @@ public class SerenityListener implements Listener {
 
         removeAttributePlayer(player, serenityPlayer);
 
+        Serenity.getPacketListener().removePlayer(player);
+        SerenityPlayer.removePlayerFromMap(player);
 
     }
 
     @EventHandler
-    public void onSwing(PlayerInteractEvent e) throws ReflectiveOperationException {
+    public void onHitEntity(EntityDamageByEntityEvent e){
+        if (! (e.getDamager() instanceof Player)){
+            return;
+        }
+
+        Player player = (Player) e.getDamager();
+
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        if (sPlayer == null) {
+            return;
+        }
+        String ability = sPlayer.getHeldAbility();
+//        boolean isValidAttack = true;
+//
+//        switch (ability){
+//            case "Jab":
+//                new Jab(player);
+//                break;
+//            case "Hook":
+//                new Hook(player);
+//                break;
+//            case "Cross":
+//                new Cross(player);
+//                break;
+//            default:
+//                isValidAttack = false;
+//        }
+//
+//        if (isValidAttack) {
+//            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+//            e.setCancelled(true);
+//        }
+       // Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, player.getInventory().getItemInMainHand(), null, null, EquipmentSlot.HAND));
+    }
+
+    @EventHandler
+    public void onRightClick(PlayerInteractEvent e ) throws ReflectiveOperationException{
         Player player = e.getPlayer();
         if (player == null) {
             return;
         }
+
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
         if (sPlayer == null) {
             return;
@@ -84,6 +129,33 @@ public class SerenityListener implements Listener {
             if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.RIGHT);
             }
+        }
+
+        switch(ability) {
+            case "Formless":
+                if (CoreAbility.hasAbility(e.getPlayer(), Formless.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Formless.class).setHasClicked(e.getAction());
+                }
+                break;
+        }
+    }
+
+    @EventHandler
+    public void onSwing(PlayerAnimationEvent e) throws ReflectiveOperationException {
+        Player player = e.getPlayer();
+        if (player == null) {
+            return;
+        }
+
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        if (sPlayer == null) {
+            return;
+        }
+        String ability = sPlayer.getHeldAbility();
+
+
+        if (ability != null) {
+            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
         }
         switch (ability) {
             case "Torrent":
@@ -100,11 +172,11 @@ public class SerenityListener implements Listener {
                     new Gimbal(player);
                 }
                 break;
-            case "Iceberg":
-                if (CoreAbility.hasAbility(e.getPlayer(), Iceberg.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Iceberg.class).setHasClicked();
-                }
-                break;
+//            case "Iceberg":
+//                if (CoreAbility.hasAbility(e.getPlayer(), Iceberg.class)) {
+//                    CoreAbility.getAbility(e.getPlayer(), Iceberg.class).setHasClicked();
+//                }
+//                break;
             case "FrostBite":
                 if (CoreAbility.hasAbility(e.getPlayer(), FrostBite.class)) {
                     CoreAbility.getAbility(e.getPlayer(), FrostBite.class).setSourceBlock2();
@@ -113,18 +185,23 @@ public class SerenityListener implements Listener {
                     new FrostBite(player);
                 }
                 break;
-            case "GlacierBreath":
-                if (CoreAbility.hasAbility(player, GlacierBreath.class)) {
-                    CoreAbility.getAbility(player, GlacierBreath.class).onClick();
+//            case "GlacierBreath":
+//                if (CoreAbility.hasAbility(player, GlacierBreath.class)) {
+//                    CoreAbility.getAbility(player, GlacierBreath.class).onClick();
+//                }
+//                break;
+//            case "Blizzard":
+//                if (CoreAbility.hasAbility(e.getPlayer(), Blizzard.class)) {
+//                    CoreAbility.getAbility(e.getPlayer(), Blizzard.class).setHasClicked();
+//                }
+//                break;
+//            case "Tsunami":
+//                new Tsunami(player);
+//                break;
+            case "WaterWhip":
+                if (CoreAbility.hasAbility(e.getPlayer(), WaterWhip.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), WaterWhip.class).setHasClicked();
                 }
-                break;
-            case "Blizzard":
-                if (CoreAbility.hasAbility(e.getPlayer(), Blizzard.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Blizzard.class).setHasClicked();
-                }
-                break;
-            case "Tsunami":
-                new Tsunami(player);
                 break;
             case "CruelSun":
                 if (CoreAbility.hasAbility(e.getPlayer(), CruelSun.class)) {
@@ -193,6 +270,12 @@ public class SerenityListener implements Listener {
             case "Jab":
                 new Jab(player);
                 break;
+            case "Hook":
+                new Hook(player);
+                break;
+            case "Cross":
+                new Cross(player);
+                break;
 
             case "Rocket":
                 if (CoreAbility.hasAbility(e.getPlayer(), Rocket.class)) {
@@ -201,11 +284,7 @@ public class SerenityListener implements Listener {
                     new Rocket(player);
                 }
                 break;
-            case "Formless":
-                if (CoreAbility.hasAbility(e.getPlayer(), Formless.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Formless.class).setHasClicked(e.getAction());
-                }
-                break;
+
             case "Katana":
                 if (CoreAbility.hasAbility(e.getPlayer(), Katana.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Katana.class).setHasClicked();
@@ -247,6 +326,11 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Boulder.class).setHasClicked();
                 }
                 break;
+            case "StoneShred":
+                if (CoreAbility.hasAbility(e.getPlayer(), StoneShred.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), StoneShred.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -281,15 +365,18 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasSourced();
                 }
                 break;
-            case "Iceberg":
-                new Iceberg(player);
+            case "WaterWhip":
+                new WaterWhip(player);
                 break;
-            case "Blizzard":
-                new Blizzard(player);
-                break;
-            case "GlacierBreath":
-                new GlacierBreath(player);
-                break;
+//            case "Iceberg":
+//                new Iceberg(player);
+//                break;
+//            case "Blizzard":
+//                new Blizzard(player);
+//                break;
+//            case "GlacierBreath":
+//                new GlacierBreath(player);
+//                break;
             case "CruelSun":
                 new CruelSun(player);
                 break;
@@ -334,6 +421,12 @@ public class SerenityListener implements Listener {
             case "Katana":
                 new Katana(player);
                 break;
+            case "Jetpack":
+                new Jetpack(player);
+                break;
+//            case "Crossbow":
+//                new Crossbow(player);
+//                break;
             case "RockKick":
                 new RockKick(player);
                 break;
@@ -351,6 +444,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Boulder":
                 new Boulder(player);
+                break;
+            case "StoneShred":
+                new StoneShred(player);
                 break;
         }
     }
@@ -381,6 +477,77 @@ public class SerenityListener implements Listener {
                 if (sPlayer.getArchetype() == Archetype.SUN){
                     event.setCancelled(true);
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMoveEvent(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        if (sPlayer == null) {
+            return;
+        }
+        String ability = sPlayer.getHeldAbility();
+
+    }
+
+    @EventHandler
+    public void onPlayerToggleFlight(EntityToggleGlideEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (player == null) {
+                return;
+            }
+            SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+            if (sPlayer == null) {
+                return;
+            }
+            String ability = sPlayer.getHeldAbility();
+//            if (CoreAbility.hasAbility(player, Jetpack.class)) {
+//                if (!event.isGliding()) {
+//                    event.setCancelled(true);
+//                }
+//            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerOpenInventory(InventoryOpenEvent event) {
+            Player player = (Player) event.getPlayer();
+            if (player == null) {
+                return;
+            }
+            SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+            if (sPlayer == null) {
+                return;
+            }
+            String ability = sPlayer.getHeldAbility();
+            if (CoreAbility.hasAbility(player, Jetpack.class)) {
+                player.closeInventory();
+                event.setCancelled(true);
+            }
+
+    }
+
+    @EventHandler
+    public void onPlayerTryToRide(PlayerInteractEntityEvent event){
+        if (event.getRightClicked() instanceof LivingEntity rideable && event.getPlayer().getVehicle() ==null ){
+            Player player = event.getPlayer();
+            rideable.addPassenger(player);
+            //rideable.setAI(false);
+        }
+    }
+
+    @EventHandler
+    public void onEntityDismount(EntityDismountEvent event){
+        if (event.getEntity() instanceof Player player && player.isSneaking()) {
+            event.setCancelled(true);
+        } else{
+            if (event.getEntity() instanceof LivingEntity rideable){
+                //rideable.setAI(true);
             }
         }
     }

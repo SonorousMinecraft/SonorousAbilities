@@ -42,7 +42,7 @@ public class RaiseBlock extends CoreAbility {
                 this.origin = Blocks.getFacingBlockLoc(player, sourceRange);
                 Blocks.selectSourceAnimation(origin.clone().subtract(0,size,0), Color.GREEN, size);
                 this.loc = origin.clone();
-                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, size);
+                block = new TempDisplayBlock(loc.clone(), source.getType(), 60000, size);
                 start();
             }
         } else {
@@ -59,7 +59,7 @@ public class RaiseBlock extends CoreAbility {
                 this.origin = source.getLocation();
                 Blocks.selectSourceAnimation(origin.clone().subtract(0,size,0), Color.GREEN, size);
                 this.loc = origin.clone();
-                block = new TempDisplayBlock(loc.clone().add(offsetAdjustment), source.getType(), 60000, size);
+                block = new TempDisplayBlock(loc.clone(), source.getType(), 60000, size);
                 start();
             }
         }
@@ -69,8 +69,8 @@ public class RaiseBlock extends CoreAbility {
     public void progress() throws ReflectiveOperationException {
         if (abilityStatus != AbilityStatus.SOURCED) {
             if (loc.getY() - origin.getY() < height) {
-                loc.add(new Vector(0, 0.1, 0));
-                block.teleport(loc.clone().add(offsetAdjustment));
+                loc.add(new Vector(0, 0.1 * speed, 0));
+                block.moveTo(loc.clone());
             } else {
                 abilityStatus = AbilityStatus.SOURCED;
             }
@@ -79,6 +79,10 @@ public class RaiseBlock extends CoreAbility {
 
     public BlockDisplay getBlockEntity() {
         return block.getBlockDisplay();
+    }
+
+    public TempDisplayBlock getBlock() {
+        return block;
     }
 
     @Override

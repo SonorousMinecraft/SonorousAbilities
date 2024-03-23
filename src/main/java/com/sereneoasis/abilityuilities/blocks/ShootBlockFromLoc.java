@@ -3,6 +3,7 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
@@ -47,14 +48,16 @@ public class ShootBlockFromLoc extends CoreAbility {
         if (abilityStatus == AbilityStatus.SHOT) {
 
             loc.add(dir.clone().multiply(speed));
-            block.teleport(loc);
+            block.moveTo(loc);
 
             if (directable) {
                 dir = player.getEyeLocation().getDirection().normalize();
             }
 
-            DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
-
+            boolean isFinished = AbilityDamage.damageOne(loc, this, player, true, dir);
+            if (isFinished){
+                this.abilityStatus = AbilityStatus.COMPLETE;
+            }
 
             if (loc.distance(player.getEyeLocation()) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;

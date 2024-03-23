@@ -44,7 +44,7 @@ public class Grenades extends CoreAbility {
             long explodeTime = instance.getValue();
 
             if (System.currentTimeMillis() > explodeTime) {
-                Particles.spawnParticle(Particle.EXPLOSION_HUGE, grenade.getLoc(), 10, 0.2, 0);
+                Particles.spawnParticle(Particle.EXPLOSION_LARGE, grenade.getLoc(), 10, size, 0);
                 for (Entity e : Entities.getEntitiesAroundPoint(grenade.getLoc(), hitbox)) {
                     if (e instanceof LivingEntity target) {
                         DamageHandler.damageEntity(target, player, this, damage);
@@ -69,7 +69,7 @@ public class Grenades extends CoreAbility {
             Iterator<ThrowItemDisplay> it = grenades.keySet().iterator();
             while (it.hasNext()) {
                 ThrowItemDisplay grenade = it.next();
-                Particles.spawnParticle(Particle.EXPLOSION_HUGE, grenade.getLoc(), 10, 0.2, 0);
+                Particles.spawnParticle(Particle.EXPLOSION_LARGE, grenade.getLoc(), 10, size, 0);
                 for (Entity e : Entities.getEntitiesAroundPoint(grenade.getLoc(), hitbox)) {
                     if (e instanceof LivingEntity target) {
                         DamageHandler.damageEntity(target, player, this, damage);
@@ -80,7 +80,7 @@ public class Grenades extends CoreAbility {
             }
         } else if (currentShots < shots) {
             grenades.put(new ThrowItemDisplay(player, name, player.getEyeLocation(),
-                    player.getEyeLocation().getDirection().clone(), Material.FIREWORK_STAR, 1, true, true), System.currentTimeMillis() + chargeTime);
+                    player.getEyeLocation().getDirection().clone(), Material.FIREWORK_STAR, size, size, true, true, true), System.currentTimeMillis() + chargeTime);
             currentShots++;
         }
     }

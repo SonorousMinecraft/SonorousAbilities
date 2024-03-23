@@ -37,7 +37,23 @@ public abstract class CoreAbility implements Ability {
         return abilityStatus;
     }
 
+    public void setAbilityStatus(AbilityStatus abilityStatus) {
+        this.abilityStatus = abilityStatus;
+    }
+
     protected double damage, hitbox, radius, range, speed, sourceRange, size;
+
+    public double getHitbox() {
+        return hitbox;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
 
     private int id;
 
@@ -110,7 +126,13 @@ public abstract class CoreAbility implements Ability {
 
     public static void progressAll() throws ReflectiveOperationException {
         for (CoreAbility abil : INSTANCES) {
-            abil.progress();
+            if (abil.player.isOnline()){
+                abil.progress();
+            }
+            else{
+                abil.remove();
+            }
+
         }
     }
 

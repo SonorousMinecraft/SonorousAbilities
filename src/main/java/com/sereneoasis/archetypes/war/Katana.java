@@ -2,14 +2,20 @@ package com.sereneoasis.archetypes.war;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.AbilityUtils;
+import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.methods.Display;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.Rotations;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.phys.Vec3;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftItemDisplay;
+import org.bukkit.entity.*;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
@@ -20,9 +26,17 @@ public class Katana extends CoreAbility {
 
     private ItemDisplay katana1, katana2;
 
-    private double arcAngle = 160, currentArcAngle, size = 1.5;
+    private double arcAngle = 144, currentArcAngle;
 
-    private Transformation defaultTransformation;
+
+    private ArmorStand armorStand;
+
+    private long lastSwingTime;
+
+    private long swingCooldown = 2000;
+
+
+
 
     public Katana(Player player) {
         super(player);
@@ -31,7 +45,10 @@ public class Katana extends CoreAbility {
             return;
         }
         abilityStatus = AbilityStatus.CHARGING;
+
+
         start();
+
     }
 
     @Override
@@ -46,54 +63,76 @@ public class Katana extends CoreAbility {
             if (player.isSneaking()) {
                 if (System.currentTimeMillis() > startTime + chargeTime) {
                     abilityStatus = AbilityStatus.CHARGED;
-                    katana1 = Display.createItemDisplay(Locations.getMainHandLocation(player), Material.IRON_SWORD, size, true);
-                    katana2 = Display.createItemDisplay(Locations.getOffHandLocation(player), Material.IRON_SWORD, size, true);
-                    defaultTransformation = katana1.getTransformation();
+                    this.armorStand = Display.createArmorStandClip(player.getEyeLocation());
+                    katana1 = Display.createItemDisplayOffset(player.getEyeLocation(), Material.IRON_SWORD, size, size, size, true, -0.55, -1.3, size/2);
+                    katana2 = Display.createItemDisplayOffset(player.getEyeLocation(), Material.IRON_SWORD, size, size, size, true, 0.55, -1.3, size/2);
+                    armorStand.addPassenger(katana1);
+                    armorStand.addPassenger(katana2);
+                    player.addPassenger(armorStand);
+
+                    this.lastSwingTime = System.currentTimeMillis();
                     player.setGlowing(true);
                 }
+
             } else {
                 this.remove();
             }
-        } else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.ATTACKING) {
-            Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(player.getEyeLocation().getYaw()));
-            katana1.teleport(Locations.getMainHandLocation(player).clone().add(offsetFix));
-            katana2.teleport(Locations.getOffHandLocation(player).clone().add(offsetFix));
+        } else if ((abilityStatus == AbilityStatus.CHARGED ) || (abilityStatus == AbilityStatus.ATTACKING) ) {
+
+            float yaw = player.getEyeLocation().getYaw();
+            float pitch = player.getEyeLocation().getPitch();
+            katana1.setRotation(yaw, pitch);
+            katana2.setRotation(yaw, pitch);
+
         }
+        if (abilityStatus == AbilityStatus.CHARGED){
+            if (System.currentTimeMillis() - lastSwingTime > swingCooldown){
+
+                Location attackLoc1 =  Locations.getMainHandLocation(player).clone().add(player.getEyeLocation().getDirection());
+                Location attackLoc2 =  Locations.getOffHandLocation(player).clone().add(player.getEyeLocation().getDirection());
+
+                Particles.spawnParticle(Particle.CRIT, attackLoc1,
+                        1, 0, 0);
+                Particles.spawnParticle(Particle.CRIT, attackLoc2,
+                        1, 0, 0);
+            }
+        }
+
         if (abilityStatus == AbilityStatus.ATTACKING) {
-            Transformation transformation = katana1.getTransformation();
-            Quaternionf quaternionf = transformation.getLeftRotation();
-            quaternionf.rotateZ((float) Math.toRadians(32));
-            currentArcAngle += 32;
-            katana1.setTransformation(transformation);
 
-            Transformation transformation2 = katana2.getTransformation();
-            Quaternionf quaternionf2 = transformation2.getLeftRotation();
-            quaternionf2.rotateZ((float) -Math.toRadians(32));
-            katana2.setTransformation(transformation2);
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 + 1 , 0, 0, -16 );
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, -0.55, -1.3, size/2 + 1, 0, 0, -16 );
+            currentArcAngle += 16;
 
-            Particles.spawnParticle(Particle.SWEEP_ATTACK, katana1.getLocation().clone().add(player.getEyeLocation().getDirection()),
+
+            Location attackLoc1 =  Locations.getMainHandLocation(player).clone().add(player.getEyeLocation().getDirection());
+            Location attackLoc2 =  Locations.getOffHandLocation(player).clone().add(player.getEyeLocation().getDirection());
+            Entities.getAffectedList(attackLoc1, hitbox, player).stream().forEach(entity -> DamageHandler.damageEntity(entity,player, this, damage));
+            Entities.getAffectedList(attackLoc2, hitbox, player).stream().forEach(entity -> DamageHandler.damageEntity(entity,player, this, damage));
+            Particles.spawnParticle(Particle.SWEEP_ATTACK, attackLoc1,
                     1, 0, 0);
-            Particles.spawnParticle(Particle.SWEEP_ATTACK, katana2.getLocation().clone().add(player.getEyeLocation().getDirection()),
+            Particles.spawnParticle(Particle.SWEEP_ATTACK, attackLoc2,
                     1, 0, 0);
             if (currentArcAngle > arcAngle) {
                 abilityStatus = AbilityStatus.CHARGED;
-                katana1.setTransformation(defaultTransformation);
-                katana2.setTransformation(defaultTransformation);
+
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 , 0, 0, (float) currentArcAngle );
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 , 0, -90, 0 );
+
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, 0.55, -1.3, size/2 , 0, 0, (float) currentArcAngle );
+                Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, 0.55, -1.3, size/2 , 0, 90, 0 );
             }
         }
     }
 
     public void setHasClicked() {
-        if (abilityStatus == AbilityStatus.CHARGED) {
-            Transformation transformation = katana1.getTransformation();
-            Quaternionf quaternionf = transformation.getLeftRotation();
-            quaternionf.rotateXYZ(0, (float) -Math.toRadians(90), (float) -Math.toRadians(80));
-            katana1.setTransformation(transformation);
+        if (abilityStatus == AbilityStatus.CHARGED && System.currentTimeMillis() - lastSwingTime > swingCooldown) {
 
-            Transformation transformation2 = katana2.getTransformation();
-            Quaternionf quaternionf2 = transformation2.getLeftRotation();
-            quaternionf2.rotateXYZ(0, (float) -Math.toRadians(90), (float) Math.toRadians(80));
-            katana2.setTransformation(transformation2);
+            lastSwingTime = System.currentTimeMillis();
+
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana1, size, -0.55, -1.3, size/2 , 0, 90, 0 );
+
+            Display.rotateItemDisplayProperlyWithOffsetDegs(katana2, size, 0.55, -1.3, size/2 , 0, -90, 0 );
 
             currentArcAngle = 0;
             abilityStatus = AbilityStatus.ATTACKING;
@@ -104,6 +143,8 @@ public class Katana extends CoreAbility {
     public void remove() {
         super.remove();
         katana1.remove();
+        katana2.remove();
+        player.setGlowing(false);
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.sereneoasis.util.methods;
 
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
  * @author Sakrajin
  * Methods which are related to vectors
+ * Velocity is in units of 1/8000 of a block per server tick (50ms); for example, -1343 would move (-1343 / 8000) = −0.167875 blocks per tick (or −3.3575 blocks per second).
  */
 public class Vectors {
 
@@ -68,4 +71,61 @@ public class Vectors {
         return rotate.multiply(Math.cos(angle)).add(thirdaxis.multiply(Math.sin(angle)));
     }
 
+    public static Vector getVectorToMainHand(Player player){
+        double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
+        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getMainHandLocation(player));
+    }
+
+
+
+    public static Vector getVectorToOffHand(Player player){
+        double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
+        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getOffHandLocation(player));
+    }
+
+    public static Vector getLeftSideNormalisedVector(Player player){
+        return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getLeftSide(player.getEyeLocation(), 1));
+    }
+
+    public static Vector getRightSideNormalisedVector(Player player){
+        return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getRightSide(player.getEyeLocation(), 1));
+    }
+
+    public static Vec3 getVec3FromVector(Vector vector) {
+        return new Vec3(vector.getX(), vector.getY(), vector.getZ());
+    }
+    
+    public static double getPitchDiff(Vector previousVec, Vector newVec, Player player){
+        return Math.toRadians(player.getLocation().setDirection(newVec).getPitch() - player.getLocation().setDirection(previousVec).getPitch());
+    }
+    
+    public static double getYawDiff(Vector previousVec, Vector newVec, Player player){
+        return Math.toRadians(player.getLocation().setDirection(newVec).getYaw() - player.getLocation().setDirection(previousVec).getYaw());
+    }
+
+    public static float getYaw(Vector vec, Player player){
+        return player.getLocation().setDirection(vec).getYaw();
+    }
+
+    public static float getPitch(Vector vec, Player player){
+        return player.getLocation().setDirection(vec).getPitch();
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

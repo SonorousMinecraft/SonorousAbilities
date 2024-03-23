@@ -29,30 +29,38 @@ public class Rocket extends CoreAbility {
         }
 
         origin = player.getEyeLocation().clone();
-        rocket = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.FIREWORK_ROCKET, 3, false, false);
+        rocket = new ShootItemDisplay(player, name, origin, origin.getDirection().clone(), Material.FIREWORK_ROCKET, size/2, size * 1.5,false, false, false);
         start();
     }
 
     @Override
     public void progress() throws ReflectiveOperationException {
+        Particles.spawnParticleOffset(Particle.FIREWORKS_SPARK, rocket.getArmorStand().getLocation(), 10, size/4, size/4, size/4, 0);
         if (rocket.getAbilityStatus() == AbilityStatus.COMPLETE) {
-            this.remove();
-            sPlayer.addCooldown(name, cooldown);
-            rocket.remove();
+            setHasClicked();
+
         }
 
     }
 
     public void setHasClicked() {
-        Particles.spawnParticle(Particle.EXPLOSION_HUGE, rocket.getLoc(), 10, 0.2, 0);
-        for (Entity e : Entities.getEntitiesAroundPoint(rocket.getLoc(), hitbox)) {
+        Particles.spawnParticle(Particle.EXPLOSION_HUGE, rocket.getArmorStand().getLocation(), 10, 0.2, 0);
+        Particles.spawnParticle(Particle.FLASH, rocket.getArmorStand().getLocation(), 1, 0.2, 0);
+        for (Entity e : Entities.getEntitiesAroundPoint(rocket.getArmorStand().getLocation(), hitbox)) {
             if (e instanceof LivingEntity target) {
                 DamageHandler.damageEntity(target, player, this, damage);
             }
         }
         this.remove();
+
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
         sPlayer.addCooldown(name, cooldown);
         rocket.remove();
+
     }
 
     @Override

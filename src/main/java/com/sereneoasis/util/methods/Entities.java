@@ -2,25 +2,16 @@ package com.sereneoasis.util.methods;
 
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Sakrajin
@@ -34,6 +25,11 @@ public class Entities {
 
     public static void applyPotionPlayer(Player player, PotionEffectType effect, int durationinms) {
         PotionEffect ef = new PotionEffect(effect, durationinms / 1000 * 20, 1, false, false, false);
+        player.addPotionEffect(ef);
+    }
+
+    public static void applyPotionPlayerAmplifier(Player player, PotionEffectType effect, int amplifier, int durationinms) {
+        PotionEffect ef = new PotionEffect(effect, durationinms / 1000 * 20, amplifier, false, false, false);
         player.addPotionEffect(ef);
     }
 
@@ -54,9 +50,13 @@ public class Entities {
         target.setVelocity(direction);
     }
 
+//    public static Collection<Entity>getNearbyEntities(Location loc, double radius){
+//        return loc.getWorld().getNearbyEntities(loc, radius, radius, radius).stream().filter(entity -> !(entity instanceof ArmorStand)).collect(Collectors.toSet());
+//    }
+
     public static Entity getAffected(Location loc, double radius) {
         Entity target = null;
-        for (Entity potential : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
+        for (Entity potential : getEntitiesAroundPoint(loc, radius)) {
             if (target == null) {
                 target = potential;
             } else {
@@ -70,7 +70,7 @@ public class Entities {
 
     public static Entity getAffected(Location loc, double radius, Player player) {
         Entity target = null;
-        for (Entity potential : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
+        for (Entity potential : getEntitiesAroundPoint(loc, radius)) {
             if (potential.getUniqueId() != player.getUniqueId()) {
                 if (target == null) {
                     target = potential;
@@ -84,10 +84,14 @@ public class Entities {
         return target;
     }
 
+    public static List<LivingEntity> getAffectedList(Location loc, double radius, Player player) {
+        return getEntitiesAroundPoint(loc,radius).stream().filter(entity -> entity != player).filter(entity -> entity instanceof LivingEntity).map(entity -> (LivingEntity)entity).toList();
+    }
+
     public static List<Entity> getEntitiesAroundPoint(Location loc, double rad) {
         return new ArrayList<>(loc.getWorld().getNearbyEntities(loc, rad, rad, rad,
                 entity -> !(entity.isDead() || (entity instanceof Player && ((Player) entity).getGameMode().equals(GameMode.SPECTATOR))
-                        || entity instanceof ArmorStand && ((ArmorStand) entity).isMarker())));
+                        || entity instanceof ArmorStand || entity instanceof ItemDisplay || entity instanceof BlockDisplay)));
     }
 
 
@@ -101,7 +105,7 @@ public class Entities {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
                 spike.put(i, tempDisplayBlock);
             } else {
-                spike.get(i).teleport(l);
+                spike.get(i).moveTo(l);
             }
             i++;
         }
@@ -125,7 +129,7 @@ public class Entities {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
                 spike.put(i, tempDisplayBlock);
             } else {
-                spike.get(i).teleport(l);
+                spike.get(i).moveTo(l);
             }
             i++;
         }
@@ -149,7 +153,7 @@ public class Entities {
                 TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, Blocks.getBelowBlock(l.getBlock(), 10).getType(), 50000, size);
                 spike.put(i, tempDisplayBlock);
             } else {
-                spike.get(i).teleport(l);
+                spike.get(i).moveTo(l);
             }
             i++;
         }
@@ -169,7 +173,7 @@ public class Entities {
         Location loc = player.getEyeLocation().clone();
         Vector dir = player.getEyeLocation().getDirection().clone().normalize();
         RayTraceResult rayTraceResult = (loc.getWorld().rayTraceEntities(loc, dir, distance, hitbox, entity -> {
-            if (entity instanceof LivingEntity && entity != player) {
+            if (entity instanceof LivingEntity && entity != player && ! (entity instanceof ArmorStand)) {
                 return true;
             }
             return false;
@@ -193,7 +197,7 @@ public class Entities {
 
     public static LivingEntity getFacingEntity(Location loc, Vector dir, double distance) {
         if (loc.getWorld().rayTraceEntities(loc, dir, distance) != null) {
-            if (loc.getWorld().rayTraceEntities(loc, dir, distance).getHitEntity() instanceof LivingEntity entity) {
+            if (loc.getWorld().rayTraceEntities(loc, dir, distance).getHitEntity() instanceof LivingEntity entity  && ! (entity instanceof ArmorStand)) {
                 return entity;
             }
         }

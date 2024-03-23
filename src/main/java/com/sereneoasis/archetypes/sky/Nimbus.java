@@ -4,8 +4,6 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Jet;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import com.sereneoasis.util.methods.Particles;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class Nimbus extends CoreAbility {

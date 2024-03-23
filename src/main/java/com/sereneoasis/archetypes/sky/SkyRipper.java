@@ -6,7 +6,6 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class SkyRipper extends CoreAbility {

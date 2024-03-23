@@ -5,7 +5,6 @@ import com.sereneoasis.abilityuilities.blocks.Laser;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Locations;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class MeltingGlare extends CoreAbility {

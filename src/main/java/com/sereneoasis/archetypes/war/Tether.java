@@ -7,13 +7,13 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.Laser;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -23,11 +23,14 @@ public class Tether extends CoreAbility {
 
     private ThrowItemDisplay tether1, tether2;
 
-    private boolean hasShot2 = false;
+    private boolean hasShot2 = false, hasTarget = false;
 
     private ArmorStand armorStand1, armorStand2;
 
     private Laser.GuardianLaser guardianLaser;
+
+    private Entity target;
+
 
     public Tether(Player player) throws ReflectiveOperationException {
         super(player);
@@ -38,10 +41,10 @@ public class Tether extends CoreAbility {
 
         Location loc = player.getEyeLocation().clone();
         Vector dir = loc.getDirection().clone();
-        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true, true);
+        tether1 = new ThrowItemDisplay(player, name, loc, dir, Material.SPECTRAL_ARROW, size/3, size*2, true, false, false);
         armorStand1 = tether1.getArmorStand();
 
-        guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), armorStand1.getLocation(), -1, 50);
+        guardianLaser = new Laser.GuardianLaser(Locations.getMainHandLocation(player), tether1.getLoc(), -1, 200);
         guardianLaser.start(Serenity.getPlugin());
 
         start();
@@ -50,34 +53,72 @@ public class Tether extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
 
+        Location startLoc = Locations.getMainHandLocation(player);
+        Location endLoc = tether1.getLoc();
         if (!hasShot2) {
-            guardianLaser.moveStart(Locations.getMainHandLocation(player));
+//            if (Vectors.isObstructed(Locations.getMainHandLocation(player), tether1.getLoc())){
+//                this.remove();
+//            }
+
+            if (!hasTarget){
+                if (Entities.getAffected(tether1.getLoc(), hitbox, player) instanceof LivingEntity livingEntity){
+
+                    tether1.remove();
+                    target = livingEntity;
+                    hasTarget = true;
+                    endLoc = target.getLocation().add(0,1,0);
+                }
+            } else{
+                endLoc = target.getLocation();
+                if (Vectors.isObstructed(Locations.getMainHandLocation(player),target.getLocation().add(0,1,0))){
+                    Bukkit.broadcastMessage("obstructed");
+                    this.remove();
+                }
+            }
+
         } else {
-            guardianLaser.moveStart(armorStand2.getLocation());
+//            if (Vectors.isObstructed(tether2.getLoc(), tether1.getLoc())){
+//                this.remove();
+//            }
+            startLoc = tether2.getLoc();
         }
-        guardianLaser.moveEnd(armorStand1.getLocation());
+        guardianLaser.moveStart(startLoc);
+        guardianLaser.moveEnd(endLoc);
 
 
-        if (player.isSneaking() && tether1.getAbilityStatus() == AbilityStatus.COMPLETE) {
-            if (hasShot2) {
-                if (tether2.getAbilityStatus() == AbilityStatus.COMPLETE) {
-                    Entity between = Entities.getEntityBetweenPoints(armorStand2.getLocation(), armorStand1.getLocation());
-                    if (between instanceof Player zipliner && zipliner.equals(player)) {
-                        Particles.spawnParticle(Particle.SMOKE_NORMAL, armorStand1.getLocation(), 1, 0, 0);
-                        Particles.spawnParticle(Particle.SMOKE_NORMAL, armorStand2.getLocation(), 1, 0, 0);
-                        Vector playerLooking = player.getEyeLocation().getDirection().clone();
-                        Vector vec1to2 = Vectors.getDirectionBetweenLocations(armorStand1.getLocation(), armorStand2.getLocation()).normalize().multiply(0.5);
-                        Vector vec2to1 = vec1to2.clone().multiply(-1);
-                        if (Vectors.getAngleBetweenVectors(playerLooking, vec1to2) < Vectors.getAngleBetweenVectors(playerLooking, vec2to1)) {
-                            player.setVelocity(vec1to2);
-                        } else {
-                            player.setVelocity(vec2to1);
+        if (player.isSneaking() ) {
+            if (tether1.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                if (hasShot2) {
+                    if (tether2.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                        Entity between = Entities.getEntityBetweenPoints(tether2.getLoc(), tether1.getLoc());
+                        if (between instanceof Player zipliner && zipliner.isSneaking()) {
+                            Vector playerLooking = player.getEyeLocation().getDirection().clone();
+                            Vector vec1to2 = Vectors.getDirectionBetweenLocations(tether1.getLoc(), tether2.getLoc()).normalize().multiply(0.5);
+                            Vector vec2to1 = vec1to2.clone().multiply(-1);
+                            if (Vectors.getAngleBetweenVectors(playerLooking, vec1to2) < Vectors.getAngleBetweenVectors(playerLooking, vec2to1)) {
+                                player.setVelocity(vec1to2.clone().multiply(speed));
+                            } else {
+                                player.setVelocity(vec2to1.clone().multiply(speed));
+                            }
+                        }
+                    }
+                } else {
+                    if (!hasTarget) {
+                        player.setVelocity(Vectors.getDirectionBetweenLocations(player.getEyeLocation(), tether1.getLoc()).add(new Vector(0,1,0)).normalize());
+                        if (tether1.getLoc().distance(player.getLocation()) < 2) {
+                            this.remove();
                         }
                     }
                 }
-            } else {
-                player.setVelocity(Vectors.getDirectionBetweenLocations(player.getLocation(), armorStand1.getLocation()).normalize());
-                if (armorStand1.getLocation().distance(player.getLocation()) < 2) {
+            }
+
+            if (hasTarget) {
+                Vector targetVec = Vectors.getDirectionBetweenLocations(target.getLocation().add(0,1,0), player.getEyeLocation()).normalize();
+                if (! Vectors.isObstructed(player.getEyeLocation(), target.getLocation().add(0,1,0))) {
+                    target.setVelocity(targetVec);
+                }
+
+                if (target.getLocation().distance(player.getLocation()) < 2) {
                     this.remove();
                 }
             }
@@ -85,11 +126,11 @@ public class Tether extends CoreAbility {
     }
 
     public void setHasClicked() {
-        if (!hasShot2) {
+        if (!hasShot2 && !player.isSneaking()) {
             hasShot2 = true;
             Location loc = player.getEyeLocation().clone();
             Vector dir = loc.getDirection().clone();
-            tether2 = new ThrowItemDisplay(player, name, loc, dir, Material.ARROW, 1.0, true, true);
+            tether2 = new ThrowItemDisplay(player, name, loc, dir, Material.SPECTRAL_ARROW, size/3, size*2, true, false, false);
             armorStand2 = tether2.getArmorStand();
         } else {
             this.remove();

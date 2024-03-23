@@ -130,7 +130,6 @@ public class Blocks {
 
     public static Set<Block> getBlocksAroundPoint(Location loc, double radius) {
         Set<Block> blocks = new HashSet<>();
-        radius -= radius / 2;
         for (double y = -radius; y < radius; y++) {
             for (double x = -radius; x < radius; x++) {
                 for (double z = -radius; z < radius; z++) {
@@ -146,7 +145,6 @@ public class Blocks {
 
     public static List<Block> getBlocksAroundPoint(Location loc, double radius, Material type) {
         List<Block> blocks = new ArrayList<Block>();
-        radius -= radius / 2;
         for (double y = -radius; y < radius; y++) {
             for (double x = -radius; x < radius; x++) {
                 for (double z = -radius; z < radius; z++) {

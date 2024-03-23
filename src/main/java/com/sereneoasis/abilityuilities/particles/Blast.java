@@ -3,9 +3,7 @@ package com.sereneoasis.abilityuilities.particles;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 

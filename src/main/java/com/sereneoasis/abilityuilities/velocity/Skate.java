@@ -73,6 +73,10 @@ public class Skate extends CoreAbility {
         }
     }
 
+    public ArmorStand getArmorStand(){
+        return armorStand;
+    }
+
     @Override
     public void progress() {
 
@@ -82,8 +86,9 @@ public class Skate extends CoreAbility {
         }
 
 
-        Vector dir = player.getEyeLocation().getDirection().setY(Vectors.getDirectionBetweenLocations(armorStand.getLocation(), floorBlock.getLocation().add(0,preferredHeightFromGround,0)).getY()/10).normalize();
-        armorStand.setVelocity(dir.clone().multiply(speed));
+//        Vector dir = player.getEyeLocation().getDirection().setY(Vectors.getDirectionBetweenLocations(armorStand.getLocation(), floorBlock.getLocation().add(0,preferredHeightFromGround,0)).getY()/10).normalize();
+//        armorStand.setVelocity(dir.clone().multiply(speed));
+        armorStand.setVelocity(armorStand.getVelocity().setY(Vectors.getDirectionBetweenLocations(armorStand.getLocation(), floorBlock.getLocation().add(0,preferredHeightFromGround,0)).getY()/10));
         setFloorBlock();
     }
 

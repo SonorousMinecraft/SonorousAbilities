@@ -1,17 +1,23 @@
 package com.sereneoasis.ability;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.data.ComboData;
+import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.earth.Bulwark;
 import com.sereneoasis.archetypes.ocean.BlackIce;
 import com.sereneoasis.archetypes.ocean.SnowStorm;
+import com.sereneoasis.archetypes.war.FlickerJab;
+import com.sereneoasis.archetypes.war.Hook;
+import com.sereneoasis.archetypes.war.Jab;
+import com.sereneoasis.archetypes.war.Uppercut;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import oshi.util.tuples.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -53,24 +59,49 @@ public class ComboManager {
 
     private void checkForCombo(Player player) {
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
-        for (String ability : COMBO_ABILITIES.keySet()) {
-            ArrayList<String> abilities = new ArrayList<>(COMBO_ABILITIES.get(ability).getAbilities()
-                    .stream().map(AbilityInformation::getName).collect(Collectors.toList()));
-            if (abilities.get(abilities.size() - 1).equals(sPlayer.getHeldAbility())) {
+        for (Map.Entry<String, ComboData> ability : COMBO_ABILITIES.entrySet()) {
 
-                Set<String> recentlyUsedStrings = RECENTLY_USED.get(player).stream().map(AbilityInformation::getName).collect(Collectors.toSet());
-                if (recentlyUsedStrings.containsAll(abilities)) {
-                    switch (ability) {
-                        case "SnowStorm":
-                            new SnowStorm(player);
-                        case "BlackIce":
-                            new BlackIce(player);
-                    }
+            ArrayListMultimap<String, ClickType> recentlyUsedPairList = ArrayListMultimap.create();
+            RECENTLY_USED.get(player).stream().forEach(abilityInformation -> recentlyUsedPairList.put(abilityInformation.getName(), abilityInformation.getClickType()));
+            ArrayListMultimap<String, ClickType> abilityPairList = ArrayListMultimap.create();
+            ability.getValue().getAbilities().stream().forEach(abilityInformation -> abilityPairList.put(abilityInformation.getName(), abilityInformation.getClickType()));
+
+
+            if (recentlyUsedPairList.entries().containsAll(abilityPairList.entries())) {
+                boolean hasDoneAbility = true;
+                switch (ability.getKey()) {
+                    case "SnowStorm":
+                        new SnowStorm(player);
+                        break;
+                    case "BlackIce":
+                        new BlackIce(player);
+                        break;
+                    case "Uppercut":
+                        if (CoreAbility.hasAbility(player, Hook.class) && player.isSneaking() && !CoreAbility.hasAbility(player, Uppercut.class)) {
+                            new Uppercut(player, CoreAbility.getAbility(player, Hook.class).getTarget());
+                            CoreAbility.getAbility(player, Hook.class).remove();
+                        } else {
+                            hasDoneAbility = false;
+                        }
+                        break;
+                    case "FlickerJab":
+                        new FlickerJab(player);
+                        break;
+
+                    case "Bulwark":
+                        new Bulwark(player);
+                        break;
+                    default:
+                        hasDoneAbility = false;
+                        break;
+                }
+                if (hasDoneAbility) {
+                    RECENTLY_USED.replace(player, new ArrayList<>());
                 }
             }
-
         }
     }
+
 
 
     public static class AbilityInformation {

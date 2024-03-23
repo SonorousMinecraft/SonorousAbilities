@@ -6,9 +6,7 @@ import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -45,7 +43,7 @@ public class Blade extends CoreAbility {
 
             //Particles.playParticlesBetweenPoints(particle, loc1, loc2, 0.1, 5, 0.5, 0);
 
-            for (Location loc : Locations.getLocationsBetweenLocs(loc1, loc2, size)) {
+            for (Location loc : Locations.getPointsAlongLine(loc1, loc2, size)) {
                 archetypeVisual.playVisual(loc, size, 0.1, 10, 1, 5);
             }
 

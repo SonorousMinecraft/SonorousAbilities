@@ -2,31 +2,36 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class BlockLine extends CoreAbility {
 
-    private final String name;
+    protected final String name;
 
-    private Location origin, loc;
+    protected Location origin, loc;
 
-    private Vector dir;
+    protected Vector dir;
 
 
-    private TempDisplayBlock glowingSource;
+    protected TempDisplayBlock glowingSource;
 
-    private boolean directable;
+    protected boolean directable;
 
-    private Material type;
+    protected Material type;
 
-    private Vector offsetAdjustment = new Vector(-size/2, size/4, -size/2);
+    protected Vector offsetAdjustment = new Vector(-size/2, size/4, -size/2);
 
     public BlockLine(Player player, String name, Color color, boolean directable) {
         super(player, name);
@@ -50,7 +55,13 @@ public class BlockLine extends CoreAbility {
         if (abilityStatus == AbilityStatus.SHOT) {
             getNextLoc();
             if (loc != null) {
-                new TempDisplayBlock(loc.clone().add(offsetAdjustment), type, 500, size);
+                new TempDisplayBlock(loc.clone(), type, 500, size);
+
+                boolean isFinished = AbilityDamage.damageOne(loc.clone().add(0,size/2,0), this, player, true, dir);
+
+                if (isFinished){
+                    abilityStatus = AbilityStatus.COMPLETE;
+                }
                 if (loc.distanceSquared(origin) > range*range) {
                     abilityStatus = AbilityStatus.COMPLETE;
                 }
@@ -60,7 +71,7 @@ public class BlockLine extends CoreAbility {
         }
     }
 
-    private void getNextLoc() {
+    protected void getNextLoc() {
         if (directable) {
             dir = player.getEyeLocation().getDirection().setY(0).normalize();
         }

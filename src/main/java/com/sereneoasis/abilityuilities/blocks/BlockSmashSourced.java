@@ -4,18 +4,18 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Sakrajin
@@ -36,6 +36,10 @@ public class BlockSmashSourced extends CoreAbility {
     private Material type;
 
     private boolean preselectedType = false;
+
+    private Vector dir;
+
+    private Set<LivingEntity> damagedSet = new HashSet<>();
 
     public BlockSmashSourced(Player player, String name, DisplayBlock displayBlock) {
         super(player, name);
@@ -66,7 +70,7 @@ public class BlockSmashSourced extends CoreAbility {
 
     @Override
     public void progress() {
-        if (player.isSneaking() && !hasShot) {
+        if (player.isSneaking() && !hasShot && sPlayer.getHeldAbility().equals(name)) {
             Location targetLoc = player.getEyeLocation().
                     add(player.getEyeLocation().getDirection().multiply(Math.max(radius + 1, loc.distance(player.getEyeLocation()))));
             if (loc.distance(targetLoc) > 1) {
@@ -85,14 +89,14 @@ public class BlockSmashSourced extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
                 return;
             }
-            loc.add(player.getEyeLocation().getDirection().multiply(speed));
+            loc.add(dir.clone().multiply(speed));
             if (preselectedType) {
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
             }
             else{
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
             }
-            DamageHandler.damageEntity(Entities.getAffected(loc, radius, player), player, this, damage);
+            damagedSet.addAll(AbilityDamage.damageSeveralExceptReturnHit(loc, this, player, damagedSet, true, player.getEyeLocation().getDirection()));
         }
 
 
@@ -113,6 +117,7 @@ public class BlockSmashSourced extends CoreAbility {
     public void setHasClicked() {
         if (!hasShot) {
             hasShot = true;
+            dir = player.getEyeLocation().getDirection();
         }
     }
 

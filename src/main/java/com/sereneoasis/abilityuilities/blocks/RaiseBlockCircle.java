@@ -21,14 +21,14 @@ public class RaiseBlockCircle extends CoreAbility {
     private boolean shouldFall;
 
 
-    public RaiseBlockCircle(Player player, String name, double height, double currentRadius, double size, boolean shouldFall) {
+    public RaiseBlockCircle(Player player, String name, double height, double currentRadius, boolean shouldFall) {
         super(player, name);
 
         this.name = name;
         this.height = height;
         this.shouldFall = shouldFall;
         block = new ArrayList<>();
-        Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, size / 2 + 0.001).stream()
+        Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, size  + 0.001).stream()
                 .filter(l -> Blocks.getArchetypeBlocks(sPlayer).contains(l.getBlock().getType()))
                 .filter(l -> Blocks.isTopBlock(l.getBlock()))
                 .forEach(l -> {
@@ -61,18 +61,18 @@ public class RaiseBlockCircle extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCING) {
             if (currentHeight < height) {
                 for (TempDisplayBlock tb : block) {
-                    tb.teleport(tb.getBlockDisplay().getLocation().clone().add(0, 0.1, 0));
+                    tb.moveTo(tb.getBlockDisplay().getLocation().clone().add(0, 0.2 * speed, 0));
                 }
-                currentHeight += 0.1;
+                currentHeight += 0.2 * speed;
             } else {
                 abilityStatus = AbilityStatus.SOURCED;
             }
         } else if (abilityStatus == AbilityStatus.SOURCED && shouldFall) {
-            if (currentHeight > 0.1) {
+            if (currentHeight > 0) {
                 for (TempDisplayBlock tb : block) {
-                    tb.teleport(tb.getBlockDisplay().getLocation().clone().subtract(0, 0.1, 0));
+                    tb.moveTo(tb.getBlockDisplay().getLocation().clone().subtract(0, 0.2 * speed, 0));
                 }
-                currentHeight -= 0.1;
+                currentHeight -= 0.2 * speed;
             } else {
                 shouldFall = false;
                 abilityStatus = AbilityStatus.COMPLETE;

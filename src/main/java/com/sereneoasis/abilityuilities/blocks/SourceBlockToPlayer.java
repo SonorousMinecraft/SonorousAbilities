@@ -31,6 +31,8 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     private DisplayBlock type;
 
+    private TempDisplayBlock glowingSource;
+
     public SourceBlockToPlayer(Player player, String user, DisplayBlock type, double distanceToStop) {
         super(player, user);
 
@@ -41,7 +43,7 @@ public class SourceBlockToPlayer extends CoreAbility {
             this.type = type;
             this.distanceToStop = distanceToStop;
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            Blocks.selectSourceAnimation(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size,0), sPlayer.getColor(), size);
+            glowingSource = Blocks.selectSourceAnimationManual(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size/2,0), sPlayer.getColor(), size);
             loc = source.getLocation();
             start();
         }
@@ -58,13 +60,10 @@ public class SourceBlockToPlayer extends CoreAbility {
     @Override
     public void progress() {
 
-        if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
-            Particles.spawnColoredParticle(loc.getBlock().getLocation().add(0, 1, 0),
-                    5, 0.2, 1, sPlayer.getColor());
-        }
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500);
         //loc.getBlock().setBlockData(Material.DIRT.createBlockData());
         //loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5);
+
 
         if (abilityStatus == AbilityStatus.SOURCING) {
             if (!player.isSneaking()) {
@@ -78,7 +77,7 @@ public class SourceBlockToPlayer extends CoreAbility {
             List<Location> locs = Locations.getShotLocations(loc, 20, dir, speed);
 
             for (Location point : locs) {
-                new TempDisplayBlock(point, type, 1000, Math.random() * size);
+                new TempDisplayBlock(point, type, 1000, size);
             }
 
             if (loc.distance(player.getLocation()) <= distanceToStop) {
@@ -89,6 +88,10 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     public void setAbilityStatus(AbilityStatus abilityStatus) {
         this.abilityStatus = abilityStatus;
+        if (abilityStatus != AbilityStatus.SOURCE_SELECTED)
+        {
+            glowingSource.revert();
+        }
     }
 
     @Override

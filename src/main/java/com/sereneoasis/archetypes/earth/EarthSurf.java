@@ -2,7 +2,6 @@ package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Skate;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
