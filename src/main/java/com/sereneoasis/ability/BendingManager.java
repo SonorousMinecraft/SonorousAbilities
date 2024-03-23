@@ -50,6 +50,14 @@ public class BendingManager implements Runnable {
                 break;
             }
         }
+
+        TempDisplayBlock.getTempDisplayBlockSet().forEach(tempDisplayBlock -> {
+            if (!tempDisplayBlock.getBlockDisplay().isGlowing() && tempDisplayBlock.getLoc().getBlock().getType().isSolid()){
+                tempDisplayBlock.setInvisible();
+            } else {
+                tempDisplayBlock.setVisible();
+            }
+        });
     }
 
     public void handleCooldowns() {

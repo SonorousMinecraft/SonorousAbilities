@@ -1,9 +1,11 @@
 package com.sereneoasis.archetypes.earth;
 
+import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockLine;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillarLine;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Scheduler;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
@@ -30,7 +32,7 @@ public class TerraLine extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
         if (blockLine.getAbilityStatus() == AbilityStatus.COMPLETE) {
-            blockLine.remove();
+            Scheduler.performTaskLater(100L,()-> blockLine.remove());
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }

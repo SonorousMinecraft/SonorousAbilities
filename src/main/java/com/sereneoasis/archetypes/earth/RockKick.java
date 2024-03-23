@@ -17,7 +17,8 @@ public class RockKick extends CoreAbility {
 
     private final String name = "RockKick";
 
-    private float previousYaw;
+    private boolean hasStartedMoving = false;
+
 
     public RockKick(Player player) {
         super(player);
@@ -26,7 +27,7 @@ public class RockKick extends CoreAbility {
             return;
         }
 
-        raiseBlock = new RaiseBlock(player, name, 2-size, true);
+        raiseBlock = new RaiseBlock(player, name, 2, true);
         if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             start();
@@ -42,7 +43,7 @@ public class RockKick extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
             if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCED) {
                 abilityStatus = AbilityStatus.SOURCED;
-                this.previousYaw = player.getEyeLocation().getYaw();
+
             }
 
         }
@@ -54,10 +55,22 @@ public class RockKick extends CoreAbility {
             }
         }
         if (abilityStatus == AbilityStatus.SOURCED){
-            float yawDiff = previousYaw - player.getEyeLocation().getYaw() ;
-            BlockDisplay.rotateBlockDisplayProperlyDegs( raiseBlock.getBlock().getBlockDisplay(), size, 0 , yawDiff, 0);
-            previousYaw = player.getEyeLocation().getYaw();
-            raiseBlock.getBlock().moveTo(player.getEyeLocation().add(player.getEyeLocation().getDirection().clone().multiply(size/2)).add(offsetAdjustment));
+            if (hasStartedMoving){
+                if (!player.isSneaking()){
+                    hasStartedMoving = false;
+                    raiseBlock.getBlock().getBlockDisplay().setGlowing(false);
+                    return;
+
+                }
+
+                raiseBlock.getBlock().moveTo(player.getEyeLocation().add(player.getEyeLocation().getDirection().clone().multiply(size / 2 * 4)));
+                raiseBlock.getBlock().rotate(player.getEyeLocation().getYaw(), player.getEyeLocation().getPitch());
+            }
+            else if ( Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size) && player.isSneaking()) {
+                hasStartedMoving = true;
+                raiseBlock.getBlock().getBlockDisplay().setGlowing(true);
+            }
+
             if (! sPlayer.getHeldAbility().equals(name)) {
                 this.remove();
             }

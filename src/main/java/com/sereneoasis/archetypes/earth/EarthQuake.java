@@ -50,7 +50,7 @@ public class EarthQuake extends CoreAbility {
             if (currentRadius > radius) {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
-            currentRadius += speed;
+            currentRadius += size;
             RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, 3, currentRadius, true);
             quakes.add(shockwaveRing);
         }

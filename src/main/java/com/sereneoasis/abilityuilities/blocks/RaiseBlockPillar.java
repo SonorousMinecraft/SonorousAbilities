@@ -43,7 +43,7 @@ public class RaiseBlockPillar extends CoreAbility {
             Blocks.selectSourceAnimationBlock(source, Color.GREEN);
             this.loc = origin.clone();
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
-                TempDisplayBlock displayBlock = new TempDisplayBlock(loc, loc.getBlock().getType(), 60000, 1);
+                TempDisplayBlock displayBlock = new TempDisplayBlock(source, loc.getBlock().getType(), 60000, 1 - 0.001);
                 blocks.add(displayBlock);
                 currentHeight--;
                 loc.subtract(0, 1, 0);
@@ -68,7 +68,7 @@ public class RaiseBlockPillar extends CoreAbility {
             Blocks.selectSourceAnimationBlock(targetBlock, Color.GREEN);
             this.loc = origin.clone();
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
-                TempDisplayBlock displayBlock = new TempDisplayBlock(loc, loc.getBlock().getType(), 60000, 1);
+                TempDisplayBlock displayBlock = new TempDisplayBlock(loc.getBlock(), loc.getBlock().getType(), 60000, 1 );
                 blocks.add(displayBlock);
                 currentHeight--;
                 loc.subtract(0, 1, 0);
@@ -84,7 +84,13 @@ public class RaiseBlockPillar extends CoreAbility {
     public void progress() throws ReflectiveOperationException {
 
         if (abilityStatus != AbilityStatus.COMPLETE && !isFalling) {
-            if (currentHeight >= height+0.2*speed) {
+            if (currentHeight > height+0.2*speed) {
+                if ( ! solidBlocks.stream().map(tempBlock -> tempBlock.getBlock()).collect(Collectors.toSet()).contains(origin.clone().add(0,currentHeight,0).getBlock())) {
+                    if (((int) currentHeight) >= 1 && ((int) currentHeight) < blocks.size() ) {
+                        TempDisplayBlock tdb = blocks.get(((int) currentHeight) );
+                        solidBlocks.add(new TempBlock(origin.clone().add(0,currentHeight,0).getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true));
+                    }
+                }
                 abilityStatus = AbilityStatus.COMPLETE;
                 revertAllTempDisplayBlocks();
             } else {
@@ -93,9 +99,9 @@ public class RaiseBlockPillar extends CoreAbility {
                 }
 
                 if ( ! solidBlocks.stream().map(tempBlock -> tempBlock.getBlock()).collect(Collectors.toSet()).contains(origin.clone().add(0,currentHeight,0).getBlock())) {
-                    if (((int) currentHeight) >= 1) {
-                        TempDisplayBlock tdb = blocks.get(((int) currentHeight) - 1);
-                        solidBlocks.add(new TempBlock(tdb.getBlockDisplay().getLocation().getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true));
+                    if (((int) currentHeight) >= 1 && ((int) currentHeight) < blocks.size() ) {
+                        TempDisplayBlock tdb = blocks.get(((int) currentHeight) );
+                        solidBlocks.add(new TempBlock(origin.clone().add(0,currentHeight,0).getBlock(), tdb.getBlockDisplay().getBlock().getMaterial(), duration, true));
                     }
                 }
                 currentHeight += 0.2 * speed;

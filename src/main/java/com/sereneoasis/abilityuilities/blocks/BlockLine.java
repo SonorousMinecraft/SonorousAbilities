@@ -55,7 +55,7 @@ public class BlockLine extends CoreAbility {
         if (abilityStatus == AbilityStatus.SHOT) {
             getNextLoc();
             if (loc != null) {
-                new TempDisplayBlock(loc.clone().add(offsetAdjustment), type, 500, size);
+                new TempDisplayBlock(loc.clone(), type, 500, size);
 
                 boolean isFinished = AbilityDamage.damageOne(loc.clone().add(0,size/2,0), this, player, true, dir);
 

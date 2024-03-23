@@ -4,6 +4,7 @@ import com.sereneoasis.archetypes.DisplayBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftBlockDisplay;
 import org.bukkit.entity.BlockDisplay;
@@ -11,7 +12,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3d;
 
+import java.util.HashSet;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.SplittableRandom;
 
 /**
@@ -21,6 +24,9 @@ import java.util.SplittableRandom;
 public class TempDisplayBlock {
     private static final PriorityQueue<TempDisplayBlock> REVERT_QUEUE = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.revertTime - t2.revertTime));
 
+    private static final Set<TempDisplayBlock> TEMP_DISPLAY_BLOCK_SET = new HashSet<>();
+
+    public static Set<TempDisplayBlock> getTempDisplayBlockSet() { return TEMP_DISPLAY_BLOCK_SET;}
 
     public static PriorityQueue<TempDisplayBlock> getRevertQueue() {
         return REVERT_QUEUE;
@@ -50,14 +56,17 @@ public class TempDisplayBlock {
         });
         this.revertTime = System.currentTimeMillis() + revertTime;
         REVERT_QUEUE.add(this);
+        TEMP_DISPLAY_BLOCK_SET.add(this);
     }
 
+    // Typically used in blocks
     public TempDisplayBlock(Location loc, Material block, final long revertTime, double size) {
         this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
         {
             BlockDisplay bDisplay = (BlockDisplay) entity;
             bDisplay.setBlock(block.createBlockData());
             Transformation transformation = bDisplay.getTransformation();
+            transformation.getTranslation().set(-size/2, -size/2, -size/2);
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size);
             bDisplay.setViewRange(30);
@@ -67,8 +76,30 @@ public class TempDisplayBlock {
         });
         this.revertTime = System.currentTimeMillis() + revertTime;
         REVERT_QUEUE.add(this);
+        TEMP_DISPLAY_BLOCK_SET.add(this);
     }
 
+    public TempDisplayBlock(Block block, Material type, final long revertTime, double size) {
+        Location loc = block.getLocation().add(size/2, size/2, size/2);
+        this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
+        {
+            BlockDisplay bDisplay = (BlockDisplay) entity;
+            bDisplay.setBlock(type.createBlockData());
+            Transformation transformation = bDisplay.getTransformation();
+            transformation.getTranslation().set(-size/2, -size/2, -size/2);
+            //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
+            transformation.getScale().set(size);
+            bDisplay.setViewRange(30);
+            //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
+            bDisplay.setTransformation(transformation);
+
+        });
+        this.revertTime = System.currentTimeMillis() + revertTime;
+        REVERT_QUEUE.add(this);
+        TEMP_DISPLAY_BLOCK_SET.add(this);
+    }
+
+    // Typically used in locations
     public TempDisplayBlock(Location loc, Material block, final long revertTime, double size, boolean glowing, Color color) {
 
         this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
@@ -90,6 +121,7 @@ public class TempDisplayBlock {
         });
         this.revertTime = System.currentTimeMillis() + revertTime;
         REVERT_QUEUE.add(this);
+        TEMP_DISPLAY_BLOCK_SET.add(this);
     }
 
 
@@ -124,6 +156,20 @@ public class TempDisplayBlock {
     public BlockDisplay getBlockDisplay() {
         return blockDisplay;
     }
+
+    public void setVisible(){
+        ((CraftBlockDisplay) blockDisplay).getHandle().setViewRange(30);
+    }
+
+    public void setInvisible(){
+        ((CraftBlockDisplay) blockDisplay).getHandle().setViewRange(0);
+    }
+
+    public Location getLoc(){
+        return  blockDisplay.getLocation();
+    }
+
+
 
 }
 
