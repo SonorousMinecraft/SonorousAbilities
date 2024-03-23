@@ -8,7 +8,6 @@ import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.command.SerenityCommand;
 import com.sereneoasis.config.ConfigManager;
-import com.sereneoasis.listeners.PacketListener;
 import com.sereneoasis.listeners.SerenityListener;
 import com.sereneoasis.storage.PlayerData;
 import org.bukkit.event.HandlerList;
