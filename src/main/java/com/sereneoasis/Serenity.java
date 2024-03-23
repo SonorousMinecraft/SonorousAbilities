@@ -64,12 +64,6 @@ public class Serenity extends JavaPlugin {
 
     private static ConfigManager configManager;
 
-    private static PacketListener packetListener;
-
-    public static PacketListener getPacketListener() {
-        return packetListener;
-    }
-
     public static void main(String[] args) {
 
     }
@@ -89,7 +83,6 @@ public class Serenity extends JavaPlugin {
         archetypeDataManager = new ArchetypeDataManager();
         comboManager = new ComboManager();
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
-        packetListener = new PacketListener();
         this.getCommand("serenity").setExecutor(new SerenityCommand());
         //this.getCommand("serenity").setTabCompleter(new TabAutoCompletion());
     }
