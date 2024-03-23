@@ -5,6 +5,7 @@ import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 
+import com.sereneoasis.archetypes.earth.RockKick;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -81,6 +82,15 @@ public class SerenityListener implements Listener {
             return;
         }
         String ability = sPlayer.getHeldAbility();
+
+        switch (ability){
+            case "RockKick":
+                if (CoreAbility.hasAbility(player, RockKick.class)) {
+                    CoreAbility.getAbility(player, RockKick.class).setHasClicked();
+                }
+                break;
+        }
+
 //        boolean isValidAttack = true;
 //
 //        switch (ability){
@@ -151,7 +161,11 @@ public class SerenityListener implements Listener {
             Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
         }
         switch (ability) {
-
+            case "RockKick":
+                if (CoreAbility.hasAbility(e.getPlayer(), RockKick.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), RockKick.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -173,7 +187,9 @@ public class SerenityListener implements Listener {
         }
 
         switch (ability) {
-
+            case "RockKick":
+                new RockKick(player);
+                break;
         }
     }
 

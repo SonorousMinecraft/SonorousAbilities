@@ -48,7 +48,7 @@ public class TempDisplayBlock {
             Transformation transformation = bDisplay.getTransformation();
             transformation.getTranslation().set(new Vector3d(-size / 2, -size / 2, -size / 2));
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
-            transformation.getScale().set(size);
+            transformation.getScale().set(size-0.001);
             bDisplay.setViewRange(30);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
@@ -68,7 +68,7 @@ public class TempDisplayBlock {
             Transformation transformation = bDisplay.getTransformation();
             transformation.getTranslation().set(-size/2, -size/2, -size/2);
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
-            transformation.getScale().set(size);
+            transformation.getScale().set(size-0.001);
             bDisplay.setViewRange(30);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
@@ -88,7 +88,7 @@ public class TempDisplayBlock {
             Transformation transformation = bDisplay.getTransformation();
             transformation.getTranslation().set(-size/2, -size/2, -size/2);
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
-            transformation.getScale().set(size);
+            transformation.getScale().set(size-0.001);
             bDisplay.setViewRange(30);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
@@ -109,7 +109,7 @@ public class TempDisplayBlock {
             bDisplay.setBlock(block.createBlockData());
             Transformation transformation = bDisplay.getTransformation();
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
-            transformation.getScale().set(size);
+            transformation.getScale().set(size-0.001);
             bDisplay.setViewRange(30);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
@@ -147,7 +147,7 @@ public class TempDisplayBlock {
 
     public void moveTo(Location newLoc) {
         //this.blockDisplay.teleport(newLoc);
-        ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), newLoc.getPitch(), newLoc.getYaw());
+        ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), ((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
     }
 
     public void rotate(float yaw, float pitch){

@@ -3,6 +3,7 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Constants;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -25,13 +26,16 @@ public class RaiseBlock extends CoreAbility {
     private double height;
     private TempDisplayBlock block;
 
-    private Vector offsetAdjustment = new Vector(-size/2, 0, -size/2);
+    private boolean isFalling = false;
 
-    public RaiseBlock(Player player, String name, double height, boolean mustLook) {
+    private double speedChange ;
+
+    public RaiseBlock(Player player, String name, double height, boolean mustLook, boolean playGlowing) {
         super(player, name);
 
         this.name = name;
         this.height = height;
+        speedChange = Math.sqrt(2 * 2 * Constants.GRAVITY);
         abilityStatus = AbilityStatus.NO_SOURCE;
         Block source;
         if (mustLook) {
@@ -40,7 +44,9 @@ public class RaiseBlock extends CoreAbility {
                 abilityStatus = AbilityStatus.SOURCE_SELECTED;
 
                 this.origin = Blocks.getFacingBlockLoc(player, sourceRange);
-                Blocks.selectSourceAnimation(origin.clone().subtract(0,size,0), Color.GREEN, size);
+                if (playGlowing) {
+                    Blocks.selectSourceAnimation(origin.clone().subtract(0, size, 0), Color.GREEN, size);
+                }
                 this.loc = origin.clone();
                 block = new TempDisplayBlock(loc.clone(), source.getType(), 60000, size);
                 start();
@@ -57,7 +63,9 @@ public class RaiseBlock extends CoreAbility {
                 source = sourcesByDistance.get(rand.nextInt(sourcesByDistance.size()));
                 abilityStatus = AbilityStatus.SOURCE_SELECTED;
                 this.origin = source.getLocation();
-                Blocks.selectSourceAnimation(origin.clone().subtract(0,size,0), Color.GREEN, size);
+                if (playGlowing) {
+                    Blocks.selectSourceAnimation(origin.clone().subtract(0, size, 0), Color.GREEN, size);
+                }
                 this.loc = origin.clone();
                 block = new TempDisplayBlock(loc.clone(), source.getType(), 60000, size);
                 start();
@@ -67,12 +75,26 @@ public class RaiseBlock extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (abilityStatus != AbilityStatus.SOURCED) {
-            if (loc.getY() - origin.getY() < height) {
-                loc.add(new Vector(0, 0.1 * speed, 0));
-                block.moveTo(loc.clone());
+        if (abilityStatus != AbilityStatus.SOURCED || isFalling) {
+            if (!isFalling) {
+                if (loc.getY() - origin.getY() < height) {
+                    loc.add(new Vector(0, speedChange, 0));
+                    block.moveTo(loc.clone());
+                    speedChange -= Constants.GRAVITY;
+                    if (speedChange < Constants.GRAVITY){
+                        speedChange = Constants.GRAVITY;
+                    }
+                } else {
+                    abilityStatus = AbilityStatus.SOURCED;
+                }
             } else {
-                abilityStatus = AbilityStatus.SOURCED;
+                if (loc.getY() - origin.getY() > size/2) {
+                    loc.subtract(new Vector(0, speedChange , 0));
+                    block.moveTo(loc.clone());
+                    speedChange += Constants.GRAVITY;
+                } else {
+                    abilityStatus = AbilityStatus.COMPLETE;
+                }
             }
         }
     }
@@ -83,6 +105,11 @@ public class RaiseBlock extends CoreAbility {
 
     public TempDisplayBlock getBlock() {
         return block;
+    }
+
+    public void fall(){
+        isFalling = true;
+        speedChange = 0;
     }
 
     @Override

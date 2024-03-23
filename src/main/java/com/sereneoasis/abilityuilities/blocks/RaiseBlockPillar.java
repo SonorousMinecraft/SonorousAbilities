@@ -43,7 +43,7 @@ public class RaiseBlockPillar extends CoreAbility {
             Blocks.selectSourceAnimationBlock(source, Color.GREEN);
             this.loc = origin.clone();
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
-                TempDisplayBlock displayBlock = new TempDisplayBlock(source, loc.getBlock().getType(), 60000, 1 - 0.001);
+                TempDisplayBlock displayBlock = new TempDisplayBlock(source, loc.getBlock().getType(), 60000, 1 );
                 blocks.add(displayBlock);
                 currentHeight--;
                 loc.subtract(0, 1, 0);

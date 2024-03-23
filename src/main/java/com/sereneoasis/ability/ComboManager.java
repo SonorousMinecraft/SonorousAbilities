@@ -4,14 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.data.ComboData;
-import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.earth.Bulwark;
-import com.sereneoasis.archetypes.ocean.BlackIce;
-import com.sereneoasis.archetypes.ocean.SnowStorm;
-import com.sereneoasis.archetypes.war.FlickerJab;
-import com.sereneoasis.archetypes.war.Hook;
-import com.sereneoasis.archetypes.war.Jab;
-import com.sereneoasis.archetypes.war.Uppercut;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -70,27 +63,6 @@ public class ComboManager {
             if (recentlyUsedPairList.entries().containsAll(abilityPairList.entries())) {
                 boolean hasDoneAbility = true;
                 switch (ability.getKey()) {
-                    case "SnowStorm":
-                        new SnowStorm(player);
-                        break;
-                    case "BlackIce":
-                        new BlackIce(player);
-                        break;
-                    case "Uppercut":
-                        if (CoreAbility.hasAbility(player, Hook.class) && player.isSneaking() && !CoreAbility.hasAbility(player, Uppercut.class)) {
-                            new Uppercut(player, CoreAbility.getAbility(player, Hook.class).getTarget());
-                            CoreAbility.getAbility(player, Hook.class).remove();
-                        } else {
-                            hasDoneAbility = false;
-                        }
-                        break;
-                    case "FlickerJab":
-                        new FlickerJab(player);
-                        break;
-
-                    case "Bulwark":
-                        new Bulwark(player);
-                        break;
                     default:
                         hasDoneAbility = false;
                         break;

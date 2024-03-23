@@ -97,7 +97,7 @@ public class Blocks {
     }
 
     public static boolean playerLookingAtBlockDisplay(Player player, BlockDisplay target, double maxDistance, double size) {
-        Location lowest = target.getLocation();
+        Location lowest = target.getLocation().clone().subtract(size/2,size/2,size/2);
         Location highest = lowest.clone().add(size, size, size);
         BoundingBox boundingBox = new BoundingBox(lowest.getX(), lowest.getY(), lowest.getZ(), highest.getX(), highest.getY(), highest.getZ());
         Location loc = player.getEyeLocation().clone();
@@ -117,6 +117,14 @@ public class Blocks {
             block = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS).getHitBlock();
         }
         return block;
+    }
+
+    public static BlockFace getFacingBlockFace(Location loc, Vector dir, double distance) {
+        BlockFace blockFace = null;
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER) != null) {
+            blockFace = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER).getHitBlockFace();
+        }
+        return blockFace;
     }
 
     public static Location getFacingBlockOrLiquidLoc(Player player, double distance) {
@@ -175,6 +183,10 @@ public class Blocks {
             return false;
         }
         return true;
+    }
+
+    public static boolean isSolid(Location loc){
+        return !loc.getBlock().isPassable();
     }
 
 }

@@ -170,6 +170,32 @@ public class ConfigManager {
         getConfig(Archetype.NONE).saveConfig();
 
 
+        FileConfiguration earth = getConfig(EARTH).getConfig();
+
+        Set<Tag<Material>> earthTags = new HashSet<>();
+        earthTags.add(Tag.DIRT);
+        earthTags.add(Tag.STONE_BRICKS);
+        earthTags.add(Tag.SAND);
+        earthTags.add(Tag.TERRACOTTA);
+        earthTags.add(Tag.CONCRETE_POWDER);
+        earthTags.add(Tag.BASE_STONE_OVERWORLD);
+        earthTags.add(Tag.BASE_STONE_NETHER);
+        Set<Material> earthBlocks = new HashSet<>();
+        earthBlocks.add(Material.GRASS_BLOCK);
+        earthBlocks.add(Material.GRAVEL);
+
+        saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
+
+        saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "description", "instructions",
+                0, 2000, 0,
+                2, 1.0, 0, 30, 1.0, 10, 0.8);
+
+        saveAttributeValuesArchetype(earth, EARTH, 0, 0, 0, 0,
+                0.0, 0, 0);
+
+        saveArchetypeCosmetics(earth, EARTH, "#50C878");
+        earth.options().copyDefaults(true);
+        getConfig(EARTH).saveConfig();
     }
 
 

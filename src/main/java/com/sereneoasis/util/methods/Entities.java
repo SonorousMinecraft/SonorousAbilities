@@ -91,7 +91,7 @@ public class Entities {
     public static List<Entity> getEntitiesAroundPoint(Location loc, double rad) {
         return new ArrayList<>(loc.getWorld().getNearbyEntities(loc, rad, rad, rad,
                 entity -> !(entity.isDead() || (entity instanceof Player && ((Player) entity).getGameMode().equals(GameMode.SPECTATOR))
-                        || entity instanceof ArmorStand || entity instanceof ItemDisplay || entity instanceof BlockDisplay)));
+                        || entity instanceof ArmorStand || entity instanceof ItemDisplay || entity instanceof BlockDisplay || !(entity instanceof LivingEntity))));
     }
 
 

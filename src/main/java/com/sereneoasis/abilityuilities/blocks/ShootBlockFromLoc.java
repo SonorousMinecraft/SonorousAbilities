@@ -4,8 +4,10 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.AbilityDamage;
+import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -45,7 +47,7 @@ public class ShootBlockFromLoc extends CoreAbility {
     public void progress() {
 
 
-        if (abilityStatus == AbilityStatus.SHOT) {
+        if (abilityStatus == AbilityStatus.SHOT || abilityStatus == AbilityStatus.HIT_SOLID) {
 
             loc.add(dir.clone().multiply(speed));
             block.moveTo(loc);
@@ -54,12 +56,18 @@ public class ShootBlockFromLoc extends CoreAbility {
                 dir = player.getEyeLocation().getDirection().normalize();
             }
 
-            boolean isFinished = AbilityDamage.damageOne(loc, this, player, true, dir);
-            if (isFinished){
-                this.abilityStatus = AbilityStatus.COMPLETE;
-            }
 
-            if (loc.distance(player.getEyeLocation()) > range) {
+            if (Blocks.isSolid(loc)) {
+                abilityStatus = AbilityStatus.HIT_SOLID;
+                if (autoRemove) {
+                    this.remove();
+                }
+            } else if (AbilityDamage.damageOne(loc, this, player, true, dir)) {
+                abilityStatus = AbilityStatus.DAMAGED;
+                if (autoRemove) {
+                    this.remove();
+                }
+            } else if (loc.distance(player.getEyeLocation()) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;
                 if (autoRemove) {
                     this.remove();
@@ -68,6 +76,18 @@ public class ShootBlockFromLoc extends CoreAbility {
 
         }
 
+    }
+
+    public void setLoc(Location loc) {
+        this.loc = loc;
+    }
+
+    public void setDir(Vector dir) {
+        this.dir = dir;
+    }
+
+    public Vector getDir() {
+        return dir;
     }
 
     @Override
@@ -88,5 +108,9 @@ public class ShootBlockFromLoc extends CoreAbility {
     @Override
     public String getName() {
         return user;
+    }
+
+    public TempDisplayBlock getBlock() {
+        return block;
     }
 }

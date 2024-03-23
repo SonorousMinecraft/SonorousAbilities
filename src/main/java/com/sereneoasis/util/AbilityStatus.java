@@ -14,6 +14,8 @@ public enum AbilityStatus {
     NOT_SHOT,
     SHOT,
     COMPLETE,
+    DAMAGED,
+    HIT_SOLID,
     CHARGED,
 
     CHARGING,

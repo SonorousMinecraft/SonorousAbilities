@@ -43,23 +43,77 @@ public abstract class CoreAbility implements Ability {
 
     protected double damage, hitbox, radius, range, speed, sourceRange, size;
 
+    public Archetype getArchetype() {
+        return archetype;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getChargeTime() {
+        return chargeTime;
+    }
+
+    public long getCooldown() {
+        return cooldown;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public double getHitbox() {
+        return hitbox;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public double getRange() {
+        return range;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public double getSourceRange() {
+        return sourceRange;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
     private int id;
 
     private static int idCounter = Integer.MIN_VALUE;
 
-    public CoreAbility(final Player player) {
-        this.player = player;
-        this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
-
-        initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
-    }
+//    public CoreAbility(final Player player) {
+//        this.player = player;
+//        this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+//
+//        initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
+//    }
 
     public CoreAbility(final Player player, String name) {
+
         this.player = player;
         this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+
 
         initialiseConfigVariables(AbilityDataManager.getAbilityData(name));
 
+    }
+
+    protected boolean shouldStart(){
+        return !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
     }
 
     private void initialiseConfigVariables(AbilityData abilityData) {
