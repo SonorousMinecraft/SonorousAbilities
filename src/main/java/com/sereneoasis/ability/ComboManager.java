@@ -5,6 +5,7 @@ import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.data.ComboData;
 
+import com.sereneoasis.archetypes.earth.Bulwark;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -63,6 +64,9 @@ public class ComboManager {
             if (recentlyUsedPairList.entries().containsAll(abilityPairList.entries())) {
                 boolean hasDoneAbility = true;
                 switch (ability.getKey()) {
+                    case "Bulwark":
+                        new Bulwark(player);
+                        break;
                     default:
                         hasDoneAbility = false;
                         break;

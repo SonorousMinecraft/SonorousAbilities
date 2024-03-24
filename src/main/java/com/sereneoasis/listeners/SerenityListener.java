@@ -7,6 +7,9 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 
 import com.sereneoasis.archetypes.earth.RockKick;
+import com.sereneoasis.archetypes.earth.StoneShred;
+import com.sereneoasis.archetypes.earth.TerraLine;
+import com.sereneoasis.archetypes.earth.Wall;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -158,15 +161,30 @@ public class SerenityListener implements Listener {
         String ability = sPlayer.getHeldAbility();
 
 
-        if (ability != null) {
-            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+        if (ability == null) {
+            return;
         }
 
+        Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+
         BendingManager.getInstance().handleRedirections(player, ClickType.LEFT);
+
+
         switch (ability) {
             case "RockKick":
                 if (CoreAbility.hasAbility(e.getPlayer(), RockKick.class)) {
                     CoreAbility.getAbility(e.getPlayer(), RockKick.class).setHasClicked();
+                }
+                break;
+
+            case "TerraLine":
+                if (CoreAbility.hasAbility(e.getPlayer(), TerraLine.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), TerraLine.class).setHasClicked();
+                }
+                break;
+            case "StoneShred":
+                if (CoreAbility.hasAbility(e.getPlayer(), StoneShred.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), StoneShred.class).setHasClicked();
                 }
                 break;
         }
@@ -185,14 +203,23 @@ public class SerenityListener implements Listener {
         }
         String ability = sPlayer.getHeldAbility();
 
-        if (ability != null) {
-            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.SHIFT_LEFT);
+        if (ability == null) {
+            return;
         }
 
+        Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.SHIFT_LEFT);
 
         switch (ability) {
             case "RockKick":
                 new RockKick(player);
+                break;
+            case "TerraLine":
+                new TerraLine(player);
+            case "Wall":
+                new Wall(player);
+                break;
+            case "StoneShred":
+                new StoneShred(player);
                 break;
         }
     }
