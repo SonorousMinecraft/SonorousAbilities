@@ -111,6 +111,11 @@ public class Vectors {
         return player.getLocation().setDirection(vec).getPitch();
     }
 
+
+    public static Vector getBounce(Vector dir, Vector normal){
+        double dotProduct = normal.dot(dir);
+        return normal.clone().subtract(dir.clone()).multiply(-2 * dotProduct).normalize().multiply(dir.length());
+    }
 }
 
 

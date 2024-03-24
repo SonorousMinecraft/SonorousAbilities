@@ -2,11 +2,19 @@ package com.sereneoasis.ability;
 
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.ability.superclasses.RedirectAbility;
+import com.sereneoasis.util.methods.RayTracing;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.util.BoundingBox;
+import oshi.util.tuples.Pair;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * @author Sakrajin
@@ -17,6 +25,12 @@ public class BendingManager implements Runnable {
 
     private static BendingManager instance;
 
+    public static BendingManager getInstance() {
+        return instance;
+    }
+
+    private static Stream<Pair<CoreAbility, Stream<BoundingBox>>> redirectBoundingBoxes;
+
     private long time;
 
     public BendingManager() {
@@ -24,8 +38,44 @@ public class BendingManager implements Runnable {
 
     }
 
+    public void handleRedirections(Player player, ClickType clickType) {
+        SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+        CoreAbility.getAllRedirectInstances()
+                .filter(coreAbilityStreamPair -> {
+                    CoreAbility abil = coreAbilityStreamPair.getA();
+                    return abil.getName().equals(serenityPlayer.getHeldAbility()) &&
+                            player.getWorld() == abil.getPlayer().getWorld()
+                            && player.getLocation().distanceSquared(abil.getPlayer().getLocation()) < 1000;
+                })
+                .forEach(coreAbilityStreamPair -> {
+                    CoreAbility abil = coreAbilityStreamPair.getA();
+                    RedirectAbility redirectAbility = (RedirectAbility) abil;
+                    Stream<BoundingBox> boxes = coreAbilityStreamPair.getB();
+                    double redirectRange = abil.getSourceRange();
+                    boxes.forEach(boundingBox -> {
+                        if (player.getLocation().distanceSquared(boundingBox.getCenter().toLocation(player.getWorld())) < redirectRange * redirectRange)
+                        {
+
+                            if (RayTracing.playerLookingAt(player, boundingBox, redirectRange)){
+                                if (!redirectAbility.hasCustomRedirect()) {
+                                    Bukkit.broadcastMessage("redirecting");
+                                    redirectAbility.setDir(player.getEyeLocation().getDirection());
+                                } else {
+                                    redirectAbility.handleRedirects(player, clickType);
+                                }
+                            }
+
+                        }
+                    });
+                });
+
+
+    }
+
+
     @Override
     public void run() {
+
 
         try {
             CoreAbility.progressAll();

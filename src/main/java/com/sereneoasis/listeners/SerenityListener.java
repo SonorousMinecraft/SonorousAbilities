@@ -2,6 +2,7 @@ package com.sereneoasis.listeners;
 
 import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.ability.BendingManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 
@@ -160,6 +161,8 @@ public class SerenityListener implements Listener {
         if (ability != null) {
             Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
         }
+
+        BendingManager.getInstance().handleRedirections(player, ClickType.LEFT);
         switch (ability) {
             case "RockKick":
                 if (CoreAbility.hasAbility(e.getPlayer(), RockKick.class)) {
@@ -185,6 +188,7 @@ public class SerenityListener implements Listener {
         if (ability != null) {
             Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.SHIFT_LEFT);
         }
+
 
         switch (ability) {
             case "RockKick":

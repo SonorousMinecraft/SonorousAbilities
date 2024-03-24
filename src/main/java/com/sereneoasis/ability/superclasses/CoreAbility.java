@@ -5,10 +5,16 @@ import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.util.AbilityStatus;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
+import oshi.util.tuples.Pair;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Sakrajin
@@ -19,6 +25,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class CoreAbility implements Ability {
 
     private static final Set<CoreAbility> INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private static final Set<CoreAbility> REDIRECT_INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    public void setRedirectable(){
+        REDIRECT_INSTANCES.add(this);
+    }
+    private static final Set<CoreAbility> COLLISION_INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    public void setCollideable(){
+        COLLISION_INSTANCES.add(this);
+    }
+
     private static final Map<Class<? extends CoreAbility>, Map<UUID, Map<Integer, CoreAbility>>> INSTANCES_BY_PLAYER = new ConcurrentHashMap<>();
 
     private static final Map<Class<? extends CoreAbility>, Set<CoreAbility>> INSTANCES_BY_CLASS = new ConcurrentHashMap<>();
@@ -164,7 +179,33 @@ public abstract class CoreAbility implements Ability {
 
     }
 
+    public static Stream<Pair<CoreAbility, Stream<BoundingBox>>>getAllRedirectInstances(){
+        Stream<CoreAbility> redirectAbilities = REDIRECT_INSTANCES.stream()
+                .filter(coreAbility -> coreAbility instanceof RedirectAbility);
+
+
+        Stream<Pair<CoreAbility, Stream<BoundingBox>>> abilityToBoundingBoxes =  redirectAbilities.map(coreAbility -> new Pair<CoreAbility, RedirectAbility>(coreAbility, (RedirectAbility) coreAbility))
+                .map( pair -> new Pair<CoreAbility, Set<Map.Entry<Location, Double>>>(pair.getA(), pair.getB().getLocs().entrySet()))
+                .map(pair -> {
+                    return new Pair<CoreAbility, Stream<BoundingBox>> (pair.getA(), pair.getB().stream().map(locationDoubleEntry -> {
+                        Location center = locationDoubleEntry.getKey();
+                        double radius = locationDoubleEntry.getValue();
+                        Location bottom = center.clone().subtract(radius, radius, radius);
+                        Location top = center.clone().add(radius, radius, radius);
+                        return BoundingBox.of(bottom, top);
+                    }));
+                });
+
+
+        return abilityToBoundingBoxes;
+    }
+
     public static void progressAll() throws ReflectiveOperationException {
+
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+        }
         for (CoreAbility abil : INSTANCES) {
             if (abil.player.isOnline()){
                 abil.progress();
@@ -172,7 +213,6 @@ public abstract class CoreAbility implements Ability {
             else{
                 abil.remove();
             }
-
         }
     }
 

@@ -1,6 +1,8 @@
 package com.sereneoasis.archetypes.earth;
 
+import com.sereneoasis.ability.superclasses.CollisionAbility;
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.ability.superclasses.RedirectAbility;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlock;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.util.AbilityStatus;
@@ -13,15 +15,21 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.util.Vector;
 
-public class RockKick extends CoreAbility {
+import java.util.HashMap;
+
+public class RockKick extends CoreAbility implements RedirectAbility {
 
     private RaiseBlock raiseBlock;
 
     private ShootBlockFromLoc shootBlockFromLoc;
 
+
     private static final String name = "RockKick";
+
+    private Location loc;
 
 
     public RockKick(Player player) {
@@ -33,8 +41,11 @@ public class RockKick extends CoreAbility {
 
         raiseBlock = new RaiseBlock(player, name, 2, true, true);
         if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
+
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             raiseBlock.getBlock().getBlockDisplay().setGlowColorOverride(Color.GREEN);
+            this.loc = raiseBlock.getBlock().getLoc();
+            this.setRedirectable();
             start();
         }
     }
@@ -60,6 +71,7 @@ public class RockKick extends CoreAbility {
             }
         }
         if (abilityStatus == AbilityStatus.SHOT) {
+            this.loc = shootBlockFromLoc.getBlock().getLoc();
             shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), player), Vectors.getPitch(shootBlockFromLoc.getDir(), player));
             Vector dir = shootBlockFromLoc.getDir().clone();
             double y = dir.getY();
@@ -75,8 +87,7 @@ public class RockKick extends CoreAbility {
                 BlockFace blockFace = Blocks.getFacingBlockFace(oldLoc, dir, speed + 1);
                 if (blockFace != null) {
                     Vector normal = blockFace.getDirection();
-                    double dotProduct = normal.dot(dir);
-                    Vector newVec = normal.clone().subtract(dir.clone()).multiply(-2 * dotProduct).normalize().multiply(dir.length());
+                    Vector newVec = Vectors.getBounce(dir, normal);
                     shootBlockFromLoc.setDir(newVec);
                     shootBlockFromLoc.setAbilityStatus(AbilityStatus.SHOT);
                 }
@@ -98,6 +109,7 @@ public class RockKick extends CoreAbility {
                 shootBlockFromLoc.getBlock().getBlockDisplay().setGlowColorOverride(Color.GREEN);
                 shootBlockFromLoc.getBlock().getBlockDisplay().setGlowing(true);
                 raiseBlock.remove();
+
                 abilityStatus = AbilityStatus.SHOT;
             }
         }
@@ -112,5 +124,40 @@ public class RockKick extends CoreAbility {
     @Override
     public String getName() {
         return name;
+    }
+
+
+    @Override
+    public boolean hasCustomRedirect() {
+        return false;
+    }
+
+    @Override
+    public HashMap<Location, Double> getLocs() {
+        HashMap<Location, Double> locs = new HashMap<>();
+        locs.put(loc, size/2);
+        return locs;
+    }
+
+    @Override
+    public void handleRedirects(Player redirectingPlayer, ClickType clickType) {
+
+    }
+
+    @Override
+    public Vector getDir() {
+        return null;
+    }
+
+    @Override
+    public void setDir(Vector dir) {
+
+        if (shootBlockFromLoc != null) {
+            if (shootBlockFromLoc.isDirectable()){
+                shootBlockFromLoc.setDirectable(false);
+            }
+            Bukkit.broadcastMessage("succesful rockkick direction");
+            shootBlockFromLoc.setDir(dir.clone().multiply(2));
+        }
     }
 }

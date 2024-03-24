@@ -24,6 +24,14 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     private boolean directable, autoRemove;
 
+    public boolean isDirectable() {
+        return directable;
+    }
+
+    public void setDirectable(boolean directable) {
+        this.directable = directable;
+    }
+
     private Vector dir;
 
     private TempDisplayBlock block;
