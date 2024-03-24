@@ -40,7 +40,16 @@ public abstract class CoreAbility implements Ability {
 
     protected Player player;
 
+    @Override
+    public Player getPlayer() {
+        return player;
+    }
+
     protected SerenityPlayer sPlayer;
+
+    public SerenityPlayer getsPlayer() {
+        return sPlayer;
+    }
 
     protected Archetype archetype;
 

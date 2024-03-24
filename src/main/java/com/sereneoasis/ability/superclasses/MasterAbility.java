@@ -13,6 +13,11 @@ public abstract class MasterAbility extends CoreAbility{
         void doHelperTick(AbilityStatus status);
     }
     protected final HashMap<CoreAbility, HelperTick> helpers = new HashMap<>();
+
+    public HashMap<CoreAbility, HelperTick> getHelpers() {
+        return helpers;
+    }
+
     public MasterAbility(Player player, String name) {
         super(player, name);
     }
