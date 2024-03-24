@@ -182,6 +182,9 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), TerraLine.class).setHasClicked();
                 }
                 break;
+            case "Wall":
+                new Wall(player);
+                break;
             case "StoneShred":
                 if (CoreAbility.hasAbility(e.getPlayer(), StoneShred.class)) {
                     CoreAbility.getAbility(e.getPlayer(), StoneShred.class).setHasClicked();
@@ -215,8 +218,6 @@ public class SerenityListener implements Listener {
                 break;
             case "TerraLine":
                 new TerraLine(player);
-            case "Wall":
-                new Wall(player);
                 break;
             case "StoneShred":
                 new StoneShred(player);

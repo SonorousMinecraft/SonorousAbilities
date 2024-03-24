@@ -79,7 +79,7 @@ public class RaiseBlock extends CoreAbility {
             if (!isFalling) {
                 if (loc.getY() - origin.getY() < height) {
                     loc.add(new Vector(0, speedChange, 0));
-                    block.moveTo(loc.clone());
+                    block.moveToAndMaintainFacing(loc.clone());
                     speedChange -= Constants.GRAVITY;
                     if (speedChange < Constants.GRAVITY){
                         speedChange = Constants.GRAVITY;
@@ -90,7 +90,7 @@ public class RaiseBlock extends CoreAbility {
             } else {
                 if (loc.getY() - origin.getY() > size/2) {
                     loc.subtract(new Vector(0, speedChange , 0));
-                    block.moveTo(loc.clone());
+                    block.moveToAndMaintainFacing(loc.clone());
                     speedChange += Constants.GRAVITY;
                 } else {
                     abilityStatus = AbilityStatus.COMPLETE;

@@ -147,6 +147,10 @@ public class TempDisplayBlock {
 
     public void moveTo(Location newLoc) {
         //this.blockDisplay.teleport(newLoc);
+        ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), newLoc.getPitch(), newLoc.getYaw());
+    }
+
+    public void moveToAndMaintainFacing(Location newLoc){
         ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), ((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
     }
 

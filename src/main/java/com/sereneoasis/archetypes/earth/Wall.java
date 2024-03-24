@@ -14,13 +14,12 @@ public class Wall extends CoreAbility {
     public Wall(Player player) {
         super(player, "Wall");
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
-            return;
-        }
+        if (shouldStart()) {
 
-        raiseBlockPillar = new RaiseBlockPillar(player, name, range);
-        if (raiseBlockPillar.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
-            start();
+            raiseBlockPillar = new RaiseBlockPillar(player, name, range);
+            if (raiseBlockPillar.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
+                start();
+            }
         }
     }
 
