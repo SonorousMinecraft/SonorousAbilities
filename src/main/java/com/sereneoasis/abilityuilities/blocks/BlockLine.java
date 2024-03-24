@@ -31,8 +31,6 @@ public class BlockLine extends CoreAbility {
 
     protected Material type;
 
-    protected Vector offsetAdjustment = new Vector(-size/2, size/4, -size/2);
-
     public BlockLine(Player player, String name, Color color, boolean directable) {
         super(player, name);
         this.name = name;

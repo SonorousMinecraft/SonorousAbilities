@@ -11,7 +11,7 @@ public enum AbilityStatus {
     SOURCED,
 
     SOURCE_SELECTED,
-    NOT_SHOT,
+
     SHOT,
     COMPLETE,
     DAMAGED,
