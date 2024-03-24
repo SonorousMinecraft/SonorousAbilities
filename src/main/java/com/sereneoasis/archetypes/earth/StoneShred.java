@@ -1,16 +1,14 @@
 package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Display;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
+import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,14 +16,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class StoneShred extends CoreAbility {
 
@@ -46,9 +41,7 @@ public class StoneShred extends CoreAbility {
             return;
         }
 
-        Set<Block> sourceBlocks = Blocks.getBlocksAroundPoint(Blocks.getFacingBlockLoc(player, sourceRange), radius).stream()
-                .filter(block ->  Blocks.getArchetypeBlocks(sPlayer).contains(block.getType()))
-                .collect(Collectors.toSet());
+        Set<Block> sourceBlocks = EnhancedBlocks.getFacingSphereBlocks(this);
 
         if (!sourceBlocks.isEmpty()){
             previousDir = player.getEyeLocation().getDirection();
@@ -65,6 +58,7 @@ public class StoneShred extends CoreAbility {
 
     }
 
+
     @Override
     public void progress() throws ReflectiveOperationException {
 
@@ -72,36 +66,14 @@ public class StoneShred extends CoreAbility {
         if (abilityStatus == AbilityStatus.CHARGED){
             if (player.isSneaking()) {
                 Vector newDir = player.getEyeLocation().getDirection();
-                for (Map.Entry<TempDisplayBlock, Vector> entry : displayBlocks.entrySet()) {
-                    double pitchDiff = Vectors.getPitchDiff(previousDir, newDir, player);
-                    double yawDiff = Vectors.getYawDiff(previousDir, newDir, player);
-                    entry.getValue().rotateAroundY(-yawDiff);
-                    entry.getValue().rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), -pitchDiff);
-                    entry.getKey().moveTo(player.getLocation().add(entry.getValue()));
-                    entry.getKey().getBlockDisplay().setRotation(0, 0);
-                }
+                EnhancedDisplayBlocks.orientOrganisedDBs(displayBlocks, previousDir, newDir, player);
                 previousDir = newDir;
             } else{
                 this.remove();
             }
         }
         else if (abilityStatus == AbilityStatus.SHOT){
-            for (Map.Entry<TempDisplayBlock, Vector> entry : displayBlocks.entrySet()) {
-                TempDisplayBlock tempDisplayBlock = entry.getKey();
-                Location currentLoc = tempDisplayBlock.getBlockDisplay().getLocation();
-                //entry.getValue().add(player.getEyeLocation().getDirection().add(Vector.getRandom().multiply(0.1)).multiply(0.1)).normalize();
-                Entity target = Entities.getAffected(currentLoc, hitbox, player);
-                if (target instanceof LivingEntity livingEntity){
-                    DamageHandler.damageEntity(livingEntity, player, this, damage);
-                    this.remove();
-                }
-
-                entry.getKey().moveTo(currentLoc.add(entry.getValue().clone().multiply(speed)));
-
-                if (origin.distance(currentLoc) > range) {
-                    this.remove();
-                }
-            }
+            EnhancedDisplayBlocks.handleMoveOrganisedDBsAndHit(displayBlocks, player, this);
         }
     }
 

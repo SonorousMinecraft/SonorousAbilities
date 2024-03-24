@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.earth;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillar;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Bukkit;
@@ -33,15 +34,11 @@ public class Bulwark extends CoreAbility {
 //            return;
 //        }
 
-        Set<Block> blocks = Locations.getOutsideSphereLocs(player.getLocation(), sourceRange, 1).stream()
-                .map(Location::getBlock)
-                .filter(block -> Blocks.getArchetypeBlocks(sPlayer).contains(block.getType()) && Blocks.isTopBlock(block))
-                .collect(Collectors.toSet());
 
 
 
-        if ( ! blocks.isEmpty()){
-            for (Block b : blocks) {
+        if ( ! EnhancedBlocks.getFacingSphereBlocks(this).isEmpty()){
+            for (Block b : EnhancedBlocks.getFacingSphereBlocks(this)) {
                 raiseBlockPillars.add(new RaiseBlockPillar(player, name, range, b));
             }
             start();
