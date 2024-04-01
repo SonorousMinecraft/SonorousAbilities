@@ -43,7 +43,7 @@ public class EnhancedDisplayBlocks {
             if (coreAbility.getPlayer().getLocation().distance(currentLoc) > coreAbility.getRange()){
                 coreAbility.remove();
             }
-            entry.getKey().moveTo(currentLoc.add(entry.getValue().clone().multiply(coreAbility.getSpeed())));
+            entry.getKey().moveToAndMaintainFacing(currentLoc.add(entry.getValue().clone().multiply(coreAbility.getSpeed())));
         }
 
     }

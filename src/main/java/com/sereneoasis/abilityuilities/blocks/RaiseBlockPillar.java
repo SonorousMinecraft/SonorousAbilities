@@ -84,7 +84,7 @@ public class RaiseBlockPillar extends CoreAbility {
     public void progress() throws ReflectiveOperationException {
 
         if (abilityStatus != AbilityStatus.COMPLETE && !isFalling) {
-            if (currentHeight > height+0.2*speed) {
+            if (currentHeight + size/2 > height+0.2*speed) {
                 if ( ! solidBlocks.stream().map(tempBlock -> tempBlock.getBlock()).collect(Collectors.toSet()).contains(origin.clone().add(0,currentHeight,0).getBlock())) {
                     if (((int) currentHeight) >= 1 && ((int) currentHeight) < blocks.size() ) {
                         TempDisplayBlock tdb = blocks.get(((int) currentHeight) );

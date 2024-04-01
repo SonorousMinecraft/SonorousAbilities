@@ -50,11 +50,13 @@ public class StoneShred extends CoreAbility {
             previousDir = player.getEyeLocation().getDirection();
             Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
             for (Block b : sourceBlocks){
-                TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), b.getType(), 60000, 1);
-                Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
-                displayBlocks.put(tdb, offset);
-                TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
-                sourceTempBlocks.add(tb);
+                if (b!=null) {
+                    TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), b.getType(), 60000, 1);
+                    Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
+                    displayBlocks.put(tdb, offset);
+                    TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
+                    sourceTempBlocks.add(tb);
+                }
             }
             abilityStatus = AbilityStatus.CHARGED;
             start();
@@ -65,6 +67,7 @@ public class StoneShred extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
+
 
 
         if (abilityStatus == AbilityStatus.CHARGED){

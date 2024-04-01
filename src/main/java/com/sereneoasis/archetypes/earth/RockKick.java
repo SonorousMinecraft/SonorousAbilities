@@ -66,6 +66,10 @@ public class RockKick extends MasterAbility implements RedirectAbility {
             this.loc = shootBlockFromLoc.getBlock().getLoc();
         }
 
+        if (abilityStatus != AbilityStatus.SHOT && raiseBlock.getAbilityStatus() == AbilityStatus.COMPLETE) {
+            this.remove();
+        }
+
 
     }
 

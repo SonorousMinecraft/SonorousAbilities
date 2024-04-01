@@ -6,14 +6,18 @@ import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EnhancedBlocks {
 
     public static Set<Block> getFacingSphereBlocks(CoreAbility coreability) {
-
-        return Blocks.getBlocksAroundPoint(Blocks.getFacingBlockLoc(coreability.getPlayer(), coreability.getSourceRange()), coreability.getRadius()).stream()
+        Location loc = Blocks.getFacingBlockLoc(coreability.getPlayer(), coreability.getSourceRange());
+        if (loc == null) {
+            return new HashSet<>();
+        }
+        return Blocks.getBlocksAroundPoint(loc, coreability.getRadius()).stream()
                 .filter(block -> Blocks.getArchetypeBlocks(coreability.getsPlayer()).contains(block.getType()))
                 .collect(Collectors.toSet());
     }
