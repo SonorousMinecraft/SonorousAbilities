@@ -16,14 +16,17 @@ import java.util.Map;
 
 public class EnhancedDisplayBlocks {
 
-    public static void orientOrganisedDBs(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player){
+    public static void orientOrganisedDBs(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, double displayBlockDistance){
+        Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
+
         for (Map.Entry<TempDisplayBlock, Vector> entry : displayBlocks.entrySet()) {
             double pitchDiff = Vectors.getPitchDiff(previousDir, newDir, player);
             double yawDiff = Vectors.getYawDiff(previousDir, newDir, player);
             entry.getValue().rotateAroundY(-yawDiff);
             entry.getValue().rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), -pitchDiff);
-            entry.getKey().moveTo(player.getLocation().add(entry.getValue()));
-            entry.getKey().getBlockDisplay().setRotation(0, 0);
+            entry.getKey().moveToAndMaintainFacing(center.clone().add(entry.getValue()));
+            Vector facingDir = Vectors.getRightSideNormalisedVector(player);
+            entry.getKey().rotate(Vectors.getYaw(newDir, player), Vectors.getPitch(newDir, player));
         }
     }
 

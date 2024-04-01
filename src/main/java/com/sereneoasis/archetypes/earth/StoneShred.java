@@ -5,6 +5,7 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
+import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
@@ -31,6 +32,7 @@ public class StoneShred extends CoreAbility {
 
     private Vector previousDir, shotDir;
 
+    private double displayBlockDistance;
     private Location origin;
 
 
@@ -44,10 +46,12 @@ public class StoneShred extends CoreAbility {
         Set<Block> sourceBlocks = EnhancedBlocks.getFacingSphereBlocks(this);
 
         if (!sourceBlocks.isEmpty()){
+            displayBlockDistance = Blocks.getFacingBlockLoc(player, sourceRange).distance(player.getEyeLocation());
             previousDir = player.getEyeLocation().getDirection();
+            Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
             for (Block b : sourceBlocks){
                 TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), b.getType(), 60000, 1);
-                Vector offset = Vectors.getDirectionBetweenLocations(player.getLocation(), b.getLocation());
+                Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
                 displayBlocks.put(tdb, offset);
                 TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
                 sourceTempBlocks.add(tb);
@@ -66,7 +70,7 @@ public class StoneShred extends CoreAbility {
         if (abilityStatus == AbilityStatus.CHARGED){
             if (player.isSneaking()) {
                 Vector newDir = player.getEyeLocation().getDirection();
-                EnhancedDisplayBlocks.orientOrganisedDBs(displayBlocks, previousDir, newDir, player);
+                EnhancedDisplayBlocks.orientOrganisedDBs(displayBlocks, previousDir, newDir, player, displayBlockDistance);
                 previousDir = newDir;
             } else{
                 this.remove();

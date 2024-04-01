@@ -55,8 +55,6 @@ public class RockKick extends MasterAbility implements RedirectAbility {
         }
     }
 
-
-
     @Override
     public void progress() throws ReflectiveOperationException {
 
