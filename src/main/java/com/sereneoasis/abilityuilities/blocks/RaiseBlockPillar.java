@@ -65,7 +65,7 @@ public class RaiseBlockPillar extends CoreAbility {
         if (targetBlock != null && Blocks.getArchetypeBlocks(sPlayer).contains(targetBlock.getType())) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             this.origin = targetBlock.getLocation();
-            Blocks.selectSourceAnimationBlock(targetBlock, Color.GREEN);
+           // Blocks.selectSourceAnimationBlock(targetBlock, Color.GREEN);
             this.loc = origin.clone();
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
                 TempDisplayBlock displayBlock = new TempDisplayBlock(loc.getBlock(), loc.getBlock().getType(), 60000, 1 );

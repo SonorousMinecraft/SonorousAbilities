@@ -54,6 +54,9 @@ public class StoneShred extends CoreAbility {
                     TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), b.getType(), 60000, 1);
                     Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
                     displayBlocks.put(tdb, offset);
+                    if (TempBlock.isTempBlock(b)){
+                        TempBlock.getTempBlock(b).revert();
+                    }
                     TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
                     sourceTempBlocks.add(tb);
                 }
@@ -96,8 +99,8 @@ public class StoneShred extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        sourceTempBlocks.forEach(tempBlock -> tempBlock.revert());
         displayBlocks.forEach((tempDisplayBlock, vector) -> tempDisplayBlock.revert());
+        sourceTempBlocks.forEach(tempBlock -> tempBlock.revert());
         sPlayer.addCooldown(name,cooldown);
     }
 

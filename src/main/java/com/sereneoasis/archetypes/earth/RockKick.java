@@ -76,14 +76,12 @@ public class RockKick extends MasterAbility implements RedirectAbility {
 
     public void setHasClicked() {
         if (abilityStatus != AbilityStatus.SHOT) {
-            Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size);
-            raiseBlock.stop();
-//            if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size)) {
-//                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
-//                BlockAbilities.handleBouncingShootBlockFromLoc(this, shootBlockFromLoc);
-//
-//                abilityStatus = AbilityStatus.SHOT;
+            if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size)) {
+                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
+                BlockAbilities.handleBouncingShootBlockFromLoc(this, shootBlockFromLoc);
 
+                abilityStatus = AbilityStatus.SHOT;
+            }
         }
     }
 

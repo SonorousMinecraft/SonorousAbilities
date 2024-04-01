@@ -159,8 +159,11 @@ public class TempDisplayBlock {
 
     public void moveTo(Location newLoc) {
         //this.blockDisplay.teleport(newLoc);
-        ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), newLoc.getPitch(), newLoc.getYaw());
 
+        Vector diff = Vectors.getDirectionBetweenLocations(blockDisplay.getLocation(), newLoc);
+
+        ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
+        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(newLoc.getYaw(), newLoc.getPitch());
     }
 
     public void moveToAndMaintainFacing(Location newLoc){
@@ -173,9 +176,7 @@ public class TempDisplayBlock {
         Vector diff = Vectors.getDirectionBetweenLocations(blockDisplay.getLocation(), newLoc);
 
         ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
-        String s = String.valueOf(((CraftBlockDisplay) blockDisplay).getHandle().getDeltaMovement().length());
-        Bukkit.broadcastMessage(s);
-
+        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
 
 //        ((CraftBlockDisplay) blockDisplay).getHandle().teleportTo(newLoc.getX(), newLoc.getY(), newLoc.getZ());
 //        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
