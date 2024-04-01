@@ -200,6 +200,10 @@ public class SerenityListener implements Listener {
         if (player == null) {
             return;
         }
+
+        if (player.isSneaking()){
+            return;
+        }
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
         if (sPlayer == null) {
             return;

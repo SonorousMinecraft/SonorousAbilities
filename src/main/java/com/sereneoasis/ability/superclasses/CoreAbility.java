@@ -140,6 +140,10 @@ public abstract class CoreAbility implements Ability {
         return !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
     }
 
+    protected boolean shouldStartCanHaveMultiple(){
+        return !sPlayer.isOnCooldown(this.getName());
+    }
+
     private void initialiseConfigVariables(AbilityData abilityData) {
 
         this.archetype = abilityData.getArchetype();

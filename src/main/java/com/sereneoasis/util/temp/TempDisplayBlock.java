@@ -1,15 +1,24 @@
 package com.sereneoasis.util.temp;
 
 import com.sereneoasis.archetypes.DisplayBlock;
+import com.sereneoasis.util.methods.Vectors;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.phys.Vec3;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.v1_20_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftBlockDisplay;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Transformation;
+import org.bukkit.util.Vector;
 import org.joml.Vector3d;
 
 import java.util.HashSet;
@@ -49,7 +58,7 @@ public class TempDisplayBlock {
             transformation.getTranslation().set(new Vector3d(-size / 2, -size / 2, -size / 2));
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size-0.001);
-            bDisplay.setViewRange(30);
+            bDisplay.setViewRange(50);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
 
@@ -61,6 +70,9 @@ public class TempDisplayBlock {
 
     // Typically used in blocks
     public TempDisplayBlock(Location loc, Material block, final long revertTime, double size) {
+
+
+
         this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
         {
             BlockDisplay bDisplay = (BlockDisplay) entity;
@@ -69,7 +81,7 @@ public class TempDisplayBlock {
             transformation.getTranslation().set(-size/2, -size/2, -size/2);
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size-0.001);
-            bDisplay.setViewRange(30);
+            bDisplay.setViewRange(50);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
 
@@ -89,7 +101,7 @@ public class TempDisplayBlock {
             transformation.getTranslation().set(-size/2, -size/2, -size/2);
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size-0.001);
-            bDisplay.setViewRange(30);
+            bDisplay.setViewRange(50);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
 
@@ -110,7 +122,7 @@ public class TempDisplayBlock {
             Transformation transformation = bDisplay.getTransformation();
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size-0.001);
-            bDisplay.setViewRange(30);
+            bDisplay.setViewRange(50);
             //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
             bDisplay.setTransformation(transformation);
             if (glowing) {
@@ -148,10 +160,25 @@ public class TempDisplayBlock {
     public void moveTo(Location newLoc) {
         //this.blockDisplay.teleport(newLoc);
         ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), newLoc.getPitch(), newLoc.getYaw());
+
     }
 
     public void moveToAndMaintainFacing(Location newLoc){
-        ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), ((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
+//        ((CraftBlockDisplay) blockDisplay).getHandle().moveTo(newLoc.getX(), newLoc.getY(), newLoc.getZ(), ((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
+
+//        blockDisplay.setTeleportDuration(0);
+//        blockDisplay.teleport(newLoc);
+
+//        ((CraftBlockDisplay) blockDisplay).getHandle().noPhysics = false;
+        Vector diff = Vectors.getDirectionBetweenLocations(blockDisplay.getLocation(), newLoc);
+
+        ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
+        String s = String.valueOf(((CraftBlockDisplay) blockDisplay).getHandle().getDeltaMovement().length());
+        Bukkit.broadcastMessage(s);
+
+
+//        ((CraftBlockDisplay) blockDisplay).getHandle().teleportTo(newLoc.getX(), newLoc.getY(), newLoc.getZ());
+//        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
     }
 
     public void rotate(float yaw, float pitch){

@@ -38,7 +38,7 @@ public class RockKick extends MasterAbility implements RedirectAbility {
     public RockKick(Player player) {
         super(player, name);
 
-        if (!shouldStart()) {
+        if (!shouldStartCanHaveMultiple()) {
             return;
         }
 
@@ -51,6 +51,7 @@ public class RockKick extends MasterAbility implements RedirectAbility {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             this.loc = raiseBlock.getBlock().getLoc();
             this.setRedirectable();
+            sPlayer.addCooldown(name, cooldown);
             start();
         }
     }
@@ -75,12 +76,14 @@ public class RockKick extends MasterAbility implements RedirectAbility {
 
     public void setHasClicked() {
         if (abilityStatus != AbilityStatus.SHOT) {
-            if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size)) {
-                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
-                BlockAbilities.handleShootBlockFromLoc(this, shootBlockFromLoc);
+            Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size);
+            raiseBlock.stop();
+//            if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size)) {
+//                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
+//                BlockAbilities.handleBouncingShootBlockFromLoc(this, shootBlockFromLoc);
+//
+//                abilityStatus = AbilityStatus.SHOT;
 
-                abilityStatus = AbilityStatus.SHOT;
-            }
         }
     }
 

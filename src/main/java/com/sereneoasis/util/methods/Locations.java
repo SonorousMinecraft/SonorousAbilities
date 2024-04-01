@@ -273,6 +273,16 @@ public class Locations {
         return location.clone().add(new Vector(Math.cos(angle), 0, Math.sin(angle)).normalize().multiply(distance));
     }
 
+    public static Location getUpLoc(Location loc, double distance){
+        Vector up = Vectors.getUp(loc, 1);
+        return loc.clone().add(up.multiply(distance));
+    }
+
+    public static Location getDownLoc(Location loc, double distance){
+        Vector down = Vectors.getDown(loc, 1);
+        return loc.clone().add(down.multiply(distance));
+    }
+
     public static Location getRightSide(final Location location, final double distance) {
         final float angle = (float) Math.toRadians(location.getYaw());
         return location.clone().subtract(new Vector(Math.cos(angle), 0, Math.sin(angle)).normalize().multiply(distance));

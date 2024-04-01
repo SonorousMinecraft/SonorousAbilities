@@ -91,6 +91,30 @@ public class Vectors {
         return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getRightSide(player.getEyeLocation(), 1));
     }
 
+    public static Vector getLeftSide(Player player,  double length){
+        return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getLeftSide(player.getEyeLocation(), length));
+    }
+
+    public static Vector getRightSide(Player player,  double length){
+        return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getRightSide(player.getEyeLocation(), length));
+    }
+
+    public static Vector getUp(Location loc, double length){
+        return new Vector(0,1,0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(loc), - Math.toRadians(loc.getPitch())).normalize().multiply(length);
+    }
+
+    public static Vector getDown(Location loc,  double length){
+        return new Vector(0,-1,0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(loc), - Math.toRadians(loc.getPitch())).normalize().multiply(length);
+    }
+
+    public static Vector getLeftSideNormalisedVector(Location loc){
+        return Vectors.getDirectionBetweenLocations(loc, Locations.getLeftSide(loc, 1));
+    }
+
+    public static Vector getRightSideNormalisedVector(Location loc){
+        return Vectors.getDirectionBetweenLocations(loc, Locations.getRightSide(loc, 1));
+    }
+
     public static Vec3 getVec3FromVector(Vector vector) {
         return new Vec3(vector.getX(), vector.getY(), vector.getZ());
     }
@@ -110,7 +134,6 @@ public class Vectors {
     public static float getPitch(Vector vec, Player player){
         return player.getLocation().setDirection(vec).getPitch();
     }
-
 
     public static Vector getBounce(Vector dir, Vector normal){
         double dotProduct = normal.dot(dir);

@@ -3,10 +3,7 @@ package com.sereneoasis.util.methods;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Color;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.BlockDisplay;
@@ -97,12 +94,15 @@ public class Blocks {
     }
 
     public static boolean playerLookingAtBlockDisplay(Player player, BlockDisplay target, double maxDistance, double size) {
-        Location lowest = target.getLocation().clone().subtract(size/2,size/2,size/2);
-        Location highest = lowest.clone().add(size, size, size);
+        Location loc = target.getLocation();
+
+        Location lowest = loc.clone().add(Vectors.getDown(loc, size/2).add(Vectors.getLeftSide(player, size/2)).subtract(loc.getDirection().multiply(size/2)));
+        Location highest = loc.clone().add(Vectors.getUp(loc, size/2).add(Vectors.getRightSide(player, size/2)).add(loc.getDirection().multiply(size/2)));
+
         BoundingBox boundingBox = new BoundingBox(lowest.getX(), lowest.getY(), lowest.getZ(), highest.getX(), highest.getY(), highest.getZ());
-        Location loc = player.getEyeLocation().clone();
+        Location playerLoc = player.getEyeLocation().clone();
         Vector dir = player.getEyeLocation().getDirection().clone().normalize();
-        RayTraceResult rayTraceResult = boundingBox.rayTrace(loc.toVector(), dir, maxDistance);
+        RayTraceResult rayTraceResult = boundingBox.rayTrace(playerLoc.toVector(), dir, maxDistance);
         if (rayTraceResult != null) {
             return true;
         }

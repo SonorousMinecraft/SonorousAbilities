@@ -99,6 +99,12 @@ public class RaiseBlock extends CoreAbility {
         }
     }
 
+    public void stop(){
+        speed = 0;
+        isFalling = false;
+        abilityStatus = AbilityStatus.COMPLETE;
+    }
+
     public BlockDisplay getBlockEntity() {
         return block.getBlockDisplay();
     }

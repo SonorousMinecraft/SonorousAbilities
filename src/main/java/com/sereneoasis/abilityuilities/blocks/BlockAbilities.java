@@ -45,7 +45,7 @@ public class BlockAbilities {
                     if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED) {
                         masterAbility.remove();
                         shootBlockFromLoc.remove();
-                        masterAbility.getsPlayer().addCooldown(masterAbility.getName(), masterAbility.getCooldown());
+//                        masterAbility.getsPlayer().addCooldown(masterAbility.getName(), masterAbility.getCooldown());
                     } else if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
                         Location oldLoc = shootBlockFromLoc.getLoc().clone().subtract(dir);
                         BlockFace blockFace = Blocks.getFacingBlockFace(oldLoc, dir, masterAbility.getSpeed() + 1);
