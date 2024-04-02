@@ -194,11 +194,11 @@ public class ConfigManager {
                 0, 5000, 20000,
                 2, 1.0, 0, 35, 1, 10, 1.0);
 
-        saveConfigValuesAbility(earth, "Wall", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "EarthWall", EARTH.toString(), "description", "instructions",
                 0, 2000, 20000,
                 0, 1.5, 0, 6, 5, 10, 1);
         ArrayList<ComboManager.AbilityInformation> bulwarkAbilities = new ArrayList<>();
-        bulwarkAbilities.add(0, new ComboManager.AbilityInformation("Wall", ClickType.SHIFT_LEFT));
+        bulwarkAbilities.add(0, new ComboManager.AbilityInformation("EarthWall", ClickType.SHIFT_LEFT));
 
 
         saveConfigValuesCombo(earth, "Bulwark", EARTH.toString(), "description", "instructions",
@@ -208,6 +208,10 @@ public class ConfigManager {
         saveConfigValuesAbility(earth, "StoneShred", Archetype.EARTH.toString(), "description", "instructions",
                 0, 15000, 20000,
                 4, 0, 3, 50, 1, 10, 0);
+
+        saveConfigValuesAbility(earth, "TerraSurf", EARTH.toString(), "description", "instructions",
+                0, 5000, 10000,
+                0, 0, 2, 0, 1.0, 0, 0.5);
 
         saveAttributeValuesArchetype(earth, EARTH, 0, 0, 0, 0,
                 0.0, 0, 0);

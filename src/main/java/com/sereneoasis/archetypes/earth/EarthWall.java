@@ -5,14 +5,14 @@ import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillar;
 import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.entity.Player;
 
-public class Wall extends CoreAbility {
+public class EarthWall extends CoreAbility {
 
-    private final String name = "Wall";
+    private final String name = "EarthWall";
 
     private RaiseBlockPillar raiseBlockPillar;
 
-    public Wall(Player player) {
-        super(player, "Wall");
+    public EarthWall(Player player) {
+        super(player, "EarthWall");
 
         if (shouldStart()) {
 

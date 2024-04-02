@@ -6,10 +6,7 @@ import com.sereneoasis.ability.BendingManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 
-import com.sereneoasis.archetypes.earth.RockKick;
-import com.sereneoasis.archetypes.earth.StoneShred;
-import com.sereneoasis.archetypes.earth.TerraLine;
-import com.sereneoasis.archetypes.earth.Wall;
+import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -169,7 +166,6 @@ public class SerenityListener implements Listener {
 
         BendingManager.getInstance().handleRedirections(player, ClickType.LEFT);
 
-
         switch (ability) {
             case "RockKick":
                 if (CoreAbility.hasAbility(e.getPlayer(), RockKick.class)) {
@@ -182,13 +178,15 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), TerraLine.class).setHasClicked();
                 }
                 break;
-            case "Wall":
-                new Wall(player);
+            case "EarthWall":
+                new EarthWall(player);
                 break;
             case "StoneShred":
                 if (CoreAbility.hasAbility(e.getPlayer(), StoneShred.class)) {
                     CoreAbility.getAbility(e.getPlayer(), StoneShred.class).setHasClicked();
                 }
+            case "TerraSurf":
+                new TerraSurf(player);
                 break;
         }
 

@@ -22,6 +22,15 @@ public class EnhancedBlocks {
                 .collect(Collectors.toSet());
     }
 
+    public static Set<Block> getFacingSphereBlocks(CoreAbility coreability, Location loc) {
+        if (loc == null) {
+            return new HashSet<>();
+        }
+        return Blocks.getBlocksAroundPoint(loc, coreability.getRadius()).stream()
+                .filter(block -> Blocks.getArchetypeBlocks(coreability.getsPlayer()).contains(block.getType()))
+                .collect(Collectors.toSet());
+    }
+
     public static Set<Block> getTopCircleBlocks(CoreAbility coreAbility){
         Set<Block> blocks = Locations.getOutsideSphereLocs(coreAbility.getPlayer().getLocation(), coreAbility.getSourceRange(), 1).stream()
                 .map(Location::getBlock)
