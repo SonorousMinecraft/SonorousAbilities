@@ -185,6 +185,7 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), StoneShred.class)) {
                     CoreAbility.getAbility(e.getPlayer(), StoneShred.class).setHasClicked();
                 }
+                break;
             case "TerraSurf":
                 new TerraSurf(player);
                 break;

@@ -119,7 +119,6 @@ public class Skate extends CoreAbility {
             } else {
                 if (Blocks.isSolid(armorStand.getLocation().add(dir.clone().multiply(speed).add(new Vector(0, yVelocity + 1, 0))))) {
                     abilityStatus = AbilityStatus.COMPLETE;
-                    Bukkit.broadcastMessage("solid");
                 }
 
                 armorStand.setVelocity(dir.clone().multiply(speed).add(new Vector(0, yVelocity, 0)));
@@ -128,7 +127,6 @@ public class Skate extends CoreAbility {
             armorStand.setVelocity(dir.clone().multiply(speed));
             if (Blocks.isSolid(armorStand.getLocation().add(dir.clone().multiply(speed).add(new Vector(0, 1, 0))))) {
                 abilityStatus = AbilityStatus.COMPLETE;
-                Bukkit.broadcastMessage("solid");
             }
         }
 

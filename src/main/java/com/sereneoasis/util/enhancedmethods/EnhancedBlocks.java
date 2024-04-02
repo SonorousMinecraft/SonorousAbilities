@@ -17,7 +17,7 @@ public class EnhancedBlocks {
         if (loc == null) {
             return new HashSet<>();
         }
-        return Blocks.getBlocksAroundPoint(loc, coreability.getRadius()).stream()
+        return Blocks.getBlocksAroundPoint(loc.getBlock().getLocation(), coreability.getRadius()).stream()
                 .filter(block -> Blocks.getArchetypeBlocks(coreability.getsPlayer()).contains(block.getType()))
                 .collect(Collectors.toSet());
     }

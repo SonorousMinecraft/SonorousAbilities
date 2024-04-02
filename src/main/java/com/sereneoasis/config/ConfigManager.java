@@ -197,6 +197,7 @@ public class ConfigManager {
         saveConfigValuesAbility(earth, "EarthWall", EARTH.toString(), "description", "instructions",
                 0, 2000, 20000,
                 0, 1.5, 0, 6, 5, 10, 1);
+        
         ArrayList<ComboManager.AbilityInformation> bulwarkAbilities = new ArrayList<>();
         bulwarkAbilities.add(0, new ComboManager.AbilityInformation("EarthWall", ClickType.SHIFT_LEFT));
 

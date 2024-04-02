@@ -10,6 +10,7 @@ import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,30 +40,30 @@ public class StoneShred extends CoreAbility {
     public StoneShred(Player player) {
         super(player, "StoneShred");
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
-            return;
-        }
+        if (shouldStart()) {
 
-        Set<Block> sourceBlocks = EnhancedBlocks.getFacingSphereBlocks(this);
+            Set<Block> sourceBlocks = EnhancedBlocks.getFacingSphereBlocks(this);
 
-        if (!sourceBlocks.isEmpty()){
-            displayBlockDistance = Blocks.getFacingBlockLoc(player, sourceRange).distance(player.getEyeLocation());
-            previousDir = player.getEyeLocation().getDirection();
-            Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
-            for (Block b : sourceBlocks){
-                if (b!=null) {
-                    TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), b.getType(), 60000, 1);
-                    Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
-                    displayBlocks.put(tdb, offset);
-                    if (TempBlock.isTempBlock(b)){
-                        TempBlock.getTempBlock(b).revert();
+            if (!sourceBlocks.isEmpty()) {
+                displayBlockDistance = Blocks.getFacingBlockLoc(player, sourceRange).distance(player.getEyeLocation());
+                previousDir = player.getEyeLocation().getDirection();
+                Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
+                for (Block b : sourceBlocks) {
+                    if (b != null) {
+                        TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
+                        Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
+                        displayBlocks.put(tdb, offset);
+//                        if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
+//                            TempBlock.getTempBlock(b).revert();
+//                            Bukkit.broadcastMessage("test");
+//                        }
+                        TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
+                        sourceTempBlocks.add(tb);
                     }
-                    TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
-                    sourceTempBlocks.add(tb);
                 }
+                abilityStatus = AbilityStatus.CHARGED;
+                start();
             }
-            abilityStatus = AbilityStatus.CHARGED;
-            start();
         }
 
     }
@@ -100,6 +101,7 @@ public class StoneShred extends CoreAbility {
     public void remove() {
         super.remove();
         displayBlocks.forEach((tempDisplayBlock, vector) -> tempDisplayBlock.revert());
+
         sourceTempBlocks.forEach(tempBlock -> tempBlock.revert());
         sPlayer.addCooldown(name,cooldown);
     }

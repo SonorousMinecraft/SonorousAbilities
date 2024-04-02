@@ -58,7 +58,6 @@ public class BendingManager implements Runnable {
 
                             if (RayTracing.playerLookingAt(player, boundingBox, redirectRange)){
                                 if (!redirectAbility.hasCustomRedirect()) {
-                                    Bukkit.broadcastMessage("redirecting");
                                     redirectAbility.setDir(player.getEyeLocation().getDirection());
                                 } else {
                                     redirectAbility.handleRedirects(player, clickType);

@@ -42,7 +42,7 @@ public class TempBlock {
             this.newData = newData;
             this.revertTime = System.currentTimeMillis() + revertTime;
 
-            this.oldData = block.getBlockData();
+            this.oldData = block.getBlockData().clone();
 
             block.setBlockData(newData);
             INSTANCES.put(block, this);
@@ -60,7 +60,7 @@ public class TempBlock {
             this.newData = newData;
             this.revertTime = System.currentTimeMillis() + revertTime;
 
-            this.oldData = block.getBlockData();
+            this.oldData = block.getBlockData().clone();
 
             block.setBlockData(newData);
             INSTANCES.put(block, this);
@@ -85,15 +85,21 @@ public class TempBlock {
     }
 
     public void automaticRevert() {
-        if (block.getBlockData() != oldData) {
-            this.block.setBlockData(oldData);
-        }
+
         REVERT_QUEUE.remove();
-        INSTANCES.remove(block, this);
+        if (INSTANCES.containsKey(block)) {
+            if (block.getBlockData() != oldData) {
+                this.block.setBlockData(oldData);
+            }
+            INSTANCES.remove(block, this);
+        }
     }
 
     public void revert() {
-        this.block.setBlockData(oldData);
+        if (oldData != null) {
+            this.block.setBlockData(oldData);
+        }
+        INSTANCES.remove(block, this);
     }
 
     public long getRevertTime() {
