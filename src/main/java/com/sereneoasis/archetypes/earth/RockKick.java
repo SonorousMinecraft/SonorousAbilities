@@ -34,6 +34,9 @@ public class RockKick extends MasterAbility implements RedirectAbility {
 
     private Location loc;
 
+    private boolean isLooking = false;
+
+    private long sinceLastLooked = System.currentTimeMillis();
 
     public RockKick(Player player) {
         super(player, name);
@@ -63,6 +66,18 @@ public class RockKick extends MasterAbility implements RedirectAbility {
         raiseBlock.getBlock().rotate(player.getEyeLocation().getYaw(), 0);
 
         iterateHelpers(abilityStatus);
+        if (abilityStatus != AbilityStatus.SHOT) {
+            if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size)) {
+                raiseBlock.getBlockEntity().setGlowColorOverride(Color.RED);
+                raiseBlock.getBlockEntity().setGlowing(true);
+                isLooking = true;
+                sinceLastLooked = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - sinceLastLooked > 200){
+                raiseBlock.getBlockEntity().setGlowing(false);
+                isLooking = false;
+            }
+        }
+
         if (abilityStatus == AbilityStatus.SHOT) {
             this.loc = shootBlockFromLoc.getBlock().getLoc();
         }
@@ -75,13 +90,12 @@ public class RockKick extends MasterAbility implements RedirectAbility {
     }
 
     public void setHasClicked() {
-        if (abilityStatus != AbilityStatus.SHOT) {
-            if (Blocks.playerLookingAtBlockDisplay(player, raiseBlock.getBlockEntity(), sourceRange, size)) {
+        if (abilityStatus != AbilityStatus.SHOT && isLooking) {
                 shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
                 BlockAbilities.handleBouncingShootBlockFromLoc(this, shootBlockFromLoc);
 
                 abilityStatus = AbilityStatus.SHOT;
-            }
+
         }
     }
 

@@ -212,7 +212,15 @@ public class ConfigManager {
 
         saveConfigValuesAbility(earth, "TerraSurf", EARTH.toString(), "description", "instructions",
                 0, 5000, 10000,
-                0, 0, 2, 0, 1.0, 0, 0.5);
+                0, 0, 3, 0, 1.0, 0, 0.5);
+
+        saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
+                0, 1000, 0,
+                0, 0, 8, 0, 1, 0, 0.5);
+
+        saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
+                3000, 10000, 0,
+                2, 1.0, 12, 0, 1, 0, 1.0);
 
         saveAttributeValuesArchetype(earth, EARTH, 0, 0, 0, 0,
                 0.0, 0, 0);

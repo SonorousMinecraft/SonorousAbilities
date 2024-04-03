@@ -96,10 +96,12 @@ public class Blocks {
     public static boolean playerLookingAtBlockDisplay(Player player, BlockDisplay target, double maxDistance, double size) {
         Location loc = target.getLocation();
 
-        Location lowest = loc.clone().add(Vectors.getDown(loc, size/2).add(Vectors.getLeftSide(player, size/2)).subtract(loc.getDirection().multiply(size/2)));
-        Location highest = loc.clone().add(Vectors.getUp(loc, size/2).add(Vectors.getRightSide(player, size/2)).add(loc.getDirection().multiply(size/2)));
-
+        Location lowest = loc.clone().add(Vectors.getDown(loc, size/2 )).add(Vectors.getLeftSide(player, size/2)).subtract(loc.getDirection().multiply(size/2));
+//        Particles.spawnParticle(Particle.FLAME, lowest, 1, 0, 0);
+        Location highest = loc.clone().add(Vectors.getUp(loc, size/2)).add(Vectors.getRightSide(player, size/2)).add(loc.getDirection().multiply(size/2));
+//        Particles.spawnParticle(Particle.FLAME, highest, 1, 0, 0);
         BoundingBox boundingBox = new BoundingBox(lowest.getX(), lowest.getY(), lowest.getZ(), highest.getX(), highest.getY(), highest.getZ());
+        boundingBox.expand(0.1, 0.1, 0.1);
         Location playerLoc = player.getEyeLocation().clone();
         Vector dir = player.getEyeLocation().getDirection().clone().normalize();
         RayTraceResult rayTraceResult = boundingBox.rayTrace(playerLoc.toVector(), dir, maxDistance);

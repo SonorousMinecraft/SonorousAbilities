@@ -65,8 +65,6 @@ public class TerraSurf extends CoreAbility {
             }
             TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 200, 1);
             tdb.moveToAndMaintainFacing(tdb.getLoc().add(0,0.5,0));
-//            new TempBlock(block, Material.AIR, 200, true);
-
         });
 
         if (skate.getFloorBlock() != null){

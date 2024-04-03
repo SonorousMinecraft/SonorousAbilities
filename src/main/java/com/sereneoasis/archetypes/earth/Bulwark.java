@@ -4,18 +4,11 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillar;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Locations;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Bulwark extends CoreAbility {
 
@@ -34,7 +27,7 @@ public class Bulwark extends CoreAbility {
 //            return;
 //        }
 
-        Set<Block> blocks = EnhancedBlocks.getTopCircleBlocks(this);
+        Set<Block> blocks = EnhancedBlocks.getTopHCircleBlocks(this);
 
         if ( ! blocks.isEmpty()){
             for (Block b : blocks) {

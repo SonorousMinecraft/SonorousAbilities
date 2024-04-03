@@ -1,11 +1,15 @@
 package com.sereneoasis.util.enhancedmethods;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillar;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Scheduler;
 import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,8 +17,32 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class EnhancedDisplayBlocks {
+
+    public static void selectSphereDBs(CoreAbility coreAbility, Location loc, long revertTime, Vector moveVector){
+        EnhancedBlocks.getFacingSphereBlocks(coreAbility, loc).forEach(block -> {
+            if (TempBlock.isTempBlock(block)){
+                TempBlock.getTempBlock(block).revert();
+            }
+            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
+            tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
+        });
+    }
+
+    public static void selectCylinderDBs(CoreAbility coreAbility, double height, long revertTime, Vector moveVector){
+        EnhancedBlocks.getTopCylinderBlocks(coreAbility, height).forEach(block -> {
+            if (TempBlock.isTempBlock(block)){
+                TempBlock.getTempBlock(block).revert();
+            }
+            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
+            tdb.getBlockDisplay().setGlowing(true);
+            tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
+        });
+    }
+
+
 
     public static void orientOrganisedDBs(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, double displayBlockDistance){
         Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));

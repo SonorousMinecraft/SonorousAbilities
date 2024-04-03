@@ -91,7 +91,7 @@ public class Skate extends CoreAbility {
                 sinceLastNullFloor = System.currentTimeMillis();
                 floorRegisteredAsNull = true;
             } else {
-                if (System.currentTimeMillis() - sinceLastNullFloor > 500) {
+                if (System.currentTimeMillis() - sinceLastNullFloor > 1000) {
                     abilityStatus = AbilityStatus.COMPLETE;
                 }
             }

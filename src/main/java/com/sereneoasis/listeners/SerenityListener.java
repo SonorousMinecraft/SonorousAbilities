@@ -168,9 +168,7 @@ public class SerenityListener implements Listener {
 
         switch (ability) {
             case "RockKick":
-                if (CoreAbility.hasAbility(e.getPlayer(), RockKick.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), RockKick.class).setHasClicked();
-                }
+                CoreAbility.getAbilities(player, RockKick.class).forEach(rockKick -> rockKick.setHasClicked());
                 break;
 
             case "TerraLine":
@@ -225,6 +223,12 @@ public class SerenityListener implements Listener {
             case "StoneShred":
                 new StoneShred(player);
                 break;
+            case "Catapult":
+                new Catapult(player);
+                break;
+            case "EarthQuake":
+                new EarthQuake(player);
+                break;
         }
     }
 
@@ -239,6 +243,14 @@ public class SerenityListener implements Listener {
     public void noFallDamage(EntityDamageEvent event){
         if (event.getEntity() instanceof Player player){
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL){
+                SerenityPlayer sPlayer = getSerenityPlayer(player);
+                if (sPlayer.getArchetype() == Archetype.EARTH && sPlayer.getHeldAbility().equals("EarthQuake")) {
+                    if (!CoreAbility.hasAbility(player, EarthQuake.class))
+                    {
+                        EarthQuake earthQuake = new EarthQuake(player);
+                        earthQuake.setCharged();
+                    }
+                }
                 event.setCancelled(true);
             }
         }

@@ -3,6 +3,7 @@ package com.sereneoasis.util.enhancedmethods;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
@@ -22,6 +23,13 @@ public class EnhancedBlocks {
                 .collect(Collectors.toSet());
     }
 
+    public static boolean isStandingOnSource(CoreAbility coreability){
+       return !Blocks.getBlocksAroundPoint(coreability.getPlayer().getLocation().subtract(0,1,0), 2).stream()
+               .filter(block -> Blocks.getArchetypeBlocks(coreability.getsPlayer()).contains(block.getType()))
+               .collect(Collectors.toSet()).isEmpty();
+
+    }
+
     public static Set<Block> getFacingSphereBlocks(CoreAbility coreability, Location loc) {
         if (loc == null) {
             return new HashSet<>();
@@ -31,7 +39,27 @@ public class EnhancedBlocks {
                 .collect(Collectors.toSet());
     }
 
-    public static Set<Block> getTopCircleBlocks(CoreAbility coreAbility){
+    public static Set<Block> getTopCylinderBlocks(CoreAbility coreAbility, double height){
+        Set<Block> blocks = Blocks.getBlocksAroundPoint(coreAbility.getPlayer().getLocation().subtract(0,1,0), coreAbility.getRadius()).stream()
+                .filter(block -> Blocks.getArchetypeBlocks(coreAbility.getsPlayer()).contains(block.getType()) && Blocks.isTopBlock(block))
+                .collect(Collectors.toSet());
+
+
+        Set<Block> beneath = new HashSet<>();
+        for (int h = 1; h < height; h ++) {
+            int finalH = h;
+            blocks.forEach(block -> {
+                Block newBlock = block.getRelative(0,-finalH,0);
+                if (Blocks.getArchetypeBlocks(coreAbility.getsPlayer()).contains(newBlock.getType())) {
+                    beneath.add(newBlock);
+                }
+            });
+        }
+        blocks.addAll(beneath);
+        return blocks;
+    }
+
+    public static Set<Block> getTopHCircleBlocks(CoreAbility coreAbility){
         Set<Block> blocks = Locations.getOutsideSphereLocs(coreAbility.getPlayer().getLocation(), coreAbility.getSourceRange(), 1).stream()
                 .map(Location::getBlock)
                 .filter(block -> Blocks.getArchetypeBlocks(coreAbility.getsPlayer()).contains(block.getType()) && Blocks.isTopBlock(block))

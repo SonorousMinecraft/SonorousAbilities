@@ -272,6 +272,17 @@ public abstract class CoreAbility implements Ability {
         return null;
     }
 
+    public static <T extends CoreAbility> T getLatestAbility(final Player player, final Class<T> clazz) {
+        final Collection<T> abils = getAbilities(player, clazz);
+
+        T abil = null;
+        while (abils.iterator().hasNext()) {
+
+            abil = abils.iterator().next();
+        }
+        return abil;
+    }
+
     public static <T extends CoreAbility> Collection<T> getAbilities(final Class<T> clazz) {
         if (clazz == null || INSTANCES_BY_CLASS.get(clazz) == null || INSTANCES_BY_CLASS.get(clazz).size() == 0) {
             return Collections.emptySet();
