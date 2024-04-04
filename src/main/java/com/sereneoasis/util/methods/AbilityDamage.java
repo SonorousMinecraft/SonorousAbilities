@@ -53,10 +53,8 @@ public class AbilityDamage {
 
     public static List<LivingEntity> damageSeveralExceptReturnHit(Location loc, CoreAbility coreAbility, Player player, Set<LivingEntity> except, boolean kb, @Nullable Vector dir){
         List<LivingEntity> livingEntities = Entities.getAffectedList(loc, coreAbility.getHitbox(), player);
-        if (except != null) {
-            livingEntities.removeIf(except::contains);
-        }
-        livingEntities.forEach(target -> {
+
+        livingEntities.stream().filter(livingEntity -> except == null || !except.contains(livingEntity)).forEach(target -> {
             DamageHandler.damageEntity(target, player, coreAbility, coreAbility.getDamage());
             if (kb) {
                 target.setVelocity(dir.clone().multiply(coreAbility.getSpeed()));
