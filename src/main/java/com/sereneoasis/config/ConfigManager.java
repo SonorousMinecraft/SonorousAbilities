@@ -222,6 +222,10 @@ public class ConfigManager {
                 3000, 10000, 0,
                 2, 1.0, 12, 0, 1, 0, 1.0);
 
+        saveConfigValuesAbility(earth, "TectonicWave", EARTH.toString(), "description", "instructions",
+                0, 3000, 0,
+                2, 1.0, 8, 30, 1, 10, 1.0);
+
         saveAttributeValuesArchetype(earth, EARTH, 0, 0, 0, 0,
                 0.0, 0, 0);
 

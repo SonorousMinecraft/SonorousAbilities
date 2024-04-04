@@ -33,6 +33,8 @@ public class Catapult extends CoreAbility {
 
     private boolean hasCooldownApplied = false;
 
+    private Location loc;
+
     public Catapult(Player player) {
         super(player, "Catapult");
 
@@ -50,6 +52,7 @@ public class Catapult extends CoreAbility {
 
             if (!hasCooldownApplied) {
                 sPlayer.addCooldown(name, cooldown);
+                this.loc = player.getLocation();
                 hasCooldownApplied = true;
             }
 
@@ -58,7 +61,7 @@ public class Catapult extends CoreAbility {
                 this.remove();
             }
             currentRadius += size;
-            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, 2, currentRadius, true);
+            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc,2, currentRadius, true);
             quakes.add(shockwaveRing);
 
         }

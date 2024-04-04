@@ -67,4 +67,13 @@ public class EnhancedBlocks {
 
         return blocks;
     }
+
+    public static Set<Block> getTopHCircleBlocks(CoreAbility coreAbility, Location loc){
+        Set<Block> blocks = Locations.getOutsideSphereLocs(loc, coreAbility.getSourceRange(), 1).stream()
+                .map(Location::getBlock)
+                .filter(block -> Blocks.getArchetypeBlocks(coreAbility.getsPlayer()).contains(block.getType()) && Blocks.isTopBlock(block))
+                .collect(Collectors.toSet());
+
+        return blocks;
+    }
 }

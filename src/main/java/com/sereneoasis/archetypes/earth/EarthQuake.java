@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockCircle;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class EarthQuake extends CoreAbility {
     private final String name = "EarthQuake";
     private double currentRadius = 0.5;
     private List<RaiseBlockCircle> quakes;
+
+    private Location loc;
 
     public EarthQuake(Player player) {
         super(player, "EarthQuake");
@@ -41,6 +44,7 @@ public class EarthQuake extends CoreAbility {
 
         if (abilityStatus == AbilityStatus.CHARGED) {
             if (!player.isSneaking()) {
+                this.loc = player.getLocation();
                 abilityStatus = AbilityStatus.SHOT;
             }
             AbilityUtils.showCharged(this);
@@ -51,7 +55,7 @@ public class EarthQuake extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
             currentRadius += size;
-            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, 3, currentRadius, true);
+            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc,3, currentRadius, true);
             quakes.add(shockwaveRing);
 
 

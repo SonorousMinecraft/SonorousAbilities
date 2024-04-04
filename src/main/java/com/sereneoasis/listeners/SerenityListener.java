@@ -187,6 +187,11 @@ public class SerenityListener implements Listener {
             case "TerraSurf":
                 new TerraSurf(player);
                 break;
+            case "TectonicWave":
+                if (CoreAbility.hasAbility(e.getPlayer(), TectonicWave.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), TectonicWave.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -228,6 +233,9 @@ public class SerenityListener implements Listener {
                 break;
             case "EarthQuake":
                 new EarthQuake(player);
+                break;
+            case "TectonicWave":
+                new TectonicWave(player);
                 break;
         }
     }
