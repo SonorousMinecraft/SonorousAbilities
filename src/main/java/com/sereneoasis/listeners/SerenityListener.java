@@ -192,6 +192,13 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), TectonicWave.class).setHasClicked();
                 }
                 break;
+            case "RockRing":
+                if (CoreAbility.hasAbility(e.getPlayer(), RockRing.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), RockRing.class).setHasClicked();
+                } else {
+                    new RockRing(player);
+                }
+                break;
         }
 
     }
@@ -236,6 +243,11 @@ public class SerenityListener implements Listener {
                 break;
             case "TectonicWave":
                 new TectonicWave(player);
+                break;
+            case "RockRing":
+                if (CoreAbility.hasAbility(e.getPlayer(), RockRing.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), RockRing.class).setHasSourced();
+                }
                 break;
         }
     }

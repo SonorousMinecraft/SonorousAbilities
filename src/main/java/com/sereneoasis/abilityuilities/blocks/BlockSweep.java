@@ -33,6 +33,8 @@ public class BlockSweep extends CoreAbility {
 
     private Set<LivingEntity> damagedSet = new HashSet<>();
 
+    private Set<TempDisplayBlock>tempDisplayBlocks = new HashSet<>();
+
 
 
     public BlockSweep(Player player, String name, Color color) {
@@ -74,11 +76,13 @@ public class BlockSweep extends CoreAbility {
             newLocs.add(loc2);
 
             newLocs.stream()
+                    .filter(location -> !oldLocs.contains(location))
                     .map(Location::getBlock)
                     .forEach(block -> {
-                            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 2000, 1);
+                            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 500, 1);
 //                            tdb.getBlockDisplay().setGlowing(true);
-                            tdb.moveToAndMaintainFacing(tdb.getLoc().add(0, 1, 0));
+                        tempDisplayBlocks.add(tdb);
+//                            tdb.moveToAndMaintainFacing(tdb.getLoc().add(0, 10, 0));
                         damagedSet.addAll(AbilityDamage.damageSeveralExceptReturnHit(tdb.getLoc(), this, player, damagedSet, true, player.getEyeLocation().getDirection()));
 
 //                        DamageHandler.damageEntity(Entities.getAffected(tdb.getLoc(), hitbox, player), player, this, damage);
@@ -103,6 +107,11 @@ public class BlockSweep extends CoreAbility {
             }
         }
     }
+
+    public Set<TempDisplayBlock>getTempDisplayBlocks(){
+        return this.tempDisplayBlocks;
+    }
+
 
     public void setHasClicked(){
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED)

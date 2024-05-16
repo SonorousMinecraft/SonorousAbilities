@@ -1,4 +1,4 @@
-package com.sereneoasis.abilityuilities.blocks;
+package com.sereneoasis.abilityuilities.blocks.forcetype;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
@@ -6,20 +6,17 @@ import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Sakrajin
  * Creates a ring of blocks around a player
  */
-public class BlockRingAroundPlayer extends CoreAbility {
+public class BlockRingAroundPlayerGivenType extends CoreAbility {
 
     private Location loc;
 
@@ -27,7 +24,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private double ringSize;
 
-    private Material type;
+    private DisplayBlock type;
 
     private int orientation;
 
@@ -41,7 +38,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private List<TempDisplayBlock>blocks = new ArrayList<>();
 
-    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
+    public BlockRingAroundPlayerGivenType(Player player, String user, Location startLoc, DisplayBlock type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
 
         this.user = user;
@@ -71,7 +68,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
         loc = locs.get(locs.size() - 1);
 
         for (int i = 0; i < rotatePerTick; i++){
-            blocks.get(i).moveTo(locs.get(i).clone().add(Math.random(),Math.random(),Math.random()));
+            blocks.get(i).moveTo(locs.get(i));
         }
 
 

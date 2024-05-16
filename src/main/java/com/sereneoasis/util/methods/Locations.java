@@ -135,7 +135,7 @@ public class Locations {
 
     public static List<Location> getBezierCurveLocations(Location loc, int points, LinkedHashMap<Vector, Double> directions, double speed) {
         double distance = directions.values().stream().reduce(0.0, Double::sum);
-        double increment = (speed * distance) / points;
+        double increment = (distance) / points;
         List<Location> locs = new ArrayList<>();
         Line line = new Line(directions);
         for (double d = 0; d < distance; d += increment) {

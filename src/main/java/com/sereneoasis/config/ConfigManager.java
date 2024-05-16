@@ -226,6 +226,10 @@ public class ConfigManager {
                 0, 3000, 0,
                 2, 1.0, 8, 30, 1, 10, 1.0);
 
+        saveConfigValuesAbility(earth, "RockRing", EARTH.toString(), "description", "instructions",
+                0, 5000, 0,
+                2, 0.9, 3, 40, 1.3, 10, 0.9);
+
         saveAttributeValuesArchetype(earth, EARTH, 0, 0, 0, 0,
                 0.0, 0, 0);
 

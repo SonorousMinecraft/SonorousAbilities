@@ -1,4 +1,4 @@
-package com.sereneoasis.abilityuilities.blocks;
+package com.sereneoasis.abilityuilities.blocks.forcetype;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
@@ -8,11 +8,9 @@ import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -20,27 +18,25 @@ import java.util.List;
  * @author Sakrajin
  * Allows the shooting of a block from a player
  */
-public class ShootBlocksFromLoc extends CoreAbility {
+public class ShootBlocksFromLocGivenType extends CoreAbility {
 
     private Location loc;
     private String user;
 
-    private Material type;
+    private DisplayBlock type;
 
     private boolean directable, autoRemove;
 
 
     private Vector dir;
 
+    private long revertTime = 500;
+
     private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
 
     private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
 
-    private int amount;
-
-    private List<TempDisplayBlock>blocks = new ArrayList<>();
-
-    public ShootBlocksFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove, int amount) {
+    public ShootBlocksFromLocGivenType(Player player, String user, Location startLoc, DisplayBlock type, boolean directable, boolean autoRemove) {
         super(player, user);
         this.user = user;
         this.type = type;
@@ -49,22 +45,6 @@ public class ShootBlocksFromLoc extends CoreAbility {
         this.autoRemove = autoRemove;
         this.dir = player.getEyeLocation().getDirection().normalize();
         this.abilityStatus = AbilityStatus.SHOT;
-        this.amount = amount;
-
-
-        List<Location> locs = Locations.getShotLocations(loc, amount, dir, speed);
-
-//        if (directable){
-//            locs = Locations.getBezierCurveLocations(loc, amount, directions, speed);
-//            directions.put(dir, speed);
-//        }
-        directions.put(dir, speed);
-        for (Location point : locs) {
-            TempDisplayBlock tdb = new TempDisplayBlock(point, type, 60000, size);
-            blocks.add(tdb);
-        }
-
-
         start();
     }
 
@@ -89,28 +69,19 @@ public class ShootBlocksFromLoc extends CoreAbility {
                 directions.put(dir, speed);
                 lastCurveTime = System.currentTimeMillis();
             }
-            locs = Locations.getBezierCurveLocations(loc, amount, directions, speed);
+            locs = Locations.getBezierCurveLocations(loc, 20, directions, speed);
 
         } else {
-            locs = Locations.getShotLocations(loc, amount, dir, speed);
+            locs = Locations.getShotLocations(loc, 20, dir, speed);
         }
 
 
-        for (int i = 0; i < amount; i++){
-            if (!directable || locs.size() == amount) {
-                blocks.get(i).moveTo(locs.get(i).clone().add(Math.random(), Math.random(), Math.random()));
-            }
+        for (Location point : locs) {
+            new TempDisplayBlock(point, type, revertTime,  size);
         }
 
         DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
         loc.add(dir.clone().multiply(speed));
-
-    }
-
-    @Override
-    public void remove() {
-        super.remove();
-        blocks.forEach(TempDisplayBlock::revert);
 
     }
 

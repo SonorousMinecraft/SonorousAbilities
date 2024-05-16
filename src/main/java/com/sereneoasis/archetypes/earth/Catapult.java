@@ -61,7 +61,7 @@ public class Catapult extends CoreAbility {
                 this.remove();
             }
             currentRadius += size;
-            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc,2, currentRadius, true);
+            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc,1, currentRadius, true);
             quakes.add(shockwaveRing);
 
         }

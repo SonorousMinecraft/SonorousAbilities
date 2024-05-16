@@ -1,4 +1,4 @@
-package com.sereneoasis.abilityuilities.blocks;
+package com.sereneoasis.abilityuilities.blocks.forcetype;
 
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
@@ -6,23 +6,20 @@ import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Sakrajin
  * Allows a player to source a block and have it travel towards them
  */
-public class SourceBlockToPlayer extends CoreAbility {
+public class SourceBlockToPlayerGivenType extends CoreAbility {
 
 
     private Location loc;
@@ -31,36 +28,22 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     private double distanceToStop;
 
-    private Material type;
+    private DisplayBlock type;
 
     private TempDisplayBlock glowingSource;
 
-    private int amount;
-
-    private List<TempDisplayBlock>blocks = new ArrayList<>();
-
-
-    public SourceBlockToPlayer(Player player, String user, double distanceToStop, int amount) {
+    public SourceBlockToPlayerGivenType(Player player, String user, DisplayBlock type, double distanceToStop) {
         super(player, user);
 
         abilityStatus = AbilityStatus.NO_SOURCE;
-        Block source = Blocks.getFacingBlock(player, sourceRange);
+        Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             this.user = user;
-            this.type = source.getType();
-            this.amount = amount;
+            this.type = type;
             this.distanceToStop = distanceToStop;
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            Location origin = Blocks.getFacingBlockLoc(player, sourceRange);
-
-            glowingSource = Blocks.selectSourceAnimationManual(origin.clone().subtract(0,size,0), sPlayer.getColor(), size);
-            loc = origin.clone();
-
-            for (int i = 0; i < amount; i++){
-                TempDisplayBlock tdb = new TempDisplayBlock(glowingSource.getLoc(), type, 60000, size);
-                blocks.add(tdb);
-            }
-
+            glowingSource = Blocks.selectSourceAnimationManual(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size/2,0), sPlayer.getColor(), size);
+            loc = source.getLocation();
             start();
         }
     }
@@ -90,10 +73,10 @@ public class SourceBlockToPlayer extends CoreAbility {
 
             loc.add(dir.clone().multiply(speed));
 
-            List<Location> locs = Locations.getShotLocations(loc, amount, dir, speed);
+            List<Location> locs = Locations.getShotLocations(loc, 20, dir, speed);
 
-            for (int i = 0; i < amount; i++){
-                blocks.get(i).moveTo(locs.get(i).clone().add(Math.random(),Math.random(),Math.random()));
+            for (Location point : locs) {
+                new TempDisplayBlock(point, type, 1000, size);
             }
 
             if (loc.distance(player.getLocation()) <= distanceToStop) {
@@ -102,23 +85,12 @@ public class SourceBlockToPlayer extends CoreAbility {
         }
     }
 
-    @Override
-    public void remove() {
-        super.remove();
-        blocks.forEach(TempDisplayBlock::revert);
-
-    }
-
     public void setAbilityStatus(AbilityStatus abilityStatus) {
         this.abilityStatus = abilityStatus;
         if (abilityStatus != AbilityStatus.SOURCE_SELECTED)
         {
             glowingSource.revert();
         }
-    }
-
-    public Material getType() {
-        return type;
     }
 
     @Override
