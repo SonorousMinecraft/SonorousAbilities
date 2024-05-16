@@ -6,6 +6,8 @@ import com.sereneoasis.ability.BendingManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 
+import com.sereneoasis.archetypes.chaos.AbyssalFall;
+import com.sereneoasis.archetypes.chaos.Limbo;
 import com.sereneoasis.archetypes.chaos.ShadowStep;
 import com.sereneoasis.archetypes.chaos.Singularity;
 import com.sereneoasis.archetypes.earth.*;
@@ -207,6 +209,14 @@ public class SerenityListener implements Listener {
                     new ShadowStep(player);
                 }
                 break;
+            case "AbyssalFall":
+                if (CoreAbility.hasAbility(e.getPlayer(), AbyssalFall.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), AbyssalFall.class).setHasClicked();
+                }
+                break;
+            case "Limbo":
+                new Limbo(player);
+                break;
         }
 
     }
@@ -259,6 +269,9 @@ public class SerenityListener implements Listener {
                 break;
             case "Singularity":
                 new Singularity(player);
+                break;
+            case "AbyssalFall":
+                new AbyssalFall(player);
                 break;
         }
     }
