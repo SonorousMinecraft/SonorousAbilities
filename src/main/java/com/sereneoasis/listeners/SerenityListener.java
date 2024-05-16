@@ -215,8 +215,11 @@ public class SerenityListener implements Listener {
                 }
                 break;
             case "Limbo":
-                new Limbo(player);
-                break;
+                if (CoreAbility.hasAbility(e.getPlayer(), Limbo.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Limbo.class).setHasClicked();
+                } else {
+                    new Limbo(player);
+                }
         }
 
     }
