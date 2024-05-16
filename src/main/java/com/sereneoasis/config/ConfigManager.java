@@ -251,6 +251,10 @@ public class ConfigManager {
                 3000, 1000, 0,
                 0, 0, 8, 10, 0, 0, 0);
 
+        saveConfigValuesAbility(chaos, "Singularity", CHAOS.toString(), "description", "instructions",
+                5000, 15000, 20000,
+                4, 0, 3, 5, 1, 10, 0.5);
+
 
         getConfig(CHAOS).saveConfig();
     }

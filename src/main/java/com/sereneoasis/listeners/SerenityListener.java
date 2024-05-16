@@ -7,6 +7,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 
 import com.sereneoasis.archetypes.chaos.ShadowStep;
+import com.sereneoasis.archetypes.chaos.Singularity;
 import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
@@ -255,6 +256,9 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), RockRing.class)) {
                     CoreAbility.getAbility(e.getPlayer(), RockRing.class).setHasSourced();
                 }
+                break;
+            case "Singularity":
+                new Singularity(player);
                 break;
         }
     }

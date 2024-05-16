@@ -1,6 +1,7 @@
 package com.sereneoasis.archetypes;
 
 import org.bukkit.Material;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,9 @@ public enum DisplayBlock {
 
     AIR(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.LIGHT_GRAY_STAINED_GLASS}))),
 
-    LIGHTNING(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.LIGHT_BLUE_STAINED_GLASS})));
+    LIGHTNING(new ArrayList<>(List.of(new Material[]{Material.WHITE_STAINED_GLASS, Material.LIGHT_BLUE_STAINED_GLASS}))),
+
+    CHAOS(new ArrayList<>(List.of(new Material[] {Material.BLUE_CONCRETE})));
 
     List<Material> blocks = new ArrayList<>();
 

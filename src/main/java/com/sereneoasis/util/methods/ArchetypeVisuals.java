@@ -31,4 +31,14 @@ public class ArchetypeVisuals {
             Particles.spawnColoredParticle(loc, red, radius, size*3, Color.fromRGB(220, 20, 60));
         }
     }
+
+    public static class ChaosVisual implements ArchetypeVisual{
+
+        @Override
+        public void playVisual(Location loc, double size, double radius, int tb, int wax_on, int red) {
+            //TDBs.playTDBs(loc, DisplayBlock.CHAOS, tb, size, radius);
+//            Particles.spawnParticle(Particle.WAX_ON, loc, wax_on, 0.5, 0);
+//            Particles.spawnColoredParticle(loc, red, radius, size*3, Color.fromRGB(220, 20, 60));
+        }
+    }
 }
