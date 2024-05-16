@@ -239,12 +239,17 @@ public class ConfigManager {
 
 
 
+
         FileConfiguration chaos = getConfig(CHAOS).getConfig();
         saveArchetypeCosmetics(chaos, CHAOS, "#2E1A47");
         chaos.options().copyDefaults(true);
 
         saveAttributeValuesArchetype(chaos, CHAOS, 0, 0, 0, 0,
                 0.0, 0, 0);
+
+        saveConfigValuesAbility(chaos, "ShadowStep", CHAOS.toString(), "description", "instructions",
+                3000, 1000, 0,
+                0, 0, 8, 10, 0, 0, 0);
 
 
         getConfig(CHAOS).saveConfig();

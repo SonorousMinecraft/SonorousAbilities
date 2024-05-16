@@ -24,6 +24,9 @@ public enum AbilityStatus {
     ATTACKING,
     SHOOTING,
     ATTACHED,
-    DROPPED
+    DROPPED,
+
+    TELEPORTING,
+    REVERTING
 
 }
