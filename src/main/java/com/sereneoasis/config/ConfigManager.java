@@ -236,6 +236,18 @@ public class ConfigManager {
         saveArchetypeCosmetics(earth, EARTH, "#50C878");
         earth.options().copyDefaults(true);
         getConfig(EARTH).saveConfig();
+
+
+
+        FileConfiguration chaos = getConfig(CHAOS).getConfig();
+        saveArchetypeCosmetics(chaos, CHAOS, "#2E1A47");
+        chaos.options().copyDefaults(true);
+
+        saveAttributeValuesArchetype(chaos, CHAOS, 0, 0, 0, 0,
+                0.0, 0, 0);
+
+
+        getConfig(CHAOS).saveConfig();
     }
 
 

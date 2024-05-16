@@ -7,7 +7,9 @@ package com.sereneoasis.archetypes;
 public enum Archetype {
     NONE("none"),
 
-    EARTH("earth");
+    EARTH("earth"),
+
+    CHAOS("chaos");
 
 
     private String name;
