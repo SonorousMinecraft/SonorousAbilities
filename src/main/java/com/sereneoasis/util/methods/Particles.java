@@ -4,6 +4,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Vibration;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 
 import java.util.List;
@@ -41,6 +42,11 @@ public class Particles {
 
     public static void spawnVibrationParticleEntity(Location loc, int count, double offset, double extra, Entity target, int timeInTicks) {
         Vibration vibration = new Vibration(loc, new Vibration.Destination.EntityDestination(target), timeInTicks);
+        loc.getWorld().spawnParticle(Particle.VIBRATION, loc, count, offset, offset, offset, extra, vibration);
+    }
+
+    public static void spawnVibrationParticleBlock(Location loc, int count, double offset, double extra, Block target, int timeInTicks) {
+        Vibration vibration = new Vibration(loc, new Vibration.Destination.BlockDestination(target), timeInTicks);
         loc.getWorld().spawnParticle(Particle.VIBRATION, loc, count, offset, offset, offset, extra, vibration);
     }
 

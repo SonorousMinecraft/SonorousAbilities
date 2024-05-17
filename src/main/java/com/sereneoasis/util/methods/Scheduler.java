@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 public class Scheduler {
 
     public interface Task {
-        void doTask();
+        void doTask() ;
     }
 
     public static void performTaskLater(long time, Task task){

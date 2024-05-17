@@ -263,6 +263,10 @@ public class ConfigManager {
                 0, 30000, 60000,
                 0, 0, 0, 0, 1, 0, 0);
 
+        saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "instructions",
+                0, 30000, 30000,
+                0, 0, 50, 0, 1, 0, 0);
+
         getConfig(CHAOS).saveConfig();
     }
 

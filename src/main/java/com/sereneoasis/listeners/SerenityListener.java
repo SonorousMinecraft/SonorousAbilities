@@ -6,10 +6,7 @@ import com.sereneoasis.ability.BendingManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 
-import com.sereneoasis.archetypes.chaos.AbyssalFall;
-import com.sereneoasis.archetypes.chaos.Limbo;
-import com.sereneoasis.archetypes.chaos.ShadowStep;
-import com.sereneoasis.archetypes.chaos.Singularity;
+import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
@@ -225,6 +222,14 @@ public class SerenityListener implements Listener {
                 } else {
                     new Limbo(player);
                 }
+                break;
+            case "VoidChasm":
+                if (CoreAbility.hasAbility(e.getPlayer(), VoidChasm.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), VoidChasm.class).setHasClicked();
+                } else {
+                    new VoidChasm(player);
+                }
+                break;
         }
 
     }

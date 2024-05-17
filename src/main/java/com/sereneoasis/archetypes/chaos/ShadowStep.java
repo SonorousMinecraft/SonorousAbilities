@@ -1,5 +1,6 @@
 package com.sereneoasis.archetypes.chaos;
 
+import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.velocity.Teleport;
 import com.sereneoasis.util.AbilityStatus;
@@ -24,22 +25,19 @@ public class ShadowStep extends MasterAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
 
-        Bukkit.broadcastMessage("currently at " + shots + " shots");
-
 
         iterateHelpers(abilityStatus);
 
         if (shots == 0 && getHelpers().keySet().stream().noneMatch(coreAbility -> coreAbility.getAbilityStatus() == AbilityStatus.TELEPORTING)){
-            Bukkit.broadcastMessage("removed");
             this.remove();
         }
-        else {
-            if (player.isSneaking()) {
-                abilityStatus = AbilityStatus.REVERTING;
-            } else {
-                abilityStatus = AbilityStatus.TELEPORTING;
-            }
-        }
+//        else {
+//            if (player.isSneaking()) {
+//                abilityStatus = AbilityStatus.REVERTING;
+//            } else {
+//                abilityStatus = AbilityStatus.TELEPORTING;
+//            }
+//        }
     }
 
     public void setHasClicked(){
@@ -47,12 +45,12 @@ public class ShadowStep extends MasterAbility {
             Teleport teleport = new Teleport(player, name, range);
             getHelpers().put(teleport, (abilityStatus) -> {
                 switch (abilityStatus) {
-                    case REVERTING -> {
+                    case REVERTING:
                         if (teleport.getAbilityStatus() == AbilityStatus.COMPLETE) {
                             player.teleport(teleport.getOrigin());
                             teleport.setAbilityStatus(AbilityStatus.REVERTING);
                         }
-                    }
+                        break;
                 }
             });
             shots--;
@@ -63,6 +61,7 @@ public class ShadowStep extends MasterAbility {
     @Override
     public void remove() {
         super.remove();
+        getHelpers().keySet().forEach(CoreAbility::remove);
         sPlayer.addCooldown(name, cooldown);
     }
 

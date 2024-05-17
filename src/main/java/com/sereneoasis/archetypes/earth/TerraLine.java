@@ -30,7 +30,7 @@ public class TerraLine extends CoreAbility {
     }
 
     @Override
-    public void progress() throws ReflectiveOperationException {
+    public void progress() {
         if (blockLine.getAbilityStatus() == AbilityStatus.COMPLETE) {
             Scheduler.performTaskLater(100L,()-> blockLine.remove());
             this.remove();

@@ -10,7 +10,7 @@ import java.util.Set;
 public abstract class MasterAbility extends CoreAbility{
 
     public interface HelperTick {
-        void doHelperTick(AbilityStatus status);
+        void doHelperTick(AbilityStatus status) throws ReflectiveOperationException;
     }
     protected final HashMap<CoreAbility, HelperTick> helpers = new HashMap<>();
 
@@ -23,7 +23,13 @@ public abstract class MasterAbility extends CoreAbility{
     }
 
     protected void iterateHelpers(AbilityStatus status){
-        helpers.values().forEach(helperTick -> helperTick.doHelperTick(status));
+        helpers.values().forEach(helperTick -> {
+            try {
+                helperTick.doHelperTick(status);
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 
