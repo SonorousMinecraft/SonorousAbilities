@@ -58,6 +58,18 @@ public class EnhancedDisplayBlocks {
         }
     }
 
+    public static void orientOrganisedDBsGivenCenter(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, Location center){
+        for (Map.Entry<TempDisplayBlock, Vector> entry : displayBlocks.entrySet()) {
+            double pitchDiff = Vectors.getPitchDiff(previousDir, newDir, player);
+            double yawDiff = Vectors.getYawDiff(previousDir, newDir, player);
+            entry.getValue().rotateAroundY(-yawDiff);
+            entry.getValue().rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), -pitchDiff);
+            entry.getKey().moveToAndMaintainFacing(center.clone().add(entry.getValue()));
+            Vector facingDir = Vectors.getRightSideNormalisedVector(player);
+            entry.getKey().rotate(Vectors.getYaw(newDir, player), Vectors.getPitch(newDir, player));
+        }
+    }
+
     public static void handleMoveOrganisedDBsAndHit(HashMap<TempDisplayBlock, Vector> displayBlocks, Player player, CoreAbility coreAbility) {
         for (Map.Entry<TempDisplayBlock, Vector> entry : displayBlocks.entrySet()) {
             TempDisplayBlock tempDisplayBlock = entry.getKey();

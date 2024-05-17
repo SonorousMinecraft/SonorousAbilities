@@ -202,6 +202,11 @@ public class SerenityListener implements Listener {
                 } else {
                     new RockRing(player);
                 }
+            case "Singularity":
+                if (CoreAbility.hasAbility(e.getPlayer(), Singularity.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Singularity.class).setHasClicked();
+                }
+                break;
             case "ShadowStep":
                 if (CoreAbility.hasAbility(e.getPlayer(), ShadowStep.class)) {
                     CoreAbility.getAbility(e.getPlayer(), ShadowStep.class).setHasClicked();

@@ -20,6 +20,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -45,6 +47,34 @@ public class TempDisplayBlock {
 
     private long revertTime;
 
+    private double size;
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setScale(double scale){
+        Transformation transformation = blockDisplay.getTransformation();
+        Vector3f currentSize = transformation.getScale();
+        Vector3f newSize = currentSize.mul((float) scale);
+        if (newSize.length() > 0.1){
+            transformation.getScale().set(newSize);
+            size = newSize.length();
+        } else {
+            transformation.getScale().set(currentSize.normalize(0.1F));
+            size = 0.1;
+
+        }
+        blockDisplay.setTransformation(transformation);
+    }
+
+    public void setSize(float size){
+        Transformation transformation = blockDisplay.getTransformation();
+        transformation.getScale().set(size);
+        this.size = size;
+        blockDisplay.setTransformation(transformation);
+    }
+
     public TempDisplayBlock(Location loc, DisplayBlock blocks, final long revertTime, double size) {
 
         this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
@@ -63,6 +93,7 @@ public class TempDisplayBlock {
             bDisplay.setTransformation(transformation);
 
         });
+        this.size = size;
         this.revertTime = System.currentTimeMillis() + revertTime;
         REVERT_QUEUE.add(this);
         TEMP_DISPLAY_BLOCK_SET.add(this);
@@ -86,6 +117,7 @@ public class TempDisplayBlock {
             bDisplay.setTransformation(transformation);
 
         });
+        this.size = size;
         this.revertTime = System.currentTimeMillis() + revertTime;
         REVERT_QUEUE.add(this);
         TEMP_DISPLAY_BLOCK_SET.add(this);
@@ -106,6 +138,7 @@ public class TempDisplayBlock {
             bDisplay.setTransformation(transformation);
 
         });
+        this.size = size;
         this.revertTime = System.currentTimeMillis() + revertTime;
         REVERT_QUEUE.add(this);
         TEMP_DISPLAY_BLOCK_SET.add(this);
@@ -131,6 +164,7 @@ public class TempDisplayBlock {
             }
 
         });
+        this.size = size;
         this.revertTime = System.currentTimeMillis() + revertTime;
         REVERT_QUEUE.add(this);
         TEMP_DISPLAY_BLOCK_SET.add(this);

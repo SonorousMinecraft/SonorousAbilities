@@ -61,6 +61,10 @@ public class SphereBlast extends CoreAbility {
 
     }
 
+    public Location getLoc() {
+        return loc;
+    }
+
     @Override
     public Player getPlayer() {
         return player;
