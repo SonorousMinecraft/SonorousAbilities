@@ -51,6 +51,20 @@ public class ShootBlockFromLoc extends CoreAbility {
         start();
     }
 
+    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean autoRemove, Vector dir) {
+        super(player, user);
+        this.user = user;
+        this.loc = startLoc;
+        this.directable = false;
+        this.autoRemove = autoRemove;
+        this.dir = dir.clone();
+        this.abilityStatus = AbilityStatus.SHOT;
+
+        block = new TempDisplayBlock(loc, type, 60000, size);
+        abilityStatus = AbilityStatus.SHOT;
+        start();
+    }
+
     @Override
     public void progress() {
 

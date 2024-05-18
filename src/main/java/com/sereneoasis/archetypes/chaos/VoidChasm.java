@@ -2,13 +2,11 @@ package com.sereneoasis.archetypes.chaos;
 
 import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.MasterAbility;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.abilityuilities.velocity.Levitate;
 import com.sereneoasis.util.Laser;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.PacketUtils;
-import com.sereneoasis.util.methods.Scheduler;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -112,7 +110,6 @@ public class VoidChasm extends MasterAbility {
     public void setHasClicked() throws ReflectiveOperationException {
 
 
-        int number = 0;
 
         outerArray = Arrays.stream(outerArray).filter((block) -> !crystalLasers.values().contains(block)).toArray();
 
@@ -122,16 +119,28 @@ public class VoidChasm extends MasterAbility {
 
             Blocks.getBlocksAroundPoint(block.getLocation(), 5).forEach(block1 -> {
                 if (TempBlock.isTempBlock(block1)) {
+
+                    Entity targetEntity = Entities.getFacingEntity(player, radius*2, 1.0);
+                    if (targetEntity != null)
+                    {
+                        new ShootBlockFromLoc(player, name, block1.getLocation(), Material.TINTED_GLASS, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetEntity.getLocation()).normalize());
+
+                    }
+                    else {
+                        Block targetBlock = Blocks.getFacingBlock(player, radius * 2);
+                        if (targetBlock != null) {
+                            new ShootBlockFromLoc(player, name, block1.getLocation(), Material.TINTED_GLASS, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetBlock.getLocation()).normalize());
+                        }
+                    }
                     TempBlock tb = TempBlock.getTempBlock(block1);
                     chasm.remove(tb);
                     tb.revert();
+
                 }
             });
             block = (Block) outerArray[new Random().nextInt(outerArray.length)];
             crystalLasers.replace(crystalLaser, block);
             crystalLaser.moveStart(block.getLocation());
-            number++;
-
 
         }
     }
