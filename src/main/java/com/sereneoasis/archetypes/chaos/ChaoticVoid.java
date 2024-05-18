@@ -4,9 +4,13 @@ import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
@@ -33,6 +37,9 @@ public class ChaoticVoid extends MasterAbility {
 
     private long lastPortalMade = System.currentTimeMillis();
 
+    private BossBar barduration;
+
+
 
     public ChaoticVoid(Player player) {
         super(player, name);
@@ -44,7 +51,8 @@ public class ChaoticVoid extends MasterAbility {
 //        Structures.spawnStructureFill(player.getLocation(), "ancient_city/city_center/city_center_1");
 
         if (shouldStart()){
-
+            barduration = Bukkit.getServer().createBossBar(name, BarColor.PURPLE, BarStyle.SOLID);
+            this.barduration.addPlayer(player);
             origin = player.getLocation();
             origin.setY(player.getWorld().getMaxHeight() - 40);
 
@@ -75,6 +83,14 @@ public class ChaoticVoid extends MasterAbility {
 //            player.teleport(origin);
 //        }
 
+        Long timeelapsed = System.currentTimeMillis() - startTime;
+        Double progress = 1 - (double) timeelapsed / (double) duration;
+        if (progress < 0) {
+            barduration.setProgress(0);
+        } else {
+            barduration.setProgress(progress);
+        }
+
         if (player.getLocation().getBlock().getType().equals(Material.END_GATEWAY)){
             handleTeleport();
         }
@@ -88,6 +104,10 @@ public class ChaoticVoid extends MasterAbility {
                     }
                 });
             }
+        }
+
+        if (System.currentTimeMillis() - startTime > duration){
+            this.remove();
         }
 
     }
@@ -115,9 +135,7 @@ public class ChaoticVoid extends MasterAbility {
                 }
             }
         }
-        if (System.currentTimeMillis() - startTime > duration){
-            this.remove();
-        }
+
     }
 
     public void handleTeleport(){
@@ -141,6 +159,7 @@ public class ChaoticVoid extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
+        barduration.removeAll();
         for (Block b : Blocks.getBlocksAroundPoint(chaos.getCenter().toLocation(player.getWorld()), 100)){
             b.setBlockData(Material.AIR.createBlockData());
         }
