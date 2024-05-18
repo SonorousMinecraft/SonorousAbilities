@@ -267,6 +267,10 @@ public class ConfigManager {
                 0, 30000, 30000,
                 2, 0.5, 50, 100, 1, 0, 1.0);
 
+        saveConfigValuesAbility(chaos, "SoulSlash", CHAOS.toString(), "description", "instructions",
+                0, 3000, 0,
+                1, 1.0, 4, 30, 1.5, 0, 0.5);
+
         getConfig(CHAOS).saveConfig();
     }
 

@@ -88,6 +88,11 @@ public class BlockRingAroundPlayer extends CoreAbility {
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500, false);
     }
 
+
+    public Material getType() {
+        return type;
+    }
+
     @Override
     public void remove() {
         super.remove();

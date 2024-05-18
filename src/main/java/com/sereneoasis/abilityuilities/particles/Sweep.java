@@ -55,9 +55,8 @@ public class Sweep extends CoreAbility {
         }
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
+    public List<Location> getLocations() {
+        return Locations.getArc(loc1, loc2, origin, 0.2);
     }
 
     @Override

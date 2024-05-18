@@ -9,6 +9,7 @@ import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,6 +40,8 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     private List<TempDisplayBlock>blocks = new ArrayList<>();
 
+    private boolean shouldSneak = true;
+
 
     public SourceBlockToPlayer(Player player, String user, double distanceToStop, int amount) {
         super(player, user);
@@ -65,6 +68,33 @@ public class SourceBlockToPlayer extends CoreAbility {
         }
     }
 
+    public SourceBlockToPlayer(Player player, String user, double distanceToStop, int amount, Block source) {
+        super(player, user);
+
+        abilityStatus = AbilityStatus.NO_SOURCE;
+        if (source != null ) {
+            this.user = user;
+            this.type = source.getType();
+            this.amount = amount;
+            this.distanceToStop = distanceToStop;
+            abilityStatus = AbilityStatus.SOURCE_SELECTED;
+
+            Location origin = source.getLocation().add(size/2,size/2,size/2);
+
+            glowingSource = Blocks.selectSourceAnimationManual(origin.clone(), sPlayer.getColor(), size);
+            loc = origin.clone();
+//            Bukkit.broadcastMessage(glowingSource.getBlockDisplay().getBlock().getMaterial().toString());
+            for (int i = 0; i < amount; i++){
+                TempDisplayBlock tdb = new TempDisplayBlock(glowingSource.getLoc(), type, 60000, size);
+                blocks.add(tdb);
+            }
+
+            shouldSneak = false;
+            start();
+        }
+    }
+
+
     public AbilityStatus getSourceStatus() {
         return abilityStatus;
     }
@@ -82,7 +112,7 @@ public class SourceBlockToPlayer extends CoreAbility {
 
 
         if (abilityStatus == AbilityStatus.SOURCING) {
-            if (!player.isSneaking()) {
+            if (shouldSneak && !player.isSneaking()) {
                 this.remove();
             }
 

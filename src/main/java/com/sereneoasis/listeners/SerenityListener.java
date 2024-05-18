@@ -230,6 +230,9 @@ public class SerenityListener implements Listener {
                     new VoidChasm(player);
                 }
                 break;
+            case "SoulSlash":
+                new SoulSlash(player);
+                break;
         }
 
     }
