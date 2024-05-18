@@ -1,5 +1,6 @@
 package com.sereneoasis.listeners;
 
+import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
 import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.BendingManager;
@@ -12,6 +13,7 @@ import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -233,6 +235,12 @@ public class SerenityListener implements Listener {
             case "SoulSlash":
                 new SoulSlash(player);
                 break;
+            case "ChaoticVoid":
+                if (CoreAbility.hasAbility(e.getPlayer(), ChaoticVoid.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), ChaoticVoid.class).setHasClicked();
+                } else {
+                    new ChaoticVoid(player);
+                }
         }
 
     }
@@ -319,25 +327,70 @@ public class SerenityListener implements Listener {
 
 
 
-    @EventHandler
-    public void onPlayerTryToRide(PlayerInteractEntityEvent event){
-        if (event.getRightClicked() instanceof LivingEntity rideable && event.getPlayer().getVehicle() ==null ){
-            Player player = event.getPlayer();
-            rideable.addPassenger(player);
-            //rideable.setAI(false);
-        }
-    }
+//    @EventHandler
+//    public void onPlayerTryToRide(PlayerInteractEntityEvent event){
+//        if (event.getRightClicked() instanceof LivingEntity rideable && event.getPlayer().getVehicle() ==null ){
+//            Player player = event.getPlayer();
+//            rideable.addPassenger(player);
+//            //rideable.setAI(false);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void onEntityDismount(EntityDismountEvent event){
+//        if (event.getEntity() instanceof Player player && player.isSneaking()) {
+//            event.setCancelled(true);
+//        } else{
+//            if (event.getEntity() instanceof LivingEntity rideable){
+//                //rideable.setAI(true);
+//            }
+//        }
+//    }
+
+//    @EventHandler
+//    public void onPlayerPortal(PlayerPortalEvent event){
+//        Player player = event.getPlayer();
+//
+//        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+//        if (sPlayer == null) {
+//            return;
+//        }
+//        String ability = sPlayer.getHeldAbility();
+//
+//        if (ability == null) {
+//            return;
+//        }
+//
+//        if (CoreAbility.hasAbility(player, ChaoticVoid.class)) {
+//            CoreAbility.getAbility(player, ChaoticVoid.class).handleTeleport();
+//            event.setCancelled(true);
+//        }
+//    }
 
     @EventHandler
-    public void onEntityDismount(EntityDismountEvent event){
-        if (event.getEntity() instanceof Player player && player.isSneaking()) {
+    public void onPlayerTeleport(PlayerTeleportEndGatewayEvent event){
+        Player player = event.getPlayer();
+
+        if (player.getWorld().equals(World.Environment.NORMAL)) {
             event.setCancelled(true);
-        } else{
-            if (event.getEntity() instanceof LivingEntity rideable){
-                //rideable.setAI(true);
-            }
         }
+
+//        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+//        if (sPlayer == null) {
+//            return;
+//        }
+//        String ability = sPlayer.getHeldAbility();
+//
+//        if (ability == null) {
+//            return;
+//        }
+
+//        if (CoreAbility.hasAbility(player, ChaoticVoid.class)) {
+//            CoreAbility.getAbility(player, ChaoticVoid.class).handleTeleport();
+//            event.setCancelled(true);
+//        }
     }
+
 }
 
 

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class AbilityUtils {
 
-    private static void sendActionBar(Player player, String message, ChatColor chatColor){
+    public static void sendActionBar(Player player, String message, ChatColor chatColor){
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message, chatColor));
     }
     public static void showCharged(CoreAbility coreAbility){

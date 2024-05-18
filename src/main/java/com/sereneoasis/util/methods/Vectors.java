@@ -13,6 +13,10 @@ import org.bukkit.util.Vector;
  */
 public class Vectors {
 
+    public static Vector getRandom(){
+        return Vector.getRandom().subtract(new Vector(0.5,0.5,0.5)).normalize();
+    }
+
     public static Vector getDirectionBetweenLocations(Location start, Location end) {
         return end.clone().subtract(start.clone()).toVector();
     }
