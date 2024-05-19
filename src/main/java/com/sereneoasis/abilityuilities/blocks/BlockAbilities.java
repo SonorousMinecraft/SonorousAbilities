@@ -68,9 +68,26 @@ public class BlockAbilities {
                 case SHOT -> {
                     shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
                     if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
-                        masterAbility.remove();
                         shootBlockFromLoc.remove();
-                        masterAbility.getsPlayer().addCooldown(masterAbility.getName(), masterAbility.getCooldown());
+                    }
+                }
+            }
+        });
+    }
+
+    public static void handleGravityShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc)
+    {
+        masterAbility.getHelpers().put(shootBlockFromLoc, status -> {
+            switch (status){
+                case SHOT -> {
+                    shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
+                    Vector dir = shootBlockFromLoc.getDir().clone();
+                    double y = dir.getY();
+                    y -= Constants.GRAVITY;
+                    dir.setY(y);
+                    shootBlockFromLoc.setDir(dir);
+                    if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
+                        shootBlockFromLoc.remove();
                     }
                 }
             }

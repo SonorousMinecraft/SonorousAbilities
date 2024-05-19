@@ -275,6 +275,10 @@ public class ConfigManager {
                 0, 3000, 60000,
                 0, 0, 3, 0, 0, 10, 0);
 
+        saveConfigValuesAbility(chaos, "Supernova", CHAOS.toString(), "description", "instructions",
+                0, 10000, 30000,
+                2, 0.5, 20, 100, 1, 0, 1.0);
+
         getConfig(CHAOS).saveConfig();
     }
 

@@ -3,10 +3,13 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -19,7 +22,7 @@ import java.util.Set;
  * @author Sakrajin
  * Creates a ring of blocks around a player
  */
-public class BlockRingAroundPlayer extends CoreAbility {
+public class BlockRingAroundPoint extends CoreAbility {
 
     private Location loc;
 
@@ -41,7 +44,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     private List<TempDisplayBlock>blocks = new ArrayList<>();
 
-    public BlockRingAroundPlayer(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
+    public BlockRingAroundPoint(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
 
         this.user = user;
@@ -51,8 +54,10 @@ public class BlockRingAroundPlayer extends CoreAbility {
         this.rotatePerTick = rotatePerTick;
         this.clockwise = clockwise;
         loc = startLoc.clone();
-        this.dir = Vectors.getDirectionBetweenLocations(startLoc, player.getEyeLocation()).setY(0).normalize();
-        rotation = Math.round(player.getEyeLocation().getYaw());
+
+        this.dir = new Vector(0.5,0,0.5);
+
+        rotation = 0;
 
         for (int i = 0; i < rotatePerTick; i++){
             blocks.add(new TempDisplayBlock(startLoc, type, 60000,  size));
@@ -63,12 +68,12 @@ public class BlockRingAroundPlayer extends CoreAbility {
 
     @Override
     public void progress() {
-
-        dir = player.getEyeLocation().getDirection().setY(0).normalize();
         int arcDegrees = (int) ( (rotatePerTick * size/3 * 360) / (2 * Math.PI * ringSize));
-        List<Location> locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
+
+        List<Location> locs = Locations.getArcFromTrig(loc, ringSize, rotatePerTick, dir, orientation,
                 rotation, rotation + arcDegrees, clockwise);
-        loc = locs.get(locs.size() - 1);
+
+        //loc = locs.get(locs.size() - 1);
 
         for (int i = 0; i < rotatePerTick; i++){
             blocks.get(i).moveTo(locs.get(i).clone().add(Math.random(),Math.random(),Math.random()));
@@ -88,6 +93,10 @@ public class BlockRingAroundPlayer extends CoreAbility {
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500, false);
     }
 
+
+    public void setLoc(Location loc) {
+        this.loc = loc;
+    }
 
     public Material getType() {
         return type;

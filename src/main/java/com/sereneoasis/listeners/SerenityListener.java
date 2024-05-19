@@ -241,6 +241,12 @@ public class SerenityListener implements Listener {
                 } else {
                     new ChaoticVoid(player);
                 }
+            case "Supernova":
+                if (CoreAbility.hasAbility(e.getPlayer(), Supernova.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Supernova.class).setHasClicked();
+                } else {
+                    new Supernova(player);
+                }
         }
 
     }

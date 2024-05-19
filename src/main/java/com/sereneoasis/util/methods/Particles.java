@@ -29,7 +29,7 @@ public class Particles {
     }
 
     public static void spawnParticle(Particle particle, Location loc, int count, double offset, double extra) {
-        loc.getWorld().spawnParticle(particle, loc, count, offset, offset, offset, extra);
+        loc.getWorld().spawnParticle(particle, loc, count, offset, offset, offset, extra, null, true);
     }
 
     public static void spawnParticleOffset(Particle particle, Location loc, int count, double x, double y, double z, double extra) {
