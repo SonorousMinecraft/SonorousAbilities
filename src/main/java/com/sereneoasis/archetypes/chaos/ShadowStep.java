@@ -4,6 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.velocity.Teleport;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -38,6 +39,8 @@ public class ShadowStep extends MasterAbility {
 //                abilityStatus = AbilityStatus.TELEPORTING;
 //            }
 //        }
+
+        AbilityUtils.showShots(this, 5 - shots, 5 );
     }
 
     public void setHasClicked(){

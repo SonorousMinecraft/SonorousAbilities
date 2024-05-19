@@ -6,12 +6,10 @@ import com.sereneoasis.abilityuilities.blocks.*;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.Laser;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -41,6 +39,8 @@ public class Supernova extends MasterAbility {
     private Set<BlockRingAroundPoint>rings = new HashSet<>();
 
     private HashMap<Laser.CrystalLaser, Block>crystalLasers = new HashMap<>();
+
+    private long sinceLastCrystalLaser = System.currentTimeMillis();
 
     private Vector dir;
     private boolean hasShot = false, hasHit = false;
@@ -126,7 +126,11 @@ public class Supernova extends MasterAbility {
                     if (Blocks.getBlocksAroundPoint(loc, radius / 4).stream().anyMatch(b -> (b != null && !b.isPassable()))) {
                         hasHit = true;
                     }
-                } else {
+                    if (System.currentTimeMillis() - sinceLastCrystalLaser > 5000) {
+                        AbilityUtils.sendActionBar(player, "READY", ChatColor.DARK_PURPLE);
+                    }
+
+                    } else {
 //                    rings.forEach(blockRingAroundPoint -> blockRingAroundPoint.setRingSize(blockRingAroundPoint.getRingSize() +1));
 //                    if (rings.stream().anyMatch(blockRingAroundPoint -> blockRingAroundPoint.getRingSize() > radius)){
 //                        this.remove();
@@ -148,20 +152,26 @@ public class Supernova extends MasterAbility {
                 this.dir = player.getEyeLocation().getDirection();
                 this.origin = loc.clone();
             } else {
+
                 this.dir = player.getEyeLocation().getDirection();
                 if (player.isSneaking() && sPlayer.getHeldAbility().equals("Supernova")) {
-                    crystalLasers.forEach((crystalLaser, block) -> {
-                        try {
-                            Location newLoc = Blocks.getFacingBlockLoc(player, range);
-                            if (newLoc != null) {
-                                newLoc.add(Vectors.getRandom().multiply(radius));
-                                new BlockDisintegrateSphereSuck(player, name, newLoc, loc, 0, 1);
-                                crystalLaser.moveStart(newLoc);
+
+                    if (System.currentTimeMillis() - sinceLastCrystalLaser > 5000) {
+                        sinceLastCrystalLaser = System.currentTimeMillis();
+
+                        crystalLasers.forEach((crystalLaser, block) -> {
+                            try {
+                                Location newLoc = Blocks.getFacingBlockLoc(player, range);
+                                if (newLoc != null) {
+                                    newLoc.add(Vectors.getRandom().multiply(radius));
+                                    new BlockDisintegrateSphereSuck(player, name, newLoc, loc, 0, 1);
+                                    crystalLaser.moveStart(newLoc);
+                                }
+                            } catch (ReflectiveOperationException e) {
+                                throw new RuntimeException(e);
                             }
-                        } catch (ReflectiveOperationException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                        });
+                    }
                 }
             }
         }

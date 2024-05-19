@@ -8,13 +8,18 @@ import com.sereneoasis.util.Laser;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.EndGateway;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.awt.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,7 +56,14 @@ public class VoidChasm extends MasterAbility {
                     chasm.add(tb);
                 });
                 outer.stream().forEach(block -> {
-                    TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE, duration, true);
+
+                    BlockState state = Material.END_GATEWAY.createBlockData().createBlockState();
+//                    ((EndGateway) state).setAge(-1000000);
+
+                    TempBlock tb = new TempBlock(block, state.getBlockData(), duration, true);
+                    EndGateway endGateway =  ((EndGateway) block.getState());
+                    endGateway.setAge(-1000000);
+                    endGateway.update(true);
                     chasm.add(tb);
                 });
 
@@ -95,8 +107,8 @@ public class VoidChasm extends MasterAbility {
         }
 
         Entities.getEntitiesAroundPoint(center, radius).stream().forEach(entity -> {
-            if (entity.getLocation().distance(center) > radius-5) {
-                entity.setVelocity(Vector.getRandom().subtract(new Vector(0.5,0.5,0.5)).multiply(10));
+            if (entity.getLocation().distance(center) > radius-3) {
+                entity.setVelocity(entity.getVelocity().multiply(-1));
             }
         });
 
@@ -108,6 +120,10 @@ public class VoidChasm extends MasterAbility {
                 throw new RuntimeException(e);
             }
         });
+
+        if (System.currentTimeMillis() - lastAttacked > 5000) {
+            AbilityUtils.sendActionBar(player, "READY", ChatColor.of(Color.MAGENTA) );
+        }
     }
 
     public void setHasClicked() throws ReflectiveOperationException {
@@ -119,22 +135,25 @@ public class VoidChasm extends MasterAbility {
                 Laser.CrystalLaser crystalLaser = entry.getKey();
                 Block block = entry.getValue();
 
-                Blocks.getBlocksAroundPoint(block.getLocation(), 2).forEach(block1 -> {
+                Blocks.getBlocksAroundPoint(block.getLocation(), 3).forEach(block1 -> {
                     if (TempBlock.isTempBlock(block1)) {
 
                         Entity targetEntity = Entities.getFacingEntity(player, radius * 2, 1.0);
                         if (targetEntity != null) {
-                            new ShootBlockFromLoc(player, name, block1.getLocation(), Material.BLACK_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetEntity.getLocation()).normalize());
+                            ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, block1.getLocation(), Material.WHITE_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetEntity.getLocation()).normalize());
+                            shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
 
                         } else {
                             Block targetBlock = Blocks.getFacingBlock(player, radius * 2);
                             if (targetBlock != null) {
-                                new ShootBlockFromLoc(player, name, block1.getLocation(), Material.BLACK_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetBlock.getLocation()).normalize());
+                                ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, block1.getLocation(), Material.WHITE_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetBlock.getLocation()).normalize());
+                                shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
                             }
                         }
                         TempBlock tb = TempBlock.getTempBlock(block1);
                         chasm.remove(tb);
                         tb.revert();
+                        new TempBlock(block1, Material.WHITE_CONCRETE, duration, true);
 
                     }
                 });

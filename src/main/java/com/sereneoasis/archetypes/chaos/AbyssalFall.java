@@ -8,6 +8,7 @@ import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -39,7 +40,7 @@ public class AbyssalFall extends MasterAbility {
     public void progress() throws ReflectiveOperationException {
         if (abilityStatus == AbilityStatus.MOVING){
             PacketUtils.playRiptide(player, 20);
-            player.setVelocity(dir.subtract(new Vector(0, Constants.GRAVITY, 0)).clone().multiply(speed));
+            player.setVelocity(dir.subtract(new Vector(0, Constants.GRAVITY * speed * 2, 0)).clone().multiply(speed));
             if (Blocks.isSolid(player.getLocation().subtract(0,1,0))) {
 
 //                Blocks.getBlocksAroundPoint(player.getLocation(), radius).forEach(b -> {
@@ -73,6 +74,8 @@ public class AbyssalFall extends MasterAbility {
         if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.MOVING;
             this.dir = player.getEyeLocation().getDirection();
+            Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 20, 2, 1);
+
         }
     }
 

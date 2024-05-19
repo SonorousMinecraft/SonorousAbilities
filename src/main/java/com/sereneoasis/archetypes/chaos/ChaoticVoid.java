@@ -37,7 +37,7 @@ public class ChaoticVoid extends MasterAbility {
 
     private long lastPortalMade = System.currentTimeMillis();
 
-    private BossBar barduration;
+    private BossBar bar;
 
 
 
@@ -51,11 +51,11 @@ public class ChaoticVoid extends MasterAbility {
 //        Structures.spawnStructureFill(player.getLocation(), "ancient_city/city_center/city_center_1");
 
         if (shouldStart()){
-            barduration = Bukkit.getServer().createBossBar(name, BarColor.PURPLE, BarStyle.SOLID);
-            this.barduration.addPlayer(player);
+            bar = BossBarUtils.initBar(player, name, BarColor.PURPLE);
+
             origin = player.getLocation();
             origin.setY(player.getWorld().getMaxHeight() - 40);
-
+            origin.setDirection(new Vector(1,0,0));
             Location loc = origin.clone().subtract(0,2,19);
 
             Structures.spawnStructure(loc, "ancient_city/city/entrance/entrance_connector");
@@ -83,13 +83,7 @@ public class ChaoticVoid extends MasterAbility {
 //            player.teleport(origin);
 //        }
 
-        Long timeelapsed = System.currentTimeMillis() - startTime;
-        Double progress = 1 - (double) timeelapsed / (double) duration;
-        if (progress < 0) {
-            barduration.setProgress(0);
-        } else {
-            barduration.setProgress(progress);
-        }
+        BossBarUtils.manageBarDuration(bar, player, startTime, duration);
 
         if (player.getLocation().getBlock().getType().equals(Material.END_GATEWAY)){
             handleTeleport();
@@ -100,7 +94,7 @@ public class ChaoticVoid extends MasterAbility {
             if (looking.getType().equals(Material.END_GATEWAY)){
                 portalsFrom.forEach((boundingBox, location) -> {
                     if (boundingBox.contains(looking.getBoundingBox())){
-                        AbilityUtils.sendActionBar(player, location.toString(), ChatColor.DARK_PURPLE);
+                        AbilityUtils.sendActionBar(player, "X: " + location.getBlockX() + ", Y:" + location.getBlockY() + ", Z:" + location.getBlockX(), ChatColor.DARK_PURPLE);
                     }
                 });
             }
@@ -125,7 +119,7 @@ public class ChaoticVoid extends MasterAbility {
 
                     Vector randomiser = chaos.getMax().subtract(chaos.getMin()).multiply(new Vector(random.nextDouble() - 0.5, random.nextDouble() - 0.5, random.nextDouble() - 0.5));
                     Location midpoint = (chaos.getMax().add(chaos.getMin())).multiply(0.5).toLocation(player.getWorld());
-                    Location portalFrom = midpoint.add(randomiser);
+                    Location portalFrom = midpoint.add(randomiser).add(0,radius,0);
                     for (Block b : Blocks.getBlocksAroundPoint(portalFrom, radius)) {
                         TempBlock tb = new TempBlock(b, Material.END_GATEWAY, duration, true);
                     }
@@ -159,7 +153,7 @@ public class ChaoticVoid extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        barduration.removeAll();
+        bar.removeAll();
         for (Block b : Blocks.getBlocksAroundPoint(chaos.getCenter().toLocation(player.getWorld()), 100)){
             b.setBlockData(Material.AIR.createBlockData());
         }

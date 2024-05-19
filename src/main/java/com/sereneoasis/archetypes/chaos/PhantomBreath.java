@@ -85,7 +85,9 @@ public class PhantomBreath extends MasterAbility {
                             if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED) {
                                 if (currentShots < shots && random.nextDouble() < (double) (shots - currentShots) /(shots) ) {
                                     Vector randomiser = Vectors.getRightSide(player, random.nextDouble()-0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
-                                    new ShootBlockFromLoc(player, name, player.getEyeLocation().add(randomiser.multiply(range)), Material.BLACK_CONCRETE, true, true).setRange(range*4);
+                                    ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, player.getEyeLocation().add(randomiser.multiply(range)), Material.BLACK_CONCRETE, true, true);
+                                    shootBlockFromLoc.setRange(range*4);
+                                    shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
                                     currentShots++;
                                 }
                                 sourceBlockToPlayer.remove();

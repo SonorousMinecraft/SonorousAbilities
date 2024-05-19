@@ -68,6 +68,23 @@ public class TempBlock {
         }
     }
 
+    public TempBlock(Block block, BlockData newData, final long revertTime, boolean canReplaceBlocks) {
+        if (!INSTANCES.containsKey(block)) {
+            this.block = block;
+            if (!canReplaceBlocks && !block.getType().isAir()) {
+                return;
+            }
+            this.newData = newData;
+            this.revertTime = System.currentTimeMillis() + revertTime;
+
+            this.oldData = block.getBlockData().clone();
+
+            block.setBlockData(newData);
+            INSTANCES.put(block, this);
+            REVERT_QUEUE.add(this);
+        }
+    }
+
 
     public TempBlock(Block block, DisplayBlock blocks, final long revertTime) {
         new TempBlock(block, blocks, revertTime, true);

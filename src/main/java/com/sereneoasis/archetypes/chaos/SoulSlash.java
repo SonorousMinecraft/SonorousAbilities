@@ -11,6 +11,7 @@ import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.temp.TempBlock;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -46,6 +47,9 @@ public class SoulSlash extends MasterAbility {
                     case SHOT -> {
                         if (sweep.getAbilityStatus() == AbilityStatus.COMPLETE) {
                             sweep.remove();
+                            if (sourceBlocksToPlayer.isEmpty()){
+                                this.remove();
+                            }
                         } else {
                             Set<Block> sourceBlocks = sweep.getLocations().stream().map(Location::getBlock)
                                     .filter(block -> !block.isPassable()).collect(Collectors.toSet());
@@ -95,6 +99,7 @@ public class SoulSlash extends MasterAbility {
         if (player.isSneaking() && !rings.isEmpty()){
             for (BlockRingAroundPlayer ring : rings){
                 ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, ring.getLocation(), ring.getType(), false, true);
+                shootBlockFromLoc.setGlowing(Color.PURPLE);
                 ring.remove();
                 Particles.spawnParticle(Particle.SONIC_BOOM, ring.getLocation(), 1, 0, 1);
             }

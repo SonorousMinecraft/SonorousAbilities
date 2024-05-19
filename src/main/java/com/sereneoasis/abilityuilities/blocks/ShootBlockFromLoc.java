@@ -8,6 +8,7 @@ import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -67,6 +68,11 @@ public class ShootBlockFromLoc extends CoreAbility {
         block = new TempDisplayBlock(loc, type, 60000, size);
         abilityStatus = AbilityStatus.SHOT;
         start();
+    }
+
+    public void setGlowing(Color color  ){
+        block.getBlockDisplay().setGlowColorOverride(color);
+        block.getBlockDisplay().setGlowing(true);
     }
 
     @Override
