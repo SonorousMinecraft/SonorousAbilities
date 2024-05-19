@@ -112,6 +112,14 @@ public class BlockRingAroundPoint extends CoreAbility {
         this.orientation = orientation;
     }
 
+    public double getRingSize() {
+        return ringSize;
+    }
+
+    public void setRingSize(double ringSize) {
+        this.ringSize = ringSize;
+    }
+
     public Location getLocation() {
         return loc;
     }

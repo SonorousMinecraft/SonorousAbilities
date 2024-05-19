@@ -25,9 +25,11 @@ public class DamageHandler {
             if (entity instanceof LivingEntity livingEntity) {
                 // needd to add some damage cooldown
                 livingEntity.damage(damage, source);
-                net.minecraft.world.entity.player.Player nmsPlayer = ((CraftPlayer)source).getHandle();
-                net.minecraft.world.entity.LivingEntity nmsTarget = ((CraftLivingEntity)livingEntity).getHandle();
-                nmsTarget.setHealth((float) (nmsTarget.getHealth() - damage));
+//                net.minecraft.world.entity.player.Player nmsPlayer = ((CraftPlayer)source).getHandle();
+//                net.minecraft.world.entity.LivingEntity nmsTarget = ((CraftLivingEntity)livingEntity).getHandle();
+//                nmsTarget.setHealth((float) (nmsTarget.getHealth() - damage));
+
+
                 //Event abilityDamageEntityEvent = new AbilityDamageEntityEvent(source, livingEntity, ability, damage);
                 //Bukkit.getServer().getPluginManager().callEvent(abilityDamageEntityEvent);
             }

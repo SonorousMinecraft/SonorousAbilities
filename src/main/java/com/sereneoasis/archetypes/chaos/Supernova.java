@@ -2,18 +2,16 @@ package com.sereneoasis.archetypes.chaos;
 
 import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.MasterAbility;
-import com.sereneoasis.abilityuilities.blocks.BlockAbilities;
-import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPoint;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
-import com.sereneoasis.abilityuilities.blocks.SourceBlockToLoc;
+import com.sereneoasis.abilityuilities.blocks.*;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.Laser;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -36,13 +34,7 @@ public class Supernova extends MasterAbility {
     
     private double currentRadius = 0;
 
-    private HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
-    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
-
-    private Set<SourceBlockToLoc> sourceBlocksToLoc = new HashSet<>();
-
-
-    private Set<Block> previousSourceBlocks = new HashSet<>();
+    private BlockDisintegrateSphereSuck blockDisintegrateSphereSuck;
 
     private Random random = new Random();
 
@@ -51,7 +43,7 @@ public class Supernova extends MasterAbility {
     private HashMap<Laser.CrystalLaser, Block>crystalLasers = new HashMap<>();
 
     private Vector dir;
-    private boolean hasShot = false;
+    private boolean hasShot = false, hasHit = false;
 
     public Supernova(Player player) {
         super(player, name);
@@ -75,15 +67,19 @@ public class Supernova extends MasterAbility {
             if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
                 abilityStatus = AbilityStatus.HIT_SOLID;
                 this.loc = shootBlockFromLoc.getLoc().clone();
+                blockDisintegrateSphereSuck = new BlockDisintegrateSphereSuck(player, name, loc, loc, 0, 1);
                 
             } else if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED) {
                 abilityStatus = AbilityStatus.DAMAGED;
                 this.loc = shootBlockFromLoc.getLoc().clone();
+                blockDisintegrateSphereSuck = new BlockDisintegrateSphereSuck(player, name, loc, loc, 0, 1);
+
             }
+
         } else if (abilityStatus == AbilityStatus.HIT_SOLID || abilityStatus == AbilityStatus.DAMAGED){
             suckBlocks();
 
-                sourceBlocksToLoc.forEach(sourceBlockToLoc -> {
+                blockDisintegrateSphereSuck.getSourceBlocksToLoc().forEach(sourceBlockToLoc -> {
                     if (sourceBlockToLoc.getSourceStatus() == AbilityStatus.SOURCED) {
 
                         if (rings.size() < 100) {
@@ -95,6 +91,8 @@ public class Supernova extends MasterAbility {
                         sourceBlockToLoc.remove();
                     }
                 });
+
+
         } else if (abilityStatus == AbilityStatus.SOURCED){
             crystalLasers.forEach((crystalLaser, block) -> {
                 try {
@@ -120,8 +118,23 @@ public class Supernova extends MasterAbility {
 //                this.remove();
 //            }
             } else {
-                loc.add(dir.clone().multiply(speed));
-                if (loc.distance(origin) > range){
+                if (!hasHit) {
+                    loc.add(dir.clone().multiply(speed));
+                    if (loc.distance(origin) > range) {
+                        this.remove();
+                    }
+                    if (Blocks.getBlocksAroundPoint(loc, radius / 4).stream().anyMatch(b -> (b != null && !b.isPassable()))) {
+                        hasHit = true;
+                    }
+                } else {
+//                    rings.forEach(blockRingAroundPoint -> blockRingAroundPoint.setRingSize(blockRingAroundPoint.getRingSize() +1));
+//                    if (rings.stream().anyMatch(blockRingAroundPoint -> blockRingAroundPoint.getRingSize() > radius)){
+//                        this.remove();
+//                    }
+                    Entities.getEntitiesAroundPoint(loc, radius).forEach(entity -> DamageHandler.damageEntity(entity, player, this, damage));
+                    Particles.spawnParticle(Particle.SONIC_BOOM, loc, 20, radius , 0);
+
+                    new BlockDisintegrateSphere(player, name, loc, 0, 1);
                     this.remove();
                 }
             }
@@ -129,10 +142,28 @@ public class Supernova extends MasterAbility {
     }
 
     public void setHasClicked(){
-        if (abilityStatus == AbilityStatus.SOURCED && !hasShot){
-            hasShot = true;
-            this.dir = player.getEyeLocation().getDirection();
-            this.origin = loc.clone();
+        if (abilityStatus == AbilityStatus.SOURCED){
+            if (!hasShot) {
+                hasShot = true;
+                this.dir = player.getEyeLocation().getDirection();
+                this.origin = loc.clone();
+            } else {
+                this.dir = player.getEyeLocation().getDirection();
+                if (player.isSneaking()) {
+                    crystalLasers.forEach((crystalLaser, block) -> {
+                        try {
+                            Location newLoc = Blocks.getFacingBlockLoc(player, range);
+                            if (newLoc != null) {
+                                newLoc.add(Vectors.getRandom().multiply(radius));
+                                new BlockDisintegrateSphereSuck(player, name, newLoc, loc, 0, 1);
+                                crystalLaser.moveStart(newLoc);
+                            }
+                        } catch (ReflectiveOperationException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -143,7 +174,9 @@ public class Supernova extends MasterAbility {
         } else {
             abilityStatus = AbilityStatus.SOURCED;
             //rings.forEach(BlockRingAroundPoint::remove);
-            sourceBlocksToLoc.forEach(SourceBlockToLoc::remove);
+            blockDisintegrateSphereSuck.getSourceBlocksToLoc().forEach(SourceBlockToLoc::remove);
+
+
             Location center = loc.clone().add(0,radius,0);
             Set<Block> inner = Blocks.getBlocksAroundPoint(center, radius - 1);
             Set<Block> outer = Blocks.getBlocksAroundPoint(center, radius );
@@ -163,28 +196,9 @@ public class Supernova extends MasterAbility {
             }
             this.origin = loc.clone();
         }
-        Set<Block> sourceBlocks = Blocks.getBlocksAroundPoint(loc, currentRadius);
-        sourceBlocks.removeIf(block -> previousSourceBlocks.contains(block));
-        for (Block b : sourceBlocks) {
-            if (b != null && !b.isPassable() && b.getType() != Material.CRYING_OBSIDIAN) {
-                if (random.nextDouble() < 0.1) {
-                    SourceBlockToLoc sourceBlockToLoc = new SourceBlockToLoc(player, name, 4, 1, b, loc);
-                    sourceBlockToLoc.setAbilityStatus(AbilityStatus.SOURCING);
-                    sourceBlocksToLoc.add(sourceBlockToLoc);
-                }
-                
-//                TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 2);
-//                Vector offset = Vectors.getDirectionBetweenLocations(loc, b.getLocation());
-//                displayBlocks.put(tdb, offset);
-                
-                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
-                    TempBlock.getTempBlock(b).revert();
-                }
-                TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
-                sourceTempBlocks.add(tb);
-            }
-        }
-        this.previousSourceBlocks.addAll(sourceBlocks);
+
+
+
     }
 
     @Override
@@ -197,7 +211,7 @@ public class Supernova extends MasterAbility {
         super.remove();
         crystalLasers.keySet().forEach(Laser::stop);
 
-        sourceBlocksToLoc.forEach(SourceBlockToLoc::remove);
+        rings.forEach(BlockRingAroundPoint::remove);
 
     }
 }
