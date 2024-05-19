@@ -4,21 +4,24 @@ import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphere;
 import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphereSuck;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Constants;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.PacketUtils;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class AbyssalFall extends MasterAbility {
 
     private static final String name = "AbyssalFall";
 
     private Vector dir;
+
+    private Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
 
 
     public AbyssalFall(Player player) {
@@ -47,8 +50,18 @@ public class AbyssalFall extends MasterAbility {
 
                 Blocks.getBlocksAroundPoint(player.getLocation(), radius ).stream().filter(b -> Blocks.isTopBlock(b) && !b.isPassable()).forEach(b -> {
                     TempBlock tb = new TempBlock(b, Material.BLACK_CONCRETE, duration, true);
+                    TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), Material.BLACK_CONCRETE, duration, size);
+                    tempDisplayBlocks.add(tdb);
                 });
-                abilityStatus = AbilityStatus.SHOT;
+
+                for (int i = 0 ; i < 100 ; i+= 2){
+                    Scheduler.performTaskLater(i, () -> {
+                        tempDisplayBlocks.stream().forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * 5 * Constants.BLOCK_RAISE_SPEED * speed, 0)));
+                    });
+                }
+
+
+                    abilityStatus = AbilityStatus.SHOT;
                 player.removePotionEffect(PotionEffectType.SLOW_FALLING);
                 this.remove();
             }
@@ -67,6 +80,10 @@ public class AbyssalFall extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
+
+        Scheduler.performTaskLater(120, () -> {
+            tempDisplayBlocks.forEach(TempDisplayBlock::revert);
+        });
     }
 
     @Override

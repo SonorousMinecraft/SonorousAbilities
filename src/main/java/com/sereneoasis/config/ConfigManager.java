@@ -257,7 +257,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(chaos, "AbyssalFall", CHAOS.toString(), "description", "instructions",
                 0, 5000, 20000,
-                0, 0, 30, 0, 2, 0, 0);
+                0, 0, 30, 0, 2, 0, 1.0);
 
         saveConfigValuesAbility(chaos, "Limbo", CHAOS.toString(), "description", "instructions",
                 0, 30000, 60000,
