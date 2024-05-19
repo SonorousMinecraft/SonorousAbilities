@@ -250,6 +250,11 @@ public class SerenityListener implements Listener {
                     new Supernova(player);
                 }
                 break;
+            case "PhantomBreath":
+                if (CoreAbility.hasAbility(e.getPlayer(), PhantomBreath.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), PhantomBreath.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -305,6 +310,9 @@ public class SerenityListener implements Listener {
                 break;
             case "AbyssalFall":
                 new AbyssalFall(player);
+                break;
+            case "PhantomBreath":
+                new PhantomBreath(player);
                 break;
         }
     }

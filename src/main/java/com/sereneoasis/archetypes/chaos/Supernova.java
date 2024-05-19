@@ -149,7 +149,7 @@ public class Supernova extends MasterAbility {
                 this.origin = loc.clone();
             } else {
                 this.dir = player.getEyeLocation().getDirection();
-                if (player.isSneaking()) {
+                if (player.isSneaking() && sPlayer.getHeldAbility().equals("Supernova")) {
                     crystalLasers.forEach((crystalLaser, block) -> {
                         try {
                             Location newLoc = Blocks.getFacingBlockLoc(player, range);

@@ -48,7 +48,7 @@ public class Limbo extends MasterAbility {
 
 
         if (state == LimboStates.LIMBO){
-            Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 1, 0, 0);
+            Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation().subtract(0,1,0), 1, 0, 0);
 
             if (isAgainstWall()){
                 player.setVelocity(player.getEyeLocation().getDirection().clone().multiply( speed));

@@ -36,6 +36,10 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     private TempDisplayBlock block;
 
+    public void setRange(double newRange){
+        this.range = newRange;
+    }
+
 
     public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
         super(player, user);

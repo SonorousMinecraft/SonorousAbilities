@@ -279,6 +279,10 @@ public class ConfigManager {
                 0, 10000, 30000,
                 2, 0.5, 5, 100, 1.5, 0, 0.3);
 
+        saveConfigValuesAbility(chaos, "PhantomBreath", CHAOS.toString(), "description", "instructions",
+                0, 10000, 30000,
+                2, 0.5, 0, 10, 1.5, 0, 0.5);
+
         getConfig(CHAOS).saveConfig();
     }
 
