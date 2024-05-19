@@ -31,14 +31,17 @@ public class VoidChasm extends MasterAbility {
     private HashMap<Laser.CrystalLaser, Block>crystalLasers = new HashMap<>();
 
     private Object[] outerArray;
+
+    private long lastAttacked = System.currentTimeMillis();
     public VoidChasm(Player player) {
         super(player, name);
 
         if (shouldStart()){
-            player.setVelocity(new Vector(0,100,0));
             targets = Entities.getEntitiesAroundPoint(player.getLocation(), radius).stream().filter(entity -> entity!=player).collect(Collectors.toSet());
 
-            Scheduler.performTaskLater(20, () -> {
+            player.teleport(player.getLocation().add(0,100,0));
+
+//            Scheduler.performTaskLater(20, () -> {
                 center = player.getLocation();
                 Set<Block> inner = Blocks.getBlocksAroundPoint(center, radius - 1);
                 Set<Block> outer = Blocks.getBlocksAroundPoint(center, radius );
@@ -48,7 +51,7 @@ public class VoidChasm extends MasterAbility {
                     chasm.add(tb);
                 });
                 outer.stream().forEach(block -> {
-                    TempBlock tb = new TempBlock(block, Material.TINTED_GLASS, duration, true);
+                    TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE, duration, true);
                     chasm.add(tb);
                 });
 
@@ -76,7 +79,7 @@ public class VoidChasm extends MasterAbility {
 
 
                 start();
-            });
+//            });
 
         }
     }
@@ -108,40 +111,37 @@ public class VoidChasm extends MasterAbility {
     }
 
     public void setHasClicked() throws ReflectiveOperationException {
+        if (System.currentTimeMillis() - lastAttacked > 5000) {
+            lastAttacked = System.currentTimeMillis();
+            outerArray = Arrays.stream(outerArray).filter((block) -> !crystalLasers.values().contains(block)).toArray();
 
+            for (Map.Entry<Laser.CrystalLaser, Block> entry : crystalLasers.entrySet()) {
+                Laser.CrystalLaser crystalLaser = entry.getKey();
+                Block block = entry.getValue();
 
+                Blocks.getBlocksAroundPoint(block.getLocation(), 2).forEach(block1 -> {
+                    if (TempBlock.isTempBlock(block1)) {
 
-        outerArray = Arrays.stream(outerArray).filter((block) -> !crystalLasers.values().contains(block)).toArray();
+                        Entity targetEntity = Entities.getFacingEntity(player, radius * 2, 1.0);
+                        if (targetEntity != null) {
+                            new ShootBlockFromLoc(player, name, block1.getLocation(), Material.BLACK_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetEntity.getLocation()).normalize());
 
-        for (Map.Entry<Laser.CrystalLaser, Block> entry : crystalLasers.entrySet()) {
-            Laser.CrystalLaser crystalLaser = entry.getKey();
-            Block block = entry.getValue();
-
-            Blocks.getBlocksAroundPoint(block.getLocation(), 5).forEach(block1 -> {
-                if (TempBlock.isTempBlock(block1)) {
-
-                    Entity targetEntity = Entities.getFacingEntity(player, radius*2, 1.0);
-                    if (targetEntity != null)
-                    {
-                        new ShootBlockFromLoc(player, name, block1.getLocation(), Material.TINTED_GLASS, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetEntity.getLocation()).normalize());
-
-                    }
-                    else {
-                        Block targetBlock = Blocks.getFacingBlock(player, radius * 2);
-                        if (targetBlock != null) {
-                            new ShootBlockFromLoc(player, name, block1.getLocation(), Material.TINTED_GLASS, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetBlock.getLocation()).normalize());
+                        } else {
+                            Block targetBlock = Blocks.getFacingBlock(player, radius * 2);
+                            if (targetBlock != null) {
+                                new ShootBlockFromLoc(player, name, block1.getLocation(), Material.BLACK_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetBlock.getLocation()).normalize());
+                            }
                         }
+                        TempBlock tb = TempBlock.getTempBlock(block1);
+                        chasm.remove(tb);
+                        tb.revert();
+
                     }
-                    TempBlock tb = TempBlock.getTempBlock(block1);
-                    chasm.remove(tb);
-                    tb.revert();
-
-                }
-            });
-            block = (Block) outerArray[new Random().nextInt(outerArray.length)];
-            crystalLasers.replace(crystalLaser, block);
-            crystalLaser.moveStart(block.getLocation());
-
+                });
+                block = (Block) outerArray[new Random().nextInt(outerArray.length)];
+                crystalLasers.replace(crystalLaser, block);
+                crystalLaser.moveStart(block.getLocation());
+            }
         }
     }
 

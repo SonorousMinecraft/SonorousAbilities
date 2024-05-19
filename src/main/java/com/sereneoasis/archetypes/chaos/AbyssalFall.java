@@ -1,8 +1,11 @@
 package com.sereneoasis.archetypes.chaos;
 
 import com.sereneoasis.ability.superclasses.MasterAbility;
+import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphere;
+import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphereSuck;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Constants;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.PacketUtils;
 import com.sereneoasis.util.temp.TempBlock;
@@ -33,15 +36,17 @@ public class AbyssalFall extends MasterAbility {
     public void progress() throws ReflectiveOperationException {
         if (abilityStatus == AbilityStatus.MOVING){
             PacketUtils.playRiptide(player, 20);
-            player.setVelocity(dir.clone().multiply(speed));
+            player.setVelocity(dir.subtract(new Vector(0, Constants.GRAVITY, 0)).clone().multiply(speed));
             if (Blocks.isSolid(player.getLocation().subtract(0,1,0))) {
 
-                Blocks.getBlocksAroundPoint(player.getLocation(), radius).forEach(b -> {
-                    TempBlock tb = new TempBlock(b, Material.AIR, duration, true);
-                });
+//                Blocks.getBlocksAroundPoint(player.getLocation(), radius).forEach(b -> {
+//                    TempBlock tb = new TempBlock(b, Material.AIR, duration, true);
+//                });
 
-                Blocks.getBlocksAroundPoint(player.getLocation(), radius +1).stream().filter(b -> Blocks.isTopBlock(b) && !b.isPassable()).forEach(b -> {
-                    TempBlock tb = new TempBlock(b, Material.SOUL_SAND, duration, true);
+//                new BlockDisintegrateSphereSuck(player, name, player.getLocation(), player.getLocation().add(0,radius, 0), 0, speed);
+
+                Blocks.getBlocksAroundPoint(player.getLocation(), radius ).stream().filter(b -> Blocks.isTopBlock(b) && !b.isPassable()).forEach(b -> {
+                    TempBlock tb = new TempBlock(b, Material.BLACK_CONCRETE, duration, true);
                 });
                 abilityStatus = AbilityStatus.SHOT;
                 player.removePotionEffect(PotionEffectType.SLOW_FALLING);

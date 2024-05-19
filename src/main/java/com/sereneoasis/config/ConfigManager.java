@@ -241,23 +241,23 @@ public class ConfigManager {
 
 
         FileConfiguration chaos = getConfig(CHAOS).getConfig();
-        saveArchetypeCosmetics(chaos, CHAOS, "#2E1A47");
+        saveArchetypeCosmetics(chaos, CHAOS, "#C5B4E3");
         chaos.options().copyDefaults(true);
 
         saveAttributeValuesArchetype(chaos, CHAOS, 0, 0, 0, 0,
                 0.0, 0, 0);
 
         saveConfigValuesAbility(chaos, "ShadowStep", CHAOS.toString(), "description", "instructions",
-                3000, 1000, 0,
-                0, 0, 8, 10, 0, 0, 0);
+                2000, 10000, 0,
+                0, 0, 8, 50, 0, 0, 0);
 
         saveConfigValuesAbility(chaos, "Singularity", CHAOS.toString(), "description", "instructions",
-                5000, 15000, 20000,
-                4, 4, 4, 20, 1, 5, 0.3);
+                3000, 15000, 20000,
+                4, 4, 4, 20, 1, 8, 0.3);
 
         saveConfigValuesAbility(chaos, "AbyssalFall", CHAOS.toString(), "description", "instructions",
                 0, 5000, 20000,
-                0, 0, 20, 0, 3, 0, 0);
+                0, 0, 30, 0, 2, 0, 0);
 
         saveConfigValuesAbility(chaos, "Limbo", CHAOS.toString(), "description", "instructions",
                 0, 30000, 60000,
@@ -265,7 +265,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "instructions",
                 0, 30000, 30000,
-                2, 0.5, 50, 100, 1, 0, 1.0);
+                2, 0.5, 40, 100, 1, 0, 1.0);
 
         saveConfigValuesAbility(chaos, "SoulSlash", CHAOS.toString(), "description", "instructions",
                 0, 3000, 0,
@@ -277,7 +277,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(chaos, "Supernova", CHAOS.toString(), "description", "instructions",
                 0, 10000, 30000,
-                2, 0.5, 20, 100, 1, 0, 1.0);
+                2, 0.5, 5, 100, 1.5, 0, 0.3);
 
         getConfig(CHAOS).saveConfig();
     }

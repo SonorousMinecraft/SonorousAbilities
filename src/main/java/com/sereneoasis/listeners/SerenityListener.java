@@ -201,6 +201,7 @@ public class SerenityListener implements Listener {
                 } else {
                     new RockRing(player);
                 }
+                break;
             case "Singularity":
                 if (CoreAbility.hasAbility(e.getPlayer(), Singularity.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Singularity.class).setHasClicked();
@@ -241,12 +242,14 @@ public class SerenityListener implements Listener {
                 } else {
                     new ChaoticVoid(player);
                 }
+                break;
             case "Supernova":
                 if (CoreAbility.hasAbility(e.getPlayer(), Supernova.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Supernova.class).setHasClicked();
                 } else {
                     new Supernova(player);
                 }
+                break;
         }
 
     }

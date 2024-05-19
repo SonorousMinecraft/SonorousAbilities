@@ -26,7 +26,7 @@ public class Limbo extends MasterAbility {
     }
 
     private void applyPotionEffects(){
-        Entities.applyPotionPlayerAmplifier(player, PotionEffectType.SPEED, 3, (int) duration);
+        Entities.applyPotionPlayerAmplifier(player, PotionEffectType.SPEED, 4, (int) duration);
         Entities.applyPotionPlayer(player, PotionEffectType.JUMP, (int) duration);
         Entities.applyPotionPlayer(player, PotionEffectType.INVISIBILITY, (int) duration);
         Entities.applyPotionPlayer(player, PotionEffectType.GLOWING, (int) duration);
@@ -39,6 +39,7 @@ public class Limbo extends MasterAbility {
         player.removePotionEffect(PotionEffectType.SPEED);
         player.removePotionEffect(PotionEffectType.JUMP);
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
+        player.removePotionEffect(PotionEffectType.WEAKNESS);
         player.removePotionEffect(PotionEffectType.GLOWING);
     }
 
@@ -54,7 +55,7 @@ public class Limbo extends MasterAbility {
             }
 
             if (player.getLocation().getBlock().getType() == Material.AIR && player.getLocation().getBlock().getLocation().subtract(0,1,0).getBlock().isLiquid()){
-                player.setVelocity(player.getEyeLocation().getDirection().setY(0).normalize().clone().multiply( speed));
+                player.setVelocity(player.getEyeLocation().getDirection().setY(0.1).normalize().clone().multiply( speed));
 
             }
         }

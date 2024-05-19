@@ -57,7 +57,7 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
     @Override
     public void progress() {
         currentRadius += increment;
-        Particles.spawnParticle(Particle.SONIC_BOOM, centerLoc, 20, currentRadius , 0);
+        Particles.spawnParticle(Particle.SONIC_BOOM, centerLoc, 20, currentRadius/2 , 0);
 
         Set<Block> sourceBlocks = Blocks.getBlocksAroundPoint(centerLoc, currentRadius);
 
