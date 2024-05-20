@@ -1,4 +1,4 @@
-package com.sereneoasis.abilityuilities;
+package com.sereneoasis.abilityuilities.blocks.forcetype;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToLoc;
@@ -11,6 +11,7 @@ import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -54,6 +55,17 @@ public class BlockExplodeSphere extends CoreAbility {
         start();
     }
 
+    public BlockExplodeSphere(Player player, String name, Location startLoc, double radius, double increment) {
+        super(player, name);
+
+        this.name = name;
+
+        this.centerLoc = startLoc.clone();
+        this.increment = increment;
+        this.radius = radius;
+        start();
+    }
+
     @Override
     public void progress() {
         radius -= increment;
@@ -63,13 +75,12 @@ public class BlockExplodeSphere extends CoreAbility {
         for (Block b : sourceBlocks) {
             if (b != null && !b.isPassable() ) {
 
-
                 if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
                     TempBlock.getTempBlock(b).revert();
                 }
 
                 TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
-                Vector offset = Vectors.getDirectionBetweenLocations(centerLoc, b.getLocation()).normalize().add(new Vector(0,radius,0));
+                Vector offset = Vectors.getDirectionBetweenLocations(centerLoc, b.getLocation()).add(new Vector(0,radius,0)).normalize();
                 displayBlocks.put(tdb, offset);
 
                 TempBlock tb = new TempBlock(b, Material.LIGHT, 60000, true);

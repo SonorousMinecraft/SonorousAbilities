@@ -1,11 +1,14 @@
 package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
 import com.sereneoasis.abilityuilities.blocks.Laser;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Locations;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class MeltingGlare extends CoreAbility {
 
@@ -42,6 +45,23 @@ public class MeltingGlare extends CoreAbility {
 
         leftEye.setLoc(Locations.getLeftSide(player.getEyeLocation(), 0.2));
         rightEye.setLoc(Locations.getRightSide(player.getEyeLocation(), 0.2));
+
+
+        double tempRange = range;
+        Vector dir = player.getEyeLocation().getDirection();
+        for (double d = 0; d < range; d+=1) {
+            tempRange = d;
+            if (! player.getEyeLocation().clone().add(dir.clone().multiply(d)).getBlock().isPassable()) {
+                break;
+            }
+        }
+
+
+        if (tempRange != range) {
+            Location facing = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), tempRange);
+
+            new BlockExplodeSphere(player, name, facing, 2, 0.25);
+        }
 
     }
 

@@ -45,7 +45,7 @@ public class Locations {
     }
 
     public static Location getFacingLocation(Location loc, Vector dir, double distance) {
-        return loc.add(dir.normalize().multiply(distance)).clone();
+        return loc.clone().add(dir.clone().normalize().multiply(distance)).clone();
     }
 
     public static Location getFacingLocationObstructed(Location loc, Vector dir, double distance) {

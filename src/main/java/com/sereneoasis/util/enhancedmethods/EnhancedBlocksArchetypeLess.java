@@ -33,7 +33,7 @@ public class EnhancedBlocksArchetypeLess {
         if (loc == null) {
             return new HashSet<>();
         }
-        return Blocks.getBlocksAroundPoint(loc, coreability.getRadius()).stream()
+        return Blocks.getSolidBlocksAroundPoint(loc, coreability.getRadius()).stream()
                 .collect(Collectors.toSet());
     }
 
@@ -41,9 +41,12 @@ public class EnhancedBlocksArchetypeLess {
         if (loc == null) {
             return new HashSet<>();
         }
-        Set<Block> facingSphereBlocks = getFacingSphereBlocks(coreability, loc);
-        facingSphereBlocks.removeIf(block -> Blocks.getBlocksAroundPoint(loc, coreability.getRadius()-1).contains(block));
-        return facingSphereBlocks;
+//        Set<Block> facingSphereBlocks = getFacingSphereBlocks(coreability, loc);
+        return Locations.getOutsideSphereLocs(loc, coreability.getRadius(), 1).stream().map(location -> location.getBlock()).collect(Collectors.toSet());
+//        if (coreability.getRadius() > 1) {
+//            facingSphereBlocks.removeIf(block -> Blocks.getBlocksAroundPoint(loc, coreability.getRadius() - 1).contains(block));
+//        }
+//        return facingSphereBlocks;
 
     }
 
@@ -76,6 +79,12 @@ public class EnhancedBlocksArchetypeLess {
     public static Set<Block> getTopCircleBlocks(CoreAbility coreAbility){
         return Blocks.getBlocksAroundPoint(coreAbility.getPlayer().getLocation(), coreAbility.getRadius() ).stream().filter(b  -> Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
     }
+
+
+    public static Set<Block> getCircleAtYBlocks(CoreAbility coreAbility, Location loc, int y){
+        return Blocks.getBlocksAroundPoint(loc, coreAbility.getRadius() ).stream().filter(b  -> b.getY() == y).collect(Collectors.toSet());
+    }
+
 
     public static Set<Block> getTopHCircleBlocks(CoreAbility coreAbility, Location loc){
         Set<Block> blocks = Locations.getOutsideSphereLocs(loc, coreAbility.getSourceRange(), 1).stream()

@@ -162,7 +162,14 @@ public class Blocks {
         return blocks;
     }
 
-    public static List<Block> getBlocksAroundPoint(Location loc, double radius, Material type) {
+    public static Set<Block> getSolidBlocksAroundPoint(Location loc, double radius) {
+        Set<Block> blocks = getBlocksAroundPoint(loc, radius);
+        blocks.removeIf(block -> block.isPassable());
+        return blocks;
+    }
+
+
+        public static List<Block> getBlocksAroundPoint(Location loc, double radius, Material type) {
         List<Block> blocks = new ArrayList<Block>();
         for (double y = -radius; y < radius; y++) {
             for (double x = -radius; x < radius; x++) {

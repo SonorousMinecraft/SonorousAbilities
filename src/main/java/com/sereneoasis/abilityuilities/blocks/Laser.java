@@ -25,6 +25,7 @@ public class Laser extends CoreAbility {
 
     private DisplayBlock displayBlock;
 
+
     public Laser(Player player, Location startLoc, String name, DisplayBlock displayBlock) {
         super(player, name);
 
@@ -37,6 +38,10 @@ public class Laser extends CoreAbility {
 
     public void setLoc(Location newLoc) {
         this.loc = newLoc;
+    }
+
+    public Location getLoc() {
+        return loc;
     }
 
     @Override
@@ -57,6 +62,9 @@ public class Laser extends CoreAbility {
 
             for (double d = 0; d < distance; d+=size) {
                 new TempDisplayBlock(loc.clone().add(dir.clone().multiply(d)), displayBlock, 100, size);
+                if (!loc.clone().add(dir.clone().multiply(d)).getBlock().isPassable()) {
+                    break;
+                }
             }
         }
 

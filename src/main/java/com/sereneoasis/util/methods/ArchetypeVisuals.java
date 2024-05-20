@@ -26,7 +26,7 @@ public class ArchetypeVisuals {
 
         @Override
         public void playVisual(Location loc, double size, double radius, int tb, int wax_on, int red) {
-            TDBs.playTDBs(loc, DisplayBlock.SUN, tb, size, radius);
+//            TDBs.playTDBs(loc, DisplayBlock.SUN, tb, size, radius);
             Particles.spawnParticle(Particle.WAX_ON, loc, wax_on, 0.5, 0);
             Particles.spawnColoredParticle(loc, red, radius, size*3, Color.fromRGB(220, 20, 60));
         }

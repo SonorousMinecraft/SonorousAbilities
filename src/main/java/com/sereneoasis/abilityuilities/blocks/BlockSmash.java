@@ -9,6 +9,7 @@ import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -26,7 +27,7 @@ public class BlockSmash extends CoreAbility {
 
     private final String name;
 
-    private Location loc;
+    private Location loc, shotOrigin;
 
     private HashMap<Integer, TempDisplayBlock> smash;
 
@@ -38,6 +39,14 @@ public class BlockSmash extends CoreAbility {
     private Material type;
 
     private Set<LivingEntity> damagedSet = new HashSet<>();
+
+    private Vector dir;
+
+    public Vector getDir() {
+        return dir;
+    }
+
+    private boolean directional = false;
     
 
     public BlockSmash(Player player, String name, DisplayBlock displayBlock, Location origin) {
@@ -48,6 +57,18 @@ public class BlockSmash extends CoreAbility {
         loc = origin.clone();
         smash = new HashMap<>();
         smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
+        start();
+    }
+
+    public BlockSmash(Player player, String name, DisplayBlock displayBlock, Location origin, boolean directional) {
+        super(player, name);
+
+        this.name = name;
+        this.displayBlock = displayBlock;
+        loc = origin.clone();
+        smash = new HashMap<>();
+        smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
+        this.directional = directional;
         start();
     }
 
@@ -75,11 +96,15 @@ public class BlockSmash extends CoreAbility {
             }
 
         } else if (hasShot) {
-            if (loc.distance(player.getLocation()) > range) {
+            if (loc.distance(shotOrigin) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;
                 return;
             }
-            loc.add(player.getEyeLocation().getDirection().multiply(speed));
+            if (directional) {
+                loc.add(player.getEyeLocation().getDirection().multiply(speed));
+            } else {
+                loc.add(dir.clone().multiply(speed));
+            }
             if (displayBlock != null) {
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
             }
@@ -97,6 +122,9 @@ public class BlockSmash extends CoreAbility {
 
     }
 
+    public Location getLoc() {
+        return loc;
+    }
 
     @Override
     public void remove() {
@@ -109,6 +137,8 @@ public class BlockSmash extends CoreAbility {
     public void setHasClicked() {
         if (!hasShot) {
             hasShot = true;
+            this.dir = player.getEyeLocation().getDirection();
+            this.shotOrigin = loc.clone();
         }
     }
 

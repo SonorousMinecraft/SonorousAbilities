@@ -3,19 +3,21 @@ package com.sereneoasis.archetypes.sun;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
+import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
+import com.sereneoasis.util.enhancedmethods.EnhancedSchedulerEffects;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Sakrajin
@@ -33,8 +35,7 @@ public class SolarFlare extends CoreAbility {
 
     private static final String name = "SolarFlare";
 
-
-    private HashMap<Integer, TempDisplayBlock> flares = new HashMap<>();
+    private Set<TempDisplayBlock>flares;
 
     public SolarFlare(Player player) {
         super(player, name);
@@ -48,16 +49,20 @@ public class SolarFlare extends CoreAbility {
         if (target != null && target.getType().isSolid()) {
             Location sourceLoc = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
 
-            Blocks.selectSourceAnimationShape( Locations.getCircleLocsAroundPoint(sourceLoc, radius, size), sPlayer.getColor(), size);
-            flareLoc = target.getLocation().clone().add(0, 10, 0);
+            Blocks.selectSourceAnimationShape( Locations.getCircleLocsAroundPoint(sourceLoc.clone().subtract(0,radius,0), radius, size), sPlayer.getColor(), size);
+
+            double height = radius*3;
+            flareLoc = target.getLocation().clone().add(0, height, 0);
+
             Set<Location> locs = new HashSet<>();
             for (Location b : Locations.getOutsideSphereLocs(flareLoc, radius, size)) {
                 if ((int)b.getY() == flareLoc.getY()) {
                     locs.add(b);
                 }
             }
-
-            flares = Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, size);
+            flares =  EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this, flareLoc, flareLoc.getBlockY()).stream().map(block -> {
+                return new TempDisplayBlock(block, DisplayBlock.SUN, 60000, 1.0);
+            }).collect(Collectors.toSet());
 
 
             start();
@@ -75,6 +80,8 @@ public class SolarFlare extends CoreAbility {
         if (started) {
 
             flareLoc.subtract(0, 1, 0);
+            flares.forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().subtract(0,1,0)));
+
             if (flareLoc.getY() <= target.getY()) {
                 this.remove();
             }
@@ -89,21 +96,16 @@ public class SolarFlare extends CoreAbility {
             for (Location particleLoc : Locations.getCircleLocsAroundPoint(flareLoc, radius-size, size))
             {
                 Particles.spawnParticle(Particle.WAX_ON, particleLoc, 1, size, 0);
+                AbilityDamage.damageSeveral(particleLoc, this, player, true, new Vector(0,1,0));
             }
 
-            Entities.handleDisplayBlockEntities(flares, locs, DisplayBlock.SUN, size);
         }
     }
 
     @Override
     public void remove() {
         super.remove();
-        for (TempDisplayBlock tb : flares.values())
-        {
-            if (tb != null){
-                tb.revert();
-            }
-        }
+        flares.forEach(tempDisplayBlock -> tempDisplayBlock.revert());
         sPlayer.addCooldown("SolarFlare", cooldown);
     }
 

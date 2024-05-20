@@ -33,7 +33,7 @@ public class ChargeSphere extends CoreAbility {
         this.startTime = System.currentTimeMillis();
         this.increment = ((radius - startRadius) / chargeTime) * 50;
         this.archetypeVisual = archetypeVisual;
-        loc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange + 1);
+        loc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius * 1.5);
         start();
     }
 
@@ -43,10 +43,10 @@ public class ChargeSphere extends CoreAbility {
             this.abilityStatus = AbilityStatus.CHARGED;
         }
 
-        loc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange + 1);
+        loc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius * 2);
 
         for (Location l : Locations.getSphere(loc,
-                startRadius, 18))
+                startRadius, 36))
         {
             if (l != null) {
                 archetypeVisual.playVisual(l, size, 0, 1, 1, 1);
