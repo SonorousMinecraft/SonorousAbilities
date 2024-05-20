@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,8 +42,6 @@ public class EnhancedDisplayBlocks {
             tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
         });
     }
-
-
 
     public static void orientOrganisedDBs(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, double displayBlockDistance){
         Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
@@ -85,6 +84,16 @@ public class EnhancedDisplayBlocks {
             }
             entry.getKey().moveToAndMaintainFacing(currentLoc.add(entry.getValue().clone().multiply(coreAbility.getSpeed())));
         }
+    }
 
+    public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, Material material){
+        Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
+        EnhancedBlocksArchetypeLess.getTopCircleBlocks(coreAbility).forEach(b -> {
+            TempBlock tb = new TempBlock(b, material, coreAbility.getDuration(), true);
+            TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), material, coreAbility.getDuration(), coreAbility.getSize());
+            tempDisplayBlocks.add(tdb);
+        });
+
+        return tempDisplayBlocks;
     }
 }

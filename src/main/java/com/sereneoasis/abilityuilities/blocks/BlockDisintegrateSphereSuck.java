@@ -53,6 +53,18 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
         start();
     }
 
+    public BlockDisintegrateSphereSuck(Player player, String name, Location startLoc, Location targetLoc, double currentRadius, double endRadius, double increment) {
+        super(player, name);
+
+        this.name = name;
+
+        this.centerLoc = startLoc.clone();
+        this.targetLoc = targetLoc;
+        this.currentRadius = currentRadius;
+        this.radius = endRadius;
+        this.increment = increment;
+        start();
+    }
 
     @Override
     public void progress() {

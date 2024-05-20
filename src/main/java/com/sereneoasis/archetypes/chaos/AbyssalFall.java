@@ -4,6 +4,9 @@ import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphere;
 import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphereSuck;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
+import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
+import com.sereneoasis.util.enhancedmethods.EnhancedSchedulerEffects;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -49,19 +52,10 @@ public class AbyssalFall extends MasterAbility {
 
 //                new BlockDisintegrateSphereSuck(player, name, player.getLocation(), player.getLocation().add(0,radius, 0), 0, speed);
 
-                Blocks.getBlocksAroundPoint(player.getLocation(), radius ).stream().filter(b -> Blocks.isTopBlock(b) && !b.isPassable()).forEach(b -> {
-                    TempBlock tb = new TempBlock(b, Material.BLACK_CONCRETE, duration, true);
-                    TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), Material.BLACK_CONCRETE, duration, size);
-                    tempDisplayBlocks.add(tdb);
-                });
-
-                for (int i = 0 ; i < 100 ; i+= 2){
-                    Scheduler.performTaskLater(i, () -> {
-                        tempDisplayBlocks.stream().forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * 5 * Constants.BLOCK_RAISE_SPEED * speed, 0)));
-                    });
-                }
+                tempDisplayBlocks = EnhancedDisplayBlocks.createTopCircleTempBlocks(this, Material.BLACK_CONCRETE);
 
 
+                EnhancedSchedulerEffects.raiseTDBs(tempDisplayBlocks, 100, 2);
                     abilityStatus = AbilityStatus.SHOT;
                 player.removePotionEffect(PotionEffectType.SLOW_FALLING);
                 this.remove();
@@ -84,9 +78,7 @@ public class AbyssalFall extends MasterAbility {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
 
-        Scheduler.performTaskLater(120, () -> {
-            tempDisplayBlocks.forEach(TempDisplayBlock::revert);
-        });
+        EnhancedSchedulerEffects.clearTDBs(tempDisplayBlocks, 120);
     }
 
     @Override

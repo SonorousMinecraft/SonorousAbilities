@@ -104,13 +104,13 @@ public class Supernova extends MasterAbility {
 
             rings.forEach(blockRingAroundPoint -> blockRingAroundPoint.setLoc(loc));
 
-            Particles.spawnParticle(Particle.SONIC_BOOM, loc, 20, radius / 16, 0);
+            Particles.spawnParticle(Particle.SONIC_BOOM, loc, 1, 0, 0);
 
             if (!hasShot) {
 
                 Location playerFront = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius / 2));
 
-                if (player.isSneaking()) {
+                if (player.isSneaking() && sPlayer.getHeldAbility().equals(name)) {
                     loc.add(Vectors.getDirectionBetweenLocations(loc, playerFront).normalize().multiply(speed));
                 }
 

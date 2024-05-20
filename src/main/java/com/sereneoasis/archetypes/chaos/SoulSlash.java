@@ -117,7 +117,11 @@ public class SoulSlash extends MasterAbility {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
 
-        sourceTempBlocks.forEach(TempBlock::automaticRevert);
+        sourceTempBlocks.forEach(tempBlock -> {
+            if (tempBlock != null) {
+                tempBlock.automaticRevert();
+            }
+        });
         rings.forEach(BlockRingAroundPlayer::remove);
         sourceBlocksToPlayer.forEach(SourceBlockToPlayer::remove);
     }

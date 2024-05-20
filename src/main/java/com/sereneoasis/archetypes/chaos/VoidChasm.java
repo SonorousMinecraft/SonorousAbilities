@@ -2,12 +2,18 @@ package com.sereneoasis.archetypes.chaos;
 
 import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.MasterAbility;
+import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphere;
+import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphereSuck;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockShapeFromLoc;
 import com.sereneoasis.abilityuilities.velocity.Levitate;
 import com.sereneoasis.util.Laser;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
+import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
+import com.sereneoasis.util.enhancedmethods.EnhancedSchedulerEffects;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,9 +50,14 @@ public class VoidChasm extends MasterAbility {
         if (shouldStart()){
             targets = Entities.getEntitiesAroundPoint(player.getLocation(), radius).stream().filter(entity -> entity!=player).collect(Collectors.toSet());
 
-            player.teleport(player.getLocation().add(0,100,0));
 
-//            Scheduler.performTaskLater(20, () -> {
+            Set<TempDisplayBlock> raiseBlocks = EnhancedDisplayBlocks.createTopCircleTempBlocks(this, Material.BLACK_CONCRETE);
+            EnhancedSchedulerEffects.raiseTDBs(raiseBlocks, 40, 2);
+            EnhancedSchedulerEffects.clearTDBs(raiseBlocks, 40);
+            player.setVelocity(new Vector(0, 10, 0));
+//            player.teleport(player.getLocation().add(0,100,0));
+
+            Scheduler.performTaskLater(40, () -> {
                 center = player.getLocation();
                 Set<Block> inner = Blocks.getBlocksAroundPoint(center, radius - 1);
                 Set<Block> outer = Blocks.getBlocksAroundPoint(center, radius );
@@ -57,10 +68,13 @@ public class VoidChasm extends MasterAbility {
                 });
                 outer.stream().forEach(block -> {
 
+
                     BlockState state = Material.END_GATEWAY.createBlockData().createBlockState();
 //                    ((EndGateway) state).setAge(-1000000);
 
                     TempBlock tb = new TempBlock(block, state.getBlockData(), duration, true);
+//                    TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration, true);
+//
                     EndGateway endGateway =  ((EndGateway) block.getState());
                     endGateway.setAge(-1000000);
                     endGateway.update(true);
@@ -91,7 +105,7 @@ public class VoidChasm extends MasterAbility {
 
 
                 start();
-//            });
+            });
 
         }
     }
@@ -108,7 +122,7 @@ public class VoidChasm extends MasterAbility {
 
         Entities.getEntitiesAroundPoint(center, radius).stream().forEach(entity -> {
             if (entity.getLocation().distance(center) > radius-3) {
-                entity.setVelocity(entity.getVelocity().multiply(-1));
+                entity.setVelocity(Vectors.getDirectionBetweenLocations(entity.getLocation(), center).normalize());
             }
         });
 
@@ -135,28 +149,44 @@ public class VoidChasm extends MasterAbility {
                 Laser.CrystalLaser crystalLaser = entry.getKey();
                 Block block = entry.getValue();
 
-                Blocks.getBlocksAroundPoint(block.getLocation(), 3).forEach(block1 -> {
-                    if (TempBlock.isTempBlock(block1)) {
+                double projectileSize = radius/4;
 
-                        Entity targetEntity = Entities.getFacingEntity(player, radius * 2, 1.0);
-                        if (targetEntity != null) {
-                            ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, block1.getLocation(), Material.WHITE_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetEntity.getLocation()).normalize());
-                            shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
+                Vector dir = null;
+                Entity targetEntity = Entities.getFacingEntity(player, radius * 2, 1.0);
+                if (targetEntity != null) {
+                    dir =  Vectors.getDirectionBetweenLocations(crystalLaser.getStart(), targetEntity.getLocation()).normalize();
+//                    ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, block1.getLocation(), Material.BLACK_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetEntity.getLocation()).normalize());
+//                    shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
 
-                        } else {
-                            Block targetBlock = Blocks.getFacingBlock(player, radius * 2);
-                            if (targetBlock != null) {
-                                ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, block1.getLocation(), Material.WHITE_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetBlock.getLocation()).normalize());
-                                shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
-                            }
-                        }
-                        TempBlock tb = TempBlock.getTempBlock(block1);
-                        chasm.remove(tb);
-                        tb.revert();
-                        new TempBlock(block1, Material.WHITE_CONCRETE, duration, true);
-
+                } else {
+                    Block targetBlock = Blocks.getFacingBlock(player, radius * 2);
+                    if (targetBlock != null) {
+//                        ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, block1.getLocation(), Material.BLACK_CONCRETE, true, Vectors.getDirectionBetweenLocations(block1.getLocation(), targetBlock.getLocation()).normalize());
+//                        shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
+                        dir =  Vectors.getDirectionBetweenLocations(crystalLaser.getStart(), targetBlock.getLocation()).normalize();
                     }
-                });
+                }
+
+                if (dir != null) {
+                     Set<TempDisplayBlock> projectile =  Blocks.getBlocksAroundPoint(block.getLocation(), projectileSize).stream()
+                             .filter(b -> b.getType().equals(Material.END_GATEWAY))
+                             .map(endGateway -> new TempDisplayBlock(endGateway.getLocation(), Material.BLACK_CONCRETE, duration, size))
+                             .collect(Collectors.toSet());
+
+                     new ShootBlockShapeFromLoc(player, name, block.getLocation(), projectile, projectileSize, true, dir);
+//                    new BlockDisintegrateSphereSuck(player, name, block.getLocation(), block.getLocation().add(dir.clone().multiply(-10)), 0, projectileSize, 1);
+                    new BlockDisintegrateSphere(player, name, block.getLocation(), 0, projectileSize, 1, false);
+                }
+
+
+
+//                        TempBlock tb = TempBlock.getTempBlock(block1);
+//                        chasm.remove(tb);
+//                        tb.revert();
+//                        new BlockDisintegrateSphere(player, name, block1.getLocation(), 0, projectileSize, 1, true);
+//
+//                    }
+//                });
                 block = (Block) outerArray[new Random().nextInt(outerArray.length)];
                 crystalLasers.replace(crystalLaser, block);
                 crystalLaser.moveStart(block.getLocation());
@@ -172,6 +202,7 @@ public class VoidChasm extends MasterAbility {
     @Override
     public void remove() {
         super.remove();
+//        new BlockDisintegrateSphereSuck(player, name,center, center, 0, radius, 1);
         chasm.forEach(TempBlock::revert);
         targets.forEach(entity -> entity.setGravity(true));
         sPlayer.addCooldown(name, cooldown);

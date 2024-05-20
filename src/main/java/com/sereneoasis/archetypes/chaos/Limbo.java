@@ -66,6 +66,10 @@ public class Limbo extends MasterAbility {
 
         BossBarUtils.manageBarDuration(bar, player, startTime, duration);
 
+        if (System.currentTimeMillis() - startTime > duration) {
+            this.remove();
+        }
+
         if (state == LimboStates.LIMBO){
             Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation().subtract(0,1,0), 1, 0, 0);
 

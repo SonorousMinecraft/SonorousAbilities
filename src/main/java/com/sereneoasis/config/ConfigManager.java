@@ -253,7 +253,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(chaos, "Singularity", CHAOS.toString(), "description", "instructions",
                 3000, 15000, 20000,
-                4, 4, 4, 20, 1, 8, 0.3);
+                4, 4, 4, 20, 1, 20, 0.3);
 
         saveConfigValuesAbility(chaos, "AbyssalFall", CHAOS.toString(), "description", "instructions",
                 0, 5000, 20000,
@@ -265,7 +265,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "instructions",
                 0, 30000, 30000,
-                2, 0.5, 40, 100, 1, 0, 1.0);
+                2, 0.5, 40, 40, 1, 0, 1.0);
 
         saveConfigValuesAbility(chaos, "SoulSlash", CHAOS.toString(), "description", "instructions",
                 0, 3000, 0,

@@ -21,6 +21,7 @@ public class BlockDisintegrateSphere extends CoreAbility {
 
     private double currentRadius, increment;
 
+    private boolean noParticles = false;
 
 
     public BlockDisintegrateSphere(Player player, String name, Location startLoc, double currentRadius, double increment) {
@@ -34,15 +35,46 @@ public class BlockDisintegrateSphere extends CoreAbility {
         start();
     }
 
+    public BlockDisintegrateSphere(Player player, String name, Location startLoc, double currentRadius, double endRadius, double increment) {
+        super(player, name);
+
+        this.name = name;
+
+        this.loc = startLoc.clone();
+        this.currentRadius = currentRadius;
+        this.radius = endRadius;
+        this.increment = increment;
+        start();
+    }
+
+    public BlockDisintegrateSphere(Player player, String name, Location startLoc, double currentRadius, double endRadius, double increment, boolean noParticles) {
+        super(player, name);
+
+        this.name = name;
+
+        this.loc = startLoc.clone();
+        this.currentRadius = currentRadius;
+        this.radius = endRadius;
+        this.increment = increment;
+        this.noParticles = noParticles;
+        start();
+    }
+
 
     @Override
     public void progress() {
         currentRadius += increment;
-        Particles.spawnParticle(Particle.SONIC_BOOM, loc, 20, currentRadius , 0);
+        if (!noParticles) {
+            Particles.spawnParticle(Particle.SONIC_BOOM, loc, 20, currentRadius, 0);
+        }
 
         Blocks.getBlocksAroundPoint(loc, currentRadius).stream().forEach(block -> {
             if (!TempBlock.isTempBlock(block)) {
                 TempBlock tb = new TempBlock(block, Material.LIGHT, duration, true);
+            } else {
+                TempBlock.getTempBlock(block).revert();
+                TempBlock tb = new TempBlock(block, Material.LIGHT, duration, true);
+
             }
         });
 
