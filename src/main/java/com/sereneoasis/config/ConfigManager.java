@@ -290,14 +290,41 @@ public class ConfigManager {
 
         //Ability configuration
 
-        saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
-                1000, 5000, 10000,
-                0, 0, 1, 0, 4, 0, 0.4);
+        saveConfigValuesAbility(sun, "CruelSun", Archetype.SUN.toString(), "description", "instructions",
+                3000, 5000, 30000,
+                2, 0.5, 2, 20, 1, 0, 0.2);
 
+        saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "instructions",
+                2000, 5000, 0,
+                2, 0.5, 5, 0, 0.6, 10, 0.2);
+
+        saveConfigValuesAbility(sun, "FlamingRays", Archetype.SUN.toString(), "description", "instructions",
+                3000, 5000, 0,
+                2, 0.5, 0.5, 15, 1, 0, 0.2);
+
+        saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "instructions",
+                4000, 5000, 0,
+                2, 0.5, 2.0, 30, 0.5, 0, 0.2);
+
+        saveConfigValuesAbility(sun, "SunBurst", Archetype.SUN.toString(), "description", "instructions",
+                4000, 5000, 0,
+                2, 0.5, 20.0, 30, 1.0, 0, 0.5);
+
+        saveConfigValuesAbility(sun, "MeltingGlare", Archetype.SUN.toString(), "description", "instructions",
+                0, 5000, 10000,
+                2, 0.5, 0, 20, 0, 0, 0.2);
+
+        saveConfigValuesAbility(sun, "SolarBarrage", Archetype.SUN.toString(), "description", "instructions",
+                0, 5000, 0,
+                2, 2, 2, 20, 1, 0, 0.3);
 
         saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 5000,
-                2, 2, 5, 0, 1, 0, 0.2);
+                2, 2, 0, 0, 1, 0, 0.2);
+
+        saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
+                1000, 10000, 5000,
+                2, 2, 1, 0, 3, 0, 0.2);
 
 
         sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");

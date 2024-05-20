@@ -9,8 +9,7 @@ import com.sereneoasis.archetypes.Archetype;
 
 import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
-import com.sereneoasis.archetypes.sun.Daybreak;
-import com.sereneoasis.archetypes.sun.Sunrise;
+import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -257,15 +256,32 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), PhantomBreath.class).setHasClicked();
                 }
                 break;
+            case "CruelSun":
+                if (CoreAbility.hasAbility(e.getPlayer(), CruelSun.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), CruelSun.class).setHasClicked();
+                }
+                break;
+            case "FlamingRays":
+                if (CoreAbility.hasAbility(e.getPlayer(), FlamingRays.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), FlamingRays.class).setHasClicked();
+                }
+                break;
+            case "SolarBeam":
+                if (CoreAbility.hasAbility(e.getPlayer(), SolarBeam.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SolarBeam.class).setHasClicked();
+                }
+                break;
+            case "SolarBarrage":
+                if (CoreAbility.hasAbility(e.getPlayer(), SolarBarrage.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SolarBarrage.class).setHasClicked();
+                }
+                break;
             case "Daybreak":
                 new Daybreak(player);
                 break;
             case "Sunrise":
-                if (CoreAbility.hasAbility(e.getPlayer(), Sunrise.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), Sunrise.class).setHasClicked();
-                } else {
-                    new Sunrise(player);
-                }
+                new Sunrise(player);
+                break;
         }
 
     }
@@ -324,6 +340,27 @@ public class SerenityListener implements Listener {
                 break;
             case "PhantomBreath":
                 new PhantomBreath(player);
+                break;
+            case "CruelSun":
+                new CruelSun(player);
+                break;
+            case "SolarFlare":
+                new SolarFlare(player);
+                break;
+            case "FlamingRays":
+                new FlamingRays(player);
+                break;
+            case "SolarBeam":
+                new SolarBeam(player);
+                break;
+            case "SunBurst":
+                new SunBurst(player);
+                break;
+            case "MeltingGlare":
+                new MeltingGlare(player);
+                break;
+            case "SolarBarrage":
+                new SolarBarrage(player);
                 break;
         }
     }
