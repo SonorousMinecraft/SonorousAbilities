@@ -291,13 +291,13 @@ public class ConfigManager {
         //Ability configuration
 
         saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
-                0, 5000, 5000,
-                2, 2, 1, 0, 1, 0, 0.2);
+                1000, 5000, 10000,
+                0, 0, 1, 0, 4, 0, 0.4);
 
 
         saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 5000,
-                2, 2, 0, 0, 1, 0, 0.2);
+                2, 2, 5, 0, 1, 0, 0.2);
 
 
         sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");

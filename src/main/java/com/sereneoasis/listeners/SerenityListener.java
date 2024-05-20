@@ -261,8 +261,11 @@ public class SerenityListener implements Listener {
                 new Daybreak(player);
                 break;
             case "Sunrise":
-                new Sunrise(player);
-                break;
+                if (CoreAbility.hasAbility(e.getPlayer(), Sunrise.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Sunrise.class).setHasClicked();
+                } else {
+                    new Sunrise(player);
+                }
         }
 
     }

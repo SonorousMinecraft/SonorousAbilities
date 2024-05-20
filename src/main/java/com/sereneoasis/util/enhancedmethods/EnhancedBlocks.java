@@ -39,6 +39,16 @@ public class EnhancedBlocks {
                 .collect(Collectors.toSet());
     }
 
+    public static Set<Block> getOutsideSphereBlocks(CoreAbility coreability, Location loc) {
+        if (loc == null) {
+            return new HashSet<>();
+        }
+        Set<Block> facingSphereBlocks = getFacingSphereBlocks(coreability, loc);
+        facingSphereBlocks.removeIf(block -> Blocks.getBlocksAroundPoint(loc, coreability.getRadius()-1).contains(block));
+        return facingSphereBlocks;
+
+    }
+
     public static Set<Block> getTopCylinderBlocks(CoreAbility coreAbility, double height){
         Set<Block> blocks = Blocks.getBlocksAroundPoint(coreAbility.getPlayer().getLocation().subtract(0,1,0), coreAbility.getRadius()).stream()
                 .filter(block -> Blocks.getArchetypeBlocks(coreAbility.getsPlayer()).contains(block.getType()) && Blocks.isTopBlock(block))
@@ -79,6 +89,8 @@ public class EnhancedBlocks {
 
         return blocks;
     }
+
+
 
 
 }

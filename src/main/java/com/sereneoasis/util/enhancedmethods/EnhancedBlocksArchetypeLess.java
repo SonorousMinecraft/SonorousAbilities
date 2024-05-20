@@ -21,6 +21,8 @@ public class EnhancedBlocksArchetypeLess {
                 .collect(Collectors.toSet());
     }
 
+
+
     public static boolean isStandingOnSource(CoreAbility coreability){
         return !Blocks.getBlocksAroundPoint(coreability.getPlayer().getLocation().subtract(0,1,0), 2).stream()
                 .collect(Collectors.toSet()).isEmpty();
@@ -33,6 +35,16 @@ public class EnhancedBlocksArchetypeLess {
         }
         return Blocks.getBlocksAroundPoint(loc, coreability.getRadius()).stream()
                 .collect(Collectors.toSet());
+    }
+
+    public static Set<Block> getOutsideSphereBlocks(CoreAbility coreability, Location loc) {
+        if (loc == null) {
+            return new HashSet<>();
+        }
+        Set<Block> facingSphereBlocks = getFacingSphereBlocks(coreability, loc);
+        facingSphereBlocks.removeIf(block -> Blocks.getBlocksAroundPoint(loc, coreability.getRadius()-1).contains(block));
+        return facingSphereBlocks;
+
     }
 
     public static Set<Block> getTopCylinderBlocks(CoreAbility coreAbility, double height){

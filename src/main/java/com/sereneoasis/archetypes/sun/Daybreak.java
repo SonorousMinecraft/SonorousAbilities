@@ -1,9 +1,11 @@
 package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.abilityuilities.BlockExplodeSphere;
 import com.sereneoasis.abilityuilities.velocity.Jet;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
@@ -54,6 +56,11 @@ public class Daybreak extends CoreAbility {
                 DamageHandler.damageEntity(targetPlayer, player, this, damage);
                 Entities.applyPotion(targetPlayer, PotionEffectType.BLINDNESS, Math.round(startTime - duration));
             }
+        }
+
+        Location facing = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), speed);
+        if ( ! EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing ).isEmpty()) {
+            new BlockExplodeSphere(player, name, facing, 1);
         }
 
     }
