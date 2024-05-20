@@ -9,6 +9,8 @@ import com.sereneoasis.archetypes.Archetype;
 
 import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
+import com.sereneoasis.archetypes.sun.Daybreak;
+import com.sereneoasis.archetypes.sun.Sunrise;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -254,6 +256,12 @@ public class SerenityListener implements Listener {
                 if (CoreAbility.hasAbility(e.getPlayer(), PhantomBreath.class)) {
                     CoreAbility.getAbility(e.getPlayer(), PhantomBreath.class).setHasClicked();
                 }
+                break;
+            case "Daybreak":
+                new Daybreak(player);
+                break;
+            case "Sunrise":
+                new Sunrise(player);
                 break;
         }
 

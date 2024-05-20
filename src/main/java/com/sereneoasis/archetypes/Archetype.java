@@ -9,7 +9,9 @@ public enum Archetype {
 
     EARTH("earth"),
 
-    CHAOS("chaos");
+    CHAOS("chaos"),
+
+    SUN("sun");
 
 
     private String name;

@@ -284,6 +284,29 @@ public class ConfigManager {
                 2, 0.5, 0, 10, 1.5, 0, 0.5);
 
         getConfig(CHAOS).saveConfig();
+
+
+        FileConfiguration sun = getConfig(Archetype.SUN).getConfig();
+
+        //Ability configuration
+
+        saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
+                0, 5000, 5000,
+                2, 2, 1, 0, 1, 0, 0.2);
+
+
+        saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "instructions",
+                0, 5000, 5000,
+                2, 2, 0, 0, 1, 0, 0.2);
+
+
+        sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");
+        saveAttributeValuesArchetype(sun, Archetype.SUN, 0, 0, 0, 0,
+                0.0, 0, 0);
+
+        saveArchetypeCosmetics(sun, Archetype.SUN, "#FFCC33");
+        sun.options().copyDefaults(true);
+        getConfig(Archetype.SUN).saveConfig();
     }
 
 
