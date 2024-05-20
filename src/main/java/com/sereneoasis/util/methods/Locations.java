@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -49,9 +50,18 @@ public class Locations {
 
     public static Location getFacingLocationObstructed(Location loc, Vector dir, double distance) {
         Location facingLoc = getFacingLocation(loc, dir, distance);
-        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance) != null) {
-            facingLoc = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance).getHitBlock().getLocation();
+
+        if (Blocks.getFacingBlockLoc(loc, dir, distance) != null) {
+            facingLoc = Blocks.getFacingBlockLoc(loc, dir, distance);
         }
+//        RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance);
+//        if (rayTraceResult != null) {
+//            Bukkit.broadcastMessage("the player is looking at smth");
+//            if (rayTraceResult.getHitBlock() != null){
+//                facingLoc = rayTraceResult.getHitPosition().toLocation(facingLoc.getWorld());
+//
+//            }
+//        }
         return facingLoc;
     }
 

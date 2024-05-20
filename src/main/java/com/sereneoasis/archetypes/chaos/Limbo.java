@@ -92,6 +92,9 @@ public class Limbo extends MasterAbility {
                         if (chargedFor > chargeTime) {
                             abilityStatus = AbilityStatus.CHARGED;
                             AbilityUtils.sendActionBar(player, "READY", ChatColor.of(Color.MAGENTA) );
+                        } else {
+                            AbilityUtils.sendActionBar(player, "CHARGING", ChatColor.of(Color.MAGENTA) );
+
                         }
                     }
                 }

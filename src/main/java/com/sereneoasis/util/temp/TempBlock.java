@@ -116,7 +116,9 @@ public class TempBlock {
         if (oldData != null) {
             this.block.setBlockData(oldData);
         }
-        INSTANCES.remove(block, this);
+        if (block != null) {
+            INSTANCES.remove(block, this);
+        }
     }
 
     public long getRevertTime() {

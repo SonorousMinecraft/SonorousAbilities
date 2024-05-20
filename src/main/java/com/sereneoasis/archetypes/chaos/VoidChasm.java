@@ -43,12 +43,19 @@ public class VoidChasm extends MasterAbility {
 
     private Object[] outerArray;
 
+    private Random random = new Random();
     private long lastAttacked = System.currentTimeMillis();
+
+    private Levitate levitate;
     public VoidChasm(Player player) {
         super(player, name);
 
         if (shouldStart()){
             targets = Entities.getEntitiesAroundPoint(player.getLocation(), radius).stream().filter(entity -> entity!=player).collect(Collectors.toSet());
+            targets.forEach(entity -> {
+                entity.setVelocity(new Vector(0, 10, 0));
+                entity.setGlowing(true);
+            } );
 
 
             Set<TempDisplayBlock> raiseBlocks = EnhancedDisplayBlocks.createTopCircleTempBlocks(this, Material.BLACK_CONCRETE);
@@ -68,17 +75,21 @@ public class VoidChasm extends MasterAbility {
                 });
                 outer.stream().forEach(block -> {
 
-
-                    BlockState state = Material.END_GATEWAY.createBlockData().createBlockState();
+                    if (random.nextDouble() < 0.1) {
+                        BlockState state = Material.END_GATEWAY.createBlockData().createBlockState();
 //                    ((EndGateway) state).setAge(-1000000);
 
-                    TempBlock tb = new TempBlock(block, state.getBlockData(), duration, true);
+                        TempBlock tb = new TempBlock(block, state.getBlockData(), duration, true);
 //                    TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration, true);
 //
-                    EndGateway endGateway =  ((EndGateway) block.getState());
-                    endGateway.setAge(-1000000);
-                    endGateway.update(true);
-                    chasm.add(tb);
+                        EndGateway endGateway = ((EndGateway) block.getState());
+                        endGateway.setAge(-1000000);
+                        endGateway.update(true);
+                        chasm.add(tb);
+                    } else {
+                        TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration, true);
+                        chasm.add(tb);
+                    }
                 });
 
                 outerArray =  outer.toArray();
@@ -96,7 +107,7 @@ public class VoidChasm extends MasterAbility {
                 }
 
 
-                Levitate levitate = new Levitate(player, name);
+                 levitate = new Levitate(player, name);
 
                 targets.forEach(entity -> {
                     entity.teleport(player);
@@ -169,13 +180,13 @@ public class VoidChasm extends MasterAbility {
 
                 if (dir != null) {
                      Set<TempDisplayBlock> projectile =  Blocks.getBlocksAroundPoint(block.getLocation(), projectileSize).stream()
-                             .filter(b -> b.getType().equals(Material.END_GATEWAY))
+                             .filter(b -> b.getType().equals(Material.BLACK_CONCRETE) || b.getType().equals(Material.END_GATEWAY))
                              .map(endGateway -> new TempDisplayBlock(endGateway.getLocation(), Material.BLACK_CONCRETE, duration, size))
                              .collect(Collectors.toSet());
 
                      new ShootBlockShapeFromLoc(player, name, block.getLocation(), projectile, projectileSize, true, dir);
 //                    new BlockDisintegrateSphereSuck(player, name, block.getLocation(), block.getLocation().add(dir.clone().multiply(-10)), 0, projectileSize, 1);
-                    new BlockDisintegrateSphere(player, name, block.getLocation(), 0, projectileSize, 1, false);
+                    new BlockDisintegrateSphere(player, name, block.getLocation(), 0, projectileSize, 1, true);
                 }
 
 
@@ -204,9 +215,13 @@ public class VoidChasm extends MasterAbility {
         super.remove();
 //        new BlockDisintegrateSphereSuck(player, name,center, center, 0, radius, 1);
         chasm.forEach(TempBlock::revert);
-        targets.forEach(entity -> entity.setGravity(true));
+        targets.forEach(entity -> {
+            entity.setGravity(true);
+            entity.setGlowing(false);
+        });
         sPlayer.addCooldown(name, cooldown);
 
         crystalLasers.keySet().forEach(Laser::stop);
+        levitate.remove();
     }
 }

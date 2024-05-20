@@ -44,6 +44,7 @@ public class ChargeSphere extends CoreAbility {
         }
 
         loc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange + 1);
+
         for (Location l : Locations.getSphere(loc,
                 startRadius, 18))
         {

@@ -18,6 +18,7 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class ChaoticVoid extends MasterAbility {
 
@@ -28,6 +29,8 @@ public class ChaoticVoid extends MasterAbility {
     private HashMap<BoundingBox, Location> portalsFrom = new HashMap<>();
 
     private HashSet<BoundingBox> portalsTo = new HashSet<>();
+
+    private Set<TempBlock> tempBlocks = new HashSet<>();
 
     private Location origin;
 
@@ -115,6 +118,7 @@ public class ChaoticVoid extends MasterAbility {
                     portalsTo.add(BoundingBox.of(targetBlock).expand(radius));
                     for (Block b : Blocks.getBlocksAroundPoint(targetBlock.getLocation(), radius)) {
                         TempBlock tb = new TempBlock(b, Material.END_GATEWAY, duration, true);
+                        tempBlocks.add(tb);
                     }
 
                     Vector randomiser = chaos.getMax().subtract(chaos.getMin()).multiply(new Vector(random.nextDouble() - 0.5, random.nextDouble() - 0.5, random.nextDouble() - 0.5));
@@ -122,6 +126,7 @@ public class ChaoticVoid extends MasterAbility {
                     Location portalFrom = midpoint.add(randomiser).add(0,radius,0);
                     for (Block b : Blocks.getBlocksAroundPoint(portalFrom, radius)) {
                         TempBlock tb = new TempBlock(b, Material.END_GATEWAY, duration, true);
+                        tempBlocks.add(tb);
                     }
 
                     portalsFrom.put(BoundingBox.of(portalFrom.getBlock()).expand(radius), targetBlock.getLocation());
@@ -157,6 +162,11 @@ public class ChaoticVoid extends MasterAbility {
         for (Block b : Blocks.getBlocksAroundPoint(chaos.getCenter().toLocation(player.getWorld()), 100)){
             b.setBlockData(Material.AIR.createBlockData());
         }
+        tempBlocks.forEach(tempBlock -> {
+            if (tempBlock != null) {
+                tempBlock.revert();
+            }
+        });
     }
 
     @Override

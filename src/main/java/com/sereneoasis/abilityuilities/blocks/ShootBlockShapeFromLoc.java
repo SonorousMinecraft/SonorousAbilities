@@ -70,8 +70,8 @@ public class ShootBlockShapeFromLoc extends CoreAbility {
         this.autoRemove = autoRemove;
         this.dir = dir.clone();
         this.loc = loc.clone();
-        this.radius = radius;
-        this.abilityStatus = AbilityStatus.SHOT;
+        this.hitbox = radius;
+
 
         abilityStatus = AbilityStatus.SHOT;
         start();

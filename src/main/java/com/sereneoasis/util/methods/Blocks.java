@@ -93,6 +93,15 @@ public class Blocks {
         return null;
     }
 
+    public static Location getFacingBlockLoc(Location loc, Vector dir, double distance) {
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER);
+            Location hitLoc = new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
+            return hitLoc;
+        }
+        return null;
+    }
+
     public static boolean playerLookingAtBlockDisplay(Player player, BlockDisplay target, double maxDistance, double size) {
         Location loc = target.getLocation();
 

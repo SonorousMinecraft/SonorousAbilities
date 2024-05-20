@@ -122,7 +122,18 @@ public class SoulSlash extends MasterAbility {
                 tempBlock.automaticRevert();
             }
         });
-        rings.forEach(BlockRingAroundPlayer::remove);
-        sourceBlocksToPlayer.forEach(SourceBlockToPlayer::remove);
+//        rings.forEach(BlockRingAroundPlayer::remove);
+        rings.forEach(blockRingAroundPlayer -> {
+            if (blockRingAroundPlayer != null) {
+                blockRingAroundPlayer.remove();
+            }
+        });
+
+        sourceBlocksToPlayer.forEach(sourceBlockToPlayer -> {
+            if (sourceBlockToPlayer != null) {
+                sourceBlockToPlayer.remove();
+            }
+        });
+//        sourceBlocksToPlayer.forEach(SourceBlockToPlayer::remove);
     }
 }

@@ -43,6 +43,11 @@ public class Singularity extends MasterAbility {
             getHelpers().put(chargeSphere, (abilityStatus) -> {
                 switch (abilityStatus){
                     case CHARGING:
+
+                        if (!player.isSneaking()) {
+                            chargeSphere.remove();
+                            this.remove();
+                        }
                         Set<Block> sourceBlocks = Blocks.getBlocksAroundPoint(chargeSphere.getLoc(), chargeSphere.getCurrentRadius() + 2);
                         for (Block b : sourceBlocks) {
                             if (b != null && !b.isPassable() && b.getType() != Material.CRYING_OBSIDIAN) {
@@ -94,10 +99,17 @@ public class Singularity extends MasterAbility {
             if (System.currentTimeMillis() > startTime + chargeTime) {
                 abilityStatus = AbilityStatus.CHARGED;
 
-                List<TempDisplayBlock> blocks = displayBlocks.keySet().stream().collect(Collectors.toList()).subList(0,100);
+                List<TempDisplayBlock> blocks = null;
+                if (displayBlocks.keySet().size() > 100) {
+                    blocks = displayBlocks.keySet().stream().collect(Collectors.toList()).subList(0, 100);
+                }else {
+                    blocks = displayBlocks.keySet().stream().collect(Collectors.toList()).subList(0, displayBlocks.size());
 
+                }
+
+                List<TempDisplayBlock> finalBlocks = blocks;
                 displayBlocks.forEach((tempDisplayBlock, vector) -> {
-                    if (!blocks.contains(tempDisplayBlock)){
+                    if (!finalBlocks.contains(tempDisplayBlock)){
                         tempDisplayBlock.revert();
                     } else {
                         tempDisplayBlock.setSize(1);
@@ -105,15 +117,12 @@ public class Singularity extends MasterAbility {
                     }
                 });
                 List<TempDisplayBlock> absentBlocks = displayBlocks.keySet().stream()
-                        .filter(tempDisplayBlock -> !blocks.contains(tempDisplayBlock))
+                        .filter(tempDisplayBlock -> !finalBlocks.contains(tempDisplayBlock))
                         .toList();
 
                 absentBlocks.forEach(tempDisplayBlock -> displayBlocks.remove(tempDisplayBlock));;
             }
-            else if (!player.isSneaking()){
-
-                this.remove();
-            } else {
+            else {
                 displayBlocks.forEach((tempDisplayBlock, vector) -> {
                     tempDisplayBlock.setScale(0.5);
                     vector.multiply(0.5);
@@ -137,6 +146,7 @@ public class Singularity extends MasterAbility {
             abilityStatus = AbilityStatus.SHOT;
 
             SphereBlast sphereBlast = new SphereBlast(player, name, true, new ArchetypeVisuals.ChaosVisual());
+            sphereBlast.setLoc(loc);
             Particles.spawnParticle(Particle.SONIC_BOOM, sphereBlast.getLoc(), 20, radius * 2, 1);
             getHelpers().put(sphereBlast, (abilityStatus) -> {
                 switch (abilityStatus) {

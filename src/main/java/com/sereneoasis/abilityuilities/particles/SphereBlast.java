@@ -61,6 +61,10 @@ public class SphereBlast extends CoreAbility {
 
     }
 
+    public void setLoc(Location loc) {
+        this.loc = loc;
+    }
+
     public Location getLoc() {
         return loc;
     }
