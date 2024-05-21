@@ -1,6 +1,8 @@
 package com.sereneoasis.util;
 
+import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.archetypes.Archetype;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -25,6 +27,9 @@ public class DamageHandler {
             if (entity instanceof LivingEntity livingEntity) {
                 // needd to add some damage cooldown
                 livingEntity.damage(damage, source);
+                if (SerenityPlayer.getSerenityPlayer(source).getArchetype().equals(Archetype.SUN)){
+                    livingEntity.setFireTicks(20);
+                }
 //                net.minecraft.world.entity.player.Player nmsPlayer = ((CraftPlayer)source).getHandle();
 //                net.minecraft.world.entity.LivingEntity nmsTarget = ((CraftLivingEntity)livingEntity).getHandle();
 //                nmsTarget.setHealth((float) (nmsTarget.getHealth() - damage));

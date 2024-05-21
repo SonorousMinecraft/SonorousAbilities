@@ -195,6 +195,35 @@ public class TempDisplayBlock {
     }
 
 
+    // Typically used in locations
+    public TempDisplayBlock(Location loc, DisplayBlock blocks, final long revertTime, double size, boolean glowing, Color color) {
+
+        this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
+        {
+            BlockDisplay bDisplay = (BlockDisplay) entity;
+            SplittableRandom splittableRandom = new SplittableRandom();
+            int randomIndex = splittableRandom.nextInt(0, blocks.getBlocks().size());
+            BlockData newData = blocks.getBlocks().get(randomIndex).createBlockData();
+            bDisplay.setBlock(newData);
+            Transformation transformation = bDisplay.getTransformation();
+            //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
+            transformation.getScale().set(size-0.001);
+            bDisplay.setViewRange(50);
+            //transformation.getLeftRotation().set(new AxisAngle4d(Math.toRadians(yaw), 0, 1, 0));
+            bDisplay.setTransformation(transformation);
+            if (glowing) {
+                bDisplay.setGlowing(true);
+                bDisplay.setGlowColorOverride(color);
+            }
+
+        });
+        this.size = size;
+        this.revertTime = System.currentTimeMillis() + revertTime;
+        REVERT_QUEUE.add(this);
+        TEMP_DISPLAY_BLOCK_SET.add(this);
+    }
+
+
     public void automaticRevert() {
         if (blockDisplay != null) {
             blockDisplay.remove();

@@ -21,7 +21,17 @@ public enum DisplayBlock {
 //    SUN(new ArrayList<>(List.of(new Material[]{Material.RAW_GOLD_BLOCK, Material.SHROOMLIGHT, Material.HONEYCOMB_BLOCK}))),
 
 //    SUN(new ArrayList<>(List.of(new Material[]{Material.HONEY_BLOCK}))),
-    SUN(new ArrayList<>(List.of(new Material[]{Material.RAW_GOLD_BLOCK, Material.HONEY_BLOCK}))),
+//    SUN(new ArrayList<>(List.of(new Material[]{Material.RAW_GOLD_BLOCK,Material.SHROOMLIGHT, Material.OCHRE_FROGLIGHT}))),
+//    SUN(new ArrayList<>(List.of(new Material[]{Material.RAW_GOLD_BLOCK,Material.SHROOMLIGHT, Material.HONEY_BLOCK}))),
+
+
+//    SUN(new ArrayList<>(List.of(new Material[]{Material.RAW_GOLD_BLOCK,Material.NETHER_WART_BLOCK, Material.CRIMSON_HYPHAE, Material.NETHERRACK, Material.NETHER_GOLD_ORE, Material.NETHER_BRICKS, Material.RED_NETHER_BRICKS, Material.MAGMA_BLOCK}))),
+    SUN(new ArrayList<>(List.of(new Material[]{Material.RAW_GOLD_BLOCK,Material.RAW_GOLD_BLOCK,Material.RAW_GOLD_BLOCK,Material.NETHER_WART_BLOCK, Material.CRIMSON_HYPHAE, Material.NETHERRACK, Material.NETHER_GOLD_ORE, Material.MAGMA_BLOCK}))),
+
+//    SUN(new ArrayList<>(List.of(new Material[]{ Material.OCHRE_FROGLIGHT, Material.HONEY_BLOCK}))),
+//    SUN(new ArrayList<>(List.of(new Material[]{Material.RAW_GOLD_BLOCK, Material.HONEYCOMB_BLOCK, Material.YELLOW_WOOL, Material.YELLOW_CONCRETE, Material.YELLOW_TERRACOTTA, Material.SHROOMLIGHT}))),
+
+//    SUN(new ArrayList<>(List.of(new Material[]{Material.FIRE_CORAL_BLOCK, Material.NETHER_WART_BLOCK, Material.MAGMA_BLOCK}))),
 
     FIRE(new ArrayList<>(List.of(new Material[]{Material.FIRE, Material.SOUL_FIRE}))),
 

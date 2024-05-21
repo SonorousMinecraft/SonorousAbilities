@@ -20,6 +20,7 @@ public class CruelSun extends CoreAbility {
     private ChargeSphere chargeSphere;
     private BlockSmash blockSmash;
 
+    private double currentAngle = 0;
     private static final String name = "CruelSun";
 
     public CruelSun(Player player) {
@@ -34,6 +35,8 @@ public class CruelSun extends CoreAbility {
         start();
 
     }
+
+    private ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
 
     @Override
     public void progress() {
@@ -52,7 +55,13 @@ public class CruelSun extends CoreAbility {
                     Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius/2));
             abilityStatus = AbilityStatus.NOT_SHOT;
         }
+        else if (abilityStatus == AbilityStatus.NOT_SHOT){
+            sunVisual.playVisual(blockSmash.getLoc(), size, radius, 0, 10, 10);
+        }
         else if (abilityStatus == AbilityStatus.SHOT){
+
+            sunVisual.playShotVisual(blockSmash.getLoc(), blockSmash.getDir(), currentAngle, size, radius, 0, 1, 1);
+            currentAngle += 36;
             Location facing = Locations.getFacingLocation(blockSmash.getLoc(), blockSmash.getDir(), speed * radius);
 
             if ( ! EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing ).isEmpty()) {
@@ -69,8 +78,10 @@ public class CruelSun extends CoreAbility {
     }
 
     public void setHasClicked() {
-        blockSmash.setHasClicked();
-        abilityStatus = AbilityStatus.SHOT;
+        if (abilityStatus == AbilityStatus.NOT_SHOT) {
+            blockSmash.setHasClicked();
+            abilityStatus = AbilityStatus.SHOT;
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.sereneoasis.util.methods;
 
 import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.*;
@@ -24,6 +25,17 @@ public class Blocks {
         for (Location loc : locs){
             selectSourceAnimation(loc, color, size);
         }
+    }
+
+    public static void selectSourceAnimationShapeGivenType(Collection<Location> locs, Color color, double size, DisplayBlock displayBlock) {
+        for (Location loc : locs){
+            selectSourceAnimationGivenType(loc, color, size, displayBlock);
+        }
+    }
+
+    public static void selectSourceAnimationGivenType(Location loc, Color color, double size, DisplayBlock displayBlock) {
+        Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
+        new TempDisplayBlock(tempLoc,displayBlock, 1000, size, true, color);
     }
 
     public static void selectSourceAnimation(Location loc, Color color, double size) {

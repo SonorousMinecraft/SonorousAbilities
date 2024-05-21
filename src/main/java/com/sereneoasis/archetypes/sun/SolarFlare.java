@@ -49,7 +49,7 @@ public class SolarFlare extends CoreAbility {
         if (target != null && target.getType().isSolid()) {
             Location sourceLoc = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
 
-            Blocks.selectSourceAnimationShape( Locations.getCircleLocsAroundPoint(sourceLoc.clone().subtract(0,radius,0), radius, size), sPlayer.getColor(), size);
+            Blocks.selectSourceAnimationShapeGivenType( Locations.getCircleLocsAroundPoint(sourceLoc.clone().add(0,speed,0), radius, size), sPlayer.getColor(), size, DisplayBlock.SUN);
 
             double height = radius*3;
             flareLoc = target.getLocation().clone().add(0, height, 0);
@@ -79,8 +79,8 @@ public class SolarFlare extends CoreAbility {
 
         if (started) {
 
-            flareLoc.subtract(0, 1, 0);
-            flares.forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().subtract(0,1,0)));
+            flareLoc.subtract(0, speed, 0);
+            flares.forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().subtract(0,speed,0)));
 
             if (flareLoc.getY() <= target.getY()) {
                 this.remove();
@@ -96,7 +96,7 @@ public class SolarFlare extends CoreAbility {
             for (Location particleLoc : Locations.getCircleLocsAroundPoint(flareLoc, radius-size, size))
             {
                 Particles.spawnParticle(Particle.WAX_ON, particleLoc, 1, size, 0);
-                AbilityDamage.damageSeveral(particleLoc, this, player, true, new Vector(0,1,0));
+                AbilityDamage.damageSeveral(particleLoc, this, player, true, new Vector(0,5,0));
             }
 
         }

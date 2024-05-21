@@ -1,5 +1,7 @@
 package com.sereneoasis.archetypes.data;
 
+import com.sereneoasis.util.methods.Colors;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 
@@ -36,5 +38,9 @@ public class ArchetypeData {
 
     public String getColor() {
         return color;
+    }
+
+    public Color getRealColor() {
+        return Colors.hexToColor(this.getColor());
     }
 }

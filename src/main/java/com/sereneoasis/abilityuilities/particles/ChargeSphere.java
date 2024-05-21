@@ -33,7 +33,7 @@ public class ChargeSphere extends CoreAbility {
         this.startTime = System.currentTimeMillis();
         this.increment = ((radius - startRadius) / chargeTime) * 50;
         this.archetypeVisual = archetypeVisual;
-        loc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius * 1.5);
+        loc = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), radius * 2);
         start();
     }
 

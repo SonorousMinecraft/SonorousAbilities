@@ -94,6 +94,7 @@ public class Entities {
                         || entity instanceof ArmorStand || entity instanceof ItemDisplay || entity instanceof BlockDisplay || !(entity instanceof LivingEntity))));
     }
 
+    private static final Random random = new Random();
 
     public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock> spike, Set<Location> locs, DisplayBlock type, double size) {
 
@@ -102,7 +103,7 @@ public class Entities {
             l.setDirection(l.getBlock().getLocation().getDirection().clone());
 
             if (!spike.containsKey(i)) {
-                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size);
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size + random.nextDouble()/10 );
                 spike.put(i, tempDisplayBlock);
             } else {
                 spike.get(i).moveTo(l);
