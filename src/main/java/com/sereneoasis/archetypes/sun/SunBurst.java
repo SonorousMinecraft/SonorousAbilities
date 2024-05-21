@@ -7,6 +7,8 @@ import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
+import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
+import com.sereneoasis.util.enhancedmethods.EnhancedSchedulerEffects;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -53,6 +55,8 @@ public class SunBurst extends CoreAbility {
                 abilityStatus = AbilityStatus.CHARGED;
                 Particles.spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0);
 
+                EnhancedSchedulerEffects.raiseTDBs(EnhancedDisplayBlocks.createTopCircleTempBlocks(this, DisplayBlock.SUN), 50, 1);
+
                 player.setVelocity(new Vector(0,3,0));
             }
         }
@@ -84,7 +88,7 @@ public class SunBurst extends CoreAbility {
         if (abilityStatus == AbilityStatus.SHOT){
             if (sun.getAbilityStatus() == AbilityStatus.DAMAGED || sun.getAbilityStatus() == AbilityStatus.COMPLETE || sun.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
 
-                Location facing = Locations.getFacingLocation(sun.getLoc(), sun.getDir(), speed * radius);
+                Location facing = Locations.getFacingLocation(sun.getLoc().clone(), sun.getDir().clone(), radius);
 
                 if (!EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing).isEmpty()) {
 //                    new BlockExplodeSphere(player, name, facing.add(sun.getDir().multiply(radius * speed)), radius, 1);

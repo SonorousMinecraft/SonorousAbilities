@@ -324,7 +324,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
                 2000, 10000, 30000,
-                2, 2, 1, 0, 4, 0, 0.2);
+                0, 0, 1.2, 0, 4, 0, 0);
 
 
         sun.addDefault(Archetype.SUN.toString() + ".blocks", "FIRE");

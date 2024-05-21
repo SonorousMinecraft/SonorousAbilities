@@ -2,6 +2,7 @@ package com.sereneoasis.util.enhancedmethods;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillar;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Scheduler;
@@ -96,4 +97,16 @@ public class EnhancedDisplayBlocks {
 
         return tempDisplayBlocks;
     }
+
+    public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, DisplayBlock displayBlock){
+        Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
+        EnhancedBlocksArchetypeLess.getTopCircleBlocks(coreAbility).forEach(b -> {
+            TempBlock tb = new TempBlock(b, displayBlock, coreAbility.getDuration(), true);
+            TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), b.getType(), coreAbility.getDuration(), coreAbility.getSize());
+            tempDisplayBlocks.add(tdb);
+        });
+
+        return tempDisplayBlocks;
+    }
+
 }

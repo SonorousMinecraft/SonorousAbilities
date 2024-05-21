@@ -5,6 +5,7 @@ import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
 import com.sereneoasis.abilityuilities.blocks.Laser;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -23,9 +24,9 @@ public class MeltingGlare extends CoreAbility {
             return;
         }
 
-        leftEye = new Laser(player, Locations.getLeftSide(player.getEyeLocation(), 0.2),
+        leftEye = new Laser(player, Locations.getLeftSide(player.getEyeLocation(), 0.25),
                 "MeltingGlare", DisplayBlock.SUN);
-        rightEye = new Laser(player, Locations.getRightSide(player.getEyeLocation(), 0.2),
+        rightEye = new Laser(player, Locations.getRightSide(player.getEyeLocation(), 0.25),
                 "MeltingGlare", DisplayBlock.SUN);
         start();
     }
@@ -43,8 +44,8 @@ public class MeltingGlare extends CoreAbility {
             this.remove();
         }
 
-        leftEye.setLoc(Locations.getLeftSide(player.getEyeLocation(), 0.2));
-        rightEye.setLoc(Locations.getRightSide(player.getEyeLocation(), 0.2));
+        leftEye.setLoc(Locations.getLeftSide(player.getEyeLocation(), 0.25));
+        rightEye.setLoc(Locations.getRightSide(player.getEyeLocation(), 0.25));
 
 
         double tempRange = range;
@@ -60,6 +61,9 @@ public class MeltingGlare extends CoreAbility {
         if (tempRange != range) {
             Location facing = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), tempRange);
 
+            if (player.getLocation().getPitch() > 50 ) {
+                player.setVelocity(dir.clone().multiply(-speed));
+            }
             SunUtils.blockExplode(player, name, facing, 2, 0.25);
         }
 

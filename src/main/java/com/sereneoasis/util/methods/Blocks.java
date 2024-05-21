@@ -35,7 +35,7 @@ public class Blocks {
 
     public static void selectSourceAnimationGivenType(Location loc, Color color, double size, DisplayBlock displayBlock) {
         Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
-        new TempDisplayBlock(tempLoc,displayBlock, 1000, size, true, color);
+        new TempDisplayBlock(tempLoc,displayBlock, 2000, size, true, color);
     }
 
     public static void selectSourceAnimation(Location loc, Color color, double size) {

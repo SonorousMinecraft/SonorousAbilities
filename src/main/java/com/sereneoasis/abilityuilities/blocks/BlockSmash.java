@@ -89,7 +89,7 @@ public class BlockSmash extends CoreAbility {
         if (player.isSneaking() && !hasShot) {
             Location targetLoc = player.getEyeLocation().
                     add(player.getEyeLocation().getDirection().multiply(Math.max(radius + 1, loc.distance(player.getEyeLocation()))));
-            if (loc.distance(targetLoc) > 0.5) {
+            if (loc.distanceSquared(targetLoc) > 1) {
                 Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
                 loc.add(dir.clone().multiply(speed));
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);

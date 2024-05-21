@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,8 @@ public class SolarFlare extends CoreAbility {
         }
     }
 
+
+    private Random random = new Random();
     @Override
     public void progress() {
 
@@ -80,7 +83,7 @@ public class SolarFlare extends CoreAbility {
         if (started) {
 
             flareLoc.subtract(0, speed, 0);
-            flares.forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().subtract(0,speed,0)));
+            flares.forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().subtract(0,speed * random.nextDouble(),0)));
 
             if (flareLoc.getY() <= target.getY()) {
                 this.remove();
