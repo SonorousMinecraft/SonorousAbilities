@@ -4,9 +4,7 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.AbilityDamage;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -38,7 +36,6 @@ public class BlockSphereBlast extends CoreAbility {
         this.gravity = gravity;
 
         this.origin = player.getEyeLocation().clone();
-        this.dir = origin.getDirection().normalize();
         this.loc = startLoc.clone();
         spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(loc, radius, size),
                 DisplayBlock.SUN, size);
@@ -50,8 +47,11 @@ public class BlockSphereBlast extends CoreAbility {
     @Override
     public void progress() {
 
+        if (abilityStatus == AbilityStatus.CHARGED){
+            dir = player.getEyeLocation().getDirection().clone();
+        }
         if (abilityStatus == AbilityStatus.SHOT) {
-            if (loc.distance(origin) > range) {
+            if (loc.distance(origin) > range || !loc.getBlock().isPassable()) {
                 this.abilityStatus = AbilityStatus.COMPLETE;
             }
 
@@ -69,27 +69,35 @@ public class BlockSphereBlast extends CoreAbility {
             if (isFinished){
                 this.abilityStatus = AbilityStatus.COMPLETE;
             }
-
         }
+    }
+
+    public void moveToLoc(Location targetLoc){
+        if (loc.distanceSquared(targetLoc) > 1.0) {
+//            Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
+//            loc.add(dir.clone().multiply(speed));
+            loc = targetLoc.clone();
+            spike = Entities.handleDisplayBlockEntities(spike, Locations.getOutsideSphereLocs(targetLoc, radius, size), DisplayBlock.SUN, size);
+        }
+    }
+
+    public Location getLoc() {
+        return loc;
     }
 
     @Override
     public void remove() {
         super.remove();
+        revert();
+    }
+
+    public void revert(){
         for (TempDisplayBlock tb : spike.values()) {
             tb.revert();
         }
+        spike.clear();
     }
 
-    public void setAbilityStatus(AbilityStatus abilityStatus) {
-        this.abilityStatus = abilityStatus;
-    }
-
-
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

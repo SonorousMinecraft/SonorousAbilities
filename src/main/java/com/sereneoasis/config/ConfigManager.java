@@ -316,7 +316,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "SolarBarrage", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 2, 2, 20, 1, 0, 0.3);
+                2, 2, 1, 40, 1, 0, 0.4);
 
         saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "instructions",
                 0, 5000, 5000,

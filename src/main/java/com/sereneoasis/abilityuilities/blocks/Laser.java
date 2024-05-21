@@ -61,7 +61,7 @@ public class Laser extends CoreAbility {
             }
 
             for (double d = size; d < distance; d+=size) {
-                new TempDisplayBlock(loc.clone().add(dir.clone().multiply(d)), displayBlock, 50, size);
+                new TempDisplayBlock(loc.clone().add(dir.clone().multiply(d)), displayBlock, 100, size);
                 if (!loc.clone().add(dir.clone().multiply(d)).getBlock().isPassable()) {
                     break;
                 }
