@@ -364,8 +364,8 @@ public class ConfigManager {
                 2, 1.0, 0, 20, 1, 0, 0.1);
 
         saveConfigValuesAbility(sky, "Shocker", SKY.toString(), "description", "instructions",
-                0, 2000, 5000,
-                2, 1.0, 0, 20, 1, 0, 0.2);
+                0, 2000, 20000,
+                2, 1.0, 0, 10, 1, 0, 0.2);
 
         saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "instructions",
                 1000, 5000, 0,
