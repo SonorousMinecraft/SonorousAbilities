@@ -11,7 +11,9 @@ public enum Archetype {
 
     CHAOS("chaos"),
 
-    SUN("sun");
+    SUN("sun"),
+
+    SKY("sky");
 
 
     private String name;

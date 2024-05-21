@@ -27,6 +27,9 @@ public enum AbilityStatus {
     DROPPED,
 
     TELEPORTING,
-    REVERTING
+    REVERTING,
+
+    FLOATING,
+    JUMPING
 
 }
