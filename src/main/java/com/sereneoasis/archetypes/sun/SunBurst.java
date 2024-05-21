@@ -87,7 +87,9 @@ public class SunBurst extends CoreAbility {
                 Location facing = Locations.getFacingLocation(sun.getLoc(), sun.getDir(), speed * radius);
 
                 if (!EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing).isEmpty()) {
-                    new BlockExplodeSphere(player, name, facing.add(sun.getDir().multiply(radius * speed)), radius, 1);
+//                    new BlockExplodeSphere(player, name, facing.add(sun.getDir().multiply(radius * speed)), radius, 1);
+
+                    SunUtils.blockExplode(player, name, facing.add(sun.getDir().multiply(radius * speed)), radius, 1);
                 }
                 sun.remove();
                 this.remove();

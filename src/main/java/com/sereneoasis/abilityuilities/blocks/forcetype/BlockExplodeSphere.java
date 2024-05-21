@@ -37,7 +37,7 @@ public class BlockExplodeSphere extends CoreAbility {
     private double increment;
 
 
-    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
+//    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
 
     private HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
 
@@ -75,16 +75,19 @@ public class BlockExplodeSphere extends CoreAbility {
         for (Block b : sourceBlocks) {
             if (b != null && !b.isPassable() ) {
 
-                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
-                    TempBlock.getTempBlock(b).revert();
-                }
 
                 TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
                 Vector offset = Vectors.getDirectionBetweenLocations(centerLoc, b.getLocation()).add(new Vector(0,radius,0)).normalize();
                 displayBlocks.put(tdb, offset);
 
+
+//                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
+                if (TempBlock.isTempBlock(b) && !b.getType().equals(Material.LIGHT)) {
+                    TempBlock.getTempBlock(b).revert();
+                }
+
                 TempBlock tb = new TempBlock(b, Material.LIGHT, 60000, true);
-                sourceTempBlocks.add(tb);
+//                sourceTempBlocks.add(tb);
             }
         }
 

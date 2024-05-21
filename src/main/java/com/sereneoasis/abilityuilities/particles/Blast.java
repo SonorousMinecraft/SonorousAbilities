@@ -23,6 +23,8 @@ public class Blast extends CoreAbility {
 
     private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
+    private double angle=0;
+
     public Blast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual) {
         super(player, name);
         this.name = name;
@@ -47,14 +49,15 @@ public class Blast extends CoreAbility {
         }
 
         loc.add(dir.clone().multiply(speed));
-        archetypeVisual.playVisual(loc, size, radius, 10, 1, 5);
-
+//        archetypeVisual.playVisual(loc, size, radius, 10, 1, 5);
+        archetypeVisual.playShotVisual(loc, dir, angle, size, radius, 10, 1, 5);
+        angle+=36*speed;
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
+    public Location getLoc() {
+        return loc;
     }
+
 
     @Override
     public String getName() {

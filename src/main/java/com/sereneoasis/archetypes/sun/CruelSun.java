@@ -56,7 +56,8 @@ public class CruelSun extends CoreAbility {
             Location facing = Locations.getFacingLocation(blockSmash.getLoc(), blockSmash.getDir(), speed * radius);
 
             if ( ! EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing ).isEmpty()) {
-                new BlockExplodeSphere(player, name, facing, radius * 2, 0.25);
+//                new BlockExplodeSphere(player, name, facing, radius * 2, 0.25);
+                SunUtils.blockExplode(player, name, facing, radius*2, 0.5);
             }
 
             if (blockSmash.getAbilityStatus() == AbilityStatus.COMPLETE) {

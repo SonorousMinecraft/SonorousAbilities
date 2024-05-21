@@ -60,7 +60,9 @@ public class Daybreak extends CoreAbility {
         Location facing = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), speed);
 
         if ( ! EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing ).isEmpty()) {
-            new BlockExplodeSphere(player, name, facing, 1);
+//            new BlockExplodeSphere(player, name, facing, 1);
+
+            SunUtils.blockExplode(player, name, facing, radius, 1);
         }
 
     }

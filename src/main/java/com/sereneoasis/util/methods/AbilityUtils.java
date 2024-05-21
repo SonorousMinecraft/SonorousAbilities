@@ -21,7 +21,7 @@ public class AbilityUtils {
         String heldAbilityName = sPlayer.getHeldAbility();
         if (abilityStatus == AbilityStatus.CHARGED && name.equals(heldAbilityName))
         {
-            sendActionBar(player, "charged", ChatColor.GREEN);
+            sendActionBar(player, "READY", ChatColor.GREEN);
         }
     }
 
