@@ -2,6 +2,7 @@ package com.sereneoasis.util.methods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.util.RayTraceResult;
@@ -49,11 +50,16 @@ public class Locations {
     }
 
     public static Location getFacingLocationObstructed(Location loc, Vector dir, double distance) {
-        Location facingLoc = getFacingLocation(loc, dir, distance);
 
-        if (Blocks.getFacingBlockLoc(loc, dir, distance) != null) {
-            facingLoc = Blocks.getFacingBlockLoc(loc, dir, distance);
+//        if (Blocks.getFacingBlock(loc, dir, distance) != null) {
+//            facingLoc = Blocks.getFacingBlockLoc(loc, dir, distance);
+//        }
+
+        Block target = Blocks.getFacingBlockOrLiquid(loc, dir, distance);
+        if (target != null && target.getType().isSolid()) {
+            return target.getLocation();
         }
+
 //        RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance);
 //        if (rayTraceResult != null) {
 //            Bukkit.broadcastMessage("the player is looking at smth");
@@ -62,6 +68,9 @@ public class Locations {
 //
 //            }
 //        }
+
+        Location facingLoc = getFacingLocation(loc, dir, distance);
+
         return facingLoc;
     }
 

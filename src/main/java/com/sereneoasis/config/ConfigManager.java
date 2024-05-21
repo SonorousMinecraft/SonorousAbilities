@@ -303,7 +303,7 @@ public class ConfigManager {
                 2, 0.5, 0.5, 15, 1, 0, 0.2);
 
         saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "instructions",
-                4000, 5000, 0,
+                4000, 5000, 20000,
                 2, 0.5, 2.0, 30, 0.5, 0, 0.2);
 
         saveConfigValuesAbility(sun, "SunBurst", Archetype.SUN.toString(), "description", "instructions",

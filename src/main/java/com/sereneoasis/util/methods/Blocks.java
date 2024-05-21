@@ -83,6 +83,15 @@ public class Blocks {
         return block;
     }
 
+    public static Block getFacingBlock(Location loc, Vector dir, double distance) {
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER);
+            return rayTraceResult.getHitBlock();
+        }
+        return null;
+    }
+
+
     public static Location getFacingBlockLoc(Player player, double distance) {
         Location loc = player.getEyeLocation().clone();
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER) != null) {
@@ -126,6 +135,14 @@ public class Blocks {
         Block block = null;
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS) != null) {
             block = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.ALWAYS).getHitBlock();
+        }
+        return block;
+    }
+
+    public static Block getFacingBlockOrLiquid(Location loc, Vector dir, double distance) {
+        Block block = null;
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.ALWAYS) != null) {
+            block = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.ALWAYS).getHitBlock();
         }
         return block;
     }
