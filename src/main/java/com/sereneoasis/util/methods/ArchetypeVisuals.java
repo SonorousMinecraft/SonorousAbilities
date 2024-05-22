@@ -31,6 +31,22 @@ public class ArchetypeVisuals {
         }
     }
 
+
+    public static class LightningVisual implements ArchetypeVisual{
+
+        @Override
+        public void playVisual(Location loc, double size, double radius, int tb, int cloud, int white) {
+            TDBs.playTDBs(loc, DisplayBlock.LIGHTNING, tb, size, radius);
+            Particles.spawnParticle(Particle.GLOW, loc, cloud, radius, 0);
+            Particles.spawnColoredParticle(loc, white, radius, size*3, Color.fromRGB(242, 243, 244));
+        }
+
+        @Override
+        public void playShotVisual(Location loc, Vector dir, double angle, double size, double radius, int tb, int amount, int colour) {
+
+        }
+    }
+
     public static class SunVisual implements ArchetypeVisual{
 
         @Override

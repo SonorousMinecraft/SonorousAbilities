@@ -96,8 +96,10 @@ public class Arc extends CoreAbility {
         for (double d = 0; d < distance; d += size) {
             Location temploc = start.clone().add(normalised.clone().multiply(d));
             //Particles.spawnColoredParticle(temploc, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
-            TDBs.playTDBs(temploc, DisplayBlock.LIGHTNING, 1, size, 0);
-            Particles.spawnParticle(particle, temploc, 1, 0, 0);
+//            TDBs.playTDBs(temploc, DisplayBlock.LIGHTNING, 1, size, 0);
+//            Particles.spawnParticle(particle, temploc, 1, 0, 0);
+            new ArchetypeVisuals.LightningVisual().playVisual(temploc, size, 0, 1, 1, 1);
+
 
         }
             //Particles.spawnColoredParticle(temploc, 11, 1, 1, Color.fromRGB(1, 225, 255));
