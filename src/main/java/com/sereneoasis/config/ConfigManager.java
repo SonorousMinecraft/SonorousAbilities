@@ -371,6 +371,10 @@ public class ConfigManager {
                 1000, 5000, 0,
                 2, 2.0, 2.0, 30, 0.5, 0, 0.5);
 
+        saveConfigValuesAbility(sky, "LightningBolts", Archetype.SKY.toString(), "description", "instructions",
+                3000, 5000, 0,
+                2, 0.5, 1.2, 40, 1.5, 0, 0.5);
+
         saveAttributeValuesArchetype(sky, SKY, 0, 0, 0, 0,
                 0.0, 0, 0.2);
 

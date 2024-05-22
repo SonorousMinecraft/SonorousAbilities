@@ -1,6 +1,5 @@
 package com.sereneoasis.listeners;
 
-import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
 import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.BendingManager;
@@ -327,7 +326,11 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), ThunderStrike.class).setHasClicked();
                 }
                 break;
-
+            case "LightningBolts":
+                if (CoreAbility.hasAbility(e.getPlayer(), LightningBolts.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), LightningBolts.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -425,6 +428,13 @@ public class SerenityListener implements Listener {
             case "ThunderStrike":
                 new ThunderStrike(player);
                 break;
+            case "LightningBolts":
+                if (CoreAbility.hasAbility(e.getPlayer(), LightningBolts.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), LightningBolts.class).setHasSneaked();
+                } else {
+                    new LightningBolts(player);
+                }
+                break;
         }
     }
 
@@ -495,14 +505,14 @@ public class SerenityListener implements Listener {
 //        }
 //    }
 
-    @EventHandler
-    public void onPlayerTeleport(PlayerTeleportEndGatewayEvent event){
-        Player player = event.getPlayer();
-
-        if (player.getWorld().equals(World.Environment.NORMAL)) {
-            event.setCancelled(true);
-        }
-
+//    @EventHandler
+//    public void onPlayerTeleport(PlayerTeleportEndGatewayEvent event){
+//        Player player = event.getPlayer();
+//
+//        if (player.getWorld().equals(World.Environment.NORMAL)) {
+//            event.setCancelled(true);
+//        }
+}
 //        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
 //        if (sPlayer == null) {
 //            return;
@@ -517,9 +527,9 @@ public class SerenityListener implements Listener {
 //            CoreAbility.getAbility(player, ChaoticVoid.class).handleTeleport();
 //            event.setCancelled(true);
 //        }
-    }
+//    }
 
-}
+
 
 
 

@@ -59,12 +59,13 @@ public class CloudStep extends CoreAbility {
                 abilityStatus = AbilityStatus.FLOATING;
             }
         } else if (abilityStatus == AbilityStatus.MOVING){
-            Vector dir = player.getEyeLocation().getDirection().multiply(radius + 4);
-            if (dir.getY() > 1) {
-                dir.setY(1);
-                player.setVelocity(new Vector(0,1,0));
-            }
-            Location floorLoc = player.getLocation().add(dir);
+
+            Vector dir = player.getEyeLocation().getDirection().setY(0).normalize().multiply(radius );
+//            if (dir.getY() > 1) {
+//                dir.setY(1);
+//                player.setVelocity(new Vector(0,1,0));
+//            }
+            Location floorLoc = player.getLocation().subtract(0,1,0).add(dir);
 
 
             EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this,floorLoc, floorLoc.getBlockY())

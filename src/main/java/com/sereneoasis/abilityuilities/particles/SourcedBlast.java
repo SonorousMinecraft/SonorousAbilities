@@ -24,7 +24,7 @@ public class SourcedBlast extends CoreAbility {
 
     private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    private boolean shouldDamage = false;
+    private boolean shouldDamage;
 
     public SourcedBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean selfPush, boolean shouldDamage) {
         super(player, name);
@@ -45,7 +45,7 @@ public class SourcedBlast extends CoreAbility {
     @Override
     public void progress() {
 
-        if (shot) {
+        if (abilityStatus == AbilityStatus.SHOT) {
             if (loc.distance(origin) > range) {
                 this.abilityStatus = AbilityStatus.COMPLETE;
             }
@@ -64,7 +64,7 @@ public class SourcedBlast extends CoreAbility {
             }
             loc.add(dir.clone().multiply(speed));
         }
-        archetypeVisual.playVisual(loc, size, radius, 10, 1, 5);
+        archetypeVisual.playVisual(loc, size, radius, 10, 5, 5);
         //TDBs.playTDBs(loc, DisplayBlock.AIR, 5, size, hitbox);
         //Particles.spawnParticle(particle, loc, 5, hitbox, 0);
 
@@ -80,7 +80,7 @@ public class SourcedBlast extends CoreAbility {
 
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
-            shot = true;
+            abilityStatus = AbilityStatus.SHOT;
             this.origin = player.getEyeLocation().clone();
             this.dir = origin.getDirection();
         }

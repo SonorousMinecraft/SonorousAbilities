@@ -38,7 +38,7 @@ public class ArchetypeVisuals {
         public void playVisual(Location loc, double size, double radius, int tb, int cloud, int white) {
             TDBs.playTDBs(loc, DisplayBlock.LIGHTNING, tb, size, radius);
             Particles.spawnParticle(Particle.GLOW, loc, cloud, radius, 0);
-            Particles.spawnColoredParticle(loc, white, radius, size*3, Color.fromRGB(242, 243, 244));
+            Particles.spawnColoredParticle(loc, white, radius, size*3, Color.fromRGB(2, 28, 164));
         }
 
         @Override
