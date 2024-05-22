@@ -58,7 +58,7 @@ public class CloudStep extends CoreAbility {
                 abilityStatus = AbilityStatus.FLOATING;
             }
         } else if (abilityStatus == AbilityStatus.MOVING){
-            Location floorLoc = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(3)).subtract(0,2,0);
+            Location floorLoc = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(4)).subtract(0,2,0);
 
             EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this,floorLoc, floorLoc.getBlockY())
                     .stream()

@@ -21,7 +21,7 @@ public class ArchetypeVisuals {
         @Override
         public void playVisual(Location loc, double size, double radius, int tb, int cloud, int white) {
             TDBs.playTDBs(loc, DisplayBlock.AIR, tb, size, radius);
-            Particles.spawnParticle(Particle.CLOUD, loc, cloud, 0.5, 0);
+            Particles.spawnParticle(Particle.GUST_DUST, loc, cloud, radius, 0);
             Particles.spawnColoredParticle(loc, white, radius, size*3, Color.fromRGB(242, 243, 244));
         }
 

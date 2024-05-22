@@ -3,7 +3,7 @@ package com.sereneoasis.util.methods;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;

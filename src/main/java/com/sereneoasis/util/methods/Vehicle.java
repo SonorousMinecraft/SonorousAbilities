@@ -1,8 +1,8 @@
 package com.sereneoasis.util.methods;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftBoat;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPig;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftBoat;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPig;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;

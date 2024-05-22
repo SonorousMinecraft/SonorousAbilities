@@ -344,8 +344,8 @@ public class ConfigManager {
                 0, 1.0, 0.5, 20, 1, 1, 0.2);
 
         saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "instructions",
-                0, 5000, 3000,
-                0, 0, 1, 0, 1, 0, 0.2);
+                0, 5000, 60000,
+                0, 0, 1, 10, 1, 0, 0.2);
 
         saveConfigValuesAbility(sky, "SkyRipper", SKY.toString(), "description", "instructions",
                 0, 5000, 0,
