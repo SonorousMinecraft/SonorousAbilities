@@ -10,6 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.List;
+import java.util.Set;
+
 public class Blade extends CoreAbility {
 
     private final String name;
@@ -58,9 +61,8 @@ public class Blade extends CoreAbility {
         }
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
+    public List<Location> getLocs(){
+        return Locations.getPointsAlongLine(loc1, loc2, size);
     }
 
     @Override

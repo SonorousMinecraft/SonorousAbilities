@@ -3,6 +3,10 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
+import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.TDBs;
 import org.bukkit.Color;
@@ -28,6 +32,7 @@ public class ThunderStrike extends CoreAbility {
         }
 
         abilityStatus = AbilityStatus.CHARGING;
+        player.setVelocity(new Vector(0, speed * 4, 0));
         start();
     }
 
@@ -46,14 +51,24 @@ public class ThunderStrike extends CoreAbility {
             if (loc.distance(origin) > range) {
                 this.remove();
             }
-            loc.add(dir.clone().multiply(speed));
-            Particles.spawnParticle(Particle.SONIC_BOOM, loc, 1, 0, 0);
-            TDBs.playTDBs(loc.clone().subtract(dir.clone().multiply(speed)), DisplayBlock.LIGHTNING, 10, size, radius);
 
-            Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5)).normalize().add(dir.clone().multiply(0.2)).normalize().multiply(0.4);
-            Particles.spawnParticleOffset(Particle.END_ROD, loc, 0, random.getX(), random.getY(), random.getZ(), 0.15);
-            Particles.spawnColoredParticle(loc, 1, radius, size*3, Color.fromRGB(1, 225, 255));
-            Particles.spawnParticle(Particle.ELECTRIC_SPARK, loc, 1,radius,0);
+            if (Blocks.isSolid(loc)){
+                SkyUtils.lightningStrikeFloorCircle(this, loc);
+                this.remove();
+            }
+            loc.add(dir.clone().multiply(speed));
+            Particles.spawnParticle(Particle.GUST, loc, 1, 0, 0);
+
+
+//            TDBs.playTDBs(loc.clone().subtract(dir.clone().multiply(speed)), DisplayBlock.LIGHTNING, 10, size, radius);
+
+//            Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5)).normalize().add(dir.clone().multiply(0.2)).normalize().multiply(0.4);
+
+            new ArchetypeVisuals.LightningVisual().playShotVisual(loc, dir, 0, size, radius, 1, 1, 1);
+
+//            Particles.spawnParticleOffset(Particle.END_ROD, loc, 0, random.getX(), random.getY(), random.getZ(), 0.15);
+//            Particles.spawnColoredParticle(loc, 1, radius, size*3, Color.fromRGB(1, 225, 255));
+//            Particles.spawnParticle(Particle.ELECTRIC_SPARK, loc, 1,radius,0);
         }
     }
 
@@ -65,10 +80,7 @@ public class ThunderStrike extends CoreAbility {
             abilityStatus = AbilityStatus.SHOT;
 
         } else if (abilityStatus == AbilityStatus.SHOT) {
-            LightningStrike strike = (LightningStrike) loc.getWorld().spawn(loc, EntityType.LIGHTNING.getEntityClass(), ((entity) ->
-            {
-                LightningStrike lightning = (LightningStrike) entity;
-            }));
+            SkyUtils.lightningStrikeFloorCircle(this, loc);
 
             this.remove();
         }

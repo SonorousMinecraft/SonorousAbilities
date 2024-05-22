@@ -45,16 +45,22 @@ public class Nimbus extends CoreAbility {
 //            location.add(0,3,0);
 //        });
         if (jet.getAbilityStatus() == AbilityStatus.COMPLETE) {
-            jet.remove();
             this.remove();
-            directionalStream.remove();
-            sPlayer.addCooldown(name, cooldown);
         }
     }
 
     @Override
-    public Player getPlayer() {
-        return player;
+    public void remove() {
+        super.remove();
+        jet.remove();
+        directionalStream.remove();
+        sPlayer.addCooldown(name, cooldown);
+    }
+
+    public void setHasClicked(){
+        if (player.isSneaking()) {
+            this.remove();
+        }
     }
 
     @Override

@@ -24,15 +24,20 @@ public class SourcedBlast extends CoreAbility {
 
     private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    public SourcedBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean selfPush) {
+    private boolean shouldDamage = false;
+
+    public SourcedBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean selfPush, boolean shouldDamage) {
         super(player, name);
         this.shot = false;
         this.selfPush = selfPush;
+        this.shouldDamage = shouldDamage;
         this.name = name;
         this.directable = directable;
         this.archetypeVisual = archetypeVisual;
         this.loc = Locations.getFacingLocationObstructed(player.getEyeLocation(), player.getEyeLocation().getDirection(), sourceRange).subtract(player.getEyeLocation().getDirection().clone().multiply(radius));
         this.abilityStatus = AbilityStatus.SOURCE_SELECTED;
+
+
         start();
     }
 
@@ -49,7 +54,9 @@ public class SourcedBlast extends CoreAbility {
                 dir = player.getEyeLocation().getDirection().normalize();
             }
 
-            DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+            if (shouldDamage) {
+                DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+            }
             for (Entity e : Entities.getEntitiesAroundPoint(loc, radius)) {
                 if (e.getUniqueId() == player.getUniqueId() && selfPush || e.getUniqueId() != player.getUniqueId()) {
                     e.setVelocity(this.dir.clone().multiply(speed));
@@ -61,6 +68,14 @@ public class SourcedBlast extends CoreAbility {
         //TDBs.playTDBs(loc, DisplayBlock.AIR, 5, size, hitbox);
         //Particles.spawnParticle(particle, loc, 5, hitbox, 0);
 
+    }
+
+    public Location getLoc() {
+        return loc;
+    }
+
+    public void setDir(){
+        dir = player.getEyeLocation().getDirection().normalize();
     }
 
     public void setHasClicked() {

@@ -294,7 +294,11 @@ public class SerenityListener implements Listener {
                 }
                 break;
             case "Nimbus":
-                new Nimbus(player);
+                if (CoreAbility.hasAbility(e.getPlayer(), Nimbus.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Nimbus.class).setHasClicked();
+                } else {
+                    new Nimbus(player);
+                }
                 break;
             case "SkyRipper":
                 if (CoreAbility.hasAbility(e.getPlayer(), SkyRipper.class)) {

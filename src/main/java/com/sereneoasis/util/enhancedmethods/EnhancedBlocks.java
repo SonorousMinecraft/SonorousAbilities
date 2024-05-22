@@ -81,6 +81,13 @@ public class EnhancedBlocks {
         return Blocks.getBlocksAroundPoint(coreAbility.getPlayer().getLocation(), coreAbility.getRadius() ).stream().filter(b  -> Blocks.getArchetypeBlocks(coreAbility.getsPlayer()).contains(b.getType()) && Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
     }
 
+    public static Set<Block> getTopCircleBlocksFloor(CoreAbility coreAbility){
+
+        Location floorLoc = Blocks.getBelowBlock(coreAbility.getPlayer().getLocation().getBlock(), coreAbility.getRadius()).getLocation();
+
+        return Blocks.getBlocksAroundPoint(floorLoc, coreAbility.getRadius() ).stream().filter(b  -> Blocks.getArchetypeBlocks(coreAbility.getsPlayer()).contains(b.getType()) && Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
+    }
+
     public static Set<Block> getTopHCircleBlocks(CoreAbility coreAbility, Location loc){
         Set<Block> blocks = Locations.getOutsideSphereLocs(loc, coreAbility.getSourceRange(), 1).stream()
                 .map(Location::getBlock)

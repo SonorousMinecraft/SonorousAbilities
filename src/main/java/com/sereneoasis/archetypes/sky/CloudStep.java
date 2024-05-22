@@ -14,6 +14,7 @@ import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class CloudStep extends CoreAbility {
 
@@ -58,7 +59,13 @@ public class CloudStep extends CoreAbility {
                 abilityStatus = AbilityStatus.FLOATING;
             }
         } else if (abilityStatus == AbilityStatus.MOVING){
-            Location floorLoc = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(4)).subtract(0,2,0);
+            Vector dir = player.getEyeLocation().getDirection().multiply(radius + 4);
+            if (dir.getY() > 1) {
+                dir.setY(1);
+                player.setVelocity(new Vector(0,1,0));
+            }
+            Location floorLoc = player.getLocation().add(dir);
+
 
             EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this,floorLoc, floorLoc.getBlockY())
                     .stream()

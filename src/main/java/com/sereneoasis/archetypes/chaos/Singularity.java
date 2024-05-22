@@ -145,7 +145,7 @@ public class Singularity extends MasterAbility {
         if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.SHOT;
 
-            SphereBlast sphereBlast = new SphereBlast(player, name, true, new ArchetypeVisuals.ChaosVisual());
+            SphereBlast sphereBlast = new SphereBlast(player, name, true, new ArchetypeVisuals.ChaosVisual(), true);
             sphereBlast.setLoc(loc);
             Particles.spawnParticle(Particle.SONIC_BOOM, sphereBlast.getLoc(), 20, radius * 2, 1);
             getHelpers().put(sphereBlast, (abilityStatus) -> {

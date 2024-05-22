@@ -26,7 +26,10 @@ public class SphereBlast extends CoreAbility {
 
     private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    public SphereBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual) {
+    private boolean shouldDamage ;
+
+
+    public SphereBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean shoulDamage) {
         super(player, name);
         this.name = name;
         this.directable = directable;
@@ -57,7 +60,9 @@ public class SphereBlast extends CoreAbility {
             archetypeVisual.playVisual(loc, size, 0, 1, 1, 1);
         }
 
-        DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+        if (shouldDamage) {
+            DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+        }
 
     }
 

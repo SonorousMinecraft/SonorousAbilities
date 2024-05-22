@@ -18,27 +18,36 @@ public class SkyBlast extends CoreAbility {
             return;
         }
 
-        this.sourcedBlast = new SourcedBlast(player, "SkyBlast", false, new ArchetypeVisuals.AirVisual(), true);
+        this.sourcedBlast = new SourcedBlast(player, "SkyBlast", false, new ArchetypeVisuals.AirVisual(), true, false);
         start();
     }
 
     @Override
     public void progress() {
-        if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE) {
-            sourcedBlast.remove();
+
+        if (!sourcedBlast.getLoc().getBlock().isPassable()){
+            SkyUtils.lightningStrike(sourcedBlast.getLoc());
             this.remove();
-            sPlayer.addCooldown(name, cooldown);
         }
+
+        if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+            this.remove();
+
+        }
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        sPlayer.addCooldown(name, cooldown);
+        sourcedBlast.remove();
     }
 
     public void setHasClicked() {
         sourcedBlast.setHasClicked();
+        sourcedBlast.setDir();
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

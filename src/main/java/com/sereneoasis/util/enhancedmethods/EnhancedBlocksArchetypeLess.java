@@ -80,6 +80,20 @@ public class EnhancedBlocksArchetypeLess {
         return Blocks.getBlocksAroundPoint(coreAbility.getPlayer().getLocation(), coreAbility.getRadius() ).stream().filter(b  -> Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
     }
 
+    public static Set<Block> getTopCircleBlocksFloor(CoreAbility coreAbility){
+
+        Location floorLoc = Blocks.getBelowBlock(coreAbility.getPlayer().getLocation().getBlock(), 100).getLocation();
+
+        return Blocks.getBlocksAroundPoint(floorLoc, coreAbility.getRadius() ).stream().filter(b  -> Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
+    }
+
+
+    public static Set<Block> getTopCircleBlocksFloor(CoreAbility coreAbility, Location target){
+
+        Location floorLoc = Blocks.getBelowBlock(target.getBlock(), 100).getLocation();
+
+        return Blocks.getBlocksAroundPoint(floorLoc, coreAbility.getRadius() ).stream().filter(b  -> Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
+    }
 
     public static Set<Block> getCircleAtYBlocks(CoreAbility coreAbility, Location loc, int y){
         return Blocks.getBlocksAroundPoint(loc, coreAbility.getRadius() ).stream().filter(b  -> b.getY() == y).collect(Collectors.toSet());
