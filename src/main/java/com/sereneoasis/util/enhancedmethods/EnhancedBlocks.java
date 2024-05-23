@@ -13,6 +13,16 @@ import java.util.stream.Collectors;
 
 public class EnhancedBlocks {
 
+    public static Set<Block> getFacingSphereLiquidBlocks(CoreAbility coreability) {
+        Location loc = Blocks.getFacingBlockOrLiquidLoc(coreability.getPlayer(), coreability.getSourceRange());
+        if (loc == null) {
+            return new HashSet<>();
+        }
+        return Blocks.getBlocksAroundPoint(loc.getBlock().getLocation(), coreability.getRadius()).stream()
+                .filter(block -> Blocks.getArchetypeBlocks(coreability.getsPlayer()).contains(block.getType()))
+                .collect(Collectors.toSet());
+    }
+
     public static Set<Block> getFacingSphereBlocks(CoreAbility coreability) {
         Location loc = Blocks.getFacingBlockLoc(coreability.getPlayer(), coreability.getSourceRange());
         if (loc == null) {

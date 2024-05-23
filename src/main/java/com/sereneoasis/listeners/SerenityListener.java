@@ -9,10 +9,7 @@ import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
 
-import com.sereneoasis.archetypes.ocean.FrostTsunami;
-import com.sereneoasis.archetypes.ocean.Gimbal;
-import com.sereneoasis.archetypes.ocean.Torrent;
-import com.sereneoasis.archetypes.ocean.WaterSpout;
+import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
@@ -356,6 +353,11 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), FrostTsunami.class).setHasClicked();
                 }
                 break;
+            case "SeaStream":
+                if (CoreAbility.hasAbility(e.getPlayer(), SeaStream.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SeaStream.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -472,6 +474,9 @@ public class SerenityListener implements Listener {
                 break;
             case "FrostTsunami":
                 new FrostTsunami(player);
+                break;
+            case "SeaStream":
+                new SeaStream(player);
                 break;
         }
     }

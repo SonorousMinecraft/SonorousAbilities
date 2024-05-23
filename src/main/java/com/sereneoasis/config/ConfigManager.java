@@ -403,6 +403,10 @@ public class ConfigManager {
                 0, 3000, 0,
                 2, 1.0, 8, 30, 1, 10, 1.0);
 
+        saveConfigValuesAbility(ocean, "SeaStream", Archetype.OCEAN.toString(), "description", "instructions",
+                1000, 2000, 60000,
+                2, 0.9, 3, 40, 1.0, 10, 0.8);
+
 //        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 10000,
 //                4, 0.5, 2, 20, 1, 10, 0.4);

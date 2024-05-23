@@ -1,0 +1,118 @@
+package com.sereneoasis.archetypes.ocean;
+
+import com.sereneoasis.ability.superclasses.MasterAbility;
+import com.sereneoasis.abilityuilities.blocks.ShootBlockShapeFromLoc;
+import com.sereneoasis.archetypes.DisplayBlock;
+import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.temp.TempDisplayBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class SeaStream extends MasterAbility {
+
+    public static final String name = "SeaStream";
+
+    private Set<TempBlock>sources = new HashSet<>();
+
+    private Set<TempDisplayBlock> stream = new HashSet<>();
+
+
+    public SeaStream(Player player) {
+        super(player, name);
+
+        if (shouldStart()){
+            abilityStatus = AbilityStatus.CHARGING;
+            Bukkit.broadcastMessage("started");
+            start();
+        }
+    }
+
+    @Override
+    public void progress() throws ReflectiveOperationException {
+        switch (abilityStatus){
+            case CHARGING -> {
+                if (System.currentTimeMillis() - startTime > chargeTime) {
+                    sources.forEach(tempBlock -> {
+
+//                        if (tempBlock!= null && tempBlock.getBlock() != null) {
+                        if (tempBlock.getBlock()!= null){
+                            tempBlock.revert();
+                        }
+
+                    });
+                    abilityStatus = AbilityStatus.CHARGED;
+                    Bukkit.broadcastMessage("charged");
+
+                }
+                else {
+                    if (! player.isSneaking()) {
+                        Bukkit.broadcastMessage("removed for not sneaking");
+                        this.remove();
+                    } else {
+                        Block facing = Blocks.getFacingBlockOrLiquid(player, sourceRange);
+                        if (facing == null || !Blocks.getArchetypeBlocks(sPlayer).contains(facing.getType())) {
+                            Bukkit.broadcastMessage("removed for no source");
+                            this.remove();
+                        } else {
+                            Bukkit.broadcastMessage("creating ice");
+                            EnhancedBlocks.getFacingSphereLiquidBlocks(this).stream()
+                                    .filter(block -> !TempBlock.isTempBlock(block))
+                                    .forEach(block -> {
+                                        TempBlock ice = new TempBlock(block, DisplayBlock.ICE, 60000);
+                                        stream.add(new TempDisplayBlock(block, DisplayBlock.WATER, 60000, size));
+
+                                        sources.add(ice);
+                                    });
+                        }
+                    }
+                }
+            }
+            case CHARGED -> {
+                Bukkit.broadcastMessage("charged state");
+                if (player.isSneaking()) {
+
+                    stream.forEach(tempDisplayBlock -> {
+                        Location sourceTo = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius));
+                        if (tempDisplayBlock.getLoc().distanceSquared(sourceTo) > radius * radius) {
+                            tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), sourceTo).normalize()));
+                        }
+                    });
+                }
+            }
+            case SHOT -> {
+                Bukkit.broadcastMessage("stream has " + stream.size());
+                new ShootBlockShapeFromLoc(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius)), stream, radius, true, player.getEyeLocation().getDirection());
+                this.remove();
+            }
+        }
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        sPlayer.addCooldown(name, cooldown);
+        sources.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
+//        stream.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
+    }
+
+    public void setHasClicked(){
+        if (abilityStatus == AbilityStatus.CHARGED){
+
+            abilityStatus = AbilityStatus.SHOT;
+        }
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+}
