@@ -2,11 +2,14 @@ package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockShapeFromLoc;
+import com.sereneoasis.abilityuilities.blocks.forcetype.ShootBlocksFromLocGivenType;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Vectors;
+import com.sereneoasis.util.methods.collections.CollectionUtils;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Bukkit;
@@ -15,6 +18,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class SeaStream extends MasterAbility {
@@ -24,6 +28,8 @@ public class SeaStream extends MasterAbility {
     private Set<TempBlock>sources = new HashSet<>();
 
     private Set<TempDisplayBlock> stream = new HashSet<>();
+
+    private ShootBlockShapeFromLoc streamShot;
 
 
     public SeaStream(Player player) {
@@ -81,17 +87,33 @@ public class SeaStream extends MasterAbility {
                 if (player.isSneaking()) {
 
                     stream.forEach(tempDisplayBlock -> {
-                        Location sourceTo = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius));
+                        Location sourceTo = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius * 3));
                         if (tempDisplayBlock.getLoc().distanceSquared(sourceTo) > radius * radius) {
-                            tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), sourceTo).normalize()));
+                            tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), sourceTo.clone().add(Vectors.getRandom().multiply(radius *3))).normalize()));
                         }
                     });
                 }
             }
             case SHOT -> {
-                Bukkit.broadcastMessage("stream has " + stream.size());
-                new ShootBlockShapeFromLoc(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius)), stream, radius, true, player.getEyeLocation().getDirection());
-                this.remove();
+
+//                Bukkit.broadcastMessage("stream has " + stream.size());
+//                this.remove();
+                stream.forEach(tempDisplayBlock -> {
+                    tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), streamShot.getLoc().clone().add(Vectors.getRandom().multiply(radius *3))).normalize()));
+                });
+                Entities.getEntitiesAroundPoint(streamShot.getLoc(), radius).forEach(entity -> entity.setVelocity(streamShot.getDir()));
+                Location sourceTo = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius * 3));
+
+                if (player.isSneaking()){
+                    streamShot.setDir(Vectors.getDirectionBetweenLocations(streamShot.getLoc(), sourceTo).normalize());
+                } else {
+                    streamShot.setDir(player.getEyeLocation().getDirection());
+                }
+
+                if (streamShot.getAbilityStatus() == AbilityStatus.COMPLETE){
+                    this.remove();
+                }
+
             }
         }
     }
@@ -104,10 +126,21 @@ public class SeaStream extends MasterAbility {
 //        stream.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
     }
 
+
     public void setHasClicked(){
         if (abilityStatus == AbilityStatus.CHARGED){
+            if (player.isSneaking()){
+                streamShot = new ShootBlockShapeFromLoc(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius)), stream, radius * 3, false, player.getEyeLocation().getDirection());
 
-            abilityStatus = AbilityStatus.SHOT;
+                abilityStatus = AbilityStatus.SHOT;
+            } else {
+                TempDisplayBlock shootingFrom = CollectionUtils.getRandomSetElement(stream);
+                new ShootBlocksFromLocGivenType(player, name, shootingFrom.getLoc(), DisplayBlock.ICE, false, true);
+                stream.remove(shootingFrom);
+                if (stream.isEmpty()) {
+                    this.remove();
+                }
+            }
         }
     }
 
