@@ -90,7 +90,11 @@ public class EnhancedBlocksArchetypeLess {
 
     public static Set<Block> getTopCircleBlocksFloor(CoreAbility coreAbility, Location target){
 
+        if (Blocks.isSolid(target)){
+            return Blocks.getBlocksAroundPoint(target, coreAbility.getRadius() ).stream().filter(b  -> Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
+        }
         Location floorLoc = Blocks.getBelowBlock(target.getBlock(), 100).getLocation();
+
 
         return Blocks.getBlocksAroundPoint(floorLoc, coreAbility.getRadius() ).stream().filter(b  -> Blocks.isTopBlock(b) && !b.isPassable()).collect(Collectors.toSet());
     }

@@ -9,6 +9,7 @@ import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class LightningBolts extends MasterAbility {
@@ -32,6 +33,7 @@ public class LightningBolts extends MasterAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
         if (currentShots == shots) {
+//            bolts.removeIf(Objects::isNull);
             if (bolts.stream().allMatch(sourcedBlast -> sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE))
             {
                 this.remove();
@@ -39,11 +41,16 @@ public class LightningBolts extends MasterAbility {
         }
 
         bolts.forEach(sourcedBlast -> {
-            if (!DisplayBlock.LIGHTNING.getBlocks().contains(sourcedBlast.getLoc().getBlock().getType()) && !sourcedBlast.getLoc().getBlock().isPassable() && sourcedBlast.getAbilityStatus() != AbilityStatus.COMPLETE){
+            if (!sourcedBlast.getLoc().getBlock().isPassable() && !DisplayBlock.AIR.getBlocks().contains(sourcedBlast.getLoc().getBlock().getType()) && sourcedBlast.getAbilityStatus() != AbilityStatus.COMPLETE){
                 SkyUtils.lightningStrikeFloorCircle(this,sourcedBlast.getLoc());
                 sourcedBlast.setAbilityStatus(AbilityStatus.COMPLETE);
             }
+
+            if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE){
+                sourcedBlast.remove();
+            }
         });
+
     }
 
     public void setHasSneaked(){
@@ -68,6 +75,6 @@ public class LightningBolts extends MasterAbility {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 }

@@ -448,8 +448,9 @@ public class SerenityListener implements Listener {
     @EventHandler
     public void noFallDamage(EntityDamageEvent event){
         if (event.getEntity() instanceof Player player){
+            SerenityPlayer sPlayer = getSerenityPlayer(player);
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL){
-                SerenityPlayer sPlayer = getSerenityPlayer(player);
+
                 if (sPlayer.getArchetype() == Archetype.EARTH && sPlayer.getHeldAbility().equals("EarthQuake")) {
                     if (!CoreAbility.hasAbility(player, EarthQuake.class))
                     {
@@ -458,6 +459,11 @@ public class SerenityListener implements Listener {
                     }
                 }
                 event.setCancelled(true);
+            } else if (event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING) {
+                if (sPlayer.getArchetype() == Archetype.SKY) {
+                    event.setCancelled(true);
+                }
+
             }
         }
     }

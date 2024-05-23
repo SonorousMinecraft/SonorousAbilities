@@ -26,7 +26,7 @@ public class SkyBlast extends CoreAbility {
     public void progress() {
 
         if (!sourcedBlast.getLoc().getBlock().isPassable()){
-            SkyUtils.lightningStrike(sourcedBlast.getLoc());
+            SkyUtils.lightningStrike(this,sourcedBlast.getLoc());
             this.remove();
         }
 

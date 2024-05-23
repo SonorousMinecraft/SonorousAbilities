@@ -39,8 +39,8 @@ public class Shocker extends CoreAbility {
 
 
 //        setFields();
-        leftArc = new Arc(player, name, Particle.ELECTRIC_SPARK);
-        rightArc = new Arc(player, name, Particle.ELECTRIC_SPARK);
+        leftArc = new Arc(player, name, Particle.ELECTRIC_SPARK, Arc.OutputLocation.OFFHAND);
+        rightArc = new Arc(player, name, Particle.ELECTRIC_SPARK, Arc.OutputLocation.MAINHAND);
         start();
     }
 
@@ -65,14 +65,15 @@ public class Shocker extends CoreAbility {
     @Override
     public void progress() {
 
-        if (leftArc.getAbilityStatus() == AbilityStatus.COMPLETE){
+        if (leftArc.getAbilityStatus() == AbilityStatus.COMPLETE) {
             leftArc.remove();
             rightArc.remove();
             this.remove();
-        } else {
-            leftArc.getLocs().forEach(location -> location.add(Vectors.getVectorToOffHand(player)));
-            rightArc.getLocs().forEach(location -> location.add(Vectors.getVectorToMainHand(player)));
         }
+//        } else {
+//            leftArc.getLocs().forEach(location -> location.add(Vectors.getVectorToOffHand(player)));
+//            rightArc.getLocs().forEach(location -> location.add(Vectors.getVectorToMainHand(player)));
+//        }
 //        if (!player.isSneaking()) {
 //            this.remove();
 //        }

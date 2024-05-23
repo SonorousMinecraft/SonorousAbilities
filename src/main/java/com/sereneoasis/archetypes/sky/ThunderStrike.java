@@ -64,7 +64,7 @@ public class ThunderStrike extends CoreAbility {
 
 //            Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5)).normalize().add(dir.clone().multiply(0.2)).normalize().multiply(0.4);
 
-            new ArchetypeVisuals.LightningVisual().playShotVisual(loc, dir, 0, size, radius, 1, 1, 1);
+            new ArchetypeVisuals.LightningVisual().playVisual(loc, size, radius, 10, 1, 1);
 
 //            Particles.spawnParticleOffset(Particle.END_ROD, loc, 0, random.getX(), random.getY(), random.getZ(), 0.15);
 //            Particles.spawnColoredParticle(loc, 1, radius, size*3, Color.fromRGB(1, 225, 255));

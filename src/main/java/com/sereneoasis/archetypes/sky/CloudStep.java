@@ -67,12 +67,13 @@ public class CloudStep extends CoreAbility {
 //            }
             Location floorLoc = player.getLocation().subtract(0,1,0).add(dir);
 
-
-            EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this,floorLoc, floorLoc.getBlockY())
-                    .stream()
-                    .forEach(block -> {
-                        new TempBlock(block, DisplayBlock.AIR, System.currentTimeMillis() - duration);
-                    });
+            if (sPlayer.getHeldAbility().equals(name)) {
+                EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this, floorLoc, floorLoc.getBlockY())
+                        .stream()
+                        .forEach(block -> {
+                            new TempBlock(block, DisplayBlock.AIR, System.currentTimeMillis() - duration);
+                        });
+            }
         }
 
     }
@@ -96,9 +97,11 @@ public class CloudStep extends CoreAbility {
                 abilityStatus = AbilityStatus.FLOATING;
             }
             levitate.toggle();
-
         }
 
+        if (player.isSneaking()){
+            this.remove();
+        }
     }
 
     @Override

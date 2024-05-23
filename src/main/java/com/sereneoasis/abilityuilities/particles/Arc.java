@@ -1,11 +1,9 @@
 package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.DisplayBlock;
+import com.sereneoasis.archetypes.sky.SkyUtils;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -28,10 +26,18 @@ public class Arc extends CoreAbility {
 
     private long sinceLastDirChange = System.currentTimeMillis();
 
-    public Arc(Player player, String name, Particle particle) {
+    private OutputLocation outputLocation;
+    public enum OutputLocation {
+        MAINHAND,
+        OFFHAND,
+        MIDDLE
+    }
+
+    public Arc(Player player, String name, Particle particle, OutputLocation outputLocation ) {
         super(player, name);
         this.name = name;
         this.particle = particle;
+        this.outputLocation = outputLocation;
         if (shouldStartCanHaveMultiple()) {
             abilityStatus = AbilityStatus.SHOOTING;
             start();
@@ -47,10 +53,22 @@ public class Arc extends CoreAbility {
         Vector dir = player.getEyeLocation().getDirection();
 
         Location startLoc = player.getEyeLocation().add(dir.clone().multiply(speed));
-        Location endLoc = player.getEyeLocation().add(dir.clone().multiply(range));
+        if (Blocks.getFacingBlock(startLoc, dir, range) != null && !Blocks.getFacingBlock(startLoc, dir, range).isPassable()){
+            SkyUtils.lightningStrike(this,Blocks.getFacingBlock(startLoc, dir, range).getLocation() );
+        }
 
-        if (locs.size() < 100) {
-            for (int i = 0; i < 5; i++) {
+            Location endLoc = player.getEyeLocation().add(dir.clone().multiply(range));
+
+        if (outputLocation == OutputLocation.MAINHAND){
+            startLoc.add(Vectors.getVectorToMainHand(player));
+            endLoc.add(Vectors.getVectorToMainHand(player));
+        } else if (outputLocation == OutputLocation.OFFHAND){
+            startLoc.add(Vectors.getVectorToOffHand(player));
+            endLoc.add(Vectors.getVectorToOffHand(player));
+        }
+
+        if (locs.size() < 20) {
+            for (int i = 0; i < 1; i++) {
                 Location location = startLoc.clone();
                 Vector newDir = Vectors.getDirectionBetweenLocations(location, randomMidwayVertex(endLoc,location)).normalize();
                 location.setDirection(newDir);
@@ -60,27 +78,29 @@ public class Arc extends CoreAbility {
             }
         }
 
-        if ((System.currentTimeMillis() - sinceLastDirChange) > 200 ) {
+        if ((System.currentTimeMillis() - sinceLastDirChange) > 100 ) {
             locs.forEach(location -> {
-                Vector newDir = Vectors.getDirectionBetweenLocations(location, randomMidwayVertex(endLoc, location)).normalize();
-                location.setDirection(location.getDirection().add(newDir.clone().multiply(1.2)));
+                Vector newDir = Vectors.getDirectionBetweenLocations(location, randomMidwayVertex(location, endLoc)).normalize();
+                location.setDirection( (location.getDirection().add(newDir.clone().multiply(1.2))).normalize());
             });
 
             sinceLastDirChange = System.currentTimeMillis();
 
         }
 
+        for (double d = 0; d < range; d+=hitbox) {
 
-            locs.forEach(location -> {
+            AbilityDamage.damageOne(startLoc.clone().add(dir.clone().multiply(d)), this, player, true, dir);
+        }
+
+
+        locs.forEach(location -> {
 //            location.setDirection(dir.clone());
 
-                playParticlesBetweenPoints(location, location.clone().add(location.getDirection()));
-            location.add(location.getDirection().clone());
+                playParticlesBetweenPoints(location, location.clone().add(location.getDirection().clone().multiply(2)));
+                location.add(location.getDirection());
+//            location.add(location.getDirection().normalize());
 //            Particles.spawnParticle(particle, location, 1, 0, 0);
-
-            AbilityDamage.damageOne(location, this, player, true, dir);
-
-
 
         });
 
@@ -93,12 +113,12 @@ public class Arc extends CoreAbility {
         double distance = difference.length();
         Vector normalised = difference.clone().normalize();
 
-        for (double d = 0; d < distance; d += size) {
+        for (double d = 0; d <= distance; d += size) {
             Location temploc = start.clone().add(normalised.clone().multiply(d));
             //Particles.spawnColoredParticle(temploc, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
 //            TDBs.playTDBs(temploc, DisplayBlock.LIGHTNING, 1, size, 0);
 //            Particles.spawnParticle(particle, temploc, 1, 0, 0);
-            new ArchetypeVisuals.LightningVisual().playVisual(temploc, size, 0, 1, 1, 1);
+            new ArchetypeVisuals.LightningVisual().playVisual(temploc, size, size/2, 0, 1, 0);
 
 
         }
@@ -115,7 +135,8 @@ public class Arc extends CoreAbility {
 
     public Location randomMidwayVertex(Location start, Location end) {
         Vector midpoint = end.clone().subtract(start.clone()).toVector().multiply(0.5);
-        Vector random = Vectors.getRandom();
+
+        Vector random = getRandomOffset();
         if (start.distanceSquared(end) > 1){
             random.multiply(Math.log(start.distance(end)));
         }
