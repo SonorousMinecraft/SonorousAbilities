@@ -1,7 +1,6 @@
 package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
 import com.sereneoasis.abilityuilities.blocks.BlockSmash;
 import com.sereneoasis.abilityuilities.particles.ChargeSphere;
 import com.sereneoasis.archetypes.DisplayBlock;

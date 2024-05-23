@@ -2,6 +2,7 @@ package com.sereneoasis.abilityuilities.blocks.forcetype;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToLoc;
+import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
@@ -28,7 +29,7 @@ import java.util.Set;
  * @author Sakrajin
  * Causes a spherical shaped blast to be shot from the player
  */
-public class BlockExplodeSphere extends CoreAbility {
+public class BlockCreateSphereGivenType extends CoreAbility {
 
     private Location centerLoc;
 
@@ -44,18 +45,21 @@ public class BlockExplodeSphere extends CoreAbility {
 
     private Random random = new Random();
 
+    private DisplayBlock displayBlock;
 
-    public BlockExplodeSphere(Player player, String name, Location startLoc, double increment) {
+
+    public BlockCreateSphereGivenType(Player player, String name, Location startLoc, double increment, DisplayBlock displayBlock) {
         super(player, name);
 
         this.name = name;
 
         this.centerLoc = startLoc.clone();
         this.increment = increment;
+        this.displayBlock = displayBlock;
         start();
     }
 
-    public BlockExplodeSphere(Player player, String name, Location startLoc, double radius, double increment) {
+    public BlockCreateSphereGivenType(Player player, String name, Location startLoc, double radius, double increment, DisplayBlock displayBlock) {
         super(player, name);
 
         this.name = name;
@@ -63,6 +67,8 @@ public class BlockExplodeSphere extends CoreAbility {
         this.centerLoc = startLoc.clone();
         this.increment = increment;
         this.radius = radius;
+        this.displayBlock = displayBlock;
+
         start();
     }
 
@@ -73,7 +79,7 @@ public class BlockExplodeSphere extends CoreAbility {
         Set<Block> sourceBlocks = EnhancedBlocksArchetypeLess.getOutsideSphereBlocks(this, centerLoc);
 
         for (Block b : sourceBlocks) {
-            if (b != null && !b.isPassable() ) {
+            if (b != null && (b.getType()) != Material.AIR ) {
 
 
                 TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
@@ -82,11 +88,11 @@ public class BlockExplodeSphere extends CoreAbility {
 
 
 //                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
-                if (TempBlock.isTempBlock(b) && !b.getType().equals(Material.LIGHT)) {
+                if (TempBlock.isTempBlock(b) && !displayBlock.getBlocks().contains(b)) {
                     TempBlock.getTempBlock(b).revert();
                 }
 
-                TempBlock tb = new TempBlock(b, Material.LIGHT, 60000, true);
+                TempBlock tb = new TempBlock(b, displayBlock, 60000, true);
 //                sourceTempBlocks.add(tb);
             }
         }

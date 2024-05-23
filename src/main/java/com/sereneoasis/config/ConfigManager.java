@@ -399,6 +399,10 @@ public class ConfigManager {
                 0, 5000, 10000,
                 0, 0, 2.0, 10, 1.2, 0, 0.8);
 
+        saveConfigValuesAbility(ocean, "FrostTsunami", OCEAN.toString(), "description", "instructions",
+                0, 3000, 0,
+                2, 1.0, 8, 30, 1, 10, 1.0);
+
 //        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 10000,
 //                4, 0.5, 2, 20, 1, 10, 0.4);

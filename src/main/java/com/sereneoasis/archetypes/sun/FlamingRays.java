@@ -1,15 +1,11 @@
 package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
 import com.sereneoasis.abilityuilities.particles.Blast;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Scheduler;
-import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

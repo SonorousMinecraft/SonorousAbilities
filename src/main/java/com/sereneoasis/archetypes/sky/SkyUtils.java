@@ -1,7 +1,7 @@
 package com.sereneoasis.archetypes.sky;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
+import com.sereneoasis.abilityuilities.blocks.BlockExplodeSphere;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
 import com.sereneoasis.util.methods.Scheduler;
 import com.sereneoasis.util.methods.Vectors;

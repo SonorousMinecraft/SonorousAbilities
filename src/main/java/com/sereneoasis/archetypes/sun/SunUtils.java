@@ -1,6 +1,6 @@
 package com.sereneoasis.archetypes.sun;
 
-import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
+import com.sereneoasis.abilityuilities.blocks.BlockExplodeSphere;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Scheduler;

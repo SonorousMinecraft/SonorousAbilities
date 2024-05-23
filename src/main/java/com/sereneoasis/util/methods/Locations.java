@@ -403,4 +403,29 @@ public class Locations {
         }
         return loc;
     }
+
+    public static Location getNextLocLiquid(Location inputLoc, Vector dir, double speed) {
+        Location loc = inputLoc.clone();
+        loc.add(dir.clone().multiply(speed));
+        Location middleLoc = loc.clone();
+        Location topLoc = middleLoc.clone().add(0, 1, 0);
+        Location bottomLoc = middleLoc.clone().subtract(0, 1, 0);
+        if ( middleLoc.getBlock().getType().isAir()) {
+            if (topLoc.getBlock().getType().isAir()) {
+                loc = topLoc;
+            } else if (!(bottomLoc.getBlock().isLiquid() || bottomLoc.getBlock().getType().isAir())) {
+                loc = bottomLoc;
+            } else {
+                loc = null;
+            }
+        } else if (!Blocks.isTopBlock(middleLoc.getBlock())) {
+            middleLoc.add(0, 1, 0);
+            if (!Blocks.isTopBlock(middleLoc.getBlock())) {
+                loc = null;
+            } else {
+                loc = middleLoc;
+            }
+        }
+        return loc;
+    }
 }

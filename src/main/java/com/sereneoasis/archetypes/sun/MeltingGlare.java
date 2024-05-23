@@ -1,11 +1,9 @@
 package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.forcetype.BlockExplodeSphere;
 import com.sereneoasis.abilityuilities.blocks.Laser;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
