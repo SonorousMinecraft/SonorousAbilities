@@ -109,8 +109,8 @@ public class SeaStream extends MasterAbility {
                 } else {
                     streamShot.setDir(player.getEyeLocation().getDirection());
                 }
-
-                if (streamShot.getAbilityStatus() == AbilityStatus.COMPLETE){
+                streamShot.setAbilityStatus(AbilityStatus.SHOT);
+                if (streamShot.getLoc().distance(player.getEyeLocation()) > range){
                     this.remove();
                 }
 
@@ -123,7 +123,7 @@ public class SeaStream extends MasterAbility {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
         sources.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
-//        stream.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
+        stream.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
     }
 
 

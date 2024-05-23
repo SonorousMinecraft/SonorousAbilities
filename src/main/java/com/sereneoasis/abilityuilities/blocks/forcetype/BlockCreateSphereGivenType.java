@@ -79,7 +79,7 @@ public class BlockCreateSphereGivenType extends CoreAbility {
         Set<Block> sourceBlocks = EnhancedBlocksArchetypeLess.getOutsideSphereBlocks(this, centerLoc);
 
         for (Block b : sourceBlocks) {
-            if (b != null && (b.getType()) != Material.AIR ) {
+            if (b != null) {
 
 
                 TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
