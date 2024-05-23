@@ -391,9 +391,9 @@ public class ConfigManager {
                 0, 2000, 0,
                 2, 0.9, 3, 40, 1.0, 10, 0.5);
 
-//        saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
-//                0, 5000, 0,
-//                2, 0.9, 2.0, 20, 1.2, 10, 0.9);
+        saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 0,
+                2, 0.9, 2.0, 20, 1.2, 10, 0.9);
 
 //        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 10000,

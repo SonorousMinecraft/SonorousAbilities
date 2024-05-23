@@ -8,6 +8,7 @@ import com.sereneoasis.archetypes.Archetype;
 
 import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
+import com.sereneoasis.archetypes.ocean.Gimbal;
 import com.sereneoasis.archetypes.ocean.Torrent;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
@@ -340,6 +341,13 @@ public class SerenityListener implements Listener {
                     new Torrent(player);
                 }
                 break;
+            case "Gimbal":
+                if (CoreAbility.hasAbility(e.getPlayer(), Gimbal.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasClicked();
+                } else {
+                    new Gimbal(player);
+                }
+                break;
         }
 
     }
@@ -447,6 +455,11 @@ public class SerenityListener implements Listener {
             case "Torrent":
                 if (CoreAbility.hasAbility(e.getPlayer(), Torrent.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Torrent.class).setHasSourced();
+                }
+                break;
+            case "Gimbal":
+                if (CoreAbility.hasAbility(e.getPlayer(), Gimbal.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasSourced();
                 }
                 break;
         }
