@@ -38,6 +38,8 @@ public class BlockRingAroundPlayerGivenType extends CoreAbility {
 
     private List<TempDisplayBlock>blocks = new ArrayList<>();
 
+    private boolean readyToShoot = false;
+
     public BlockRingAroundPlayerGivenType(Player player, String user, Location startLoc, DisplayBlock type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
 
@@ -65,13 +67,19 @@ public class BlockRingAroundPlayerGivenType extends CoreAbility {
         int arcDegrees = (int) ( (rotatePerTick * size/3 * 360) / (2 * Math.PI * ringSize));
         List<Location> locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
                 rotation, rotation + arcDegrees, clockwise);
+
         loc = locs.get(locs.size() - 1);
+
 
         for (int i = 0; i < rotatePerTick; i++){
             blocks.get(i).moveTo(locs.get(i));
         }
 
-
+        if ( ((rotation + rotatePerTick) % 360) < (rotation%360)) {
+            readyToShoot = true;
+        } else {
+            readyToShoot = false;
+        }
         rotation += rotatePerTick;
 //        List<Location> currentLocs = Locations.getCircle(player.getEyeLocation(), radius, 360)
 //                .subList(Math.floorMod(Math.abs(rotation) + Math.abs(rotatePerTick), 360), Math.floorMod(Math.abs(rotation), 360));
@@ -83,6 +91,14 @@ public class BlockRingAroundPlayerGivenType extends CoreAbility {
 
         //new TempDisplayBlock(loc, type.createBlockData(), 500, 1);
         //new TempBlock(loc.getBlock(), type.createBlockData(), 500, false);
+    }
+
+    public boolean isReadyToShoot() {
+        return readyToShoot;
+    }
+
+    public double getRingSize() {
+        return ringSize;
     }
 
     @Override
@@ -99,10 +115,6 @@ public class BlockRingAroundPlayerGivenType extends CoreAbility {
         return loc;
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

@@ -65,7 +65,7 @@ public class BlockRingAroundPlayer extends CoreAbility {
     public void progress() {
 
         dir = player.getEyeLocation().getDirection().setY(0).normalize();
-        int arcDegrees = (int) ( (rotatePerTick * size/3 * 360) / (2 * Math.PI * ringSize));
+        int arcDegrees = (int) ( (rotatePerTick * size * 360) / (2 * Math.PI * ringSize));
         List<Location> locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
                 rotation, rotation + arcDegrees, clockwise);
         loc = locs.get(locs.size() - 1);

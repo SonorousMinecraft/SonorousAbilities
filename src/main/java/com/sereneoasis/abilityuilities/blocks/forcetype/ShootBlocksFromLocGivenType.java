@@ -34,13 +34,13 @@ public class ShootBlocksFromLocGivenType extends CoreAbility {
 
     private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
 
-    private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
+    private long timeBetweenCurves = 50, lastCurveTime = System.currentTimeMillis();
 
     public ShootBlocksFromLocGivenType(Player player, String user, Location startLoc, DisplayBlock type, boolean directable, boolean autoRemove) {
         super(player, user);
         this.user = user;
         this.type = type;
-        this.loc = startLoc;
+        this.loc = startLoc.clone().subtract(player.getEyeLocation().getDirection().normalize());
         this.directable = directable;
         this.autoRemove = autoRemove;
         this.dir = player.getEyeLocation().getDirection().normalize();
@@ -69,15 +69,22 @@ public class ShootBlocksFromLocGivenType extends CoreAbility {
                 directions.put(dir, speed);
                 lastCurveTime = System.currentTimeMillis();
             }
-            locs = Locations.getBezierCurveLocations(loc, 20, directions, speed);
+//            locs = Locations.getBezierCurveLocations(loc, Math.round(Math.round(speed / (size/2))), directions, speed);
+            locs = Locations.getShotLocations(loc, Math.round(Math.round(speed/ (size))), dir, speed);
+
 
         } else {
-            locs = Locations.getShotLocations(loc, 20, dir, speed);
+            locs = Locations.getShotLocations(loc, Math.round(Math.round(speed/ (size))), dir, speed);
         }
 
 
         for (Location point : locs) {
-            new TempDisplayBlock(point, type, revertTime,  size);
+            if (directable){
+                new TempDisplayBlock(point, type, 2000,  size);
+            } else {
+                new TempDisplayBlock(point, type, revertTime,  size);
+            }
+
         }
 
         DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);

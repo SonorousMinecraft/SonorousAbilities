@@ -13,7 +13,8 @@ public enum Archetype {
 
     SUN("sun"),
 
-    SKY("sky");
+    SKY("sky"),
+    OCEAN("ocean");
 
 
     private String name;

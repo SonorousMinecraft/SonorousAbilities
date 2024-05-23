@@ -69,17 +69,19 @@ public class SourceBlockToPlayerGivenType extends CoreAbility {
                 this.remove();
             }
 
-            Vector dir = Vectors.getDirectionBetweenLocations(loc, player.getEyeLocation()).normalize();
+            Location targetLoc = player.getEyeLocation().clone().add(player.getEyeLocation().getDirection().multiply(radius));
+
+            Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc ).normalize();
 
             loc.add(dir.clone().multiply(speed));
 
-            List<Location> locs = Locations.getShotLocations(loc, 20, dir, speed);
+            List<Location> locs = Locations.getShotLocations(loc, Math.round(Math.round(speed/ (size/3))), dir, speed);
 
             for (Location point : locs) {
-                new TempDisplayBlock(point, type, 1000, size);
+                new TempDisplayBlock(point, type, 500, size);
             }
 
-            if (loc.distance(player.getLocation()) <= distanceToStop) {
+            if (loc.distanceSquared(targetLoc) <= distanceToStop * distanceToStop) {
                 abilityStatus = AbilityStatus.SOURCED;
             }
         }

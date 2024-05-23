@@ -157,8 +157,9 @@ public class Locations {
         double increment = (distance) / points;
         List<Location> locs = new ArrayList<>();
         Line line = new Line(directions);
+        Location previousVec = loc.clone();
         for (double d = 0; d < distance; d += increment) {
-            locs.add(loc.clone().add(line.getVector(increment / distance)));
+            locs.add(previousVec.add(line.getVector(increment / distance).clone().multiply(speed)));
         }
 
         return locs;

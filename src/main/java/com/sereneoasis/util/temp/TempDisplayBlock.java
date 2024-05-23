@@ -24,10 +24,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
-import java.util.SplittableRandom;
+import java.util.*;
 
 /**
  * @author Sakrajin
@@ -76,6 +73,8 @@ public class TempDisplayBlock {
         blockDisplay.setTransformation(transformation);
     }
 
+    public static Random random = new Random();
+
     public TempDisplayBlock(Location loc, DisplayBlock blocks, final long revertTime, double size) {
 
         this.blockDisplay = (BlockDisplay) loc.getWorld().spawn(loc, EntityType.BLOCK_DISPLAY.getEntityClass(), (entity) ->
@@ -86,6 +85,7 @@ public class TempDisplayBlock {
             BlockData newData = blocks.getBlocks().get(randomIndex).createBlockData();
             bDisplay.setBlock(newData);
             Transformation transformation = bDisplay.getTransformation();
+
             transformation.getTranslation().set(new Vector3d(-size / 2, -size / 2, -size / 2));
             //transformation.getTranslation().set(new Vector3d(-Math.cos(Math.toRadians(yaw))*size -size/2, -size/2,-Math.sin(Math.toRadians(yaw)*size) - size/2));
             transformation.getScale().set(size-0.001);

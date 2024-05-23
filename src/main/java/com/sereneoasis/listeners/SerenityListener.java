@@ -8,6 +8,7 @@ import com.sereneoasis.archetypes.Archetype;
 
 import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
+import com.sereneoasis.archetypes.ocean.Torrent;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
@@ -331,6 +332,14 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), LightningBolts.class).setHasClicked();
                 }
                 break;
+
+            case "Torrent":
+                if (CoreAbility.hasAbility(e.getPlayer(), Torrent.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Torrent.class).setHasClicked();
+                } else {
+                    new Torrent(player);
+                }
+                break;
         }
 
     }
@@ -433,6 +442,11 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), LightningBolts.class).setHasSneaked();
                 } else {
                     new LightningBolts(player);
+                }
+                break;
+            case "Torrent":
+                if (CoreAbility.hasAbility(e.getPlayer(), Torrent.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Torrent.class).setHasSourced();
                 }
                 break;
         }
