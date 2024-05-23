@@ -10,14 +10,12 @@ import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.archetypes.ocean.Gimbal;
 import com.sereneoasis.archetypes.ocean.Torrent;
+import com.sereneoasis.archetypes.ocean.WaterSpout;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,12 +23,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
@@ -346,6 +340,13 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), Gimbal.class).setHasClicked();
                 } else {
                     new Gimbal(player);
+                }
+                break;
+            case "WaterSpout":
+                if (CoreAbility.hasAbility(e.getPlayer(), WaterSpout.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), WaterSpout.class).setHasClicked();
+                } else {
+                    new WaterSpout(player);
                 }
                 break;
         }

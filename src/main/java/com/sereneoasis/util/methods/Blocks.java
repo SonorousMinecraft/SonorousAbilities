@@ -58,7 +58,7 @@ public class Blocks {
     }
 
     public static TempDisplayBlock selectSourceAnimationManual(Location loc, Color color, double size) {
-        Material type = loc.getBlock().getRelative(BlockFace.DOWN).getType();
+        Material type = loc.getBlock().getType();
         Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
         if (type == Material.WATER) {
             return new TempDisplayBlock(tempLoc, Material.BLUE_STAINED_GLASS, 30000, size, true, color);

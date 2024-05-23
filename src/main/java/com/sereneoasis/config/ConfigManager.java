@@ -389,19 +389,20 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 2000, 0,
-                2, 0.9, 3, 40, 1.0, 10, 0.5);
+                2, 0.9, 3, 40, 1.0, 10, 0.8);
 
         saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
                 0, 5000, 0,
-                2, 0.9, 2.0, 20, 1.2, 10, 0.9);
+                2, 0.9, 2.0, 40, 1.2, 10, 0.8);
+
+        saveConfigValuesAbility(ocean, "WaterSpout", Archetype.OCEAN.toString(), "description", "instructions",
+                0, 5000, 10000,
+                0, 0, 2.0, 10, 1.2, 0, 0.8);
 
 //        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 10000,
 //                4, 0.5, 2, 20, 1, 10, 0.4);
 
-//        saveConfigValuesAbility(ocean, "FrostBite", Archetype.OCEAN.toString(), "description", "instructions",
-//                5000, 5000, 0,
-//                2, 1.0, 8, 20, 2.0, 10, 0.9);
 //
 //        saveConfigValuesAbility(ocean, "WaterWhip", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 0,
