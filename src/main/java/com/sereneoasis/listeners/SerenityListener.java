@@ -12,6 +12,7 @@ import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
+import com.sereneoasis.archetypes.sun.SnowShuriken;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
@@ -358,6 +359,21 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), SeaStream.class).setHasClicked();
                 }
                 break;
+            case "SnowShuriken":
+                if (CoreAbility.hasAbility(e.getPlayer(), SnowShuriken.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SnowShuriken.class).setHasClicked();
+                }
+                break;
+            case "Geyser":
+                if (CoreAbility.hasAbility(e.getPlayer(), Geyser.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), Geyser.class).setHasClicked();
+                }
+                break;
+            case "OctopusForm":
+                if (CoreAbility.hasAbility(e.getPlayer(), OctopusForm.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), OctopusForm.class).setHasClicked();
+                }
+                break;
         }
 
     }
@@ -477,6 +493,15 @@ public class SerenityListener implements Listener {
                 break;
             case "SeaStream":
                 new SeaStream(player);
+                break;
+            case "SnowShuriken":
+                new SnowShuriken(player);
+                break;
+            case "Geyser":
+                new Geyser(player);
+                break;
+            case "OctopusForm":
+                new OctopusForm(player);
                 break;
         }
     }

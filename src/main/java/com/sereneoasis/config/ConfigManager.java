@@ -407,6 +407,18 @@ public class ConfigManager {
                 1000, 2000, 60000,
                 2, 0.9, 3, 40, 1.0, 10, 0.8);
 
+        saveConfigValuesAbility(ocean, "SnowShuriken", Archetype.OCEAN.toString(), "description", "instructions",
+                3000, 5000, 0,
+                2, 0.5, 1.2, 40, 1.5, 0, 0.5);
+
+        saveConfigValuesAbility(ocean, "Geyser", Archetype.OCEAN.toString(), "description", "instructions",
+                1000, 5000, 0,
+                0, 0, 4.0, 20, 1.2, 10, 0.8);
+
+        saveConfigValuesAbility(ocean, "OctopusForm", Archetype.OCEAN.toString(), "description", "instructions",
+                1000, 2000, 60000,
+                2, 0.9, 3, 40, 1.0, 6, 0.3);
+
 //        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 10000,
 //                4, 0.5, 2, 20, 1, 10, 0.4);

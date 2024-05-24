@@ -27,13 +27,16 @@ public class TempBlock {
 
     private Block block;
 
+    private Location loc;
+
     private BlockData oldData, newData;
 
     private long revertTime;
 
     public TempBlock(Block block, DisplayBlock blocks, final long revertTime, boolean canReplaceBlocks) {
-        if (!INSTANCES.containsKey(block)) {
+        if (block != null &&!INSTANCES.containsKey(block)) {
             this.block = block;
+            this.loc = block.getLocation();
             if (!canReplaceBlocks && !block.getType().isAir()) {
                 return;
             }
@@ -51,8 +54,10 @@ public class TempBlock {
     }
 
     public TempBlock(Block block, Material type, final long revertTime, boolean canReplaceBlocks) {
-        if (!INSTANCES.containsKey(block)) {
+        if (block != null &&!INSTANCES.containsKey(block)) {
             this.block = block;
+            this.loc = block.getLocation();
+
             if (!canReplaceBlocks && !block.getType().isAir()) {
                 return;
             }
@@ -69,8 +74,10 @@ public class TempBlock {
     }
 
     public TempBlock(Block block, BlockData newData, final long revertTime, boolean canReplaceBlocks) {
-        if (!INSTANCES.containsKey(block)) {
+        if (block != null &&!INSTANCES.containsKey(block)) {
             this.block = block;
+            this.loc = block.getLocation();
+
             if (!canReplaceBlocks && !block.getType().isAir()) {
                 return;
             }
@@ -87,8 +94,24 @@ public class TempBlock {
 
 
     public TempBlock(Block block, DisplayBlock blocks, final long revertTime) {
-        new TempBlock(block, blocks, revertTime, true);
-    }
+        boolean canReplaceBlocks = true;
+        if (block != null &&!INSTANCES.containsKey(block)) {
+            this.block = block;
+            this.loc = block.getLocation();
+            if (!canReplaceBlocks && !block.getType().isAir()) {
+                return;
+            }
+            int randomIndex = ThreadLocalRandom.current().nextInt(blocks.getBlocks().size());
+            BlockData newData = blocks.getBlocks().get(randomIndex).createBlockData();
+            this.newData = newData;
+            this.revertTime = System.currentTimeMillis() + revertTime;
+
+            this.oldData = block.getBlockData().clone();
+
+            block.setBlockData(newData);
+            INSTANCES.put(block, this);
+            REVERT_QUEUE.add(this);
+        }    }
 
     public static boolean isTempBlock(Block block) {
         if (INSTANCES.containsKey(block)) {
@@ -130,6 +153,6 @@ public class TempBlock {
     }
 
     public Location getLoc(){
-        return block.getLocation();
+        return loc;
     }
 }

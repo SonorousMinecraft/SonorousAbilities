@@ -31,6 +31,9 @@ public enum AbilityStatus {
     REVERTING,
 
     FLOATING,
-    JUMPING
+    JUMPING,
+
+    GRAB,
+    GRAPPLE
 
 }

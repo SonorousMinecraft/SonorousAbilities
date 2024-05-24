@@ -14,7 +14,7 @@ public enum DisplayBlock {
 
     ICE(new ArrayList<>(List.of(new Material[]{Material.ICE, Material.BLUE_ICE, Material.FROSTED_ICE, Material.PACKED_ICE}))),
 
-    SNOW(new ArrayList<>(List.of(new Material[]{Material.SNOW_BLOCK}))),
+    SNOW(new ArrayList<>(List.of(new Material[]{Material.SNOW}))),
 
 //    SUN(new ArrayList<>(List.of(new Material[]{Material.RED_STAINED_GLASS, Material.ORANGE_STAINED_GLASS, Material.YELLOW_STAINED_GLASS}))),
 //    SUN(new ArrayList<>(List.of(new Material[]{Material.HONEY_BLOCK, Material.HONEYCOMB_BLOCK, Material.OCHRE_FROGLIGHT, Material.MAGMA_BLOCK}))),
