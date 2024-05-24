@@ -37,7 +37,7 @@ public class SeaStream extends MasterAbility {
 
         if (shouldStart()){
             abilityStatus = AbilityStatus.CHARGING;
-            Bukkit.broadcastMessage("started");
+//            Bukkit.broadcastMessage("started");
             start();
         }
     }
@@ -56,20 +56,20 @@ public class SeaStream extends MasterAbility {
 
                     });
                     abilityStatus = AbilityStatus.CHARGED;
-                    Bukkit.broadcastMessage("charged");
+//                    Bukkit.broadcastMessage("charged");
 
                 }
                 else {
                     if (! player.isSneaking()) {
-                        Bukkit.broadcastMessage("removed for not sneaking");
+//                        Bukkit.broadcastMessage("removed for not sneaking");
                         this.remove();
                     } else {
                         Block facing = Blocks.getFacingBlockOrLiquid(player, sourceRange);
                         if (facing == null || !Blocks.getArchetypeBlocks(sPlayer).contains(facing.getType())) {
-                            Bukkit.broadcastMessage("removed for no source");
+//                            Bukkit.broadcastMessage("removed for no source");
                             this.remove();
                         } else {
-                            Bukkit.broadcastMessage("creating ice");
+//                            Bukkit.broadcastMessage("creating ice");
                             EnhancedBlocks.getFacingSphereLiquidBlocks(this).stream()
                                     .filter(block -> !TempBlock.isTempBlock(block))
                                     .forEach(block -> {
@@ -83,7 +83,7 @@ public class SeaStream extends MasterAbility {
                 }
             }
             case CHARGED -> {
-                Bukkit.broadcastMessage("charged state");
+//                Bukkit.broadcastMessage("charged state");
                 if (player.isSneaking()) {
 
                     stream.forEach(tempDisplayBlock -> {

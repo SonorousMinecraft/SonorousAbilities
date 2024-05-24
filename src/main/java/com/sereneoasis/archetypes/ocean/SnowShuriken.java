@@ -16,7 +16,7 @@ public class SnowShuriken extends CoreAbility {
 
     private static final String name = "SnowShuriken";
 
-    private int currentShots = 0, shots = 5;
+    private int currentShots = 0, shots = 8;
 
     private HashMap<Integer, Blast> rays = new HashMap<>();
 

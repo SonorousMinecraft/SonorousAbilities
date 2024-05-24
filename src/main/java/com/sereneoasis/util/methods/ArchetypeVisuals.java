@@ -91,19 +91,22 @@ public class ArchetypeVisuals {
         }
     }
 
+
+
+
     public static class SnowVisual implements ArchetypeVisual{
 
         @Override
         public void playVisual(Location loc, double size , double radius, int tb, int wax_on, int red) {
 //            TDBs.playTDBs(loc, DisplayBlock.CHAOS, tb, size, radius);
-            Particles.spawnParticle(Particle.PORTAL, loc, wax_on, 0.2, 1);
-            Particles.spawnColoredParticle(loc, red, 0.2, size, Color.fromRGB(46, 26, 71));
+//            Particles.spawnParticle(Particle.PORTAL, loc, wax_on, 0.2, 1);
+//            Particles.spawnColoredParticle(loc, red, 0.2, size, Color.fromRGB(46, 26, 71));
         }
 
         @Override
         public void playShotVisual(Location loc, Vector dir, double angle, double size, double radius, int tb, int amount, int colour) {
             Locations.getCircleLocsAroundPoint(loc, radius, size/2).forEach(location -> {
-                Particles.spawnParticle(Particle.FALLING_NECTAR, loc, 1, 0.2, 1);
+                Particles.spawnParticle(Particle.FALLING_NECTAR, loc, 1, radius, 1);
                 TDBs.playTDBs(location, DisplayBlock.SNOW, tb, size, 0);
 
             });

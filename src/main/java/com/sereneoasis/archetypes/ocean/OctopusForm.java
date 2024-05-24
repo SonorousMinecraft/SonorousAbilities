@@ -3,9 +3,11 @@ package com.sereneoasis.archetypes.ocean;
 import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.abilityuilities.blocks.forcetype.ShootBlocksFromLocGivenType;
+import com.sereneoasis.abilityuilities.particles.Blast;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.methods.collections.CollectionUtils;
@@ -40,8 +42,6 @@ public class OctopusForm extends MasterAbility {
 
     private OctopusFormState state = OctopusFormState.MOVING;
 
-    private boolean canFly;
-
     private enum OctopusFormState {
         MOVING,
         SHOOT_TENDRIL,
@@ -54,8 +54,6 @@ public class OctopusForm extends MasterAbility {
         super(player, name);
 
         if (shouldStart()){
-            this.canFly = player.getAllowFlight();
-            player.setFlySpeed(0.1F);
             for (int i = 0; i < 16 ; i++) {
                 Tendril tendril = new Tendril(player, name, sourceRange);
                 tendrils.put(tendril, getRandomOffset().normalize());
@@ -161,13 +159,11 @@ public class OctopusForm extends MasterAbility {
     }
 
     private void setMoving(){
-        player.setAllowFlight(true);
-        player.setFlying(true);
+        sPlayer.setFly(this);
     }
 
     public void setNotMoving(){
-        player.setAllowFlight(canFly);
-        player.setFlying(false);
+        sPlayer.removeFly(this);
     }
 
     public void setHasClicked(){
@@ -229,7 +225,7 @@ public class OctopusForm extends MasterAbility {
                             .filter(tendril -> tendril.getAbilityStatus() == AbilityStatus.MOVING)
                             .findFirst().ifPresent(tendril -> {
 //                            new ShootBlockFromLoc(player, name, tendril.getEnd().getLoc(), Material.SNOW, true, true, 2);
-                                new ShootBlockFromLoc(player, name, player.getEyeLocation(), Material.SNOW, true, true, 2);
+                                new Blast(player, name, true, new ArchetypeVisuals.SnowVisual());
                                 tendrils.remove(tendril);
                                 tendril.remove();
                             });

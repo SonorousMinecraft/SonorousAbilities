@@ -203,7 +203,7 @@ public class Tendril extends CoreAbility {
 
                 if (grappleBlock != null){
                     player.setVelocity(Vectors.getDirectionBetweenLocations(player.getEyeLocation(), grappleBlock.getLocation()).add(new Vector(0,2,0)).normalize().multiply(speed));
-                    if ( (System.currentTimeMillis() - sinceLastGrappled > 1000 && player.getVelocity().lengthSquared() < 0.5) ||  player.getEyeLocation().distanceSquared(grappleBlock.getLocation()) < 9){
+                    if ( (System.currentTimeMillis() - sinceLastGrappled > 1000 || player.getVelocity().lengthSquared() < 0.5) ||  player.getEyeLocation().distanceSquared(grappleBlock.getLocation()) < 9){
                         endGrapple();
                     }
                 }

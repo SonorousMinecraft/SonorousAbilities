@@ -33,9 +33,7 @@ public class WaterSpout extends MasterAbility {
 
         if (shouldStart()){
             isAllowedToFly = player.getAllowFlight();
-            player.setAllowFlight(true);
-            player.setFlying(true);
-            player.setFlySpeed(0.1F);
+            sPlayer.setFly(this);
             abilityStatus = AbilityStatus.MOVING;
             this.previousPlayerLoc = player.getLocation();
             start();
@@ -82,11 +80,11 @@ public class WaterSpout extends MasterAbility {
         switch (abilityStatus) {
             case MOVING -> {
                 abilityStatus = AbilityStatus.NOT_MOVING;
-                player.setFlying(false);
+                sPlayer.removeFly(this);
             }
             case NOT_MOVING -> {
                 abilityStatus = AbilityStatus.MOVING;
-                player.setFlying(true);
+                sPlayer.setFly(this);
             }
         }
     }
@@ -100,10 +98,6 @@ public class WaterSpout extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        if (!isAllowedToFly){
-            player.setAllowFlight(false);
-        }
-
-        player.setFlying(false);
+        sPlayer.removeFly(this);
     }
 }

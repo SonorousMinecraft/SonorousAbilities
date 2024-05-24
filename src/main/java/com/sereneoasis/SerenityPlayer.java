@@ -9,6 +9,7 @@ import com.sereneoasis.storage.PlayerData;
 import com.sereneoasis.util.methods.Colors;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
@@ -35,6 +36,29 @@ public class SerenityPlayer {
 
 
     private HashMap<String, HashMap<Integer, String>> presets;
+
+    private Set<CoreAbility>flyAbilities = new HashSet<>();
+
+    public void setFly(CoreAbility coreAbility){
+        player.setFlySpeed(0.1F);
+        flyAbilities.add(coreAbility);
+        player.setAllowFlight(true);
+        player.setFlying(true);
+    }
+
+    public void removeFly(CoreAbility coreAbility) {
+        if (flyAbilities.contains(coreAbility) && flyAbilities.size() == 1) {
+            if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
+                player.setAllowFlight(true);
+            } else {
+                player.setAllowFlight(false);
+            }
+            player.setFlying(false);
+        }
+        flyAbilities.remove(coreAbility);
+
+    }
+
 
     public void setPreset(String name, HashMap<Integer, String> abilities) {
         HashMap<Integer, String> clonedAbilities = new HashMap<>();
