@@ -1,11 +1,13 @@
-package com.sereneoasis.archetypes.sun;
+package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Blast;
+import com.sereneoasis.archetypes.ocean.OceanUtils;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -51,7 +53,8 @@ public class SnowShuriken extends CoreAbility {
                     }
                 } else {
                     if (Blocks.isSolid(blast.getLoc())) {
-                        SunUtils.blockExplode(player, name, blast.getLoc(), radius*10, 1);
+                        OceanUtils.freeze(blast.getLoc(), radius*10, sPlayer);
+//                        SunUtils.blockExplode(player, name, blast.getLoc(), radius*10, 1);
 
 //                        new BlockExplodeSphere(player, name, blast.getLoc(), radius*10, 1);
 //
@@ -62,6 +65,8 @@ public class SnowShuriken extends CoreAbility {
 //                                }
 //                            });
 //                        });
+                    } else if (blast.getLoc().getBlock().getType().equals(Material.WATER)){
+                        OceanUtils.freeze(blast.getLoc(), radius, sPlayer);
                     }
                 }
             }

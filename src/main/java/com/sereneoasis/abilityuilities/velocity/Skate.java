@@ -86,6 +86,7 @@ public class Skate extends CoreAbility {
     @Override
     public void progress() {
 
+
         if (floorBlock == null) {
             if (!floorRegisteredAsNull) {
                 sinceLastNullFloor = System.currentTimeMillis();
@@ -142,11 +143,6 @@ public class Skate extends CoreAbility {
         super.remove();
         armorStand.removePassenger(player);
         armorStand.remove();
-    }
-
-    @Override
-    public Player getPlayer() {
-        return player;
     }
 
     @Override

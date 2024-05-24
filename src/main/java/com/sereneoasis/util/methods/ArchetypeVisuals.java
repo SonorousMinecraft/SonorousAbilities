@@ -103,6 +103,7 @@ public class ArchetypeVisuals {
         @Override
         public void playShotVisual(Location loc, Vector dir, double angle, double size, double radius, int tb, int amount, int colour) {
             Locations.getCircleLocsAroundPoint(loc, radius, size/2).forEach(location -> {
+                Particles.spawnParticle(Particle.FALLING_NECTAR, loc, 1, 0.2, 1);
                 TDBs.playTDBs(location, DisplayBlock.SNOW, tb, size, 0);
 
             });

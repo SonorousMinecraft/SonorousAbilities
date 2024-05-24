@@ -244,7 +244,8 @@ public class OctopusForm extends MasterAbility {
 
 //                            new ShootBlockShapeFromLoc(player, name, tendril.getEnd().getLoc(), tendril.getTendrils(), size, true, player.getEyeLocation().getDirection());
                                 tendrils.remove(tendril);
-                                tendril.clearTendrilMap();
+//                                tendril.clearTendrilMap();
+                                tendril.remove();
                             });
                 }
             }

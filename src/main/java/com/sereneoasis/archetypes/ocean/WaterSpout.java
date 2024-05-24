@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Set;
 
 public class WaterSpout extends MasterAbility {
     public static final String name = "WaterSpout";
@@ -26,6 +27,7 @@ public class WaterSpout extends MasterAbility {
     private long sinceLastSetPlayerLoc = System.currentTimeMillis(), intervalBetweenPlayerLocSet = 200;
     private Location previousPlayerLoc;
 
+
     public WaterSpout(Player player) {
         super(player, name);
 
@@ -33,6 +35,7 @@ public class WaterSpout extends MasterAbility {
             isAllowedToFly = player.getAllowFlight();
             player.setAllowFlight(true);
             player.setFlying(true);
+            player.setFlySpeed(0.1F);
             abilityStatus = AbilityStatus.MOVING;
             this.previousPlayerLoc = player.getLocation();
             start();
@@ -69,7 +72,6 @@ public class WaterSpout extends MasterAbility {
 
                 }
                 else if (System.currentTimeMillis() - sinceLastSourced > 500) {
-                    Bukkit.broadcastMessage("no water");
                     this.remove();
                 }
             }

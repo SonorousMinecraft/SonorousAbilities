@@ -82,7 +82,7 @@ public class BlockSweepGivenType extends CoreAbility {
                     .filter(location -> !oldLocs.contains(location))
                     .map(Location::getBlock)
                     .forEach(block -> {
-                        TempDisplayBlock tdb = new TempDisplayBlock(block, displayBlock, 500, 1);
+                        TempDisplayBlock tdb = new TempDisplayBlock(block, displayBlock, 1000, 1);
 //                            tdb.getBlockDisplay().setGlowing(true);
                         tempDisplayBlocks.add(tdb);
 //                            tdb.moveToAndMaintainFacing(tdb.getLoc().add(0, 10, 0));

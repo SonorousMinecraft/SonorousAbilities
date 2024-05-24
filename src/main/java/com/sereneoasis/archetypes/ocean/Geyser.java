@@ -10,6 +10,7 @@ import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -35,6 +36,7 @@ public class Geyser extends MasterAbility {
         super(player, name);
 
         if (shouldStart()) {
+
             Block attemptedFacingSource = Blocks.getFacingBlockOrLiquid(player, sourceRange);
             if (attemptedFacingSource != null) {
                 if (Blocks.getArchetypeBlocks(sPlayer).contains(attemptedFacingSource.getType())) {
@@ -46,7 +48,7 @@ public class Geyser extends MasterAbility {
             if (sources.isEmpty()) {
                 this.loc = player.getLocation();
                 this.origin = loc.clone();
-                sources = OceanUtils.freeze(player.getLocation(), radius, sPlayer);
+                sources = OceanUtils.freeze(player.getLocation().add(0,radius/2,0), radius, sPlayer);
             }
 
             if (!sources.isEmpty()) {

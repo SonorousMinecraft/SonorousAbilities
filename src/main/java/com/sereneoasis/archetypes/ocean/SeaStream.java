@@ -99,9 +99,11 @@ public class SeaStream extends MasterAbility {
 //                Bukkit.broadcastMessage("stream has " + stream.size());
 //                this.remove();
                 stream.forEach(tempDisplayBlock -> {
-                    tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), streamShot.getLoc().clone().add(Vectors.getRandom().multiply(radius *3))).normalize()));
+                    tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), streamShot.getLoc().clone().add(Vectors.getRandom().multiply(radius ))).normalize()));
                 });
                 Entities.getEntitiesAroundPoint(streamShot.getLoc(), radius).forEach(entity -> entity.setVelocity(streamShot.getDir()));
+
+
                 Location sourceTo = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius * 3));
 
                 if (player.isSneaking()){
@@ -130,12 +132,13 @@ public class SeaStream extends MasterAbility {
     public void setHasClicked(){
         if (abilityStatus == AbilityStatus.CHARGED){
             if (player.isSneaking()){
-                streamShot = new ShootBlockShapeFromLoc(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius)), stream, radius * 3, false, player.getEyeLocation().getDirection());
+                streamShot = new ShootBlockShapeFromLoc(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius)), stream, radius , false, player.getEyeLocation().getDirection());
 
                 abilityStatus = AbilityStatus.SHOT;
             } else {
                 TempDisplayBlock shootingFrom = CollectionUtils.getRandomSetElement(stream);
                 new ShootBlocksFromLocGivenType(player, name, shootingFrom.getLoc(), DisplayBlock.ICE, false, true);
+                shootingFrom.revert();
                 stream.remove(shootingFrom);
                 if (stream.isEmpty()) {
                     this.remove();

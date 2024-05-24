@@ -396,7 +396,7 @@ public class ConfigManager {
                 2, 0.9, 2.0, 40, 1.2, 10, 0.8);
 
         saveConfigValuesAbility(ocean, "WaterSpout", Archetype.OCEAN.toString(), "description", "instructions",
-                0, 5000, 10000,
+                0, 500, 10000,
                 0, 0, 2.0, 10, 1.2, 0, 0.8);
 
         saveConfigValuesAbility(ocean, "FrostTsunami", OCEAN.toString(), "description", "instructions",
@@ -418,6 +418,10 @@ public class ConfigManager {
         saveConfigValuesAbility(ocean, "OctopusForm", Archetype.OCEAN.toString(), "description", "instructions",
                 1000, 2000, 60000,
                 2, 0.9, 3, 40, 1.0, 12, 0.3);
+
+        saveConfigValuesAbility(ocean, "SeaSurf", OCEAN.toString(), "description", "instructions",
+                0, 500, 5000,
+                0, 0, 2.5, 0, 1.0, 0, 0.2);
 
 //        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 10000,
@@ -458,8 +462,13 @@ public class ConfigManager {
         Set<Tag<Material>> oceanTags = new HashSet<>();
         oceanTags.add(Tag.ICE);
         oceanTags.add(Tag.SNOW);
+        oceanTags.add(Tag.FLOWERS);
+        oceanTags.add(Tag.CROPS);
+        oceanTags.add(Tag.LEAVES);
         Set<Material> oceanBlocks = new HashSet<>();
         oceanBlocks.add(Material.WATER);
+        oceanBlocks.add(Material.SHORT_GRASS);
+        oceanBlocks.add(Material.TALL_GRASS);
 
         saveArchetypeBlocks(ocean, Archetype.OCEAN, oceanTags, oceanBlocks);
 

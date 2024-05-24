@@ -12,8 +12,8 @@ import com.sereneoasis.archetypes.earth.*;
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
-import com.sereneoasis.archetypes.sun.SnowShuriken;
 import com.sereneoasis.displays.SerenityBoard;
+import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,8 +23,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityToggleSwimEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.*;
+import org.bukkit.potion.PotionEffectType;
 
 import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
 import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
@@ -374,6 +376,13 @@ public class SerenityListener implements Listener {
                     CoreAbility.getAbility(e.getPlayer(), OctopusForm.class).setHasClicked();
                 }
                 break;
+            case "SeaSurf":
+                if (CoreAbility.hasAbility(e.getPlayer(), SeaSurf.class)) {
+                    CoreAbility.getAbility(e.getPlayer(), SeaSurf.class).setHasClicked();
+                } else {
+                    new SeaSurf(player);
+                }
+                break;
         }
 
     }
@@ -538,6 +547,16 @@ public class SerenityListener implements Listener {
 
 
 
+    @EventHandler
+    public void onSwim(EntityToggleSwimEvent event){
+        if (event.getEntity() instanceof Player player) {
+            SerenityPlayer sPlayer = getSerenityPlayer(player);
+            if (sPlayer.getArchetype() == Archetype.OCEAN){
+                Entities.applyPotionPlayerAmplifier(player, PotionEffectType.DOLPHINS_GRACE, 2, 2000);
+                event.setCancelled(true);
+            }
+        }
+    }
 
 //    @EventHandler
 //    public void onPlayerTryToRide(PlayerInteractEntityEvent event){
