@@ -131,6 +131,13 @@ public class SerenityPlayer {
     }
 
     public void setArchetype(Archetype archetype) {
+        if (this.archetype != archetype){
+            for (int i = 1; i <= 9; i++) {
+                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
+                SerenityBoard.getByPlayer(player).setAbilitySlot(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
+            }
+        }
+
         this.archetype = archetype;
     }
 
