@@ -56,6 +56,21 @@ public class ShootBlockFromLoc extends CoreAbility {
         start();
     }
 
+
+    public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove, double size) {
+        super(player, user);
+        this.user = user;
+        this.loc = startLoc;
+        this.directable = directable;
+        this.autoRemove = autoRemove;
+        this.dir = player.getEyeLocation().getDirection().normalize();
+        this.abilityStatus = AbilityStatus.SHOT;
+
+        block = new TempDisplayBlock(loc, type, 60000, size);
+        abilityStatus = AbilityStatus.SHOT;
+        start();
+    }
+
     public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean autoRemove, Vector dir) {
         super(player, user);
         this.user = user;

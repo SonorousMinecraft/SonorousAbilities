@@ -417,7 +417,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(ocean, "OctopusForm", Archetype.OCEAN.toString(), "description", "instructions",
                 1000, 2000, 60000,
-                2, 0.9, 3, 40, 1.0, 6, 0.3);
+                2, 0.9, 3, 40, 1.0, 12, 0.3);
 
 //        saveConfigValuesAbility(ocean, "Iceberg", Archetype.OCEAN.toString(), "description", "instructions",
 //                0, 5000, 10000,
