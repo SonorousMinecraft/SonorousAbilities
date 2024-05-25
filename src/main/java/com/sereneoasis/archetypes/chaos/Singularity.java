@@ -159,10 +159,10 @@ public class Singularity extends MasterAbility {
                             displayBlocks.keySet().forEach((tempDisplayBlock) -> {
                                 tempDisplayBlock.setSize(1);
                             });
-                            Scheduler.performTaskLater(100L, () -> {
+//                            Scheduler.performTaskLater(100L, () -> {
                                 sphereBlast.remove();
                                 this.remove();
-                            });
+//                            });
 
                         } else {
                             Set<Block> sourceBlocks = Blocks.getBlocksAroundPoint(loc, radius);

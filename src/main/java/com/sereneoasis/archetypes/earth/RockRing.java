@@ -85,7 +85,7 @@ public class RockRing extends CoreAbility {
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.SOURCED) {
             abilityStatus = AbilityStatus.SHOT;
-            shootBlocksFromLoc = new ShootBlocksFromLoc(player, name, player.getEyeLocation(), type, true, true, 30);
+            shootBlocksFromLoc = new ShootBlocksFromLoc(player, name, player.getEyeLocation(), type, false, true, 30);
             blockRingAroundPlayer.remove();
         }
     }

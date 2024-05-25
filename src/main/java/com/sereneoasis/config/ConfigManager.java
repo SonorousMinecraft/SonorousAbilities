@@ -296,11 +296,11 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "instructions",
                 2000, 5000, 0,
-                2, 0.5, 20, 0, 1.2, 10, 0.5);
+                2, 1.0, 20, 0, 1.2, 10, 0.5);
 
         saveConfigValuesAbility(sun, "FlamingRays", Archetype.SUN.toString(), "description", "instructions",
                 3000, 5000, 0,
-                2, 0.5, 1.2, 40, 1.5, 0, 0.5);
+                2, 2.0, 1.2, 40, 1.5, 0, 0.5);
 
         saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "instructions",
                 4000, 5000, 20000,
@@ -472,8 +472,8 @@ public class ConfigManager {
 
         saveArchetypeBlocks(ocean, Archetype.OCEAN, oceanTags, oceanBlocks);
 
-        saveAttributeValuesArchetype(ocean, Archetype.OCEAN, 0, 0, 2, 4,
-                0.0, 20, 0.13);
+        saveAttributeValuesArchetype(ocean, Archetype.OCEAN, 0, 0, 0, 0,
+                0.0, 0, 0.1);
 
         saveArchetypeCosmetics(ocean, Archetype.OCEAN, "#005EB8");
 

@@ -61,7 +61,7 @@ public class Daybreak extends CoreAbility {
         if ( ! EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing ).isEmpty()) {
 //            new BlockExplodeSphere(player, name, facing, 1);
 
-            SunUtils.blockExplode(player, name, facing, radius, 1);
+            SunUtils.blockExplode(player, name, facing, radius * 1.5, 1);
         }
 
     }

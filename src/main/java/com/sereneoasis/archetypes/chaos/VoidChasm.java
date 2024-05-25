@@ -81,11 +81,12 @@ public class VoidChasm extends MasterAbility {
 
                         TempBlock tb = new TempBlock(block, state.getBlockData(), duration, true);
 //                    TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration, true);
-//
-                        EndGateway endGateway = ((EndGateway) block.getState());
-                        endGateway.setAge(-1000000);
-                        endGateway.update(true);
-                        chasm.add(tb);
+                        if (block.getState() instanceof EndGateway endGateway )
+                        {
+                            endGateway.setAge(-1000000);
+                            endGateway.update(true);
+                            chasm.add(tb);
+                        }
                     } else {
                         TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration, true);
                         chasm.add(tb);

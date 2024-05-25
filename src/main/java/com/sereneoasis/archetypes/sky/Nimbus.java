@@ -23,14 +23,14 @@ public class Nimbus extends CoreAbility {
     public Nimbus(Player player) {
         super(player, name);
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
-            return;
+        if (shouldStart()){
+            jet = new Jet(player, name);
+            streamDir = player.getEyeLocation().getDirection().multiply(-1);
+            directionalStream = new DirectionalStream(player, name, Particle.ELECTRIC_SPARK, streamDir);
+            start();
         }
 
-        jet = new Jet(player, name);
-        streamDir = player.getEyeLocation().getDirection().multiply(-1);
-        directionalStream = new DirectionalStream(player, name, Particle.ELECTRIC_SPARK, streamDir);
-        start();
+
     }
 
     @Override

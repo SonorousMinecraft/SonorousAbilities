@@ -163,8 +163,9 @@ public class Supernova extends MasterAbility {
                             try {
                                 Location newLoc = Blocks.getFacingBlockLoc(player, range);
                                 if (newLoc != null) {
-                                    newLoc.add(Vectors.getRandom().multiply(radius));
-                                    new BlockDisintegrateSphereSuck(player, name, newLoc, loc, 0, 1);
+                                    Location randomOffsetNewLoc = newLoc.add(Vectors.getRandom().multiply(radius));
+                                    new BlockDisintegrateSphereSuck(player, name, randomOffsetNewLoc, loc, 0, radius/4, 1);
+                                    Entities.getEntitiesAroundPoint(randomOffsetNewLoc, radius).forEach(entity -> DamageHandler.damageEntity(entity, player, this, damage));
                                     crystalLaser.moveStart(newLoc);
                                 }
                             } catch (ReflectiveOperationException e) {
