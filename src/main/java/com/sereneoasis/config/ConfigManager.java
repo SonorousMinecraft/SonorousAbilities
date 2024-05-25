@@ -186,15 +186,15 @@ public class ConfigManager {
 
         saveArchetypeBlocks(earth, EARTH, earthTags, earthBlocks);
 
-        saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "RockKick", EARTH.toString(), "", "Sneak at a earth block to raise it, left click whilst facing to fire it.",
                 0, 2000, 0,
                 2, 1.0, 0, 30, 1.0, 10, 0.8);
 
-        saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "TerraLine", EARTH.toString(), "", "Sneak at an earth block and left click to fire it",
                 0, 5000, 20000,
                 2, 1.0, 0, 35, 1, 10, 1.0);
 
-        saveConfigValuesAbility(earth, "EarthWall", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "EarthWall", EARTH.toString(), "description", "Left click an earth block to raise a wall",
                 0, 2000, 20000,
                 0, 1.5, 0, 6, 5, 10, 1);
         
@@ -202,31 +202,31 @@ public class ConfigManager {
         bulwarkAbilities.add(0, new ComboManager.AbilityInformation("EarthWall", ClickType.SHIFT_LEFT));
 
 
-        saveConfigValuesCombo(earth, "Bulwark", EARTH.toString(), "description", "instructions",
+        saveConfigValuesCombo(earth, "Bulwark", EARTH.toString(), "description", "Tap sneak with EarthWall to raise walls around you",
                 0, 2000, 20000,
                 0, 1.5, 0, 6, 5, 10, 1, bulwarkAbilities);
 
-        saveConfigValuesAbility(earth, "StoneShred", Archetype.EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "StoneShred", Archetype.EARTH.toString(), "description", "Hold sneak whilst facing earth blocks and left click to fire",
                 0, 15000, 20000,
                 4, 0, 3, 50, 1, 10, 0);
 
-        saveConfigValuesAbility(earth, "TerraSurf", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "TerraSurf", EARTH.toString(), "description", "Left click whilst over earth blocks to surf over, tap sneak to disable",
                 0, 5000, 10000,
                 0, 0, 3, 0, 1.0, 0, 0.5);
 
-        saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "Catapult", EARTH.toString(), "description", "Hold sneak until charged while over earth blocks and release to launch yourself",
                 0, 1000, 0,
                 0, 0, 8, 0, 1, 0, 0.5);
 
-        saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "EarthQuake", EARTH.toString(), "description", "Hold sneak until charged while over earth blocks to cause an EarthQuake or fall from a great height",
                 3000, 10000, 0,
                 2, 1.0, 12, 0, 1, 0, 1.0);
 
-        saveConfigValuesAbility(earth, "TectonicWave", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "TectonicWave", EARTH.toString(), "description", "Tap sneak on an earth block and left click to send a wave",
                 0, 3000, 0,
                 2, 1.0, 8, 30, 1, 10, 1.0);
 
-        saveConfigValuesAbility(earth, "RockRing", EARTH.toString(), "description", "instructions",
+        saveConfigValuesAbility(earth, "RockRing", EARTH.toString(), "description", "Left click while facing an earth block to cause a ring of rocks to circle you, left click to fire",
                 0, 5000, 0,
                 2, 0.9, 3, 40, 1.3, 10, 0.9);
 
@@ -247,39 +247,39 @@ public class ConfigManager {
         saveAttributeValuesArchetype(chaos, CHAOS, 0, 0, 0, 0,
                 0.0, 0, 0);
 
-        saveConfigValuesAbility(chaos, "ShadowStep", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "ShadowStep", CHAOS.toString(), "description", "Left click to teleport after a brief delay",
                 2000, 10000, 0,
                 0, 0, 8, 30, 0, 0, 0);
 
-        saveConfigValuesAbility(chaos, "Singularity", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "Singularity", CHAOS.toString(), "description", "Hold sneak to forcefully pull in blocks towards your Singularity \n and left click to fire",
                 3000, 15000, 20000,
                 4, 4, 3, 20, 1, 5, 0.3);
 
-        saveConfigValuesAbility(chaos, "AbyssalFall", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "AbyssalFall", CHAOS.toString(), "description", "Tap sneak to jump a great height and float momentarily, \n left click to dive at your target and raise blocks from the ground",
                 0, 5000, 20000,
                 0, 0, 30, 0, 2, 0, 1.0);
 
-        saveConfigValuesAbility(chaos, "Limbo", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "Limbo", CHAOS.toString(), "description", "Left click to toggle, hold sneak to charge a jump and release to fire",
                 5000, 30000, 60000,
                 0, 0, 0, 0, 1, 0, 0);
 
-        saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "Left click to create a sphere of darkness \n which you can rip the walls out from to launch at entities",
                 0, 30000, 30000,
                 2, 0.5, 40, 40, 1, 0, 1.0);
 
-        saveConfigValuesAbility(chaos, "SoulSlash", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "SoulSlash", CHAOS.toString(), "description", "Left click to create a blade which cuts through terrain \n and causes blocks to circle you, hold sneak to fire the blocks",
                 0, 3000, 0,
                 1, 1.0, 4, 30, 1.5, 0, 0.5);
 
-        saveConfigValuesAbility(chaos, "ChaoticVoid", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "ChaoticVoid", CHAOS.toString(), "description", "Left click to enable and create portals to enter a pocket dimension in which you can create rifts",
                 0, 3000, 60000,
                 0, 0, 3, 0, 0, 30, 0);
 
-        saveConfigValuesAbility(chaos, "Supernova", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "Supernova", CHAOS.toString(), "description", "Left click to create a Singularity, hold sneak to bring it towards you \n use crystals to explode blocks by left clicking while sneaking or fire by left clicking",
                 0, 10000, 30000,
                 2, 0.5, 5, 100, 1.5, 0, 0.3);
 
-        saveConfigValuesAbility(chaos, "PhantomBreath", CHAOS.toString(), "description", "instructions",
+        saveConfigValuesAbility(chaos, "PhantomBreath", CHAOS.toString(), "description", "Hold sneak to breathe, aim at the floor to launch yourself up and \n left click to pull all hit blocks towards you and use as a projectile",
                 0, 10000, 30000,
                 2, 0.5, 0, 10, 1.5, 0, 0.5);
 
@@ -290,39 +290,39 @@ public class ConfigManager {
 
         //Ability configuration
 
-        saveConfigValuesAbility(sun, "CruelSun", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "CruelSun", Archetype.SUN.toString(), "description", "Hold sneak to charge a sun and bring it towards you, \n left click to fire and melt blocks.",
                 3000, 5000, 30000,
                 2, 0.5, 3, 60, 2.0, 0, 0.5);
 
-        saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "Hold sneak while facing a block to cause \n a ring of death to fall on opponents",
                 2000, 5000, 0,
                 2, 1.0, 20, 0, 1.2, 10, 0.5);
 
-        saveConfigValuesAbility(sun, "FlamingRays", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "FlamingRays", Archetype.SUN.toString(), "description", "Hold sneak to charge rays of fire, \nleft click to shoot these",
                 3000, 5000, 0,
                 2, 2.0, 1.2, 40, 1.5, 0, 0.5);
 
-        saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "Hold sneak to charge a ray above you \n which will shine wherever you look, melting both terrain and opponents",
                 4000, 5000, 20000,
                 1, 1.0, 2.0, 40, 0.5, 0, 0.2);
 
-        saveConfigValuesAbility(sun, "SunBurst", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "SunBurst", Archetype.SUN.toString(), "description", "Hold sneak to materialise a huge sun which will fire wherever you are looking",
                 4000, 5000, 0,
                 2, 10.0, 10.0, 100, 1.0, 0, 1.2);
 
-        saveConfigValuesAbility(sun, "MeltingGlare", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "MeltingGlare", Archetype.SUN.toString(), "description", "Hold sneak to shoot eye lasers",
                 0, 5000, 10000,
                 1, 0.5, 0, 20, 0, 0, 0.15);
 
-        saveConfigValuesAbility(sun, "SolarBarrage", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "SolarBarrage", Archetype.SUN.toString(), "description", "Tap sneak to create miniature suns orbiting you, \n left click once they are close enough to fire them off in close succession",
                 0, 5000, 0,
                 2, 2, 1, 40, 1, 0, 0.4);
 
-        saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "Daybreak", Archetype.SUN.toString(), "description", "Hold sneak and left click to fly forward and melt terrain and burn opponents",
                 0, 5000, 10000,
                 1, 2, 4, 0, 1.2, 0, 0.2);
 
-        saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "instructions",
+        saveConfigValuesAbility(sun, "Sunrise", Archetype.SUN.toString(), "description", "Left click to launch yourself forward, and start \n floating, alternatively tap sneak to disable",
                 2000, 10000, 30000,
                 0, 0, 1.2, 0, 4, 0, 0);
 
@@ -339,39 +339,39 @@ public class ConfigManager {
         FileConfiguration sky = getConfig(SKY).getConfig();
 
         //Ability configuration
-        saveConfigValuesAbility(sky, "SkyBlast", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "SkyBlast", SKY.toString(), "description", "Tap sneak to select a source, left click to redirect",
                 0, 5000, 0,
                 0, 1.0, 0.5, 40, 1, 1, 0.2);
 
-        saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "Left click to fly in the direction you are looking \n sneak and left click to cancel",
                 0, 5000, 60000,
                 0, 0, 1, 10, 1, 0, 0.2);
 
-        saveConfigValuesAbility(sky, "SkyRipper", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "SkyRipper", SKY.toString(), "description", "Hold sneak and click twice to select \n 2 points, release to rip the sky",
                 0, 5000, 0,
                 2, 0, 0, 30, 1.5, 5, 0.2);
 
-        saveConfigValuesAbility(sky, "Cyclone", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "Cyclone", SKY.toString(), "description", "Left click to ride a Cyclone, \n tap sneak to disable",
                 0, 500, 5000,
                 0, 0, 2.5, 0, 1.0, 0, 0.2);
 
-        saveConfigValuesAbility(sky, "CloudStep", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "CloudStep", SKY.toString(), "description", "Left click to enable or toggle between floating \n  or walking on clouds and hold sneak to jump",
                 1000, 5000, 60000,
                 0, 0, 2, 0, 1, 0, 0.2);
 
-        saveConfigValuesAbility(sky, "HeavenSlash", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "HeavenSlash", SKY.toString(), "description", "Left click to shoot a Slash of air",
                 0, 2000, 0,
                 2, 1.0, 0, 20, 1, 0, 0.1);
 
-        saveConfigValuesAbility(sky, "Shocker", SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "Shocker", SKY.toString(), "description", "Hold sneak to shock your opponents",
                 0, 2000, 20000,
                 2, 1.0, 0, 10, 1, 0, 0.2);
 
-        saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "Tap sneak to launch yourself in the air \n and left click to fire a strike of thunder off.",
                 2000, 5000, 0,
                 2, 2.0, 2.0, 100, 1.0, 0, 1.2);
 
-        saveConfigValuesAbility(sky, "LightningBolts", Archetype.SKY.toString(), "description", "instructions",
+        saveConfigValuesAbility(sky, "LightningBolts", Archetype.SKY.toString(), "description", "Tap sneak to create a bolt of lightning, \n left click to fire this at opponents",
                 3000, 5000, 0,
                 2, 0.5, 1.2, 40, 1.5, 0, 0.5);
 
@@ -387,39 +387,41 @@ public class ConfigManager {
 
 
         //Ability configuration
-        saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "Torrent", Archetype.OCEAN.toString(), "description", "Hold sneak whilst facing a block to source it towards you \n and create a ring, left click to fire",
                 0, 2000, 0,
                 2, 0.9, 3, 40, 1.0, 10, 0.8);
 
-        saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "Gimbal", Archetype.OCEAN.toString(), "description", "Hold sneak whilst facing a block to source it towards you \n and create 2 rings, left click to fire",
                 0, 5000, 0,
                 2, 0.9, 2.0, 40, 1.2, 10, 0.8);
 
-        saveConfigValuesAbility(ocean, "WaterSpout", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "WaterSpout", Archetype.OCEAN.toString(), "description", "Left click to enable a spout of water beneath \n you whilst above water, left click again to disable",
                 0, 500, 10000,
                 0, 0, 2.0, 10, 1.2, 0, 0.8);
 
-        saveConfigValuesAbility(ocean, "FrostTsunami", OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "FrostTsunami", OCEAN.toString(), "description", "Tap sneak on an Ocean block and left click to send a wave of ice towards opponents",
                 0, 3000, 0,
                 2, 1.0, 8, 100, 1, 10, 1.0);
 
-        saveConfigValuesAbility(ocean, "SeaStream", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "SeaStream", Archetype.OCEAN.toString(), "description", "Hold sneak whilst facing Ocean blocks amd create a \n powerful sphere of water. " +
+                        "\n Left click to shoot off ice projectiles, or hold sneak and left click to fire the entire projectile. \n Hold sneak to return it to you  ",
                 1000, 2000, 60000,
                 2, 0.9, 3, 40, 1.0, 10, 0.8);
 
-        saveConfigValuesAbility(ocean, "SnowShuriken", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "SnowShuriken", Archetype.OCEAN.toString(), "description", "Hold sneak to charge Shurikens of Snow, \nleft click to shoot these",
                 3000, 5000, 0,
                 2, 0.5, 1.2, 40, 1.5, 0, 0.5);
 
-        saveConfigValuesAbility(ocean, "Geyser", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "Geyser", Archetype.OCEAN.toString(), "description", "Hold sneak while facing an ocean block or while above one to create an ice formation, \n " +
+                        "left click or release sneak to create a geyser",
                 1000, 5000, 0,
                 0, 0, 4.0, 20, 1.2, 10, 0.8);
 
-        saveConfigValuesAbility(ocean, "OctopusForm", Archetype.OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "OctopusForm", Archetype.OCEAN.toString(), "description", "Tap sneak to enable, hold sneak to switch between modes. Left click to use.",
                 1000, 2000, 60000,
                 2, 0.9, 3, 40, 1.0, 12, 0.3);
 
-        saveConfigValuesAbility(ocean, "SeaSurf", OCEAN.toString(), "description", "instructions",
+        saveConfigValuesAbility(ocean, "SeaSurf", OCEAN.toString(), "description", "Left click whilst above Ocean blocks to surf over, tap sneak to cancel",
                 0, 500, 5000,
                 0, 0, 2.5, 0, 1.0, 0, 0.2);
 

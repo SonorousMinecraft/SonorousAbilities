@@ -14,6 +14,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -56,6 +57,7 @@ public class WorldGuardManager {
 
         RegionQuery query = regionContainer.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
+//        Bukkit.broadcastMessage(String.valueOf(set.testState( localPlayer, SERENITY_FLAG)));
 
         return set.testState( localPlayer, SERENITY_FLAG);
     }

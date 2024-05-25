@@ -25,22 +25,31 @@ public class TabAutoCompletion implements TabCompleter {
         if (commandSender instanceof Player player) {
             SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
 
-            return switch (strings[0]) {
-                case "choose", "ch" ->
-                    Arrays.stream(Archetype.values()).map(Archetype::toString).collect(Collectors.toList());
+            if (strings.length == 2) {
+                switch (strings[0]) {
+                    case "choose", "ch" -> {
+                        return Arrays.stream(Archetype.values()).map(Archetype::toString).collect(Collectors.toList());
+                    }
 
-                case "bind", "b" ->
-                    AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype()).stream().filter(s -> !AbilityDataManager.isCombo(s)).collect(Collectors.toList());
-                case "display", "d" ->
-                        Arrays.stream(Archetype.values()).map(Archetype::toString).collect(Collectors.toList());
-                case "preset", "p" -> switch (strings[1]) {
-                    case "create", "c" -> null;
-                    case "delete", "d", "list", "l", "bind", "b" ->  serenityPlayer.getPresets().keySet().stream().toList();
+                    case "bind", "b" -> {
+                        return AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype()).stream().filter(s -> !AbilityDataManager.isCombo(s)).collect(Collectors.toList());
+                    }
+                    case "display", "d" -> {
+                        return Arrays.stream(Archetype.values()).map(Archetype::toString).collect(Collectors.toList());
+                    }
+                    case "preset", "p" -> {
+                        return List.of("create, bind, delete");
+                    }
 
-                    default -> List.of("create, delete, bind");
-                };
-                default -> List.of("choose", "display", "help", "preset");
-            };
+                    default -> {
+                        return List.of("choose", "display", "help", "preset");
+                    }
+                }
+            } else if (strings.length == 3){
+                if (strings[1] == "preset" || strings[1] ==  "p") {
+                    return serenityPlayer.getPresets().keySet().stream().toList();
+                }
+            }
         }
         return null;
     }

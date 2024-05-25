@@ -79,7 +79,7 @@ public class SerenityPlayer {
     }
 
     public HashMap<Integer, String> getPreset(String name) {
-        return presets.get(name);
+        return (HashMap<Integer, String>) presets.get(name).clone();
     }
 
     public Set<String> getPresetNames() {

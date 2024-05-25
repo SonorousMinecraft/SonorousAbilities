@@ -231,9 +231,10 @@ public class SerenityCommand implements CommandExecutor {
                                         ChatMessage.sendPlayerMessage(player, "This preset does not exist");
                                         return true;
                                     }
-                                    sPlayer.getPreset(presetToBind).forEach((slot, preset) -> {
-                                        ChatMessage.sendPlayerMessage(player, "\n" + slot + "is " + preset);
-                                    });
+                                    ChatMessage.sendPlayerMessage(player, "Successfully bound preset " + presetToBind + " !");
+//                                    sPlayer.getPreset(presetToBind).forEach((slot, preset) -> {
+//                                        ChatMessage.sendPlayerMessage(player, "\n" + slot + "is " + preset);
+//                                    });
                                     sPlayer.setAbilities(sPlayer.getPreset(presetToBind));
 
                                     return true;

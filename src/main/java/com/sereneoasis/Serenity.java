@@ -110,20 +110,22 @@ public class Serenity extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            SerenityBoard.removeScore(player);
+//        Bukkit.getOnlinePlayers().forEach(player -> {
+//            SerenityBoard.removeScore(player);
+//
+//            SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+//
+//            Serenity.getComboManager().removePlayer(player);
+//
+//            SerenityPlayer.upsertPlayer(serenityPlayer);
+//
+//            removeAttributePlayer(player, serenityPlayer);
+//
+//
+//            SerenityPlayer.removePlayerFromMap(player);
+//        });
 
-            SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
 
-            Serenity.getComboManager().removePlayer(player);
-
-            SerenityPlayer.upsertPlayer(serenityPlayer);
-
-            removeAttributePlayer(player, serenityPlayer);
-
-
-            SerenityPlayer.removePlayerFromMap(player);
-        });
     }
 
 

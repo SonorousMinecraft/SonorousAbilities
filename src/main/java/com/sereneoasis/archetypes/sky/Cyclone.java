@@ -23,11 +23,12 @@ public class Cyclone extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            this.skate = new Skate(player, name, 10,3, true);
+            start();
+
         }
 
-        this.skate = new Skate(player, name, 10,3, true);
-        start();
+
     }
 
     @Override
