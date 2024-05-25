@@ -58,9 +58,12 @@ public class Singularity extends MasterAbility {
 
                                 if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
                                     TempBlock.getTempBlock(b).revert();
+                                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000, true);
+                                    sourceTempBlocks.add(tb);
+                                } else {
+                                    TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
+                                    sourceTempBlocks.add(tb);
                                 }
-                                TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
-                                sourceTempBlocks.add(tb);
                             }
                         }
                         this.loc = chargeSphere.getLoc();
@@ -171,9 +174,13 @@ public class Singularity extends MasterAbility {
                                 if (b != null && !b.isPassable()) {
                                     if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
                                         TempBlock.getTempBlock(b).revert();
+                                        TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000, true);
+                                        sourceTempBlocks.add(tb);
+                                    } else {
+                                        TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
+                                        sourceTempBlocks.add(tb);
                                     }
-                                    TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
-                                    sourceTempBlocks.add(tb);
+
                                 }
                             }
                         }

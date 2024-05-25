@@ -88,9 +88,12 @@ public class BlockCreateSphere extends CoreAbility {
 //                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
                 if (TempBlock.isTempBlock(b) && !b.getType().equals(type)) {
                     TempBlock.getTempBlock(b).revert();
+                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), type, 60000, true);
+                } else {
+                    TempBlock tb = new TempBlock(b, type, 60000, true);
+
                 }
 
-                TempBlock tb = new TempBlock(b, type, 60000, true);
 //                sourceTempBlocks.add(tb);
             }
         }

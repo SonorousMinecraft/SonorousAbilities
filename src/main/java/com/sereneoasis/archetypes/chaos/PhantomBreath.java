@@ -100,9 +100,13 @@ public class PhantomBreath extends MasterAbility {
                 });
                 if (TempBlock.isTempBlock(block)){
                     TempBlock.getTempBlock(block).revert();
+                    TempBlock tb = new TempBlock(block.getLocation().getBlock(), Material.AIR, duration, true);
+                    sourceTempBlocks.add(tb);
+                } else {
+                    TempBlock tb = new TempBlock(block, Material.AIR, duration, true);
+                    sourceTempBlocks.add(tb);
                 }
-                TempBlock tb = new TempBlock(block, Material.AIR, duration, true);
-                sourceTempBlocks.add(tb);
+
             });
 
         }

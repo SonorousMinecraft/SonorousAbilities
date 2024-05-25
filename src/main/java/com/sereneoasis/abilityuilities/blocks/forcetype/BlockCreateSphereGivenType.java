@@ -90,9 +90,12 @@ public class BlockCreateSphereGivenType extends CoreAbility {
 //                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
                 if (TempBlock.isTempBlock(b) && !displayBlock.getBlocks().contains(b)) {
                     TempBlock.getTempBlock(b).revert();
+                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), displayBlock, 60000, true);
+
+                } else {
+                    TempBlock tb = new TempBlock(b, displayBlock, 60000, true);
                 }
 
-                TempBlock tb = new TempBlock(b, displayBlock, 60000, true);
 //                sourceTempBlocks.add(tb);
             }
         }

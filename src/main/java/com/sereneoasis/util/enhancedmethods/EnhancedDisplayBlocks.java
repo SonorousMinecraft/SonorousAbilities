@@ -27,9 +27,14 @@ public class EnhancedDisplayBlocks {
         EnhancedBlocks.getFacingSphereBlocks(coreAbility, loc).forEach(block -> {
             if (TempBlock.isTempBlock(block)){
                 TempBlock.getTempBlock(block).revert();
+                TempDisplayBlock tdb = new TempDisplayBlock(block.getLocation().getBlock(), block.getType(), revertTime, 1);
+                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
+
+            } else {
+                TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
+                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
             }
-            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
-            tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
+
         });
     }
 
@@ -37,10 +42,14 @@ public class EnhancedDisplayBlocks {
         EnhancedBlocks.getTopCylinderBlocks(coreAbility, height).forEach(block -> {
             if (TempBlock.isTempBlock(block)){
                 TempBlock.getTempBlock(block).revert();
+                TempDisplayBlock tdb = new TempDisplayBlock(block.getLocation().getBlock(), block.getType(), revertTime, 1);
+                tdb.getBlockDisplay().setGlowing(true);
+                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
+            } else {
+                TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
+                tdb.getBlockDisplay().setGlowing(true);
+                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
             }
-            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
-            tdb.getBlockDisplay().setGlowing(true);
-            tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
         });
     }
 
