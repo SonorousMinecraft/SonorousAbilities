@@ -1,5 +1,6 @@
 package com.sereneoasis.ability.superclasses;
 
+import com.sereneoasis.Serenity;
 import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
@@ -137,11 +138,11 @@ public abstract class CoreAbility implements Ability {
     }
 
     protected boolean shouldStart(){
-        return !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
+        return Serenity.getWorldGuardManager().canBend(player) && !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
     }
 
     protected boolean shouldStartCanHaveMultiple(){
-        return !sPlayer.isOnCooldown(this.getName());
+        return Serenity.getWorldGuardManager().canBend(player) && !sPlayer.isOnCooldown(this.getName());
     }
 
     private void initialiseConfigVariables(AbilityData abilityData) {

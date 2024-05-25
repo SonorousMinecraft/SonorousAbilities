@@ -9,14 +9,19 @@ import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.command.SerenityCommand;
 import com.sereneoasis.command.TabAutoCompletion;
 import com.sereneoasis.config.ConfigManager;
+import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.listeners.SerenityListener;
 import com.sereneoasis.storage.PlayerData;
+import com.sk89q.worldguard.WorldGuard;
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.UUID;
 import java.util.logging.Logger;
+
+import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
 
 /**
  * @author Sakrajin
@@ -64,10 +69,22 @@ public class Serenity extends JavaPlugin {
 
     private static ConfigManager configManager;
 
+    private static WorldGuardManager worldGuardManager;
+
+    public static WorldGuardManager getWorldGuardManager() {
+        return worldGuardManager;
+    }
+
     public static void main(String[] args) {
 
     }
 
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        WorldGuardManager.registerFlag();
+
+    }
 
     @Override
     public void onEnable() {
@@ -85,10 +102,29 @@ public class Serenity extends JavaPlugin {
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
         this.getCommand("serenity").setExecutor(new SerenityCommand());
         this.getCommand("serenity").setTabCompleter(new TabAutoCompletion());
+
+        worldGuardManager = new WorldGuardManager();
+
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            SerenityBoard.removeScore(player);
+
+            SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+
+            Serenity.getComboManager().removePlayer(player);
+
+            SerenityPlayer.upsertPlayer(serenityPlayer);
+
+            removeAttributePlayer(player, serenityPlayer);
+
+
+            SerenityPlayer.removePlayerFromMap(player);
+        });
     }
+
+
 }
