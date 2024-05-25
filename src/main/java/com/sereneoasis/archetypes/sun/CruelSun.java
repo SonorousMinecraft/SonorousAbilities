@@ -26,12 +26,12 @@ public class CruelSun extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            chargeSphere = new ChargeSphere(player, name, 0, new ArchetypeVisuals.SunVisual());
+            abilityStatus = AbilityStatus.CHARGING;
+            start();
         }
 
-        chargeSphere = new ChargeSphere(player, name, 0, new ArchetypeVisuals.SunVisual());
-        abilityStatus = AbilityStatus.CHARGING;
-        start();
+
 
     }
 

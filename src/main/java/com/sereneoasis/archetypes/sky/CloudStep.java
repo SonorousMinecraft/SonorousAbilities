@@ -34,12 +34,12 @@ public class CloudStep extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            this.levitate = new Levitate(player, name);
+
+            start();
         }
 
-        this.levitate = new Levitate(player, name);
 
-        start();
     }
 
     @Override

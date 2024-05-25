@@ -19,14 +19,14 @@ public class MeltingGlare extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            leftEye = new Laser(player, Locations.getLeftSide(player.getEyeLocation(), 0.25),
+                    "MeltingGlare", DisplayBlock.SUN);
+            rightEye = new Laser(player, Locations.getRightSide(player.getEyeLocation(), 0.25),
+                    "MeltingGlare", DisplayBlock.SUN);
+            start();
         }
 
-        leftEye = new Laser(player, Locations.getLeftSide(player.getEyeLocation(), 0.25),
-                "MeltingGlare", DisplayBlock.SUN);
-        rightEye = new Laser(player, Locations.getRightSide(player.getEyeLocation(), 0.25),
-                "MeltingGlare", DisplayBlock.SUN);
-        start();
+
     }
 
     @Override

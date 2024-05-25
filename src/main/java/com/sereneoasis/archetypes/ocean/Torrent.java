@@ -28,15 +28,14 @@ public class Torrent extends CoreAbility {
     public Torrent(Player player) {
         super(player, name);
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
-            return;
-        }
+        if (shouldStart()) {
 
-        sourceBlockToPlayerGivenType = new SourceBlockToPlayerGivenType(player, name, DisplayBlock.WATER, 1);
-        if (!(sourceBlockToPlayerGivenType.getSourceStatus() == AbilityStatus.NO_SOURCE)) {
-            abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            sourceBlockToPlayerGivenType.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
-            start();
+            sourceBlockToPlayerGivenType = new SourceBlockToPlayerGivenType(player, name, DisplayBlock.WATER, 1);
+            if (!(sourceBlockToPlayerGivenType.getSourceStatus() == AbilityStatus.NO_SOURCE)) {
+                abilityStatus = AbilityStatus.SOURCE_SELECTED;
+                sourceBlockToPlayerGivenType.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
+                start();
+            }
         }
     }
 

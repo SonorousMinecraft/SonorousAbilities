@@ -31,12 +31,10 @@ public class SunBurst extends CoreAbility {
     public SunBurst(Player player) {
         super(player, name);
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
-            return;
+        if (shouldStart()) {
+            abilityStatus = AbilityStatus.CHARGING;
+            start();
         }
-
-        abilityStatus = AbilityStatus.CHARGING;
-        start();
     }
 
     @Override

@@ -19,14 +19,13 @@ public class TerraLine extends CoreAbility {
         super(player, "TerraLine");
 
         if (shouldStart()) {
-            return;
-        }
+            blockLine = new RaiseBlockPillarLine(player, name, Color.GREEN, true);
+            if (blockLine.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
+                abilityStatus = AbilityStatus.SOURCE_SELECTED;
+                start();
+            }        }
 
-        blockLine = new RaiseBlockPillarLine(player, name, Color.GREEN, true);
-        if (blockLine.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
-            abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            start();
-        }
+
     }
 
     @Override

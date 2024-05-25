@@ -25,7 +25,7 @@ public class TabAutoCompletion implements TabCompleter {
         if (commandSender instanceof Player player) {
             SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
 
-            if (strings.length == 2) {
+            if (strings.length == 1 || strings.length == 2) {
                 switch (strings[0]) {
                     case "choose", "ch" -> {
                         return Arrays.stream(Archetype.values()).map(Archetype::toString).collect(Collectors.toList());

@@ -32,16 +32,15 @@ public class TerraSurf extends CoreAbility {
 
     public TerraSurf(Player player) {
         super(player, "TerraSurf");
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
-            return;
-        }
 
-        skate = new Skate(player, name, 8, 3, false);
-        if (skate.getAbilityStatus() == AbilityStatus.MOVING) {
-            wave = new HashMap<>();
+        if (shouldStart()) {
+            skate = new Skate(player, name, 8, 3, false);
+            if (skate.getAbilityStatus() == AbilityStatus.MOVING) {
+                wave = new HashMap<>();
 
-            this.startTime = System.currentTimeMillis();
-            start();
+                this.startTime = System.currentTimeMillis();
+                start();
+            }
         }
     }
 

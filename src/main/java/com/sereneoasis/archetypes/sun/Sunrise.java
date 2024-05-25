@@ -23,16 +23,16 @@ public class Sunrise extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            levitate = new Levitate(player, name);
+
+            Particles.spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0);
+            sinceLastDashed = System.currentTimeMillis();
+            player.setVelocity(new Vector(0,speed,0));
+
+            start();
         }
 
-        levitate = new Levitate(player, name);
 
-        Particles.spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0);
-        sinceLastDashed = System.currentTimeMillis();
-        player.setVelocity(new Vector(0,speed,0));
-
-        start();
     }
 
     @Override

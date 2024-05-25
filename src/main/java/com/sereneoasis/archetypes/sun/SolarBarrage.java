@@ -28,26 +28,26 @@ public class SolarBarrage extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            abilityStatus = AbilityStatus.NOT_SHOT;
+
+
+            Location aboveLoc = player.getEyeLocation().clone().add(0, radius + 2, 0);
+
+            Vector startVec  =  Vectors.getLeftSide(player, radius*20);
+
+            double angleDiff = (double) 360 / (sunAmount+1);
+
+            for (int i = 0 ; i < sunAmount ; i++) {
+                Vector offsetVec = startVec.clone().rotateAroundY(Math.toRadians(angleDiff * i));
+                Location sunLoc = aboveLoc.clone().add(offsetVec);
+                BlockSphereBlast sun = new BlockSphereBlast(player, name, sunLoc, false);
+                suns.put(sun, offsetVec);
+            }
+
+            start();
         }
 
-        abilityStatus = AbilityStatus.NOT_SHOT;
 
-
-        Location aboveLoc = player.getEyeLocation().clone().add(0, radius + 2, 0);
-
-        Vector startVec  =  Vectors.getLeftSide(player, radius*20);
-
-        double angleDiff = (double) 360 / (sunAmount+1);
-
-        for (int i = 0 ; i < sunAmount ; i++) {
-            Vector offsetVec = startVec.clone().rotateAroundY(Math.toRadians(angleDiff * i));
-            Location sunLoc = aboveLoc.clone().add(offsetVec);
-            BlockSphereBlast sun = new BlockSphereBlast(player, name, sunLoc, false);
-            suns.put(sun, offsetVec);
-        }
-
-        start();
 
     }
 

@@ -15,11 +15,12 @@ public class SkyBlast extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
+            this.sourcedBlast = new SourcedBlast(player, "SkyBlast", false, new ArchetypeVisuals.AirVisual(), true, false);
+            start();
             return;
         }
 
-        this.sourcedBlast = new SourcedBlast(player, "SkyBlast", false, new ArchetypeVisuals.AirVisual(), true, false);
-        start();
+
     }
 
     @Override

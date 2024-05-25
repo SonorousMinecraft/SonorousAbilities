@@ -24,11 +24,11 @@ public class SnowShuriken extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            abilityStatus = AbilityStatus.CHARGING;
+            start();
         }
 
-        abilityStatus = AbilityStatus.CHARGING;
-        start();
+
     }
 
     @Override

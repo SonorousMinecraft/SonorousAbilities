@@ -42,32 +42,32 @@ public class SolarFlare extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
-        }
+            abilityStatus = AbilityStatus.NO_SOURCE;
+            target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
+            if (target != null && target.getType().isSolid()) {
+                Location sourceLoc = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
 
-        abilityStatus = AbilityStatus.NO_SOURCE;
-        target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
-        if (target != null && target.getType().isSolid()) {
-            Location sourceLoc = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
+                Blocks.selectSourceAnimationShapeGivenType( Locations.getCircleLocsAroundPoint(sourceLoc.clone().add(0,speed,0), radius, size), sPlayer.getColor(), size, DisplayBlock.SUN);
 
-            Blocks.selectSourceAnimationShapeGivenType( Locations.getCircleLocsAroundPoint(sourceLoc.clone().add(0,speed,0), radius, size), sPlayer.getColor(), size, DisplayBlock.SUN);
+                double height = radius*3;
+                flareLoc = target.getLocation().clone().add(0, height, 0);
 
-            double height = radius*3;
-            flareLoc = target.getLocation().clone().add(0, height, 0);
-
-            Set<Location> locs = new HashSet<>();
-            for (Location b : Locations.getOutsideSphereLocs(flareLoc, radius, size)) {
-                if ((int)b.getY() == flareLoc.getY()) {
-                    locs.add(b);
+                Set<Location> locs = new HashSet<>();
+                for (Location b : Locations.getOutsideSphereLocs(flareLoc, radius, size)) {
+                    if ((int)b.getY() == flareLoc.getY()) {
+                        locs.add(b);
+                    }
                 }
-            }
-            flares =  EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this, flareLoc, flareLoc.getBlockY()).stream().map(block -> {
-                return new TempDisplayBlock(block, DisplayBlock.SUN, 60000, 1.0);
-            }).collect(Collectors.toSet());
+                flares =  EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this, flareLoc, flareLoc.getBlockY()).stream().map(block -> {
+                    return new TempDisplayBlock(block, DisplayBlock.SUN, 60000, 1.0);
+                }).collect(Collectors.toSet());
 
 
-            start();
+                start();
+            };
         }
+
+
     }
 
 

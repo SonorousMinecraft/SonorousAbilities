@@ -30,16 +30,15 @@ public class RockRing extends CoreAbility {
     public RockRing(Player player) {
         super(player, "RockRing");
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(name)) {
-            return;
-        }
+        if (shouldStart()) {
 
-        sourceBlockToPlayer = new SourceBlockToPlayer(player, name, 4, 30);
-        if (!(sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE)) {
-            abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            this.type = sourceBlockToPlayer.getType();
-            sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
-            start();
+            sourceBlockToPlayer = new SourceBlockToPlayer(player, name, 4, 30);
+            if (!(sourceBlockToPlayer.getSourceStatus() == AbilityStatus.NO_SOURCE)) {
+                abilityStatus = AbilityStatus.SOURCE_SELECTED;
+                this.type = sourceBlockToPlayer.getType();
+                sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCE_SELECTED);
+                start();
+            }
         }
     }
 

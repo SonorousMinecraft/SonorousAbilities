@@ -28,11 +28,11 @@ public class SeaSurf extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            this.skate = new Skate(player, name, 10,3, false);
+            start();
         }
 
-        this.skate = new Skate(player, name, 10,3, false);
-        start();
+
     }
 
     @Override

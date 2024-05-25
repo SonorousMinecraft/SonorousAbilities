@@ -26,10 +26,11 @@ public class SkyRipper extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
+            start();
             return;
         }
 
-        start();
+
     }
 
     @Override

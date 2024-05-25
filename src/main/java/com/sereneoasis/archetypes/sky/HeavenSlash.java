@@ -15,12 +15,12 @@ public class HeavenSlash extends CoreAbility {
     public HeavenSlash(Player player) {
         super(player, name);
         if (shouldStart()) {
-            return;
+            Location forwardLoc = player.getEyeLocation().clone().add(player.getEyeLocation().getDirection().clone().normalize().multiply(0.5));
+            this.sweep = new Sweep(player, name, new ArchetypeVisuals.AirVisual(), forwardLoc.clone().subtract(0, 0.3, 0), forwardLoc.clone().add(0, 0.3, 0));
+            start();
         }
 
-        Location forwardLoc = player.getEyeLocation().clone().add(player.getEyeLocation().getDirection().clone().normalize().multiply(0.5));
-        this.sweep = new Sweep(player, name, new ArchetypeVisuals.AirVisual(), forwardLoc.clone().subtract(0, 0.3, 0), forwardLoc.clone().add(0, 0.3, 0));
-        start();
+
 
     }
 

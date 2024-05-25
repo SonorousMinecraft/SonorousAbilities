@@ -20,22 +20,22 @@ public class Bulwark extends CoreAbility {
         super(player, "Bulwark");
 
         if (shouldStart()) {
-            return;
+            Set<Block> blocks = EnhancedBlocks.getTopHCircleBlocks(this);
+
+            if ( ! blocks.isEmpty()){
+                for (Block b : blocks) {
+                    raiseBlockPillars.add(new RaiseBlockPillar(player, name, range, b));
+                }
+
+                start();
+            }
         }
 
 //        if (!player.isSneaking()){
 //            return;
 //        }
 
-        Set<Block> blocks = EnhancedBlocks.getTopHCircleBlocks(this);
 
-        if ( ! blocks.isEmpty()){
-            for (Block b : blocks) {
-                raiseBlockPillars.add(new RaiseBlockPillar(player, name, range, b));
-            }
-
-            start();
-        }
     }
 
     @Override

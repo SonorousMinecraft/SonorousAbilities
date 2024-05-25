@@ -28,12 +28,12 @@ public class ThunderStrike extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            return;
+            abilityStatus = AbilityStatus.CHARGING;
+            player.setVelocity(new Vector(0, speed * 4, 0));
+            start();
         }
 
-        abilityStatus = AbilityStatus.CHARGING;
-        player.setVelocity(new Vector(0, speed * 4, 0));
-        start();
+
     }
 
     @Override

@@ -34,14 +34,15 @@ public class Shocker extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
+            //        setFields();
+            leftArc = new Arc(player, name, Particle.ELECTRIC_SPARK, Arc.OutputLocation.OFFHAND);
+            rightArc = new Arc(player, name, Particle.ELECTRIC_SPARK, Arc.OutputLocation.MAINHAND);
+            start();
             return;
         }
 
 
-//        setFields();
-        leftArc = new Arc(player, name, Particle.ELECTRIC_SPARK, Arc.OutputLocation.OFFHAND);
-        rightArc = new Arc(player, name, Particle.ELECTRIC_SPARK, Arc.OutputLocation.MAINHAND);
-        start();
+
     }
 
 //    private void setFields() {

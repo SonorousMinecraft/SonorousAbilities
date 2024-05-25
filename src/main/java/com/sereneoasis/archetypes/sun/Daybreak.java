@@ -27,13 +27,13 @@ public class Daybreak extends CoreAbility {
     public Daybreak(Player player) {
         super(player, name);
 
-        if (!player.isSneaking() || shouldStart()) {
-            return;
+        if (player.isSneaking() && shouldStart()) {
+            jet = new Jet(player, name);
+            start();
         }
 
 
-        jet = new Jet(player, name);
-        start();
+
     }
 
     @Override

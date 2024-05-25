@@ -22,12 +22,11 @@ public class EarthQuake extends CoreAbility {
         super(player, "EarthQuake");
 
         if (shouldStart()) {
-            return;
-        }
+            abilityStatus = AbilityStatus.CHARGING;
+            quakes = new ArrayList<>();
+            start();        }
 
-        abilityStatus = AbilityStatus.CHARGING;
-        quakes = new ArrayList<>();
-        start();
+
     }
 
     @Override
