@@ -18,7 +18,7 @@ public class TerraLine extends CoreAbility {
     public TerraLine(Player player) {
         super(player, "TerraLine");
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+        if (shouldStart()) {
             return;
         }
 

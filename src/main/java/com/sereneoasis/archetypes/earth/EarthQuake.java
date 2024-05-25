@@ -21,7 +21,7 @@ public class EarthQuake extends CoreAbility {
     public EarthQuake(Player player) {
         super(player, "EarthQuake");
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+        if (shouldStart()) {
             return;
         }
 

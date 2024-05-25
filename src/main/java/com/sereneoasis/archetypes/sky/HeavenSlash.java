@@ -14,7 +14,7 @@ public class HeavenSlash extends CoreAbility {
 
     public HeavenSlash(Player player) {
         super(player, name);
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+        if (shouldStart()) {
             return;
         }
 

@@ -27,7 +27,7 @@ public class Daybreak extends CoreAbility {
     public Daybreak(Player player) {
         super(player, name);
 
-        if (!player.isSneaking() || CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+        if (!player.isSneaking() || shouldStart()) {
             return;
         }
 

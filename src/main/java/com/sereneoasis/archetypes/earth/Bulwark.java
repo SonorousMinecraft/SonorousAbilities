@@ -19,7 +19,7 @@ public class Bulwark extends CoreAbility {
     public Bulwark(Player player) {
         super(player, "Bulwark");
 
-        if (CoreAbility.hasAbility(player, this.getClass()) || sPlayer.isOnCooldown(this.getName())) {
+        if (shouldStart()) {
             return;
         }
 
