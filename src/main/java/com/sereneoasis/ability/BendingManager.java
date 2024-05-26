@@ -4,6 +4,7 @@ import com.sereneoasis.SerenityPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.ability.superclasses.RedirectAbility;
 import com.sereneoasis.util.methods.RayTracing;
+import com.sereneoasis.util.temp.TB;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Bukkit;
@@ -83,6 +84,7 @@ public class BendingManager implements Runnable {
         }
         this.handleCooldowns();
 
+        TB.checkBlocks();
         while (!TempBlock.getRevertQueue().isEmpty()) {
             final TempBlock tempBlock = TempBlock.getRevertQueue().peek(); //Check if the top TempBlock is ready for reverting
             if (tempBlock.getRevertTime() < System.currentTimeMillis()) {

@@ -230,6 +230,11 @@ public class ConfigManager {
                 0, 5000, 0,
                 2, 0.9, 3, 40, 1.3, 10, 0.9);
 
+
+        saveConfigValuesAbility(earth, "EarthFist", EARTH.toString(), "description", "Left click while facing an earth block to cause a ring of rocks to circle you, left click to fire",
+                0, 5000, 0,
+                2, 0.9, 0, 20, 1.3, 10, 0.9);
+
         saveAttributeValuesArchetype(earth, EARTH, 0, 0, 0, 0,
                 0.0, 0, 0);
 
