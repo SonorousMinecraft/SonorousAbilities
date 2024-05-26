@@ -1,6 +1,7 @@
 package com.sereneoasis.util.temp;
 
 import com.sereneoasis.archetypes.DisplayBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,7 +19,7 @@ public class TempBlock {
 
     private long timeToRevert;
 
-    private BlockData previousData;
+    private  BlockData previousData;
 
     private Block block;
 
@@ -33,18 +34,18 @@ public class TempBlock {
         BlockData newData = newType.createBlockData();
 
         INSTANCES.computeIfPresent(block, (currentBlock, priorityQueue) -> {
-            previousData = currentBlock.getBlockData();
+            previousData = currentBlock.getBlockData().clone();
             currentBlock.setBlockData(newData);
 
             priorityQueue.add(this);
             return priorityQueue;
         });
         INSTANCES.computeIfAbsent(block, (b -> {
-            previousData = b.getBlockData();
-            b.setBlockData(newData);
+            previousData = block.getBlockData().clone();
+            block.setBlockData(newData);
             PriorityQueue<TempBlock> newQueue = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.timeToRevert - t2.timeToRevert));
             newQueue.add(this);
-            BLOCK_ORIGINAL_DATA_MAP.put(b, newData);
+            BLOCK_ORIGINAL_DATA_MAP.put(block, previousData);
             return newQueue;
         }));
     }
@@ -55,18 +56,18 @@ public class TempBlock {
 
 
         INSTANCES.computeIfPresent(block, (currentBlock, priorityQueue) -> {
-            previousData = currentBlock.getBlockData();
+            previousData = currentBlock.getBlockData().clone();
             currentBlock.setBlockData(newData);
 
             priorityQueue.add(this);
             return priorityQueue;
         });
         INSTANCES.computeIfAbsent(block, (b -> {
-            previousData = b.getBlockData();
-            b.setBlockData(newData);
+            previousData = block.getBlockData().clone();
+            block.setBlockData(newData);
             PriorityQueue<TempBlock> newQueue = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.timeToRevert - t2.timeToRevert));
             newQueue.add(this);
-            BLOCK_ORIGINAL_DATA_MAP.put(b, newData);
+            BLOCK_ORIGINAL_DATA_MAP.put(block, previousData);
             return newQueue;
         }));
 
@@ -82,18 +83,18 @@ public class TempBlock {
 
 
         INSTANCES.computeIfPresent(block, (currentBlock, priorityQueue) -> {
-            previousData = currentBlock.getBlockData();
+            previousData = currentBlock.getBlockData().clone();
             currentBlock.setBlockData(newData);
 
             priorityQueue.add(this);
             return priorityQueue;
         });
         INSTANCES.computeIfAbsent(block, (b -> {
-            previousData = b.getBlockData();
-            b.setBlockData(newData);
+            previousData = block.getBlockData().clone();
+            block.setBlockData(newData);
             PriorityQueue<TempBlock> newQueue = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.timeToRevert - t2.timeToRevert));
             newQueue.add(this);
-            BLOCK_ORIGINAL_DATA_MAP.put(b, b.getBlockData());
+            BLOCK_ORIGINAL_DATA_MAP.put(block, previousData);
 
             return newQueue;
         }));
@@ -106,27 +107,31 @@ public class TempBlock {
     }
 
     public static boolean isTempBlock(Block block){
-        if (BLOCK_ORIGINAL_DATA_MAP.containsKey(block)){
-            return true;
-        }
-        return false;
+        return BLOCK_ORIGINAL_DATA_MAP.containsKey(block);
     }
 
     public static void checkBlocks(){
         INSTANCES.forEach((block, priorityQueue) -> {
             if (priorityQueue.peek() != null) {
                 if (priorityQueue.peek().timeToRevert < System.currentTimeMillis()){
-                    if (priorityQueue.size() == 1){
-                        block.setBlockData(BLOCK_ORIGINAL_DATA_MAP.get(block));
-                        BLOCK_ORIGINAL_DATA_MAP.remove(block);
-                        priorityQueue.remove();
-                    } else {
+                    if (priorityQueue.peek().previousData != null) {
                         block.setBlockData(priorityQueue.peek().previousData);
-                        priorityQueue.remove();
+                        priorityQueue.poll();
+                    }
+                     else {
+                        priorityQueue.poll();
+//                        Bukkit.broadcastMessage("shit is null");
                     }
                 }
             } else {
+                if (BLOCK_ORIGINAL_DATA_MAP.get(block) != null) {
+                    block.setBlockData(BLOCK_ORIGINAL_DATA_MAP.get(block));
+                    BLOCK_ORIGINAL_DATA_MAP.remove(block);
 //                Bukkit.broadcastMessage("test");
+                }
+                else {
+//                    Bukkit.broadcastMessage("shit is null");
+                }
             }
         });
     }
