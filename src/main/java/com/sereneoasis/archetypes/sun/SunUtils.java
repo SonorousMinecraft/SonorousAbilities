@@ -17,7 +17,7 @@ public class SunUtils {
 
         Scheduler.performTaskLater(5, () -> {
             Blocks.getBlocksAroundPoint(loc, radius+1).forEach(block -> {
-                if (!block.isPassable()) {
+                if (!block.isPassable() && !TempBlock.isTempBlock(block)) {
                     new TempBlock(block, DisplayBlock.SUN, 60000);
                 }
             });

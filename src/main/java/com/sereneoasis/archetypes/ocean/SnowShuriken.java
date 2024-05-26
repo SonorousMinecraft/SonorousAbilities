@@ -53,7 +53,8 @@ public class SnowShuriken extends CoreAbility {
                     }
                 } else {
                     if (Blocks.isSolid(blast.getLoc())) {
-                        OceanUtils.freeze(blast.getLoc(), radius*10, sPlayer);
+                        OceanUtils.freeze(blast.getLoc(), radius, sPlayer);
+                        blast.remove();
 //                        SunUtils.blockExplode(player, name, blast.getLoc(), radius*10, 1);
 
 //                        new BlockExplodeSphere(player, name, blast.getLoc(), radius*10, 1);
@@ -92,11 +93,6 @@ public class SnowShuriken extends CoreAbility {
         }
     }
 
-
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

@@ -7,6 +7,7 @@ import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
 import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedSchedulerEffects;
 import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -47,7 +48,12 @@ public class SolarFlare extends CoreAbility {
             if (target != null && target.getType().isSolid()) {
                 Location sourceLoc = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
 
-                Blocks.selectSourceAnimationShapeGivenType( Locations.getCircleLocsAroundPoint(sourceLoc.clone().add(0,speed,0), radius, size), sPlayer.getColor(), size, DisplayBlock.SUN);
+
+
+//                Blocks.selectSourceAnimationShapeGivenType( Locations.getCircleLocsAroundPoint(sourceLoc.clone().add(0,speed,0), radius, size), sPlayer.getColor(), size, DisplayBlock.SUN);
+                EnhancedBlocksArchetypeLess.getTopCircleBlocksFloor(this, sourceLoc.clone()).forEach(block -> {
+                    new TempBlock(block, DisplayBlock.SUN, 20000);
+                });
 
                 double height = radius*3;
                 flareLoc = target.getLocation().clone().add(0, height, 0);
@@ -70,8 +76,6 @@ public class SolarFlare extends CoreAbility {
 
     }
 
-
-    private Random random = new Random();
     @Override
     public void progress() {
 
@@ -83,7 +87,7 @@ public class SolarFlare extends CoreAbility {
         if (started) {
 
             flareLoc.subtract(0, speed, 0);
-            flares.forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().subtract(0,speed * random.nextDouble(),0)));
+            flares.forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().subtract(0, RandomUtils.getRandomDouble(0, speed*2),0)));
 
             if (flareLoc.getY() <= target.getY()) {
                 this.remove();

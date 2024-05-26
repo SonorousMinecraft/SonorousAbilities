@@ -41,13 +41,17 @@ public class SkyRipper extends CoreAbility {
 
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED && !player.isSneaking()) {
             abilityStatus = AbilityStatus.SHOT;
-            blade = new Blade(player, name, new ArchetypeVisuals.AirVisual(), loc1, loc2);
+            if (loc1 != null && loc2 != null) {
+                blade = new Blade(player, name, new ArchetypeVisuals.AirVisual(), loc1, loc2);
+            } else {
+                this.remove();
+            }
         }
 
         if (abilityStatus == AbilityStatus.SHOT ) {
-            blade.getLocs().stream().map(Location::getBlock).collect(Collectors.toSet())
-                    .stream().filter(block -> !block.isPassable())
-                    .forEach(block -> SkyUtils.lightningStrike(this,block.getLocation()));
+//            blade.getLocs().stream().map(Location::getBlock).collect(Collectors.toSet())
+//                    .stream().filter(block -> !block.isPassable())
+//                    .forEach(block -> SkyUtils.lightningStrike(this,block.getLocation()));
             if (blade.getAbilityStatus() == AbilityStatus.COMPLETE){
                 this.remove();
             }

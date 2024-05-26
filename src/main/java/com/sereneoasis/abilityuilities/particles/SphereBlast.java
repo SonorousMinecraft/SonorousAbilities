@@ -6,6 +6,7 @@ import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Locations;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -62,6 +63,9 @@ public class SphereBlast extends CoreAbility {
 
         if (shouldDamage) {
             DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+            if (! Entities.getAffected(loc, hitbox, player).isEmpty() ){
+                Bukkit.broadcastMessage("should be damaging");
+            }
         }
 
     }

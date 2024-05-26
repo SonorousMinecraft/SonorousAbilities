@@ -73,7 +73,7 @@ public class Beam extends CoreAbility {
         locs.forEach(location -> {
             location.add(dir.clone().multiply(random.nextDouble() * speed).add(getRandomOffset().multiply( Math.log(location.distance(startLoc)/2 + 2))));
 //            Particles.spawnParticle(particle, location, 1, 0, 0);
-            archetypeVisual.playVisual(location, 0.5, radius/2, 0 , 10,5 );
+            archetypeVisual.playVisual(location, 0.5, radius/2, 1 , 10,5 );
             AbilityDamage.damageOne(location, this, player, true, dir);
 
 //            SunUtils.blockExplode(player, name, location, 2, 0.25);

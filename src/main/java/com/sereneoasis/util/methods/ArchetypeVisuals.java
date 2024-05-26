@@ -54,7 +54,7 @@ public class ArchetypeVisuals {
 
         @Override
         public void playVisual(Location loc, double size, double radius, int tb, int amount, int red) {
-//            TDBs.playTDBs(loc, DisplayBlock.SUN, tb, size, radius);
+            TDBs.playTDBs(loc, DisplayBlock.SUN, tb, size, radius);
 
             Particles.spawnParticle(Particle.WAX_ON, loc, amount, radius, 0);
             Particles.spawnParticle(Particle.FLAME, loc, amount, radius, 0);
@@ -105,11 +105,13 @@ public class ArchetypeVisuals {
 
         @Override
         public void playShotVisual(Location loc, Vector dir, double angle, double size, double radius, int tb, int amount, int colour) {
-            Locations.getCircleLocsAroundPoint(loc, radius, size/2).forEach(location -> {
-                Particles.spawnParticle(Particle.FALLING_NECTAR, loc, 1, radius, 1);
-                TDBs.playTDBs(location, DisplayBlock.SNOW, tb, size, 0);
-
-            });
+            Particles.spawnParticle(Particle.FALLING_NECTAR, loc, 1, radius, 1);
+            TDBs.playTDBs(loc, DisplayBlock.SNOW, tb, size, 0);
+//            Locations.getCircleLocsAroundPoint(loc, radius, size/2).forEach(location -> {
+//                Particles.spawnParticle(Particle.SNOWFLAKE, loc, 1, radius, 1);
+//                TDBs.playTDBs(location, DisplayBlock.SNOW, tb, size, 0);
+//
+//            });
         }
     }
 }

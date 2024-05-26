@@ -133,12 +133,12 @@ public class Singularity extends MasterAbility {
             }
         } else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.SHOT){
             displayBlocks.forEach((tempDisplayBlock, vector) -> {
-                vector.normalize().multiply((Math.random() - 0.5) * radius * 2);
-                vector.rotateAroundX(Math.toRadians((Math.random() - 0.5) * 360));
-                vector.rotateAroundY(Math.toRadians((Math.random() - 0.5) * 360));
-                vector.rotateAroundZ(Math.toRadians((Math.random() - 0.5) * 360));
-                tempDisplayBlock.setSize((float) (Math.random() ));
-                tempDisplayBlock.rotate( (float) Math.random() * 360, (float) Math.random() * 360);
+                vector.normalize().multiply(RandomUtils.getRandomDouble(-radius*2, radius*2));
+                vector.rotateAroundX(Math.toRadians(RandomUtils.getRandomDouble(-180, 180)));
+                vector.rotateAroundY(Math.toRadians(RandomUtils.getRandomDouble(-180, 180)));
+                vector.rotateAroundZ(Math.toRadians(RandomUtils.getRandomDouble(-180, 180)));
+                tempDisplayBlock.setSize((float) (RandomUtils.getRandomDouble(0, 1) ));
+                tempDisplayBlock.rotate( (float) RandomUtils.getRandomDouble(0, 360), (float) RandomUtils.getRandomDouble(0, 360));
             });
         }
 

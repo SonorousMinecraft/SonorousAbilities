@@ -53,9 +53,9 @@ public class Arc extends CoreAbility {
         Vector dir = player.getEyeLocation().getDirection();
 
         Location startLoc = player.getEyeLocation().add(dir.clone().multiply(speed));
-        if (Blocks.getFacingBlock(startLoc, dir, range) != null && !Blocks.getFacingBlock(startLoc, dir, range).isPassable()){
-            SkyUtils.lightningStrike(this,Blocks.getFacingBlock(startLoc, dir, range).getLocation() );
-        }
+//        if (Blocks.getFacingBlock(startLoc, dir, range) != null && !Blocks.getFacingBlock(startLoc, dir, range).isPassable()){
+//            SkyUtils.lightningStrike(this,Blocks.getFacingBlock(startLoc, dir, range).getLocation() );
+//        }
 
             Location endLoc = player.getEyeLocation().add(dir.clone().multiply(range));
 

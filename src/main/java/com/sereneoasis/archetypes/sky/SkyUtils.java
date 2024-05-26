@@ -21,6 +21,7 @@ public class SkyUtils {
                     LightningStrike lightning = (LightningStrike) entity;
                     lightning.setFlashes(1);
                     lightning.setCausingPlayer(player);
+                    lightning.setSilent(true);
                 }));
 
     }

@@ -45,9 +45,11 @@ public class Sweep extends CoreAbility {
             List<Location> locs = Locations.getArc(loc1, loc2, origin, 0.2);
             //List<Location> locs = List.of(new Location[]{loc1, loc2});
             for (Location loc : locs) {
-                DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
                 archetypeVisual.playVisual(loc, size, 0.1, 10, 1, 5);
             }
+
+            DamageHandler.damageEntity(Entities.getEntityBetweenPoints(loc1, loc2), player, this, damage);
+
 
             if (origin.distance(Locations.getMidpoint(loc1, loc2)) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;
