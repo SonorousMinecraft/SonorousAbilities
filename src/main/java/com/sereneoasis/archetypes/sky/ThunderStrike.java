@@ -29,6 +29,7 @@ public class ThunderStrike extends CoreAbility {
 
         if (shouldStart()) {
             abilityStatus = AbilityStatus.CHARGING;
+            Particles.spawnParticle(Particle.GUST, player.getLocation(), 10, 1, 0);
             player.setVelocity(new Vector(0, speed * 4, 0));
             start();
         }
@@ -53,18 +54,18 @@ public class ThunderStrike extends CoreAbility {
             }
 
             if (Blocks.isSolid(loc)){
-                SkyUtils.lightningStrikeFloorCircle(this, loc);
+                SkyUtils.lightningStrikeFloorCircle(this, loc, 8);
                 this.remove();
             }
             loc.add(dir.clone().multiply(speed));
-            Particles.spawnParticle(Particle.GUST, loc, 1, 0, 0);
+            Particles.spawnParticle(Particle.GUST, loc, 5, 1, 0);
 
 
 //            TDBs.playTDBs(loc.clone().subtract(dir.clone().multiply(speed)), DisplayBlock.LIGHTNING, 10, size, radius);
 
 //            Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5)).normalize().add(dir.clone().multiply(0.2)).normalize().multiply(0.4);
 
-            new ArchetypeVisuals.LightningVisual().playVisual(loc, size, radius, 10, 1, 1);
+            new ArchetypeVisuals.LightningVisual().playVisual(loc, size, radius, 10, 5, 5);
 
 //            Particles.spawnParticleOffset(Particle.END_ROD, loc, 0, random.getX(), random.getY(), random.getZ(), 0.15);
 //            Particles.spawnColoredParticle(loc, 1, radius, size*3, Color.fromRGB(1, 225, 255));
@@ -80,7 +81,7 @@ public class ThunderStrike extends CoreAbility {
             abilityStatus = AbilityStatus.SHOT;
 
         } else if (abilityStatus == AbilityStatus.SHOT) {
-            SkyUtils.lightningStrikeFloorCircle(this, loc);
+            SkyUtils.lightningStrikeFloorCircle(this, loc, 8);
 
             this.remove();
         }

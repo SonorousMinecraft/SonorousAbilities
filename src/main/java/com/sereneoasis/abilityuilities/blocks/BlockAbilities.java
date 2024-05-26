@@ -52,6 +52,9 @@ public class BlockAbilities {
                         if (blockFace != null) {
                             Vector normal = blockFace.getDirection();
                             Vector newVec = Vectors.getBounce(dir, normal);
+                            if (blockFace == BlockFace.UP || blockFace == BlockFace.DOWN){
+                                newVec.rotateAroundY(Math.toRadians(180));
+                            }
                             shootBlockFromLoc.setDir(newVec);
                             shootBlockFromLoc.setAbilityStatus(AbilityStatus.SHOT);
                         }

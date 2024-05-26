@@ -204,7 +204,7 @@ public class ConfigManager {
 
         saveConfigValuesCombo(earth, "Bulwark", EARTH.toString(), "description", "Tap sneak with EarthWall to raise walls around you",
                 0, 2000, 20000,
-                0, 1.5, 0, 6, 5, 10, 1, bulwarkAbilities);
+                0, 1.5, 0, 6, 5, 15, 1, bulwarkAbilities);
 
         saveConfigValuesAbility(earth, "StoneShred", Archetype.EARTH.toString(), "description", "Hold sneak whilst facing earth blocks and left click to fire",
                 0, 15000, 20000,
@@ -258,11 +258,11 @@ public class ConfigManager {
 
         saveConfigValuesAbility(chaos, "Singularity", CHAOS.toString(), "description", "Hold sneak to forcefully pull in blocks towards your Singularity \n and left click to fire",
                 3000, 15000, 20000,
-                4, 4, 3, 20, 1, 5, 0.3);
+                4, 4, 3, 30, 1, 5, 0.3);
 
         saveConfigValuesAbility(chaos, "AbyssalFall", CHAOS.toString(), "description", "Tap sneak to jump a great height and float momentarily, \n left click to dive at your target and raise blocks from the ground",
                 0, 5000, 20000,
-                0, 0, 30, 0, 2, 0, 1.0);
+                0, 0, 10, 0, 2, 0, 1.0);
 
         saveConfigValuesAbility(chaos, "Limbo", CHAOS.toString(), "description", "Left click to toggle, hold sneak to charge a jump and release to fire",
                 5000, 30000, 60000,
@@ -270,7 +270,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "Left click to create a sphere of darkness \n which you can rip the walls out from to launch at entities",
                 0, 30000, 30000,
-                2, 0.5, 40, 40, 1, 0, 1.0);
+                2, 0.5, 20, 20, 1, 0, 1.0);
 
         saveConfigValuesAbility(chaos, "SoulSlash", CHAOS.toString(), "description", "Left click to create a blade which cuts through terrain \n and causes blocks to circle you, hold sneak to fire the blocks",
                 0, 3000, 0,
@@ -301,7 +301,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "SolarFlare", Archetype.SUN.toString(), "description", "Hold sneak while facing a block to cause \n a ring of death to fall on opponents",
                 2000, 5000, 0,
-                2, 1.0, 20, 0, 1.2, 10, 0.5);
+                2, 1.0, 15, 0, 1.2, 10, 0.5);
 
         saveConfigValuesAbility(sun, "FlamingRays", Archetype.SUN.toString(), "description", "Hold sneak to charge rays of fire, \nleft click to shoot these",
                 3000, 5000, 0,
@@ -309,7 +309,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "SolarBeam", Archetype.SUN.toString(), "description", "Hold sneak to charge a ray above you \n which will shine wherever you look, melting both terrain and opponents",
                 4000, 5000, 20000,
-                1, 1.0, 2.0, 40, 0.5, 0, 0.2);
+                1, 1.0, 2.0, 20, 0.5, 0, 0.4);
 
         saveConfigValuesAbility(sun, "SunBurst", Archetype.SUN.toString(), "description", "Hold sneak to materialise a huge sun which will fire wherever you are looking",
                 4000, 5000, 0,
@@ -317,7 +317,7 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sun, "MeltingGlare", Archetype.SUN.toString(), "description", "Hold sneak to shoot eye lasers",
                 0, 5000, 10000,
-                1, 0.5, 0, 20, 0, 0, 0.15);
+                1, 0.5, 0, 30, 0, 0, 0.15);
 
         saveConfigValuesAbility(sun, "SolarBarrage", Archetype.SUN.toString(), "description", "Tap sneak to create miniature suns orbiting you, \n left click once they are close enough to fire them off in close succession",
                 0, 5000, 0,
@@ -346,15 +346,15 @@ public class ConfigManager {
         //Ability configuration
         saveConfigValuesAbility(sky, "SkyBlast", SKY.toString(), "description", "Tap sneak to select a source, left click to redirect",
                 0, 5000, 0,
-                0, 1.0, 0.5, 40, 1, 1, 0.2);
+                0, 1.5, 0.5, 40, 1, 1, 0.3);
 
         saveConfigValuesAbility(sky, "Nimbus", SKY.toString(), "description", "Left click to fly in the direction you are looking \n sneak and left click to cancel",
                 0, 5000, 60000,
-                0, 0, 1, 10, 1, 0, 0.2);
+                0, 0, 1, 10, 1, 0, 0.3);
 
         saveConfigValuesAbility(sky, "SkyRipper", SKY.toString(), "description", "Hold sneak and click twice to select \n 2 points, release to rip the sky",
                 0, 5000, 0,
-                2, 0, 0, 30, 1.5, 5, 0.2);
+                2, 0, 0, 30, 1.5, 5, 0.3);
 
         saveConfigValuesAbility(sky, "Cyclone", SKY.toString(), "description", "Left click to ride a Cyclone, \n tap sneak to disable",
                 0, 500, 5000,
@@ -362,23 +362,23 @@ public class ConfigManager {
 
         saveConfigValuesAbility(sky, "CloudStep", SKY.toString(), "description", "Left click to enable or toggle between floating \n  or walking on clouds and hold sneak to jump",
                 1000, 5000, 60000,
-                0, 0, 2, 0, 1, 0, 0.2);
+                0, 0, 2, 0, 1, 0, 0.3);
 
         saveConfigValuesAbility(sky, "HeavenSlash", SKY.toString(), "description", "Left click to shoot a Slash of air",
                 0, 2000, 0,
-                2, 1.0, 0, 20, 1, 0, 0.1);
+                2, 1.0, 0, 20, 1, 0, 0.3);
 
         saveConfigValuesAbility(sky, "Shocker", SKY.toString(), "description", "Hold sneak to shock your opponents",
                 0, 2000, 20000,
-                2, 1.0, 0, 10, 1, 0, 0.2);
+                2, 1.0, 0, 10, 1, 0, 0.3);
 
         saveConfigValuesAbility(sky, "ThunderStrike", Archetype.SKY.toString(), "description", "Tap sneak to launch yourself in the air \n and left click to fire a strike of thunder off.",
                 2000, 5000, 0,
-                2, 2.0, 2.0, 100, 1.0, 0, 1.2);
+                2, 2.0, 2.0, 100, 1.5, 0, 1.2);
 
         saveConfigValuesAbility(sky, "LightningBolts", Archetype.SKY.toString(), "description", "Tap sneak to create a bolt of lightning, \n left click to fire this at opponents",
                 3000, 5000, 0,
-                2, 0.5, 1.2, 40, 1.5, 0, 0.5);
+                2, 1.0, 1.2, 40, 1.5, 0, 0.7);
 
         saveAttributeValuesArchetype(sky, SKY, 0, 0, 0, 0,
                 0.0, 0, 0.2);

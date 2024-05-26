@@ -138,7 +138,7 @@ public class Arc extends CoreAbility {
 
         Vector random = getRandomOffset();
         if (start.distanceSquared(end) > 1){
-            random.multiply(Math.log(start.distance(end)));
+            random.multiply(Math.log(start.distance(end)) * Math.log(start.distance(end)));
         }
         return (start.clone().add(midpoint).add(random));
     }

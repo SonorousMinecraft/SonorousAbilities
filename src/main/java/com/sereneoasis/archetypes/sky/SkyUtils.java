@@ -26,7 +26,7 @@ public class SkyUtils {
 
     }
 
-    public static void lightningStrikeFloorCircle(CoreAbility coreAbility, Location loc){
+    public static void lightningStrikeFloorCircle(CoreAbility coreAbility, Location loc,  double radius){
         Player player = coreAbility.getPlayer();
         String name = coreAbility.getName();
         for (int i = 0; i < 20 ; i += 2) {
@@ -34,7 +34,7 @@ public class SkyUtils {
                 EnhancedBlocksArchetypeLess.getTopCircleBlocksFloor(coreAbility, loc.clone().add(0,100,0)).forEach(block -> SkyUtils.lightningStrike(coreAbility, block.getLocation()));
             });
         }
-        new BlockExplodeSphere(player, name, loc.clone().add(Vectors.getRandom()),  10, 1);
+        new BlockExplodeSphere(player, name, loc.clone().add(Vectors.getRandom()),  radius, 1);
 
 
     }

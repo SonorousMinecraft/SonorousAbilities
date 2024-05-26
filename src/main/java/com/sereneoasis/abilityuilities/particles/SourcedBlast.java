@@ -64,7 +64,7 @@ public class SourcedBlast extends CoreAbility {
             }
             loc.add(dir.clone().multiply(speed));
         }
-        archetypeVisual.playVisual(loc, size, radius, 10, 5, 5);
+        archetypeVisual.playVisual(loc, size, radius, 10, 10, 5);
         //TDBs.playTDBs(loc, DisplayBlock.AIR, 5, size, hitbox);
         //Particles.spawnParticle(particle, loc, 5, hitbox, 0);
 

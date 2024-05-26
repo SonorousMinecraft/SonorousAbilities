@@ -51,7 +51,7 @@ public class FlamingRays extends CoreAbility {
                     }
                 } else {
                     if (Blocks.isSolid(blast.getLoc())) {
-                        SunUtils.blockExplode(player, name, blast.getLoc(), radius*10, 1);
+                        SunUtils.blockExplode(player, name, blast.getLoc(), 3, 1);
 
 //                        new BlockExplodeSphere(player, name, blast.getLoc(), radius*10, 1);
 //
@@ -81,7 +81,7 @@ public class FlamingRays extends CoreAbility {
             abilityStatus = AbilityStatus.SHOOTING;
         }
         if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
-            Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SunVisual());
+            Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SunVisual(), true);
             rays.put(currentShots, blast);
             currentShots++;
         }

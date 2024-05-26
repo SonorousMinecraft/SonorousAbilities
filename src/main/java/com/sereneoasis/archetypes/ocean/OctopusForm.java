@@ -225,7 +225,7 @@ public class OctopusForm extends MasterAbility {
                             .filter(tendril -> tendril.getAbilityStatus() == AbilityStatus.MOVING)
                             .findFirst().ifPresent(tendril -> {
 //                            new ShootBlockFromLoc(player, name, tendril.getEnd().getLoc(), Material.SNOW, true, true, 2);
-                                new Blast(player, name, true, new ArchetypeVisuals.SnowVisual());
+                                new Blast(player, name, true, new ArchetypeVisuals.SnowVisual(), true);
                                 tendrils.remove(tendril);
                                 tendril.remove();
                             });

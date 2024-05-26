@@ -88,16 +88,16 @@ public class Blocks {
     public static Block getFacingBlock(Player player, double distance) {
         Location loc = player.getEyeLocation().clone();
         Block block = null;
-        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER) != null) {
-            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER);
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER, true) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER, true);
             block = rayTraceResult.getHitBlock();
         }
         return block;
     }
 
     public static Block getFacingBlock(Location loc, Vector dir, double distance) {
-        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER) != null) {
-            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER);
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER, true) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER, true);
             return rayTraceResult.getHitBlock();
         }
         return null;
@@ -106,8 +106,8 @@ public class Blocks {
 
     public static Location getFacingBlockLoc(Player player, double distance) {
         Location loc = player.getEyeLocation().clone();
-        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER) != null) {
-            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER);
+        if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER, true) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER,true );
             Location hitLoc = new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
             return hitLoc;
         }
@@ -115,8 +115,8 @@ public class Blocks {
     }
 
     public static Location getFacingBlockLoc(Location loc, Vector dir, double distance) {
-        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER) != null) {
-            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER);
+        if (loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER, true) != null) {
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, dir, distance, FluidCollisionMode.NEVER, true);
             Location hitLoc = new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
             return hitLoc;
         }

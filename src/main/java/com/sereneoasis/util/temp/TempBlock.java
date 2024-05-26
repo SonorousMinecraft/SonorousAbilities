@@ -102,7 +102,10 @@ public class TempBlock {
     }
 
     public void revert(){
-        block.setBlockData(BLOCK_ORIGINAL_DATA_MAP.get(block));
+        if (BLOCK_ORIGINAL_DATA_MAP.get(block) != null) {
+
+            block.setBlockData(BLOCK_ORIGINAL_DATA_MAP.get(block));
+        }
         BLOCK_ORIGINAL_DATA_MAP.remove(block);
     }
 
@@ -126,12 +129,11 @@ public class TempBlock {
             } else {
                 if (BLOCK_ORIGINAL_DATA_MAP.get(block) != null) {
                     block.setBlockData(BLOCK_ORIGINAL_DATA_MAP.get(block));
-                    BLOCK_ORIGINAL_DATA_MAP.remove(block);
+
 //                Bukkit.broadcastMessage("test");
                 }
-                else {
-//                    Bukkit.broadcastMessage("shit is null");
-                }
+                BLOCK_ORIGINAL_DATA_MAP.remove(block);
+
             }
         });
     }

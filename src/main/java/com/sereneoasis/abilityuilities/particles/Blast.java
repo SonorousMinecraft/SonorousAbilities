@@ -2,7 +2,9 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
+import com.sereneoasis.util.methods.Entities;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -25,11 +27,15 @@ public class Blast extends CoreAbility {
 
     private double angle=0;
 
-    public Blast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual) {
+    private boolean shouldDamage;
+
+
+    public Blast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean shouldDamage) {
         super(player, name);
         this.name = name;
         this.directable = directable;
         this.archetypeVisual = archetypeVisual;
+        this.shouldDamage = shouldDamage;
         this.loc = player.getEyeLocation();
         this.origin = loc.clone();
         this.dir = loc.getDirection();
@@ -46,6 +52,10 @@ public class Blast extends CoreAbility {
 
         if (directable) {
             dir = player.getEyeLocation().getDirection().normalize();
+        }
+
+        if (shouldDamage) {
+            DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
         }
 
         loc.add(dir.clone().multiply(speed));

@@ -42,7 +42,7 @@ public class LightningBolts extends MasterAbility {
 
         bolts.forEach(sourcedBlast -> {
             if (!sourcedBlast.getLoc().getBlock().isPassable() && !DisplayBlock.AIR.getBlocks().contains(sourcedBlast.getLoc().getBlock().getType()) && sourcedBlast.getAbilityStatus() != AbilityStatus.COMPLETE){
-                SkyUtils.lightningStrikeFloorCircle(this,sourcedBlast.getLoc());
+                SkyUtils.lightningStrikeFloorCircle(this,sourcedBlast.getLoc(), 3);
                 sourcedBlast.setAbilityStatus(AbilityStatus.COMPLETE);
             }
 

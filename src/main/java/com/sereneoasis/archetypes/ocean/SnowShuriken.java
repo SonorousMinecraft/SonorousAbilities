@@ -53,7 +53,7 @@ public class SnowShuriken extends CoreAbility {
                     }
                 } else {
                     if (Blocks.isSolid(blast.getLoc())) {
-                        OceanUtils.freeze(blast.getLoc(), radius, sPlayer);
+                        OceanUtils.freeze(blast.getLoc(), 3, sPlayer);
                         blast.remove();
 //                        SunUtils.blockExplode(player, name, blast.getLoc(), radius*10, 1);
 
@@ -67,7 +67,7 @@ public class SnowShuriken extends CoreAbility {
 //                            });
 //                        });
                     } else if (blast.getLoc().getBlock().getType().equals(Material.WATER)){
-                        OceanUtils.freeze(blast.getLoc(), radius, sPlayer);
+                        OceanUtils.freeze(blast.getLoc(), 3, sPlayer);
                     }
                 }
             }
@@ -87,7 +87,7 @@ public class SnowShuriken extends CoreAbility {
             abilityStatus = AbilityStatus.SHOOTING;
         }
         if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
-            Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SnowVisual());
+            Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SnowVisual(), true);
             rays.put(currentShots, blast);
             currentShots++;
         }
