@@ -53,15 +53,9 @@ public class StoneShred extends CoreAbility {
                         TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
                         Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
                         displayBlocks.put(tdb, offset);
-                        if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
-                            TempBlock.getTempBlock(b).revert();
-                            TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000, true);
+                            TempBlock tb = new TempBlock(b, Material.AIR, 60000);
                             sourceTempBlocks.add(tb);
-                        }
-                        else {
-                            TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
-                            sourceTempBlocks.add(tb);
-                        }
+
                     }
                 }
                 abilityStatus = AbilityStatus.CHARGED;

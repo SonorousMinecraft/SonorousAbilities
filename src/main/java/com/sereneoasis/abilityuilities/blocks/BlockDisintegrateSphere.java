@@ -69,13 +69,8 @@ public class BlockDisintegrateSphere extends CoreAbility {
         }
 
         Blocks.getBlocksAroundPoint(loc, currentRadius).stream().forEach(block -> {
-            if (!TempBlock.isTempBlock(block)) {
-                TempBlock tb = new TempBlock(block, Material.LIGHT, duration, true);
-            } else {
-                TempBlock.getTempBlock(block).revert();
-                TempBlock tb = new TempBlock(block, Material.LIGHT, duration, true);
+            TempBlock tb = new TempBlock(block, Material.LIGHT, duration);
 
-            }
         });
 
         if (currentRadius > radius) {

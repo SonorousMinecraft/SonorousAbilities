@@ -61,10 +61,10 @@ public class SoulSlash extends MasterAbility {
                                     sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCING);
                                     sourceBlocksToPlayer.add(sourceBlockToPlayer);
 
-                                    TempBlock tb = new TempBlock(b, Material.AIR, 60000, true);
+                                    TempBlock tb = new TempBlock(b, Material.AIR, 60000);
                                     for (Block surrounding : Blocks.getBlocksAroundPoint(b.getLocation(), 2)) {
                                         if (surrounding != null && !surrounding.isPassable()) {
-                                            TempBlock surroundingTB = new TempBlock(surrounding, Material.AIR, 60000, true);
+                                            TempBlock surroundingTB = new TempBlock(surrounding, Material.AIR, 60000);
                                             sourceTempBlocks.add(surroundingTB);
 
                                         }

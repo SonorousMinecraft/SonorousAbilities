@@ -383,9 +383,9 @@ public class SerenityListener implements Listener {
                     new SeaSurf(player);
                 }
                 break;
-            case "EarthFist":
-                new EarthFist(player);
-                break;
+//            case "EarthFist":
+//                new EarthFist(player);
+//                break;
         }
 
     }

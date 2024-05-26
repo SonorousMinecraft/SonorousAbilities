@@ -70,7 +70,7 @@ public class VoidChasm extends MasterAbility {
                 Set<Block> outer = Blocks.getBlocksAroundPoint(center, radius );
                 outer.removeAll(inner);
                 inner.stream().forEach(block -> {
-                    TempBlock tb = new TempBlock(block, Material.LIGHT, duration, true);
+                    TempBlock tb = new TempBlock(block, Material.LIGHT, duration);
                     chasm.add(tb);
                 });
                 outer.stream().forEach(block -> {
@@ -79,7 +79,7 @@ public class VoidChasm extends MasterAbility {
                         BlockState state = Material.END_GATEWAY.createBlockData().createBlockState();
 //                    ((EndGateway) state).setAge(-1000000);
 
-                        TempBlock tb = new TempBlock(block, state.getBlockData(), duration, true);
+                        TempBlock tb = new TempBlock(block, state.getBlockData(), duration);
 //                    TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration, true);
                         if (block.getState() instanceof EndGateway endGateway )
                         {
@@ -88,7 +88,7 @@ public class VoidChasm extends MasterAbility {
                             chasm.add(tb);
                         }
                     } else {
-                        TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration, true);
+                        TempBlock tb = new TempBlock(block, Material.BLACK_CONCRETE.createBlockData(), duration);
                         chasm.add(tb);
                     }
                 });

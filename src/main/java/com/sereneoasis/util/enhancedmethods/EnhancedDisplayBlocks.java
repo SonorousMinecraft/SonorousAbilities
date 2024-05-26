@@ -25,31 +25,21 @@ public class EnhancedDisplayBlocks {
 
     public static void selectSphereDBs(CoreAbility coreAbility, Location loc, long revertTime, Vector moveVector){
         EnhancedBlocks.getFacingSphereBlocks(coreAbility, loc).forEach(block -> {
-            if (TempBlock.isTempBlock(block)){
-                TempBlock.getTempBlock(block).revert();
-                TempDisplayBlock tdb = new TempDisplayBlock(block.getLocation().getBlock(), block.getType(), revertTime, 1);
-                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
 
-            } else {
                 TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
                 tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
-            }
+
 
         });
     }
 
     public static void selectCylinderDBs(CoreAbility coreAbility, double height, long revertTime, Vector moveVector){
         EnhancedBlocks.getTopCylinderBlocks(coreAbility, height).forEach(block -> {
-            if (TempBlock.isTempBlock(block)){
-                TempBlock.getTempBlock(block).revert();
-                TempDisplayBlock tdb = new TempDisplayBlock(block.getLocation().getBlock(), block.getType(), revertTime, 1);
-                tdb.getBlockDisplay().setGlowing(true);
-                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
-            } else {
+
                 TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
                 tdb.getBlockDisplay().setGlowing(true);
                 tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
-            }
+
         });
     }
 
@@ -99,7 +89,7 @@ public class EnhancedDisplayBlocks {
     public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, Material material){
         Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
         EnhancedBlocksArchetypeLess.getTopCircleBlocks(coreAbility).forEach(b -> {
-            TempBlock tb = new TempBlock(b, material, coreAbility.getDuration(), true);
+            TempBlock tb = new TempBlock(b, material, coreAbility.getDuration());
             TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), material, coreAbility.getDuration(), coreAbility.getSize());
             tempDisplayBlocks.add(tdb);
         });
@@ -110,7 +100,7 @@ public class EnhancedDisplayBlocks {
     public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, DisplayBlock displayBlock){
         Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
         EnhancedBlocksArchetypeLess.getTopCircleBlocks(coreAbility).forEach(b -> {
-            TempBlock tb = new TempBlock(b, displayBlock, coreAbility.getDuration(), true);
+            TempBlock tb = new TempBlock(b, displayBlock, coreAbility.getDuration());
             TempDisplayBlock tdb = new TempDisplayBlock(b.getLocation(), b.getType(), coreAbility.getDuration(), coreAbility.getSize());
             tempDisplayBlocks.add(tdb);
         });

@@ -43,7 +43,7 @@ public class PhantomBreath extends MasterAbility {
                         breath.getLocs().forEach(location -> {
                             Block b = location.getBlock();
                             if (!b.isPassable() && !sourceBlocks.contains(b)) {
-                                TempBlock tb = new TempBlock(b, Material.BLACK_CONCRETE, duration, true);
+                                TempBlock tb = new TempBlock(b, Material.BLACK_CONCRETE, duration);
                                 sourceTempBlocks.add(tb);
                                 sourceBlocks.add(b);
                             }
@@ -98,14 +98,8 @@ public class PhantomBreath extends MasterAbility {
                         }
                     }
                 });
-                if (TempBlock.isTempBlock(block)){
-                    TempBlock.getTempBlock(block).revert();
-                    TempBlock tb = new TempBlock(block.getLocation().getBlock(), Material.AIR, duration, true);
+                    TempBlock tb = new TempBlock(block, Material.AIR, duration);
                     sourceTempBlocks.add(tb);
-                } else {
-                    TempBlock tb = new TempBlock(block, Material.AIR, duration, true);
-                    sourceTempBlocks.add(tb);
-                }
 
             });
 

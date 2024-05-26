@@ -83,15 +83,10 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
                     sourceBlocksToLoc.add(sourceBlockToLoc);
                 }
 
-                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
-                    TempBlock.getTempBlock(b).revert();
-                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.LIGHT, 60000, true);
-                    sourceTempBlocks.add(tb);
-                } else {
-                    TempBlock tb = new TempBlock(b, Material.LIGHT, 60000, true);
+                    TempBlock tb = new TempBlock(b, Material.LIGHT, 60000);
                     sourceTempBlocks.add(tb);
 
-                }
+
 
             }
         }

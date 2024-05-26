@@ -53,7 +53,7 @@ public class Geyser extends MasterAbility {
 
             if (!sources.isEmpty()) {
                 sources.forEach(tempBlock -> {
-                    TempDisplayBlock water = new TempDisplayBlock(tempBlock.getLoc(), DisplayBlock.WATER, 60000, size);
+                    TempDisplayBlock water = new TempDisplayBlock(tempBlock.getBlock().getLocation(), DisplayBlock.WATER, 60000, size);
                     geyser.add(water);
                 });
 //                Bukkit.broadcastMessage("geyser has " + geyser.size());

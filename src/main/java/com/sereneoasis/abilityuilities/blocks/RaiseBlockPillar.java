@@ -102,7 +102,9 @@ public class RaiseBlockPillar extends CoreAbility {
                 if (! solidifiedBlocks.contains(topBlock)) {
                     if (currentHeight >= 1) {
                         TempDisplayBlock tdb = blocks.get(((int) currentHeight) -1);
-                        solidBlocks.add(new TempBlock(topBlock, tdb.getBlockDisplay().getBlock().getMaterial(), duration, false));
+                        if (topBlock.isPassable()) {
+                            solidBlocks.add(new TempBlock(topBlock, tdb.getBlockDisplay().getBlock().getMaterial(), duration));
+                        }
                         solidifiedBlocks.add(topBlock);
                     }
 
@@ -130,7 +132,7 @@ public class RaiseBlockPillar extends CoreAbility {
             isFalling = true;
             solidBlocks.removeIf(tempBlock -> tempBlock.getBlock() == null);
             for (TempBlock b : solidBlocks) {
-                TempDisplayBlock displayBlock = new TempDisplayBlock(b.getLoc(), b.getBlock().getType(), 60000, 1);
+                TempDisplayBlock displayBlock = new TempDisplayBlock(b.getBlock().getLocation(), b.getBlock().getType(), 60000, 1);
                 blocks.add(displayBlock);
                 b.revert();
             }

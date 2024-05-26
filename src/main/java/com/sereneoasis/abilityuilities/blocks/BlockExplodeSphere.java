@@ -81,14 +81,9 @@ public class BlockExplodeSphere extends CoreAbility {
                 displayBlocks.put(tdb, offset);
 
 
-//                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
-                if (TempBlock.isTempBlock(b) && !b.getType().equals(Material.LIGHT)) {
-                    TempBlock tb = new TempBlock(b, Material.LIGHT, 60000, true);
-                    TempBlock.getTempBlock(b).revert();
-                } else {
-                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.LIGHT, 60000, true);
 
-                }
+                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.LIGHT, 60000);
+
 
 //                sourceTempBlocks.add(tb);
             }

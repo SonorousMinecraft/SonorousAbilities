@@ -59,14 +59,9 @@ public class TerraSurf extends CoreAbility {
 //        });
 
         EnhancedBlocks.getFacingSphereBlocks(this, player.getEyeLocation().subtract(dir.clone().multiply(speed * 2)).subtract(0, 4, 0)).forEach(block -> {
-            if (TempBlock.isTempBlock(block)){
-                TempBlock.getTempBlock(block).revert();
-                TempDisplayBlock tdb = new TempDisplayBlock(block.getLocation().getBlock(), block.getType(), 200, 1);
-                tdb.moveToAndMaintainFacing(tdb.getLoc().add(0,0.5,0));
-            } else {
                 TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 200, 1);
                 tdb.moveToAndMaintainFacing(tdb.getLoc().add(0,0.5,0));
-            }
+
 
         });
 

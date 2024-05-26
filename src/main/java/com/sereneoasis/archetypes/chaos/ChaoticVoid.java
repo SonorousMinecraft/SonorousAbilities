@@ -117,7 +117,7 @@ public class ChaoticVoid extends MasterAbility {
                 if (targetBlock != null) {
                     portalsTo.add(BoundingBox.of(targetBlock).expand(radius));
                     for (Block b : Blocks.getBlocksAroundPoint(targetBlock.getLocation(), radius)) {
-                        TempBlock tb = new TempBlock(b, Material.END_GATEWAY, duration, true);
+                        TempBlock tb = new TempBlock(b, Material.END_GATEWAY, duration);
                         tempBlocks.add(tb);
                     }
 
@@ -125,7 +125,7 @@ public class ChaoticVoid extends MasterAbility {
                     Location midpoint = (chaos.getMax().add(chaos.getMin())).multiply(0.5).toLocation(player.getWorld());
                     Location portalFrom = midpoint.add(randomiser).add(0,radius,0);
                     for (Block b : Blocks.getBlocksAroundPoint(portalFrom, radius)) {
-                        TempBlock tb = new TempBlock(b, Material.END_GATEWAY, duration, true);
+                        TempBlock tb = new TempBlock(b, Material.END_GATEWAY, duration);
                         tempBlocks.add(tb);
                     }
 
