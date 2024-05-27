@@ -63,6 +63,7 @@ public class FlamingRays extends MasterAbility {
                             SunUtils.blockExplode(player, name, blast.getLoc(), 3, 1);
                         }
                         if (blast.getAbilityStatus() == AbilityStatus.DAMAGED || blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                            removeHelper(blast);
                             blast.remove();
                             completeShots++;
                         }

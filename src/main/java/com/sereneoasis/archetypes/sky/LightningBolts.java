@@ -52,7 +52,7 @@ public class LightningBolts extends MasterAbility {
             helpers.put(sourcedBlast, (abilityStatus) -> {
                 switch (abilityStatus){
                     case SHOT -> {
-                        sourcedBlast.setAbilityStatus(AbilityStatus.SHOT);
+                        sourcedBlast.setHasClicked();
                     }
                     case SHOOTING -> {
                         if (Blocks.isSolid(sourcedBlast.getLoc())){
@@ -61,10 +61,13 @@ public class LightningBolts extends MasterAbility {
                         if (sourcedBlast.getAbilityStatus() == AbilityStatus.DAMAGED) {
                             SkyUtils.lightningStrike(this, Entities.getAffected(sourcedBlast.getLoc(), hitbox, player).getLocation());
                             sourcedBlast.remove();
+                            removeHelper(sourcedBlast);
                             completeShots++;
                         }
                         if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE) {
                             sourcedBlast.remove();
+                            removeHelper(sourcedBlast);
+
                             completeShots++;
                         }
                     }
