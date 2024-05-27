@@ -46,22 +46,27 @@ public class Blast extends CoreAbility {
 
     @Override
     public void progress() {
-        if (loc.distance(origin) > range) {
-            this.abilityStatus = AbilityStatus.COMPLETE;
-        }
+        if (abilityStatus != AbilityStatus.COMPLETE) {
+            if (loc.distanceSquared(origin) > range * range) {
+                this.abilityStatus = AbilityStatus.COMPLETE;
+            }
 
-        if (directable) {
-            dir = player.getEyeLocation().getDirection().normalize();
-        }
+            if (directable) {
+                dir = player.getEyeLocation().getDirection().normalize();
+            }
 
-        if (shouldDamage) {
-            DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
-        }
+            if (shouldDamage) {
+                if (DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage)) {
+                    abilityStatus = AbilityStatus.DAMAGED;
 
-        loc.add(dir.clone().multiply(speed));
+                }
+            }
+
+            loc.add(dir.clone().multiply(speed));
 //        archetypeVisual.playVisual(loc, size, radius, 10, 1, 5);
-        archetypeVisual.playShotVisual(loc, dir, angle, size, radius, 10, 1, 5);
-        angle+=36*speed;
+            archetypeVisual.playShotVisual(loc, dir, angle, size, radius, 10, 1, 5);
+            angle += 36 * speed;
+        }
     }
 
     public Location getLoc() {

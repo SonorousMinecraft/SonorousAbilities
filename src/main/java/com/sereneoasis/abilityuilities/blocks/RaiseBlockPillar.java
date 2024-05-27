@@ -112,7 +112,7 @@ public class RaiseBlockPillar extends CoreAbility {
 
                 currentHeight += Constants.BLOCK_RAISE_SPEED * speed;
 
-                Entities.getEntitiesAroundPoint(origin.clone().add(0,currentHeight,0), hitbox).forEach(entity -> entity.setVelocity(new Vector(0, Constants.BLOCK_RAISE_SPEED * speed, 0)));
+                Entities.getEntitiesAroundPoint(origin.clone().add(0,currentHeight,0), hitbox).forEach(entity -> entity.setVelocity(entity.getVelocity().add(new Vector(0, Constants.BLOCK_RAISE_SPEED * speed, 0))));
             }
         }
 

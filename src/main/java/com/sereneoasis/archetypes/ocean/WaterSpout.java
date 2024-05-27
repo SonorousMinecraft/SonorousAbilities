@@ -32,11 +32,14 @@ public class WaterSpout extends MasterAbility {
         super(player, name);
 
         if (shouldStart()){
-            isAllowedToFly = player.getAllowFlight();
-            sPlayer.setFly(this);
-            abilityStatus = AbilityStatus.MOVING;
-            this.previousPlayerLoc = player.getLocation();
-            start();
+            Block floor = Blocks.getFacingBlockOrLiquid(player.getEyeLocation(), new Vector(0,-1,0), range);
+            if (floor !=null && floor.getType().equals(Material.WATER)) {
+                isAllowedToFly = player.getAllowFlight();
+                sPlayer.setFly(this);
+                abilityStatus = AbilityStatus.MOVING;
+                this.previousPlayerLoc = player.getLocation();
+                start();
+            }
         }
     }
 

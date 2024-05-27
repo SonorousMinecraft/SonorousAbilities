@@ -37,6 +37,7 @@ public class ArchetypeVisuals {
         @Override
         public void playVisual(Location loc, double size, double radius, int tb, int cloud, int white) {
             TDBs.playTDBs(loc, DisplayBlock.LIGHTNING, tb, size, radius);
+//            Particles.spawnParticle(Particle.ELECTRIC_SPARK, loc, cloud, radius, 0);
             Particles.spawnParticle(Particle.ELECTRIC_SPARK, loc, cloud, radius, 0);
             Particles.spawnParticle(Particle.GLOW, loc, cloud, radius, 0);
 

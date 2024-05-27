@@ -1,76 +1,78 @@
 package com.sereneoasis.archetypes.sky;
 
-import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.particles.SourcedBlast;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Entities;
 import org.bukkit.entity.Player;
-
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 public class LightningBolts extends MasterAbility {
 
-    public static final String name = "LightningBolts";
+    private static final String name = "LightningBolts";
 
-    private int shots = 5, currentShots = 0;
-
-    private Set<SourcedBlast> bolts = new HashSet<>();
-
+    private int currentShots = 0, shots = 5, completeShots = 0;
 
     public LightningBolts(Player player) {
         super(player, name);
 
-        if (shouldStart()){
+        if (shouldStart()) {
+            abilityStatus = AbilityStatus.SHOOTING;
             start();
-            setHasSneaked();
         }
     }
 
     @Override
-    public void progress() throws ReflectiveOperationException {
-        if (currentShots == shots) {
-//            bolts.removeIf(Objects::isNull);
-            if (bolts.stream().allMatch(sourcedBlast -> sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE))
-            {
-                this.remove();
-            }
+    public void progress() {
+        iterateHelpers(abilityStatus);
+        
+        AbilityUtils.showShots(this, currentShots, shots);
+
+        if (completeShots == shots) {
+            this.remove();
         }
 
-        bolts.forEach(sourcedBlast -> {
-            if (!sourcedBlast.getLoc().getBlock().isPassable() && !DisplayBlock.AIR.getBlocks().contains(sourcedBlast.getLoc().getBlock().getType()) && sourcedBlast.getAbilityStatus() != AbilityStatus.COMPLETE){
-                SkyUtils.lightningStrikeFloorCircle(this,sourcedBlast.getLoc(), 3);
-                sourcedBlast.setAbilityStatus(AbilityStatus.COMPLETE);
-            }
-
-            if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE){
-                sourcedBlast.remove();
-            }
-        });
-
-    }
-
-    public void setHasSneaked(){
-        if (currentShots < shots){
-            currentShots++;
-            SourcedBlast sourcedBlast = new SourcedBlast(player, name, false, new ArchetypeVisuals.LightningVisual(), false, true);
-            bolts.add(sourcedBlast);
-        }
-    }
-
-    public void setHasClicked(){
-        bolts.stream().filter(sourcedBlast -> sourcedBlast.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED)
-                .forEach(SourcedBlast::setHasClicked);
     }
 
     @Override
     public void remove() {
         super.remove();
-        bolts.forEach(CoreAbility::remove);
         sPlayer.addCooldown(name, cooldown);
+    }
+
+    public void setHasClicked() {
+        iterateHelpers(AbilityStatus.SHOT);
+    }
+
+    public void setHasSneaked(){
+        if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
+            SourcedBlast sourcedBlast = new SourcedBlast(player, name, false, new ArchetypeVisuals.LightningVisual(), false, true);
+            helpers.put(sourcedBlast, (abilityStatus) -> {
+                switch (abilityStatus){
+                    case SHOT -> {
+                        sourcedBlast.setAbilityStatus(AbilityStatus.SHOT);
+                    }
+                    case SHOOTING -> {
+                        if (Blocks.isSolid(sourcedBlast.getLoc())){
+                            SkyUtils.lightningStrikeFloorCircle(this, sourcedBlast.getLoc(), 3);
+                        }
+                        if (sourcedBlast.getAbilityStatus() == AbilityStatus.DAMAGED) {
+                            SkyUtils.lightningStrike(this, Entities.getAffected(sourcedBlast.getLoc(), hitbox, player).getLocation());
+                            sourcedBlast.remove();
+                            completeShots++;
+                        }
+                        if (sourcedBlast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                            sourcedBlast.remove();
+                            completeShots++;
+                        }
+                    }
+                }
+            });
+            currentShots++;
+        }
+        
     }
 
     @Override

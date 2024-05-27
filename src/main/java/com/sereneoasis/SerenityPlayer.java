@@ -282,7 +282,7 @@ public class SerenityPlayer {
             return;
         }
         if (AbilityDataManager.isCombo(ability)) {
-            for (int i = 2; i <= 5; i++) {
+            for (int i = 1; i <= 5; i++) {
                 if (board.getBelowComboSlot(i).equalsIgnoreCase(ability)) {
                     board.setBelowSlot(i, ChatColor.STRIKETHROUGH + ability);
                 }

@@ -36,9 +36,13 @@ public class SeaStream extends MasterAbility {
         super(player, name);
 
         if (shouldStart()){
-            abilityStatus = AbilityStatus.CHARGING;
+            Block facing = Blocks.getFacingBlockOrLiquid(player, sourceRange);
+            if (facing != null && Blocks.getArchetypeBlocks(sPlayer).contains(facing.getType())) {
+                abilityStatus = AbilityStatus.CHARGING;
 //            Bukkit.broadcastMessage("started");
-            start();
+                start();
+            }
+
         }
     }
 

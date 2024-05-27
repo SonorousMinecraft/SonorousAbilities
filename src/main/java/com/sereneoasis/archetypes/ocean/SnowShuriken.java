@@ -1,24 +1,19 @@
 package com.sereneoasis.archetypes.ocean;
 
-import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.particles.Blast;
-import com.sereneoasis.archetypes.ocean.OceanUtils;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import com.sereneoasis.util.methods.Blocks;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-
-public class SnowShuriken extends CoreAbility {
+public class SnowShuriken extends MasterAbility {
 
     private static final String name = "SnowShuriken";
 
-    private int currentShots = 0, shots = 8;
-
-    private HashMap<Integer, Blast> rays = new HashMap<>();
+    private int currentShots = 0, shots = 8, completeShots = 0;
 
     public SnowShuriken(Player player) {
         super(player, name);
@@ -27,12 +22,12 @@ public class SnowShuriken extends CoreAbility {
             abilityStatus = AbilityStatus.CHARGING;
             start();
         }
-
-
     }
 
     @Override
     public void progress() {
+        iterateHelpers(abilityStatus);
+
         if (abilityStatus == AbilityStatus.CHARGING) {
             if (!player.isSneaking()) {
                 this.remove();
@@ -43,35 +38,9 @@ public class SnowShuriken extends CoreAbility {
         }
         AbilityUtils.showCharged(this);
         AbilityUtils.showShots(this, currentShots, shots);
-        if (abilityStatus == AbilityStatus.SHOOTING) {
-            for (int i = 0; i < currentShots; i++) {
-                Blast blast = rays.get(i);
-                if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
-                    if (i == shots-1) {
-                        blast.remove();
-                        this.remove();
-                    }
-                } else {
-                    if (Blocks.isSolid(blast.getLoc())) {
-                        OceanUtils.freeze(blast.getLoc(), 3, sPlayer);
-                        blast.remove();
-//                        SunUtils.blockExplode(player, name, blast.getLoc(), radius*10, 1);
 
-//                        new BlockExplodeSphere(player, name, blast.getLoc(), radius*10, 1);
-//
-//                        Scheduler.performTaskLater(5, () -> {
-//                            Blocks.getBlocksAroundPoint(blast.getLoc(), (radius * 10)+1).forEach(block -> {
-//                                if (!block.isPassable()) {
-//                                    new TempBlock(block, DisplayBlock.SUN, 60000);
-//                                }
-//                            });
-//                        });
-                    } else if (blast.getLoc().getBlock().getType().equals(Material.WATER)){
-                        OceanUtils.freeze(blast.getLoc(), 3, sPlayer);
-                    }
-                }
-            }
-
+        if (completeShots == shots && helpers.isEmpty()) {
+            this.remove();
         }
 
     }
@@ -88,7 +57,21 @@ public class SnowShuriken extends CoreAbility {
         }
         if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
             Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SnowVisual(), true);
-            rays.put(currentShots, blast);
+            addHelper(blast, (abilityStatus) -> {
+                switch (abilityStatus){
+                    case SHOOTING -> {
+                        if (blast.getLoc().getBlock().getType().equals(Material.WATER)){
+                            OceanUtils.freeze(blast.getLoc(), 3, sPlayer);
+                        }
+                        if (blast.getAbilityStatus() == AbilityStatus.DAMAGED || blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                            removeHelper(blast);
+                            completeShots++;
+                        }
+                    }
+                }
+            });
+
+
             currentShots++;
         }
     }

@@ -1,6 +1,6 @@
 package com.sereneoasis.archetypes.sun;
 
-import com.sereneoasis.ability.superclasses.CoreAbility;
+import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.particles.Blast;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
@@ -8,15 +8,11 @@ import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-
-public class FlamingRays extends CoreAbility {
+public class FlamingRays extends MasterAbility {
 
     private static final String name = "FlamingRays";
 
-    private int currentShots = 0, shots = 5;
-
-    private HashMap<Integer, Blast> rays = new HashMap<>();
+    private int currentShots = 0, shots = 8, completeShots = 0;
 
     public FlamingRays(Player player) {
         super(player, name);
@@ -25,12 +21,12 @@ public class FlamingRays extends CoreAbility {
             abilityStatus = AbilityStatus.CHARGING;
             start();
         }
-
-
     }
 
     @Override
     public void progress() {
+        iterateHelpers(abilityStatus);
+
         if (abilityStatus == AbilityStatus.CHARGING) {
             if (!player.isSneaking()) {
                 this.remove();
@@ -41,31 +37,9 @@ public class FlamingRays extends CoreAbility {
         }
         AbilityUtils.showCharged(this);
         AbilityUtils.showShots(this, currentShots, shots);
-        if (abilityStatus == AbilityStatus.SHOOTING) {
-            for (int i = 0; i < currentShots; i++) {
-                Blast blast = rays.get(i);
-                if (blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
-                    if (i == shots-1) {
-                        blast.remove();
-                        this.remove();
-                    }
-                } else {
-                    if (Blocks.isSolid(blast.getLoc())) {
-                        SunUtils.blockExplode(player, name, blast.getLoc(), 3, 1);
 
-//                        new BlockExplodeSphere(player, name, blast.getLoc(), radius*10, 1);
-//
-//                        Scheduler.performTaskLater(5, () -> {
-//                            Blocks.getBlocksAroundPoint(blast.getLoc(), (radius * 10)+1).forEach(block -> {
-//                                if (!block.isPassable()) {
-//                                    new TempBlock(block, DisplayBlock.SUN, 60000);
-//                                }
-//                            });
-//                        });
-                    }
-                }
-            }
-
+        if (completeShots == shots) {
+            this.remove();
         }
 
     }
@@ -82,16 +56,23 @@ public class FlamingRays extends CoreAbility {
         }
         if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
             Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SunVisual(), true);
-            rays.put(currentShots, blast);
+            helpers.put(blast, (abilityStatus) -> {
+                switch (abilityStatus){
+                    case SHOOTING -> {
+                        if (Blocks.isSolid(blast.getLoc())){
+                            SunUtils.blockExplode(player, name, blast.getLoc(), 3, 1);
+                        }
+                        if (blast.getAbilityStatus() == AbilityStatus.DAMAGED || blast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                            blast.remove();
+                            completeShots++;
+                        }
+                    }
+                }
+            });
             currentShots++;
         }
     }
 
-
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

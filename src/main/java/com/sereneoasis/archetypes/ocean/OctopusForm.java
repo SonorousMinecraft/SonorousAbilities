@@ -1,7 +1,6 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.MasterAbility;
-import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.abilityuilities.blocks.forcetype.ShootBlocksFromLocGivenType;
 import com.sereneoasis.abilityuilities.particles.Blast;
 import com.sereneoasis.archetypes.DisplayBlock;
@@ -12,8 +11,6 @@ import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.methods.collections.CollectionUtils;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -154,9 +151,11 @@ public class OctopusForm extends MasterAbility {
             tendrils.keySet().forEach(Tendril::remove);
             sPlayer.addCooldown(name, cooldown);
             this.remove();
-            player.setFlySpeed(1);
+            player.setFlySpeed(0.1F);
         }
     }
+
+
 
     private void setMoving(){
         sPlayer.setFly(this);

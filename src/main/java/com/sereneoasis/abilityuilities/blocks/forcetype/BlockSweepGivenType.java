@@ -66,7 +66,7 @@ public class BlockSweepGivenType extends CoreAbility {
             Set<Location> newLocs = new HashSet<>(oldLocs);
             oldLocs.forEach(location -> {
                 Location newLoc = Locations.getNextLocLiquid(location, dir, speed);
-                if (newLoc != null)
+                if (newLoc != null && Blocks.getArchetypeBlocks(sPlayer).contains(newLoc.getBlock().getType()))
                 {
 
                     newLocs.add(newLoc);
