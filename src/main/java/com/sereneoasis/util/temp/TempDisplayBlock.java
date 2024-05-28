@@ -19,6 +19,7 @@ import org.bukkit.craftbukkit.v1_20_R3.entity.CraftBlockDisplay;
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftBlockDisplay;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
+import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Vector3d;
@@ -255,11 +256,51 @@ public class TempDisplayBlock {
 
             ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
             ((CraftBlockDisplay) blockDisplay).getHandle().setRot(newLoc.getYaw(), newLoc.getPitch());
+
+            Location loc = newLoc.clone();
+            loc.setPitch(((CraftBlockDisplay) blockDisplay).getPitch());
+            loc.setYaw(((CraftBlockDisplay) blockDisplay).getYaw());
+
+            Vector left = Vectors.getLeftSideNormalisedVector(loc);
+            Vector right = Vectors.getRightSideNormalisedVector(loc);
+
+            Vector forward = new Vector(0,0,1).rotateAroundX(-Math.toRadians(loc.getPitch())).rotateAroundY(-Math.toRadians(((CraftBlockDisplay) blockDisplay).getYaw()));
+//            Vector left = forward.clone().rotateAroundY(Math.toRadians(90));
+//            Vector right = forward.clone().rotateAroundY(Math.toRadians(-90));
+
+
+            //bottom left
+            Location closeBottomLeft = loc.clone().add(Vectors.getDown(loc, size/2 )).add(left.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farBottomLeft = loc.clone().add(Vectors.getDown(loc, size/2 )).add(left.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+            Location closeBottomRight = loc.clone().add(Vectors.getDown(loc, size/2 )).add(right.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farBottomRight = loc.clone().add(Vectors.getDown(loc, size/2 )).add(right.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+
+            // top right
+            Location closeTopRight = loc.clone().add(Vectors.getUp(loc, size/2)).add(right.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farTopRight = loc.clone().add(Vectors.getUp(loc, size/2)).add(right.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+            Location closeTopLeft = loc.clone().add(Vectors.getUp(loc, size/2)).add(left.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farTopLeft = loc.clone().add(Vectors.getUp(loc, size/2)).add(left.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+
+            List<Location>locs = List.of(closeBottomLeft, farBottomLeft, closeBottomRight, farBottomRight, closeTopRight, farTopRight, closeTopLeft, farTopLeft);
+
+//            Location maxLoc =  boundingBox.getMax().toLocation(blockDisplay.getWorld());
+//            Location minLoc = boundingBox.getMin().toLocation(blockDisplay.getWorld());
+
+            if ( ! isInvisible() &&  !this.getBlockDisplay().isGlowing() && isLocSolid(locs) ) {
+                this.setInvisible();
+            } else if (this.isInvisible() && !isLocSolid(locs)){
+                setVisible();
+            }
+
         } catch (IllegalArgumentException exception){
             Serenity.getPlugin().getLogger().warning("Block display new location invalid");
         }
 
 
+    }
+
+    private boolean isLocSolid(List<Location> locs){
+        return locs.stream().anyMatch(location -> location.getBlock().getType().isSolid());
     }
 
     public void moveToAndMaintainFacing(Location newLoc){
@@ -275,6 +316,43 @@ public class TempDisplayBlock {
 
             ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
             ((CraftBlockDisplay) blockDisplay).getHandle().setRot(((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
+
+            Location loc = newLoc.clone();
+            loc.setPitch(((CraftBlockDisplay) blockDisplay).getPitch());
+            loc.setYaw(((CraftBlockDisplay) blockDisplay).getYaw());
+
+            Vector left = Vectors.getLeftSideNormalisedVector(loc);
+            Vector right = Vectors.getRightSideNormalisedVector(loc);
+
+            Vector forward = new Vector(0,0,1).rotateAroundX(-Math.toRadians(((CraftBlockDisplay) blockDisplay).getPitch())).rotateAroundY(-Math.toRadians(((CraftBlockDisplay) blockDisplay).getYaw()));
+//            Vector left = forward.clone().rotateAroundY(Math.toRadians(90));
+//            Vector right = forward.clone().rotateAroundY(Math.toRadians(-90));
+
+
+            //bottom left
+            Location closeBottomLeft = loc.clone().add(Vectors.getDown(loc, size/2 )).add(left.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farBottomLeft = loc.clone().add(Vectors.getDown(loc, size/2 )).add(left.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+            Location closeBottomRight = loc.clone().add(Vectors.getDown(loc, size/2 )).add(right.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farBottomRight = loc.clone().add(Vectors.getDown(loc, size/2 )).add(right.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+
+            // top right
+            Location closeTopRight = loc.clone().add(Vectors.getUp(loc, size/2)).add(right.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farTopRight = loc.clone().add(Vectors.getUp(loc, size/2)).add(right.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+            Location closeTopLeft = loc.clone().add(Vectors.getUp(loc, size/2)).add(left.clone().multiply(size/2)).subtract(forward.clone().multiply(size/2));
+            Location farTopLeft = loc.clone().add(Vectors.getUp(loc, size/2)).add(left.clone().multiply(size/2)).add(forward.clone().multiply(size/2));
+
+            List<Location>locs = List.of(closeBottomLeft, farBottomLeft, closeBottomRight, farBottomRight, closeTopRight, farTopRight, closeTopLeft, farTopLeft);
+
+//            Location maxLoc =  boundingBox.getMax().toLocation(blockDisplay.getWorld());
+//            Location minLoc = boundingBox.getMin().toLocation(blockDisplay.getWorld());
+
+            if ( ! isInvisible() &&  !this.getBlockDisplay().isGlowing() && isLocSolid(locs) ) {
+                this.setInvisible();
+            } else if (this.isInvisible() && !isLocSolid(locs)){
+                setVisible();
+            }
+
+
 
         } catch (IllegalArgumentException exception){
             Serenity.getPlugin().getLogger().warning("Block display new location invalid");
@@ -297,6 +375,11 @@ public class TempDisplayBlock {
 
     public void setInvisible(){
         ((CraftBlockDisplay) blockDisplay).getHandle().setViewRange(0);
+    }
+
+    private boolean isInvisible(){
+        return  ((CraftBlockDisplay) blockDisplay).getHandle().getViewRange() == 0;
+
     }
 
     public Location getLoc(){
