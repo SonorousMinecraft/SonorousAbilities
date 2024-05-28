@@ -7,6 +7,8 @@ import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class LightningBolts extends MasterAbility {
@@ -20,6 +22,7 @@ public class LightningBolts extends MasterAbility {
 
         if (shouldStart()) {
             abilityStatus = AbilityStatus.SHOOTING;
+            setHasSneaked();
             start();
         }
     }
@@ -57,9 +60,14 @@ public class LightningBolts extends MasterAbility {
                     case SHOOTING -> {
                         if (Blocks.isSolid(sourcedBlast.getLoc())){
                             SkyUtils.lightningStrikeFloorCircle(this, sourcedBlast.getLoc(), 3);
+                            sourcedBlast.remove();
+                            removeHelper(sourcedBlast);
+                            completeShots++;
                         }
                         if (sourcedBlast.getAbilityStatus() == AbilityStatus.DAMAGED) {
-                            SkyUtils.lightningStrike(this, Entities.getAffected(sourcedBlast.getLoc(), hitbox, player).getLocation());
+                            if (Entities.getAffected(sourcedBlast.getLoc(), hitbox, player) != null) {
+                                SkyUtils.lightningStrike(this, (Entities.getAffected(sourcedBlast.getLoc(), hitbox, player).getLocation()));
+                            }
                             sourcedBlast.remove();
                             removeHelper(sourcedBlast);
                             completeShots++;
