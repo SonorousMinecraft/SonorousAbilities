@@ -231,9 +231,9 @@ public class ConfigManager {
                 2, 0.9, 3, 40, 1.3, 10, 0.9);
 
 
-        saveConfigValuesAbility(earth, "EarthFist", EARTH.toString(), "description", "Left click while facing an earth block to cause a ring of rocks to circle you, left click to fire",
-                0, 5000, 0,
-                2, 0.9, 0, 20, 1.3, 10, 0.9);
+//        saveConfigValuesAbility(earth, "EarthFist", EARTH.toString(), "description", "Left click while facing an earth block to cause a ring of rocks to circle you, left click to fire",
+//                0, 5000, 0,
+//                2, 0.9, 0, 20, 1.3, 10, 0.9);
 
         saveAttributeValuesArchetype(earth, EARTH, 0, 0, 0, 0,
                 0.0, 0, 0);
@@ -276,9 +276,9 @@ public class ConfigManager {
                 0, 3000, 0,
                 1, 1.0, 4, 30, 1.5, 0, 0.5);
 
-        saveConfigValuesAbility(chaos, "ChaoticVoid", CHAOS.toString(), "description", "Left click to enable and create portals to enter a pocket dimension in which you can create rifts",
-                0, 3000, 60000,
-                0, 0, 3, 0, 0, 30, 0);
+//        saveConfigValuesAbility(chaos, "ChaoticVoid", CHAOS.toString(), "description", "Left click to enable and create portals to enter a pocket dimension in which you can create rifts",
+//                0, 3000, 60000,
+//                0, 0, 3, 0, 0, 30, 0);
 
         saveConfigValuesAbility(chaos, "Supernova", CHAOS.toString(), "description", "Left click to create a Singularity, hold sneak to bring it towards you \n use crystals to explode blocks by left clicking while sneaking or fire by left clicking",
                 0, 10000, 30000,

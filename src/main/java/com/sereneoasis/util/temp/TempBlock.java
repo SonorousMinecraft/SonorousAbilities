@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TempBlock {
 
-    public static final WeakHashMap<Block, PriorityQueue<TempBlock>> INSTANCES= new WeakHashMap<>();
+    public static final HashMap<Block, PriorityQueue<TempBlock>> INSTANCES= new HashMap<>();
 
     private static final HashMap<Block, BlockData> BLOCK_ORIGINAL_DATA_MAP = new HashMap<>();
 
@@ -22,6 +22,7 @@ public class TempBlock {
     private  BlockData previousData;
 
     private Block block;
+
 
     public Block getBlock() {
         return block;
@@ -103,10 +104,10 @@ public class TempBlock {
 
     public void revert(){
         if (BLOCK_ORIGINAL_DATA_MAP.get(block) != null) {
-
             block.setBlockData(BLOCK_ORIGINAL_DATA_MAP.get(block));
         }
         BLOCK_ORIGINAL_DATA_MAP.remove(block);
+        INSTANCES.remove(block);
     }
 
     public static boolean isTempBlock(Block block){
@@ -114,6 +115,7 @@ public class TempBlock {
     }
 
     public static void checkBlocks(){
+        Set<Block>toRemove = new HashSet<>();
         INSTANCES.forEach((block, priorityQueue) -> {
             if (priorityQueue.peek() != null) {
                 if (priorityQueue.peek().timeToRevert < System.currentTimeMillis()){
@@ -128,13 +130,13 @@ public class TempBlock {
                 }
             } else {
                 if (BLOCK_ORIGINAL_DATA_MAP.get(block) != null) {
+                    toRemove.add(block);
                     block.setBlockData(BLOCK_ORIGINAL_DATA_MAP.get(block));
-
 //                Bukkit.broadcastMessage("test");
                 }
                 BLOCK_ORIGINAL_DATA_MAP.remove(block);
-
             }
         });
-    }
+        toRemove.forEach(removeBlock -> INSTANCES.remove(removeBlock));
+        }
 }

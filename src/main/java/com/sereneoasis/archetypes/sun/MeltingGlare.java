@@ -5,6 +5,7 @@ import com.sereneoasis.abilityuilities.blocks.Laser;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -19,7 +20,8 @@ public class MeltingGlare extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            leftEye = new Laser(player, Locations.getLeftSide(player.getEyeLocation(), 0.25),
+
+                        leftEye = new Laser(player, Locations.getLeftSide(player.getEyeLocation(), 0.25),
                     "MeltingGlare", DisplayBlock.SUN);
             rightEye = new Laser(player, Locations.getRightSide(player.getEyeLocation(), 0.25),
                     "MeltingGlare", DisplayBlock.SUN);

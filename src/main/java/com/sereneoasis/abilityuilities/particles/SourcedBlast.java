@@ -55,7 +55,9 @@ public class SourcedBlast extends CoreAbility {
             }
 
             if (shouldDamage) {
-                DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
+                if (DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage)){
+                    abilityStatus = AbilityStatus.DAMAGED;
+                }
             }
             for (Entity e : Entities.getEntitiesAroundPoint(loc, radius)) {
                 if (e.getUniqueId() == player.getUniqueId() && selfPush || e.getUniqueId() != player.getUniqueId()) {

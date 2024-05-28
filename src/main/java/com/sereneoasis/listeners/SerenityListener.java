@@ -235,13 +235,13 @@ public class SerenityListener implements Listener {
             case "SoulSlash":
                 new SoulSlash(player);
                 break;
-            case "ChaoticVoid":
-                if (CoreAbility.hasAbility(e.getPlayer(), ChaoticVoid.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), ChaoticVoid.class).setHasClicked();
-                } else {
-                    new ChaoticVoid(player);
-                }
-                break;
+//            case "ChaoticVoid":
+//                if (CoreAbility.hasAbility(e.getPlayer(), ChaoticVoid.class)) {
+//                    CoreAbility.getAbility(e.getPlayer(), ChaoticVoid.class).setHasClicked();
+//                } else {
+//                    new ChaoticVoid(player);
+//                }
+//                break;
             case "Supernova":
                 if (CoreAbility.hasAbility(e.getPlayer(), Supernova.class)) {
                     CoreAbility.getAbility(e.getPlayer(), Supernova.class).setHasClicked();
