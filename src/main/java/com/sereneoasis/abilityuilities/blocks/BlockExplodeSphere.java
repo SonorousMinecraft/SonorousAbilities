@@ -82,7 +82,7 @@ public class BlockExplodeSphere extends CoreAbility {
 
 
 
-                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.LIGHT, 60000);
+                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000);
 
 
 //                sourceTempBlocks.add(tb);

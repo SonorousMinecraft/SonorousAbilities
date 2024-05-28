@@ -1,5 +1,6 @@
 package com.sereneoasis.util.temp;
 
+import com.sereneoasis.Serenity;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Vectors;
 import net.minecraft.server.MinecraftServer;
@@ -248,10 +249,17 @@ public class TempDisplayBlock {
     public void moveTo(Location newLoc) {
         //this.blockDisplay.teleport(newLoc);
 
-        Vector diff = Vectors.getDirectionBetweenLocations(blockDisplay.getLocation(), newLoc);
+        try{
+            newLoc.checkFinite();
+            Vector diff = Vectors.getDirectionBetweenLocations(blockDisplay.getLocation(), newLoc);
 
-        ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
-        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(newLoc.getYaw(), newLoc.getPitch());
+            ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
+            ((CraftBlockDisplay) blockDisplay).getHandle().setRot(newLoc.getYaw(), newLoc.getPitch());
+        } catch (IllegalArgumentException exception){
+            Serenity.getPlugin().getLogger().warning("Block display new location invalid");
+        }
+
+
     }
 
     public void moveToAndMaintainFacing(Location newLoc){
@@ -261,10 +269,16 @@ public class TempDisplayBlock {
 //        blockDisplay.teleport(newLoc);
 
 //        ((CraftBlockDisplay) blockDisplay).getHandle().noPhysics = false;
-        Vector diff = Vectors.getDirectionBetweenLocations(blockDisplay.getLocation(), newLoc);
+        try{
+            newLoc.checkFinite();
+            Vector diff = Vectors.getDirectionBetweenLocations(blockDisplay.getLocation(), newLoc);
 
-        ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
-        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
+            ((CraftBlockDisplay) blockDisplay).getHandle().move(MoverType.SELF, new Vec3(diff.getX(), diff.getY(), diff.getZ()));
+            ((CraftBlockDisplay) blockDisplay).getHandle().setRot(((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());
+
+        } catch (IllegalArgumentException exception){
+            Serenity.getPlugin().getLogger().warning("Block display new location invalid");
+        }
 
 //        ((CraftBlockDisplay) blockDisplay).getHandle().teleportTo(newLoc.getX(), newLoc.getY(), newLoc.getZ());
 //        ((CraftBlockDisplay) blockDisplay).getHandle().setRot(((CraftBlockDisplay) blockDisplay).getYaw(), ((CraftBlockDisplay) blockDisplay).getPitch());

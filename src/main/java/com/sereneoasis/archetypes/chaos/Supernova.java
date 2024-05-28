@@ -223,6 +223,7 @@ public class Supernova extends MasterAbility {
         crystalLasers.keySet().forEach(Laser::stop);
 
         rings.forEach(BlockRingAroundPoint::remove);
+        sPlayer.addCooldown(name, cooldown);
 
     }
 }

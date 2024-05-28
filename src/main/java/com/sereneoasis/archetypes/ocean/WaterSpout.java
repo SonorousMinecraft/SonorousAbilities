@@ -53,7 +53,7 @@ public class WaterSpout extends MasterAbility {
         switch (abilityStatus){
             case MOVING -> {
                 Block floor = Blocks.getFacingBlockOrLiquid(player.getEyeLocation(), new Vector(0,-1,0), range);
-                if (floor !=null && floor.getType().equals(Material.WATER)){
+                if (floor !=null && (floor.getType().equals(Material.WATER) || floor.getType().equals(Material.KELP_PLANT) || floor.getType().equals(Material.TALL_SEAGRASS) || floor.getType().equals(Material.SEAGRASS))){
                     double distance = player.getLocation().getBlockY() - floor.getY();
                     List<Location> spoutLocs = Locations.getPointsAlongLine(player.getLocation(), player.getLocation().subtract(0, distance , 0), size/2);
 

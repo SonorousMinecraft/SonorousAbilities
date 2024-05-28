@@ -83,7 +83,7 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
                     sourceBlocksToLoc.add(sourceBlockToLoc);
                 }
 
-                    TempBlock tb = new TempBlock(b, Material.LIGHT, 60000);
+                    TempBlock tb = new TempBlock(b, Material.AIR, 60000);
                     sourceTempBlocks.add(tb);
 
 

@@ -40,9 +40,12 @@ public class TabAutoCompletion implements TabCompleter {
                     case "preset", "p" -> {
                         return List.of("create, bind, delete");
                     }
+                    case "help", "h" -> {
+                        return AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype()).stream().filter(s -> !AbilityDataManager.isCombo(s)).collect(Collectors.toList());
+                    }
 
                     default -> {
-                        return List.of("choose", "display", "help", "preset");
+                        return List.of("choose", "display", "help", "preset", "bind");
                     }
                 }
             } else if (strings.length == 3){

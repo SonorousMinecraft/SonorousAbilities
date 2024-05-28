@@ -71,7 +71,9 @@ public class CloudStep extends CoreAbility {
                 EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this, floorLoc, floorLoc.getBlockY())
                         .stream()
                         .forEach(block -> {
-                            new TempBlock(block, DisplayBlock.AIR, System.currentTimeMillis() - duration);
+                            if (!TempBlock.isTempBlock(block)) {
+                                new TempBlock(block, DisplayBlock.AIR, 2000);
+                            }
                         });
             }
         }
