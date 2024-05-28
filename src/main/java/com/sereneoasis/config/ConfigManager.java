@@ -203,7 +203,7 @@ public class ConfigManager {
 
 
         saveConfigValuesCombo(earth, "Bulwark", EARTH.toString(), "description", "Tap sneak with EarthWall to raise walls around you",
-                0, 2000, 20000,
+                0, 5000, 20000,
                 0, 1.5, 0, 6, 5, 15, 1, bulwarkAbilities);
 
         saveConfigValuesAbility(earth, "StoneShred", Archetype.EARTH.toString(), "description", "Hold sneak whilst facing earth blocks and left click to fire",

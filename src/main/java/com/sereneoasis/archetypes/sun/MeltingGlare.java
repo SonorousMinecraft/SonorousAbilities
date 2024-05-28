@@ -62,7 +62,7 @@ public class MeltingGlare extends CoreAbility {
             Location facing = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), tempRange);
 
             if (player.getLocation().getPitch() > 50 ) {
-                player.setVelocity(dir.clone().multiply(-speed));
+                player.setVelocity(dir.clone().multiply(-speed * 2));
             }
             SunUtils.blockExplode(player, name, facing, 2, 0.25);
         }

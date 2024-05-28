@@ -101,7 +101,6 @@ public class SerenityBoard {
             sidebar.getScore(entry).setScore(slot - 9);
         }
 
-        text = color + text;
         String pre = color + getFirstSplit(text);
         String suf = color + getSecondSplit(text);
         team.setPrefix(pre);
@@ -109,6 +108,27 @@ public class SerenityBoard {
     }
 
     public void setBelowSlot(int slot, String text) {
+
+        slot += 14;
+        Team team = scoreboard.getTeam("SLOT_" + -slot);
+        String entry = genEntry(slot);
+        if (!scoreboard.getEntries().contains(entry)) {
+            sidebar.getScore(entry).setScore(-9 - (slot - 14));
+        }
+
+
+
+        String pre = color + getFirstSplit(text);
+        String suf = color + getSecondSplit(text);
+
+
+
+        team.setPrefix(pre);
+        team.setSuffix(suf);
+    }
+
+    public void strikeThroughBelowSlot(int slot, String text) {
+
         slot += 14;
         Team team = scoreboard.getTeam("SLOT_" + -slot);
         String entry = genEntry(slot);
@@ -117,18 +137,23 @@ public class SerenityBoard {
         }
 
         text = color + text;
+
+
         String pre = color + getFirstSplit(text);
         String suf = color + getSecondSplit(text);
+
+
 
         team.setPrefix(pre);
         team.setSuffix(suf);
     }
 
+
     public String getBelowComboSlot(int slot) {
         slot += 14;
         Team team = scoreboard.getTeam("SLOT_" + -slot);
-        if (team.getPrefix() != null) {
-            return team.getPrefix();
+        if (team.getPrefix() != null && team.getSuffix() != null) {
+            return team.getPrefix() + team.getSuffix();
         }
         return "";
     }

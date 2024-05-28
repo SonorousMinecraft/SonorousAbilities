@@ -7,7 +7,8 @@ import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
 import com.sereneoasis.util.methods.Colors;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.AttributeModifier;
@@ -258,7 +259,7 @@ public class SerenityPlayer {
                 String ability = entry.getKey();
 
                 for (int i = 2; i <= 5; i++) {
-                    if (board.getBelowComboSlot(i).equalsIgnoreCase(ChatColor.STRIKETHROUGH + ability)) {
+                    if (ChatColor.stripColor(board.getBelowComboSlot(i)).equalsIgnoreCase(ability)) {
                         board.setBelowSlot(i, ability);
                     }
                 }
@@ -282,8 +283,9 @@ public class SerenityPlayer {
             return;
         }
         if (AbilityDataManager.isCombo(ability)) {
-            for (int i = 1; i <= 5; i++) {
-                if (board.getBelowComboSlot(i).equalsIgnoreCase(ability)) {
+            for (int i = 2; i <= 5; i++) {
+//                Bukkit.broadcastMessage(i+ "\n" + board.getBelowComboSlot(i) + " != " + ability);
+                if (ChatColor.stripColor(board.getBelowComboSlot(i)).equalsIgnoreCase(ability)) {
                     board.setBelowSlot(i, ChatColor.STRIKETHROUGH + ability);
                 }
             }

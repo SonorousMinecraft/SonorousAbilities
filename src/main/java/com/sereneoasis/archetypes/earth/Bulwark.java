@@ -12,12 +12,12 @@ import java.util.Set;
 
 public class Bulwark extends CoreAbility {
 
-    private final String name = "Bulwark";
+    private static final String name = "Bulwark";
 
     private Set<RaiseBlockPillar> raiseBlockPillars = new HashSet<>();
 
     public Bulwark(Player player) {
-        super(player, "Bulwark");
+        super(player, name);
 
         if (shouldStart()) {
             Set<Block> blocks = EnhancedBlocks.getTopHCircleBlocks(this);
@@ -44,13 +44,20 @@ public class Bulwark extends CoreAbility {
             if (raiseBlockPillars.stream().allMatch(raiseBlockPillar -> raiseBlockPillar.getAbilityStatus() == AbilityStatus.DROPPED)) {
                 raiseBlockPillars.forEach(RaiseBlockPillar::revertAllTempDisplayBlocks);
                 this.remove();
-                sPlayer.addCooldown(name, cooldown);
             } else {
                 raiseBlockPillars.forEach(RaiseBlockPillar::drop);
+
             }
         }
     }
 
+    @Override
+    public void remove() {
+        super.remove();
+        sPlayer.addCooldown(name, cooldown);
+
+//        sPlayer.addCooldown(name, cooldown);
+    }
 
     @Override
     public String getName() {
