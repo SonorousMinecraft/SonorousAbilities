@@ -3,6 +3,7 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.SourcedBlast;
 import com.sereneoasis.util.AbilityStatus;
+import com.sereneoasis.util.equipment.ItemStackUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.entity.Player;
 
@@ -17,7 +18,6 @@ public class SkyBlast extends CoreAbility {
         if (shouldStart()) {
             this.sourcedBlast = new SourcedBlast(player, "SkyBlast", false, new ArchetypeVisuals.AirVisual(), true, false);
             start();
-            return;
         }
 
 
