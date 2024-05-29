@@ -225,13 +225,13 @@ public class SerenityListener implements Listener {
                     new Limbo(player);
                 }
                 break;
-            case "VoidChasm":
-                if (CoreAbility.hasAbility(e.getPlayer(), VoidChasm.class)) {
-                    CoreAbility.getAbility(e.getPlayer(), VoidChasm.class).setHasClicked();
-                } else {
-                    new VoidChasm(player);
-                }
-                break;
+//            case "VoidChasm":
+//                if (CoreAbility.hasAbility(e.getPlayer(), VoidChasm.class)) {
+//                    CoreAbility.getAbility(e.getPlayer(), VoidChasm.class).setHasClicked();
+//                } else {
+//                    new VoidChasm(player);
+//                }
+//                break;
             case "SoulSlash":
                 new SoulSlash(player);
                 break;

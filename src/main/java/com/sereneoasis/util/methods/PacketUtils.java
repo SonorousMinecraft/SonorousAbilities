@@ -98,6 +98,7 @@ public class PacketUtils {
 
         CraftEntity craftEntity = (CraftEntity) target;
 
+
 //        ArmorStand armorStand = Display.createArmorStandClip(player.getLocation());
 //        CraftArmorStand craftArmorStand = (CraftArmorStand) armorStand;
 
