@@ -13,8 +13,10 @@ import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
 import com.sereneoasis.displays.SerenityBoard;
+import com.sereneoasis.util.methods.ChatMessage;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempBlock;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -81,7 +83,7 @@ public class SerenityListener implements Listener {
         Player player = (Player) e.getDamager();
 
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
-        if (sPlayer == null) {
+        if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
         String ability = sPlayer.getHeldAbility();
@@ -120,7 +122,6 @@ public class SerenityListener implements Listener {
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent e ) throws ReflectiveOperationException{
 
-
         Player player = e.getPlayer();
         if (player == null) {
             return;
@@ -129,7 +130,7 @@ public class SerenityListener implements Listener {
 
 
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
-        if (sPlayer == null) {
+        if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
         String ability = sPlayer.getHeldAbility();
@@ -154,7 +155,7 @@ public class SerenityListener implements Listener {
         }
 
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
-        if (sPlayer == null) {
+        if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
         String ability = sPlayer.getHeldAbility();
@@ -401,7 +402,7 @@ public class SerenityListener implements Listener {
             return;
         }
         SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
-        if (sPlayer == null) {
+        if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
         String ability = sPlayer.getHeldAbility();
@@ -560,6 +561,42 @@ public class SerenityListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onSwapHands(PlayerSwapHandItemsEvent event){
+        Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+
+        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        if (sPlayer == null) {
+            return;
+        }
+        SerenityBoard board = SerenityBoard.getByPlayer(player);
+        if (board == null) {
+            Bukkit.broadcastMessage("this board is null");
+            return;
+        }
+        if (sPlayer.isOn()) {
+            for (int i = 1; i <= 9; i++) {
+                String ability = sPlayer.getAbilities().get(i);
+                board.setAbilitySlot(i, ChatColor.STRIKETHROUGH + ability);
+            }
+            ChatMessage.sendPlayerMessage(player, "Your powers have been turned off");
+            sPlayer.setOn(false);
+        } else {
+            for (int i = 1; i <= 9; i++) {
+                String ability = sPlayer.getAbilities().get(i);
+                board.setAbilitySlot(i, ability);
+                ChatMessage.sendPlayerMessage(player, "Your powers have been turned on");
+
+                sPlayer.setOn(true);
+            }
+        }
+
+    }
+
 
 //    @EventHandler
 //    public void onPlayerTryToRide(PlayerInteractEntityEvent event){

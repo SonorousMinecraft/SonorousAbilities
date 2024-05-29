@@ -27,6 +27,16 @@ public class SerenityPlayer {
 
     private static final Map<UUID, SerenityPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
 
+    private boolean isOn = true;
+
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public void setOn(boolean on) {
+        isOn = on;
+    }
+
     public static Map<UUID, SerenityPlayer> getSerenityPlayerMap() {
         return SERENITY_PLAYER_MAP;
     }
@@ -249,27 +259,29 @@ public class SerenityPlayer {
     public void removeOldCooldowns() {
         Iterator<Map.Entry<String, Long>> iterator = this.cooldowns.entrySet().iterator();
 
-        while (iterator.hasNext()) {
-            Map.Entry<String, Long> entry = iterator.next();
-            if (System.currentTimeMillis() >= entry.getValue()) {
-                SerenityBoard board = SerenityBoard.getByPlayer(player);
-                if (board == null) {
-                    return;
-                }
-                String ability = entry.getKey();
-
-                for (int i = 2; i <= 5; i++) {
-                    if (ChatColor.stripColor(board.getBelowComboSlot(i)).equalsIgnoreCase(ability)) {
-                        board.setBelowSlot(i, ability);
+        if (isOn) {
+            while (iterator.hasNext()) {
+                Map.Entry<String, Long> entry = iterator.next();
+                if (System.currentTimeMillis() >= entry.getValue()) {
+                    SerenityBoard board = SerenityBoard.getByPlayer(player);
+                    if (board == null) {
+                        return;
                     }
-                }
+                    String ability = entry.getKey();
 
-                for (int i = 1; i <= 9; i++) {
-                    if (abilities.get(i).equals(ability)) {
-                        board.setAbilitySlot(i, ability);
+                    for (int i = 2; i <= 5; i++) {
+                        if (ChatColor.stripColor(board.getBelowComboSlot(i)).equalsIgnoreCase(ability)) {
+                            board.setBelowSlot(i, ability);
+                        }
                     }
+
+                    for (int i = 1; i <= 9; i++) {
+                        if (abilities.get(i).equals(ability)) {
+                            board.setAbilitySlot(i, ability);
+                        }
+                    }
+                    iterator.remove();
                 }
-                iterator.remove();
             }
         }
     }
