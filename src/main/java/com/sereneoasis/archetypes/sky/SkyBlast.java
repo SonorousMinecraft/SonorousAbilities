@@ -6,6 +6,9 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.equipment.ItemStackUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.List;
 
 public class SkyBlast extends CoreAbility {
 
