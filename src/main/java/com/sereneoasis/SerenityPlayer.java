@@ -6,6 +6,7 @@ import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
+import com.sereneoasis.util.SerenityPlayerEquipment;
 import com.sereneoasis.util.equipment.ItemStackUtils;
 import com.sereneoasis.util.methods.Colors;
 import net.md_5.bungee.api.ChatColor;
@@ -31,15 +32,21 @@ public class SerenityPlayer {
 
     private static final Map<UUID, SerenityPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
 
-    private boolean isOn = true;
+    private boolean isOn = false;
 
     public boolean isOn() {
         return isOn;
     }
 
     public void setOn(boolean on) {
+        if (on){
+            serenityPlayerEquipment.switchToSerenity();
+        } else {
+            serenityPlayerEquipment.switchToNormal();
+        }
         isOn = on;
     }
+
 
     public static Map<UUID, SerenityPlayer> getSerenityPlayerMap() {
         return SERENITY_PLAYER_MAP;
@@ -180,7 +187,10 @@ public class SerenityPlayer {
     }
 
 
+
     private Player player;
+
+    private SerenityPlayerEquipment serenityPlayerEquipment;
 
     public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player, HashMap<String, HashMap<Integer, String>> presets) {
         this.name = name;
@@ -188,6 +198,7 @@ public class SerenityPlayer {
         this.archetype = archetype;
         this.player = player;
         this.presets = presets;
+        this.serenityPlayerEquipment = new SerenityPlayerEquipment(this, player);
     }
 
     public static void initialisePlayer(Player player) {

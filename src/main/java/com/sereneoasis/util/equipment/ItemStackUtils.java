@@ -30,7 +30,7 @@ public class ItemStackUtils {
     }
 
 
-    private  static ItemStack createItem(Material material, String displayName, List<String>lore){
+    public static ItemStack createItem(Material material, String displayName, List<String>lore){
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(displayName);

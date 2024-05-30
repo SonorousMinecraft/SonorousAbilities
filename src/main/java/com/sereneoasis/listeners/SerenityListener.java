@@ -589,11 +589,11 @@ public class SerenityListener implements Listener {
             for (int i = 1; i <= 9; i++) {
                 String ability = sPlayer.getAbilities().get(i);
                 board.setAbilitySlot(i, ability);
-                ChatMessage.sendPlayerMessage(player, "Your powers have been turned on");
-
-                sPlayer.setOn(true);
             }
+            ChatMessage.sendPlayerMessage(player, "Your powers have been turned on");
+            sPlayer.setOn(true);
         }
+        event.setCancelled(true);
 
     }
 
