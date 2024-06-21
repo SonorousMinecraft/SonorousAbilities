@@ -220,7 +220,7 @@ public class SerenityPlayer {
             board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
         }
         initialiseAttributePlayer(player, serenityPlayer);
-        serenityPlayer.createEquipment();
+//        serenityPlayer.createEquipment();
     }
 
     public static void initialiseAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
