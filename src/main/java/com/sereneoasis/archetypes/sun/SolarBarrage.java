@@ -22,7 +22,7 @@ public class SolarBarrage extends CoreAbility {
 
     private int sunAmount = 10;
 
-    private double currentOrbitRadius = radius*20;
+    private double currentOrbitRadius = radius * 20;
 
     public SolarBarrage(Player player) {
         super(player, name);
@@ -33,11 +33,11 @@ public class SolarBarrage extends CoreAbility {
 
             Location aboveLoc = player.getEyeLocation().clone().add(0, radius + 2, 0);
 
-            Vector startVec  =  Vectors.getLeftSide(player, radius*20);
+            Vector startVec = Vectors.getLeftSide(player, radius * 20);
 
-            double angleDiff = (double) 360 / (sunAmount+1);
+            double angleDiff = (double) 360 / (sunAmount + 1);
 
-            for (int i = 0 ; i < sunAmount ; i++) {
+            for (int i = 0; i < sunAmount; i++) {
                 Vector offsetVec = startVec.clone().rotateAroundY(Math.toRadians(angleDiff * i));
                 Location sunLoc = aboveLoc.clone().add(offsetVec);
                 BlockSphereBlast sun = new BlockSphereBlast(player, name, sunLoc, false);
@@ -46,7 +46,6 @@ public class SolarBarrage extends CoreAbility {
 
             start();
         }
-
 
 
     }
@@ -64,19 +63,18 @@ public class SolarBarrage extends CoreAbility {
             if (suns.keySet().stream().allMatch(blockSphereBlast -> blockSphereBlast.getAbilityStatus() == AbilityStatus.COMPLETE)) {
                 this.remove();
             }
-        }
-        else if (abilityStatus == AbilityStatus.NOT_SHOT){
+        } else if (abilityStatus == AbilityStatus.NOT_SHOT) {
 
             Location aboveLoc = player.getEyeLocation().clone().add(0, radius + 2, 0);
 
             suns.forEach((blockSphereBlast, vector) -> {
                 blockSphereBlast.moveToLoc(aboveLoc.clone().add(vector.rotateAroundY(Math.toRadians(9)).clone().normalize().multiply(currentOrbitRadius)));
             });
-            currentOrbitRadius -= speed/4;
-            if (currentOrbitRadius < radius*5){
+            currentOrbitRadius -= speed / 4;
+            if (currentOrbitRadius < radius * 5) {
                 abilityStatus = AbilityStatus.CHARGED;
             }
-        } else if (abilityStatus == AbilityStatus.CHARGED){
+        } else if (abilityStatus == AbilityStatus.CHARGED) {
             Location aboveLoc = player.getEyeLocation().clone().add(0, radius + 2, 0);
 
             suns.forEach((blockSphereBlast, vector) -> {
@@ -91,7 +89,7 @@ public class SolarBarrage extends CoreAbility {
             abilityStatus = AbilityStatus.SHOT;
             Iterator<BlockSphereBlast> it = suns.keySet().iterator();
             int currentSun = 0;
-            while (it.hasNext()){
+            while (it.hasNext()) {
                 BlockSphereBlast sun = it.next();
 
                 Scheduler.performTaskLater(currentSun, () -> {
@@ -101,7 +99,7 @@ public class SolarBarrage extends CoreAbility {
                     sun.setAbilityStatus(AbilityStatus.SHOT);
                     Particles.spawnParticle(Particle.EXPLOSION_LARGE, shotLoc, 1, 0, 0);
                 });
-                currentSun+=2;
+                currentSun += 2;
             }
 
 

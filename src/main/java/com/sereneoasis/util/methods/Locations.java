@@ -1,11 +1,9 @@
 package com.sereneoasis.util.methods;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
-import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -15,6 +13,8 @@ import java.util.*;
  * Methods which are related to locations
  */
 public class Locations {
+
+    public static double PI = Math.PI;
 
     public static List<Location> getArc(Location loc1, Location loc2, Location origin, double distance) {
         List<Location> locs = new ArrayList<>();
@@ -86,7 +86,6 @@ public class Locations {
         return locs;
     }
 
-
     public static List<Location> getSphere(Location loc, double radii, int density) {
         final List<Location> sphere = new ArrayList<Location>();
         for (double i = 0; i <= Math.PI; i += Math.PI / density) {
@@ -142,7 +141,6 @@ public class Locations {
         return locs;
     }
 
-
     public static List<Location> getShotLocations(Location loc, int points, Vector dir, double speed) {
         double increment = speed / points;
         List<Location> locs = new ArrayList<>();
@@ -163,50 +161,6 @@ public class Locations {
         }
 
         return locs;
-    }
-
-    private static class Line {
-
-        private Vector dir1;
-        private Vector dir2;
-
-        private Line previous;
-
-        Line(Line previous, Vector dir1, Vector dir2) {
-            this.previous = previous;
-            this.dir1 = dir1;
-            this.dir2 = dir2;
-        }
-
-        Line(LinkedHashMap<Vector, Double> directions) {
-            Vector oldVector = new Vector(0, 0, 0);
-            Line line = null;
-            int i = 0;
-            for (Map.Entry<Vector, Double> entry : directions.entrySet()) {
-                i++;
-                if (i == directions.size()) {
-                    this.previous = line;
-                    this.dir1 = oldVector;
-                    this.dir2 = entry.getKey().multiply(entry.getValue()).add(oldVector);
-                    return;
-                }
-
-                Line newLine = new Line(line, oldVector, entry.getKey().multiply(entry.getValue()).add(oldVector));
-                oldVector = oldVector.add(entry.getKey());
-                line = newLine;
-
-            }
-
-        }
-
-        private Vector getVector(double time) {
-            if (previous == null) {
-                return dir1.multiply(1 - time).add(dir2.multiply(time));
-            } else {
-                return previous.getVector(1 - time).add(dir2.multiply(time));
-            }
-        }
-
     }
 
     public static List<Location> getPolygon(Location loc, double radii, int points) {
@@ -263,14 +217,14 @@ public class Locations {
     public static Set<Location> getCircleLocsAroundPoint(Location loc, double radius, double distance) {
         Set<Location> locs = new HashSet<>();
         radius -= radius / 2;
-            for (double x = -radius; x < radius; x += distance) {
-                for (double z = -radius; z < radius; z += distance) {
-                    Location temploc = loc.clone().add(x, 0, z);
-                    if (temploc.distanceSquared(loc) <= radius * radius) {
-                        locs.add(loc.clone().add(x, 0, z));
-                    }
+        for (double x = -radius; x < radius; x += distance) {
+            for (double z = -radius; z < radius; z += distance) {
+                Location temploc = loc.clone().add(x, 0, z);
+                if (temploc.distanceSquared(loc) <= radius * radius) {
+                    locs.add(loc.clone().add(x, 0, z));
                 }
             }
+        }
         return locs;
     }
 
@@ -294,12 +248,12 @@ public class Locations {
         return location.clone().add(new Vector(Math.cos(angle), 0, Math.sin(angle)).normalize().multiply(distance));
     }
 
-    public static Location getUpLoc(Location loc, double distance){
+    public static Location getUpLoc(Location loc, double distance) {
         Vector up = Vectors.getUp(loc, 1);
         return loc.clone().add(up.multiply(distance));
     }
 
-    public static Location getDownLoc(Location loc, double distance){
+    public static Location getDownLoc(Location loc, double distance) {
         Vector down = Vectors.getDown(loc, 1);
         return loc.clone().add(down.multiply(distance));
     }
@@ -309,19 +263,19 @@ public class Locations {
         return location.clone().subtract(new Vector(Math.cos(angle), 0, Math.sin(angle)).normalize().multiply(distance));
     }
 
-    public static Location getLeftSide(final Location location, Vector dir, double distance){
+    public static Location getLeftSide(final Location location, Vector dir, double distance) {
         return location.clone().add(dir.clone().rotateAroundY(Math.toRadians(90)).normalize().multiply(distance));
     }
 
-    public static Location getLeftSideFromPlayerView(final Location location, Player player, double distance){
+    public static Location getLeftSideFromPlayerView(final Location location, Player player, double distance) {
         return location.clone().add(Vectors.getLeftSideNormalisedVector(player).multiply(distance));
     }
 
-    public static Location getRightSide(final Location location, Vector dir, double distance){
+    public static Location getRightSide(final Location location, Vector dir, double distance) {
         return location.clone().add(dir.clone().rotateAroundY(Math.toRadians(270)).normalize().multiply(distance));
     }
 
-    public static Location getRightSideFromPlayerView(final Location location, Player player, double distance){
+    public static Location getRightSideFromPlayerView(final Location location, Player player, double distance) {
         return location.clone().add(Vectors.getRightSideNormalisedVector(player).multiply(distance));
     }
 
@@ -347,11 +301,9 @@ public class Locations {
         }
     }
 
-    public static double PI = Math.PI;
-
     public static List<Location> getHelix(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise) {
         double tempDistance = 0;
-        List<Location>locs = new ArrayList<>();
+        List<Location> locs = new ArrayList<>();
         for (double d = startAngle; d < (2 * PI) + startAngle; d += (2 * PI / points)) {
             Location tempLoc = loc.clone();
             Vector tempDir = dir.clone();
@@ -369,9 +321,9 @@ public class Locations {
         return locs;
     }
 
-    public  static List<Location> getSeveralHelixes(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise, int helixes) {
+    public static List<Location> getSeveralHelixes(Location loc, Vector dir, double distance, int points, int height, int startAngle, boolean anticlockwise, int helixes) {
         int currentAngle = startAngle;
-        List<Location>locs = new ArrayList<>();
+        List<Location> locs = new ArrayList<>();
         for (int i = 0; i < helixes; i++) {
             locs.addAll(getHelix(loc.clone(), dir, distance, points, height, currentAngle, anticlockwise));
             currentAngle += 360 / helixes;
@@ -410,7 +362,7 @@ public class Locations {
         Location middleLoc = loc.clone();
         Location topLoc = middleLoc.clone().add(0, 1, 0);
         Location bottomLoc = middleLoc.clone().subtract(0, 1, 0);
-        if ( middleLoc.getBlock().getType().isAir()) {
+        if (middleLoc.getBlock().getType().isAir()) {
             if (topLoc.getBlock().getType().isAir()) {
                 loc = topLoc;
             } else if (!(bottomLoc.getBlock().isLiquid() || bottomLoc.getBlock().getType().isAir())) {
@@ -427,5 +379,49 @@ public class Locations {
             }
         }
         return loc;
+    }
+
+    private static class Line {
+
+        private Vector dir1;
+        private Vector dir2;
+
+        private Line previous;
+
+        Line(Line previous, Vector dir1, Vector dir2) {
+            this.previous = previous;
+            this.dir1 = dir1;
+            this.dir2 = dir2;
+        }
+
+        Line(LinkedHashMap<Vector, Double> directions) {
+            Vector oldVector = new Vector(0, 0, 0);
+            Line line = null;
+            int i = 0;
+            for (Map.Entry<Vector, Double> entry : directions.entrySet()) {
+                i++;
+                if (i == directions.size()) {
+                    this.previous = line;
+                    this.dir1 = oldVector;
+                    this.dir2 = entry.getKey().multiply(entry.getValue()).add(oldVector);
+                    return;
+                }
+
+                Line newLine = new Line(line, oldVector, entry.getKey().multiply(entry.getValue()).add(oldVector));
+                oldVector = oldVector.add(entry.getKey());
+                line = newLine;
+
+            }
+
+        }
+
+        private Vector getVector(double time) {
+            if (previous == null) {
+                return dir1.multiply(1 - time).add(dir2.multiply(time));
+            } else {
+                return previous.getVector(1 - time).add(dir2.multiply(time));
+            }
+        }
+
     }
 }

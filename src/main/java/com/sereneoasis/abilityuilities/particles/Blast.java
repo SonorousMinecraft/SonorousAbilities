@@ -25,7 +25,7 @@ public class Blast extends CoreAbility {
 
     private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    private double angle=0;
+    private double angle = 0;
 
     private boolean shouldDamage;
 

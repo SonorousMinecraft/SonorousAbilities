@@ -1,7 +1,6 @@
 package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockSweep;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Constants;
@@ -13,10 +12,11 @@ public class TectonicWave extends CoreAbility {
     private final String name = "TectonicWave";
 
     private BlockSweep sweep;
+
     public TectonicWave(Player player) {
         super(player, "TectonicWave");
 
-        if (shouldStart()){
+        if (shouldStart()) {
             sweep = new BlockSweep(player, name, Color.GREEN);
             if (sweep.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
                 start();
@@ -33,7 +33,7 @@ public class TectonicWave extends CoreAbility {
         }
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         sweep.setHasClicked();
     }
 

@@ -36,7 +36,7 @@ public class BlockRingAroundPlayerGivenType extends CoreAbility {
 
     private boolean clockwise;
 
-    private List<TempDisplayBlock>blocks = new ArrayList<>();
+    private List<TempDisplayBlock> blocks = new ArrayList<>();
 
     private boolean readyToShoot = false;
 
@@ -53,8 +53,8 @@ public class BlockRingAroundPlayerGivenType extends CoreAbility {
         this.dir = Vectors.getDirectionBetweenLocations(startLoc, player.getEyeLocation()).setY(0).normalize();
         rotation = Math.round(player.getEyeLocation().getYaw());
 
-        for (int i = 0; i < rotatePerTick; i++){
-            blocks.add(new TempDisplayBlock(startLoc, type, 60000,  size));
+        for (int i = 0; i < rotatePerTick; i++) {
+            blocks.add(new TempDisplayBlock(startLoc, type, 60000, size));
         }
 
         start();
@@ -64,18 +64,18 @@ public class BlockRingAroundPlayerGivenType extends CoreAbility {
     public void progress() {
 
         dir = player.getEyeLocation().getDirection().setY(0).normalize();
-        int arcDegrees = (int) ( (rotatePerTick * size/3 * 360) / (2 * Math.PI * ringSize));
+        int arcDegrees = (int) ((rotatePerTick * size / 3 * 360) / (2 * Math.PI * ringSize));
         List<Location> locs = Locations.getArcFromTrig(player.getEyeLocation(), ringSize, rotatePerTick, dir, orientation,
                 rotation, rotation + arcDegrees, clockwise);
 
         loc = locs.get(locs.size() - 1);
 
 
-        for (int i = 0; i < rotatePerTick; i++){
+        for (int i = 0; i < rotatePerTick; i++) {
             blocks.get(i).moveTo(locs.get(i));
         }
 
-        if ( ((rotation + rotatePerTick) % 360) < (rotation%360)) {
+        if (((rotation + rotatePerTick) % 360) < (rotation % 360)) {
             readyToShoot = true;
         } else {
             readyToShoot = false;

@@ -4,9 +4,6 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Display;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Vectors;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,13 +12,10 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
-import org.joml.Quaternionf;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ThrowItemDisplay extends CoreAbility {
 
@@ -35,7 +29,7 @@ public class ThrowItemDisplay extends CoreAbility {
 
     private boolean stick;
 
-    private Set<ItemDisplay>displays = new HashSet<>();
+    private Set<ItemDisplay> displays = new HashSet<>();
 
     private double height;
 
@@ -50,25 +44,24 @@ public class ThrowItemDisplay extends CoreAbility {
 
         abilityStatus = AbilityStatus.SHOT;
 
-        this.origin = loc.clone().subtract(0,1,0);
+        this.origin = loc.clone().subtract(0, 1, 0);
         armorStand = Display.createArmorStand(origin);
 
         double height = width;
 
 
-
-        if (sphere){
+        if (sphere) {
             double scale = 1;
 
-            double pixelWidth = width * 1/16;
-            double distance = pixelWidth/2;
+            double pixelWidth = width * 1 / 16;
+            double distance = pixelWidth / 2;
             // 0, 1, 0, 1, 2, 2
-            int[] numbers = { 0, 1, 0, 0, 1};
+            int[] numbers = {0, 1, 0, 0, 1};
             for (int i : numbers) {
 
-                scale -= (double) i*2 * pixelWidth;
-                ItemDisplay leftDisplay = Display.createItemDisplayOffset(loc, material, width  , height * scale, length * scale, diagonal, distance, 0, 0);
-                ItemDisplay rightDisplay = Display.createItemDisplayOffset(loc, material, width , height * scale,length * scale, diagonal, -distance, 0, 0);
+                scale -= (double) i * 2 * pixelWidth;
+                ItemDisplay leftDisplay = Display.createItemDisplayOffset(loc, material, width, height * scale, length * scale, diagonal, distance, 0, 0);
+                ItemDisplay rightDisplay = Display.createItemDisplayOffset(loc, material, width, height * scale, length * scale, diagonal, -distance, 0, 0);
 
                 displays.add(leftDisplay);
                 displays.add(rightDisplay);
@@ -76,13 +69,12 @@ public class ThrowItemDisplay extends CoreAbility {
                 armorStand.addPassenger(rightDisplay);
                 distance += pixelWidth;
             }
-        }
-        else {
+        } else {
             double distance = 0;
             double scale = 1;
             int radius = 8;
 
-            ItemDisplay middleDisplay = Display.createItemDisplayOffset(loc, material, width, height, length , diagonal, 0, 0, 0);
+            ItemDisplay middleDisplay = Display.createItemDisplayOffset(loc, material, width, height, length, diagonal, 0, 0, 0);
             displays.add(middleDisplay);
             armorStand.addPassenger(middleDisplay);
 
@@ -104,14 +96,13 @@ public class ThrowItemDisplay extends CoreAbility {
         abilityStatus = AbilityStatus.SHOT;
 
         this.height = width;
-        if (this.height < 2){
+        if (this.height < 2) {
             this.height = 2;
         }
 
         this.oldPitch = dir.toLocation(player.getWorld()).getPitch();
         start();
     }
-
 
 
     @Override
@@ -132,11 +123,11 @@ public class ThrowItemDisplay extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
 
-            for (Block b : Blocks.getBlocksAroundPoint(armorStand.getLocation(), height/2 )) {
+            for (Block b : Blocks.getBlocksAroundPoint(armorStand.getLocation(), height / 2)) {
                 if (b.getType().isSolid()) {
                     armorStand.setVelocity(new Vector(0, 0, 0));
                     armorStand.setGravity(false);
-                    ((CraftArmorStand)armorStand).getHandle().noPhysics = false;
+                    ((CraftArmorStand) armorStand).getHandle().noPhysics = false;
                     abilityStatus = AbilityStatus.COMPLETE;
                     if (!stick) {
                         for (ItemDisplay currentDisplay : displays) {
@@ -150,9 +141,10 @@ public class ThrowItemDisplay extends CoreAbility {
     }
 
 
-    public Location getLoc(){
-        return armorStand.getLocation().add(0,1,0);
+    public Location getLoc() {
+        return armorStand.getLocation().add(0, 1, 0);
     }
+
     public void setDir(Vector dir) {
         this.dir = dir;
     }
@@ -161,7 +153,6 @@ public class ThrowItemDisplay extends CoreAbility {
     public ArmorStand getArmorStand() {
         return armorStand;
     }
-
 
 
     @Override

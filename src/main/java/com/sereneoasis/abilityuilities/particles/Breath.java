@@ -2,12 +2,12 @@ package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.*;
-import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.methods.AbilityDamage;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Particles;
+import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -52,7 +52,7 @@ public class Breath extends CoreAbility {
         }
 
         locs.forEach(location -> {
-            location.add(dir.clone().multiply(random.nextDouble() * speed).add(getRandomOffset().multiply( Math.log(location.distance(startLoc) + 2))));
+            location.add(dir.clone().multiply(random.nextDouble() * speed).add(getRandomOffset().multiply(Math.log(location.distance(startLoc) + 2))));
             Particles.spawnParticle(particle, location, 1, 0, 0);
 
             AbilityDamage.damageOne(location, this, player, true, dir);
@@ -66,13 +66,12 @@ public class Breath extends CoreAbility {
     }
 
 
-
     public Set<Location> getLocs() {
         return locs;
     }
 
-    private Vector getRandomOffset(){
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble()-0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
+    private Vector getRandomOffset() {
+        Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
         return randomiser;
     }
 

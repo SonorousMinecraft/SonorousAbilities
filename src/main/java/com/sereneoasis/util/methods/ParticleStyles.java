@@ -23,7 +23,7 @@ public class ParticleStyles {
             }
             loc.add(tempDir.multiply(height / points));
 
-            new TempDisplayBlock(tempLoc, DisplayBlock.SUN, 200, distance/points);
+            new TempDisplayBlock(tempLoc, DisplayBlock.SUN, 200, distance / points);
         }
     }
 

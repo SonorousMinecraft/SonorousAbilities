@@ -1,18 +1,16 @@
 package com.sereneoasis.listeners;
 
-import com.sereneoasis.Serenity;
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilities;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.ability.BendingManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
-
 import com.sereneoasis.archetypes.chaos.*;
 import com.sereneoasis.archetypes.earth.*;
-
 import com.sereneoasis.archetypes.ocean.*;
 import com.sereneoasis.archetypes.sky.*;
 import com.sereneoasis.archetypes.sun.*;
-import com.sereneoasis.displays.SerenityBoard;
+import com.sereneoasis.displays.SereneAbilitiesBoard;
 import com.sereneoasis.util.methods.ChatMessage;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempBlock;
@@ -30,25 +28,24 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffectType;
 
-import static com.sereneoasis.SerenityPlayer.getSerenityPlayer;
-import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
+import static com.sereneoasis.SereneAbilitiesPlayer.getSereneAbilitiesPlayer;
+import static com.sereneoasis.SereneAbilitiesPlayer.removeAttributePlayer;
 
 /**
  * @author Sakrajin
  * Main listener for all serenity events
  */
-public class SerenityListener implements Listener {
-
+public class SereneAbilitiesListener implements Listener {
 
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
         Player player = e.getPlayer();
-        SerenityPlayer.loadPlayer(player.getUniqueId(), player);
+        SereneAbilitiesPlayer.loadPlayer(player.getUniqueId(), player);
 
-        Bukkit.getScheduler().runTaskLater(Serenity.getPlugin(), () -> {
-            SerenityPlayer.initialisePlayer(player);
+        Bukkit.getScheduler().runTaskLater(SereneAbilities.getPlugin(), () -> {
+            SereneAbilitiesPlayer.initialisePlayer(player);
 
         }, 150L);
 
@@ -59,36 +56,36 @@ public class SerenityListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
-        SerenityBoard.removeScore(player);
+        SereneAbilitiesBoard.removeScore(player);
 
-        SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer serenityPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
 
-        Serenity.getComboManager().removePlayer(player);
+        SereneAbilities.getComboManager().removePlayer(player);
 
-        SerenityPlayer.upsertPlayer(serenityPlayer);
+        SereneAbilitiesPlayer.upsertPlayer(serenityPlayer);
 
         removeAttributePlayer(player, serenityPlayer);
 
 
-        SerenityPlayer.removePlayerFromMap(player);
+        SereneAbilitiesPlayer.removePlayerFromMap(player);
 
     }
 
     @EventHandler
-    public void onHitEntity(EntityDamageByEntityEvent e){
-        if (! (e.getDamager() instanceof Player)){
+    public void onHitEntity(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player)) {
             return;
         }
 
         Player player = (Player) e.getDamager();
 
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
         String ability = sPlayer.getHeldAbility();
 
-        switch (ability){
+        switch (ability) {
             case "RockKick":
                 if (CoreAbility.hasAbility(player, RockKick.class)) {
                     CoreAbility.getAbility(player, RockKick.class).setHasClicked();
@@ -113,14 +110,14 @@ public class SerenityListener implements Listener {
 //        }
 //
 //        if (isValidAttack) {
-//            Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+//            SereneAbilities.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
 //            e.setCancelled(true);
 //        }
-       // Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, player.getInventory().getItemInMainHand(), null, null, EquipmentSlot.HAND));
+        // Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, player.getInventory().getItemInMainHand(), null, null, EquipmentSlot.HAND));
     }
 
     @EventHandler
-    public void onPlayerInteractEvent(PlayerInteractEvent e ) throws ReflectiveOperationException{
+    public void onPlayerInteractEvent(PlayerInteractEvent e) throws ReflectiveOperationException {
 
         Player player = e.getPlayer();
         if (player == null) {
@@ -128,8 +125,7 @@ public class SerenityListener implements Listener {
         }
 
 
-
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
@@ -138,8 +134,8 @@ public class SerenityListener implements Listener {
         if (ability != null) {
 
             if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.RIGHT);
-                switch(ability) {
+                SereneAbilities.getComboManager().addRecentlyUsed(player, ability, ClickType.RIGHT);
+                switch (ability) {
                 }
             }
         }
@@ -154,7 +150,7 @@ public class SerenityListener implements Listener {
             return;
         }
 
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
@@ -165,7 +161,7 @@ public class SerenityListener implements Listener {
             return;
         }
 
-        Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+        SereneAbilities.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
 
         BendingManager.getInstance().handleRedirections(player, ClickType.LEFT);
 
@@ -398,10 +394,10 @@ public class SerenityListener implements Listener {
             return;
         }
 
-        if (player.isSneaking()){
+        if (player.isSneaking()) {
             return;
         }
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
@@ -411,7 +407,7 @@ public class SerenityListener implements Listener {
             return;
         }
 
-        Serenity.getComboManager().addRecentlyUsed(player, ability, ClickType.SHIFT_LEFT);
+        SereneAbilities.getComboManager().addRecentlyUsed(player, ability, ClickType.SHIFT_LEFT);
 
         switch (ability) {
             case "RockKick":
@@ -527,14 +523,13 @@ public class SerenityListener implements Listener {
     }
 
     @EventHandler
-    public void noFallDamage(EntityDamageEvent event){
-        if (event.getEntity() instanceof Player player){
-            SerenityPlayer sPlayer = getSerenityPlayer(player);
-            if (event.getCause() == EntityDamageEvent.DamageCause.FALL){
+    public void noFallDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            SereneAbilitiesPlayer sPlayer = getSereneAbilitiesPlayer(player);
+            if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
 
                 if (sPlayer.getArchetype() == Archetype.EARTH && sPlayer.getHeldAbility().equals("EarthQuake")) {
-                    if (!CoreAbility.hasAbility(player, EarthQuake.class))
-                    {
+                    if (!CoreAbility.hasAbility(player, EarthQuake.class)) {
                         EarthQuake earthQuake = new EarthQuake(player);
                         earthQuake.setCharged();
                     }
@@ -550,12 +545,11 @@ public class SerenityListener implements Listener {
     }
 
 
-
     @EventHandler
-    public void onSwim(EntityToggleSwimEvent event){
+    public void onSwim(EntityToggleSwimEvent event) {
         if (event.getEntity() instanceof Player player) {
-            SerenityPlayer sPlayer = getSerenityPlayer(player);
-            if (sPlayer.getArchetype() == Archetype.OCEAN){
+            SereneAbilitiesPlayer sPlayer = getSereneAbilitiesPlayer(player);
+            if (sPlayer.getArchetype() == Archetype.OCEAN) {
                 Entities.applyPotionPlayerAmplifier(player, PotionEffectType.DOLPHINS_GRACE, 2, 2000);
                 event.setCancelled(true);
             }
@@ -563,17 +557,17 @@ public class SerenityListener implements Listener {
     }
 
     @EventHandler
-    public void onSwapHands(PlayerSwapHandItemsEvent event){
+    public void onSwapHands(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         if (player == null) {
             return;
         }
 
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
         if (sPlayer == null) {
             return;
         }
-        SerenityBoard board = SerenityBoard.getByPlayer(player);
+        SereneAbilitiesBoard board = SereneAbilitiesBoard.getByPlayer(player);
         if (board == null) {
             Bukkit.broadcastMessage("this board is null");
             return;
@@ -622,7 +616,7 @@ public class SerenityListener implements Listener {
 //    public void onPlayerPortal(PlayerPortalEvent event){
 //        Player player = event.getPlayer();
 //
-//        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+//        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
 //        if (sPlayer == null) {
 //            return;
 //        }
@@ -646,7 +640,7 @@ public class SerenityListener implements Listener {
 //            event.setCancelled(true);
 //        }
 }
-//        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+//        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
 //        if (sPlayer == null) {
 //            return;
 //        }

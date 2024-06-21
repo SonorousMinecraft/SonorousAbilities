@@ -2,8 +2,6 @@ package com.sereneoasis.archetypes.sun;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Beam;
-import com.sereneoasis.abilityuilities.particles.Breath;
-import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
@@ -18,6 +16,7 @@ public class SolarBeam extends CoreAbility {
 //    private SphereBlast blast;
 
     private Beam beam;
+
     public SolarBeam(Player player) {
         super(player, name);
 
@@ -46,7 +45,7 @@ public class SolarBeam extends CoreAbility {
 //                blast.remove();
 //                this.remove();
 //            }
-            Particles.spawnParticle(   Particle.EXPLOSION_LARGE, beam.getBeamOrigin(), 5, 0.5, 0);
+            Particles.spawnParticle(Particle.EXPLOSION_LARGE, beam.getBeamOrigin(), 5, 0.5, 0);
 
 
             if (beam.getAbilityStatus() == AbilityStatus.COMPLETE) {
@@ -63,7 +62,7 @@ public class SolarBeam extends CoreAbility {
     public void setHasClicked() {
         if (abilityStatus == AbilityStatus.CHARGED) {
 //            blast = new SphereBlast(player, name, false, new ArchetypeVisuals.SunVisual());
-            beam = new Beam(player, name, new ArchetypeVisuals.SunVisual(), player.getEyeLocation().add(0,10,0));
+            beam = new Beam(player, name, new ArchetypeVisuals.SunVisual(), player.getEyeLocation().add(0, 10, 0));
             abilityStatus = AbilityStatus.SHOT;
         }
     }

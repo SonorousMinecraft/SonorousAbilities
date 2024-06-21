@@ -1,6 +1,6 @@
 package com.sereneoasis.config;
 
-import com.sereneoasis.Serenity;
+import com.sereneoasis.SereneAbilities;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -12,25 +12,23 @@ import java.io.File;
  */
 public class ConfigFile {
 
-    private Serenity plugin;
-
-    private File file;
-
-    public File getFile() {
-        return file;
-    }
-
     public FileConfiguration config;
+    private SereneAbilities plugin;
+    private File file;
 
     public ConfigFile(String name) {
         this(new File(name + ".yml"));
     }
 
     public ConfigFile(File file) {
-        this.plugin = Serenity.getPlugin();
+        this.plugin = SereneAbilities.getPlugin();
         this.file = new File(plugin.getDataFolder() + File.separator + file);
         this.config = YamlConfiguration.loadConfiguration(this.file);
         reloadConfig();
+    }
+
+    public File getFile() {
+        return file;
     }
 
     public void createConfig() {

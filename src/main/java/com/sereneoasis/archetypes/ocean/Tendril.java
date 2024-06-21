@@ -22,46 +22,29 @@ import java.util.Set;
 
 public class Tendril extends CoreAbility {
 
-    private HashMap<TempDisplayBlock, Double> tendrils = new HashMap<>();
-
-    public Set<TempDisplayBlock> getTendrils() {
-        return tendrils.keySet();
-    }
-
-    public void clearTendrilMap(){
-        tendrils = new HashMap<>();
-    }
-
-    private TempDisplayBlock end;
-
     private final String name;
-
+    private HashMap<TempDisplayBlock, Double> tendrils = new HashMap<>();
+    private TempDisplayBlock end;
     private Vector dir;
-
     private double grabDistance, grappleDistance;
-
     private double length;
-
     private Entity grabTarget;
-
     private Block grappleBlock;
-
     private long sinceLastGrappled = System.currentTimeMillis();
-
     private Location oldPlayerLoc = player.getEyeLocation();
-
+    private Random random = new Random();
 
     public Tendril(Player player, String name, double length) {
         super(player, name);
         this.name = name;
         this.length = length;
-        if (shouldStartCanHaveMultiple()){
-            int amount = Math.round(Math.round(length/size));
+        if (shouldStartCanHaveMultiple()) {
+            int amount = Math.round(Math.round(length / size));
 
             Location origin = player.getEyeLocation().subtract(player.getEyeLocation().getDirection().multiply(size));
             Vector dir = origin.getDirection();
-            for (int i = 0; i < amount; i++){
-                double distance = i * size/2;
+            for (int i = 0; i < amount; i++) {
+                double distance = i * size / 2;
 //                Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance));
                 TempDisplayBlock displayBlock = new TempDisplayBlock(origin, DisplayBlock.WATER, duration, size);
 
@@ -74,26 +57,34 @@ public class Tendril extends CoreAbility {
         }
     }
 
+    public Set<TempDisplayBlock> getTendrils() {
+        return tendrils.keySet();
+    }
+
+    public void clearTendrilMap() {
+        tendrils = new HashMap<>();
+    }
+
     public TempDisplayBlock getEnd() {
         return end;
     }
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (System.currentTimeMillis() - duration > startTime){
+        if (System.currentTimeMillis() - duration > startTime) {
             abilityStatus = AbilityStatus.COMPLETE;
         }
 
-        switch (abilityStatus){
+        switch (abilityStatus) {
 
-            case MOVING ->  {
+            case MOVING -> {
                 Location newPlayerLoc = player.getEyeLocation();
                 Vector diff = Vectors.getDirectionBetweenLocations(oldPlayerLoc, newPlayerLoc);
                 tendrils.keySet().forEach(tempDisplayBlock -> tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(diff)));
             }
             // For grab
             case GRAB -> {
-                if (grabDistance > range){
+                if (grabDistance > range) {
                     endGrab();
                 }
                 if (grabTarget == null) {
@@ -103,7 +94,7 @@ public class Tendril extends CoreAbility {
 
                     tendrils.forEach((tempDisplayBlock, distance) -> {
 
-                        Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance/length * grabDistance));
+                        Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance / length * grabDistance));
 
 //                    Vector toMove = Vectors.getDirectionBetweenLocations(origin.clone().add(player.getEyeLocation().getDirection().clone().multiply(distance)), displayBlockLoc);
                         Vector toMove = Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), displayBlockLoc);
@@ -112,7 +103,7 @@ public class Tendril extends CoreAbility {
                             toMove.normalize();
                             Location toMoveLocation = tempDisplayBlock.getLoc().clone().add(toMove);
                             tempDisplayBlock.moveTo(toMoveLocation);
-                        } else  {
+                        } else {
                             tempDisplayBlock.moveTo(displayBlockLoc);
                         }
                     });
@@ -131,17 +122,17 @@ public class Tendril extends CoreAbility {
                             toMove.normalize();
                             Location toMoveLocation = tempDisplayBlock.getLoc().clone().add(toMove);
                             tempDisplayBlock.moveTo(toMoveLocation);
-                        } else  {
+                        } else {
                             tempDisplayBlock.moveTo(displayBlockLoc);
                         }
                     });
                 }
 
 
-                if (grabTarget ==null && Entities.getAffected(end.getLoc(), size *2, player)!= null){
-                    grabTarget = Entities.getAffected(end.getLoc(), size *2, player);
+                if (grabTarget == null && Entities.getAffected(end.getLoc(), size * 2, player) != null) {
+                    grabTarget = Entities.getAffected(end.getLoc(), size * 2, player);
                 }
-                if (grabTarget != null){
+                if (grabTarget != null) {
                     net.minecraft.world.entity.Entity entity = ((CraftEntity) grabTarget).getHandle();
                     entity.moveTo(new Vec3(end.getLoc().toVector().toVector3f()));
 //                    grabTarget.setVelocity(Vectors.getDirectionBetweenLocations(end.getLoc(), grabTarget.getLocation()).normalize());
@@ -149,7 +140,7 @@ public class Tendril extends CoreAbility {
             }
 
             case GRAPPLE -> {
-                if (grappleDistance > range){
+                if (grappleDistance > range) {
                     abilityStatus = AbilityStatus.MOVING;
 
                 }
@@ -161,7 +152,7 @@ public class Tendril extends CoreAbility {
 
                     tendrils.forEach((tempDisplayBlock, distance) -> {
 
-                        Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance/length * grappleDistance));
+                        Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance / length * grappleDistance));
 
 //                    Vector toMove = Vectors.getDirectionBetweenLocations(origin.clone().add(player.getEyeLocation().getDirection().clone().multiply(distance)), displayBlockLoc);
                         Vector toMove = Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), displayBlockLoc);
@@ -170,7 +161,7 @@ public class Tendril extends CoreAbility {
                             toMove.normalize();
                             Location toMoveLocation = tempDisplayBlock.getLoc().clone().add(toMove);
                             tempDisplayBlock.moveTo(toMoveLocation);
-                        } else  {
+                        } else {
                             tempDisplayBlock.moveTo(displayBlockLoc);
                         }
                     });
@@ -180,7 +171,7 @@ public class Tendril extends CoreAbility {
                     tendrils.forEach((tempDisplayBlock, distance) -> {
 
                         Vector dir = Vectors.getDirectionBetweenLocations(player.getEyeLocation(), grappleBlock.getLocation());
-                        Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance/length * dir.length()));
+                        Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance / length * dir.length()));
 
 //                    Vector toMove = Vectors.getDirectionBetweenLocations(origin.clone().add(player.getEyeLocation().getDirection().clone().multiply(distance)), displayBlockLoc);
                         Vector toMove = Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), displayBlockLoc);
@@ -189,7 +180,7 @@ public class Tendril extends CoreAbility {
                             toMove.normalize();
                             Location toMoveLocation = tempDisplayBlock.getLoc().clone().add(toMove);
                             tempDisplayBlock.moveTo(toMoveLocation);
-                        } else  {
+                        } else {
                             tempDisplayBlock.moveTo(displayBlockLoc);
                         }
                     });
@@ -197,13 +188,13 @@ public class Tendril extends CoreAbility {
 
                 Block targetBlock = Blocks.getFacingBlock(player.getEyeLocation(), dir, grappleDistance);
 
-                if (grappleBlock == null && targetBlock != null &&  (!targetBlock.isLiquid())) {
+                if (grappleBlock == null && targetBlock != null && (!targetBlock.isLiquid())) {
                     grappleBlock = targetBlock;
                 }
 
-                if (grappleBlock != null){
-                    player.setVelocity(Vectors.getDirectionBetweenLocations(player.getEyeLocation(), grappleBlock.getLocation()).add(new Vector(0,2,0)).normalize().multiply(speed));
-                    if ( (System.currentTimeMillis() - sinceLastGrappled > 1000 || player.getVelocity().lengthSquared() < 0.5) ||  player.getEyeLocation().distanceSquared(grappleBlock.getLocation()) < 9){
+                if (grappleBlock != null) {
+                    player.setVelocity(Vectors.getDirectionBetweenLocations(player.getEyeLocation(), grappleBlock.getLocation()).add(new Vector(0, 2, 0)).normalize().multiply(speed));
+                    if ((System.currentTimeMillis() - sinceLastGrappled > 1000 || player.getVelocity().lengthSquared() < 0.5) || player.getEyeLocation().distanceSquared(grappleBlock.getLocation()) < 9) {
                         endGrapple();
                     }
                 }
@@ -218,19 +209,17 @@ public class Tendril extends CoreAbility {
         return grabTarget;
     }
 
-    public void endGrab(){
+    public void endGrab() {
         abilityStatus = AbilityStatus.MOVING;
         grabTarget = null;
     }
 
-    public void endGrapple(){
+    public void endGrapple() {
         abilityStatus = AbilityStatus.MOVING;
         grappleBlock = null;
     }
 
-    private Random random = new Random();
-
-    public void setTendrilBlock(DisplayBlock block){
+    public void setTendrilBlock(DisplayBlock block) {
         tendrils.keySet().forEach(tempDisplayBlock -> {
             Material type = block.getBlocks().get(random.nextInt(block.getBlocks().size()));
 
@@ -238,7 +227,7 @@ public class Tendril extends CoreAbility {
         });
     }
 
-    public void animateMovement(Vector dir, Location origin){
+    public void animateMovement(Vector dir, Location origin) {
 
         tendrils.forEach((tempDisplayBlock, distance) -> {
 
@@ -247,19 +236,18 @@ public class Tendril extends CoreAbility {
             Vector toMove = Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), displayBlockLoc);
 
 
-            if (toMove.lengthSquared() > 1  ) {
+            if (toMove.lengthSquared() > 1) {
                 toMove.normalize();
                 Location toMoveLocation = tempDisplayBlock.getLoc().clone().add(toMove);
                 tempDisplayBlock.moveTo(toMoveLocation);
-            } else  {
+            } else {
                 tempDisplayBlock.moveTo(displayBlockLoc);
             }
         });
     }
 
 
-
-    public void animateMovement(Vector dir){
+    public void animateMovement(Vector dir) {
 
         Location origin = player.getEyeLocation().subtract(player.getEyeLocation().getDirection().multiply(size));
 
@@ -268,7 +256,7 @@ public class Tendril extends CoreAbility {
         } else {
             origin.add(Vectors.getLeftSideNormalisedVector(player).multiply(0.5));
         }
-        origin.subtract(0,0.5,0);
+        origin.subtract(0, 0.5, 0);
 
 
         tendrils.forEach((tempDisplayBlock, distance) -> {
@@ -278,18 +266,18 @@ public class Tendril extends CoreAbility {
             Vector toMove = Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), displayBlockLoc);
 
 
-            if (toMove.lengthSquared() > 1  ) {
+            if (toMove.lengthSquared() > 1) {
                 toMove.normalize();
                 Location toMoveLocation = tempDisplayBlock.getLoc().clone().add(toMove);
                 tempDisplayBlock.moveTo(toMoveLocation);
-            } else  {
+            } else {
                 tempDisplayBlock.moveTo(displayBlockLoc);
             }
         });
     }
 
 
-    public void animateCurveTowardsPlayerDir(Vector dir){
+    public void animateCurveTowardsPlayerDir(Vector dir) {
 
         Location origin = player.getEyeLocation().subtract(player.getEyeLocation().getDirection().multiply(size));
 
@@ -300,34 +288,34 @@ public class Tendril extends CoreAbility {
         } else {
             origin.add(Vectors.getLeftSideNormalisedVector(player).multiply(0.5));
         }
-        origin.subtract(0,0.5,0);
+        origin.subtract(0, 0.5, 0);
 
 
         tendrils.forEach((tempDisplayBlock, distance) -> {
-            Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance).add(playerDir.clone().multiply(Math.log(Math.max(1,distance)) * Math.log(Math.max(1,distance)) * Math.sqrt(distance))));
+            Location displayBlockLoc = origin.clone().add(dir.clone().multiply(distance).add(playerDir.clone().multiply(Math.log(Math.max(1, distance)) * Math.log(Math.max(1, distance)) * Math.sqrt(distance))));
 
             Vector toMove = Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), displayBlockLoc);
 
-            if (toMove.lengthSquared() > 1 ) {
+            if (toMove.lengthSquared() > 1) {
 
                 toMove.normalize();
                 Location toMoveLocation = tempDisplayBlock.getLoc().clone().add(toMove);
                 tempDisplayBlock.moveTo(toMoveLocation);
-            } else  {
+            } else {
                 tempDisplayBlock.moveTo(displayBlockLoc);
             }
         });
     }
 
 
-    public void grab(Vector dir){
+    public void grab(Vector dir) {
         abilityStatus = AbilityStatus.GRAB;
         this.dir = dir.clone();
 //        distance = tendrils.size() * size;
         grabDistance = 0;
     }
 
-    public void grapple(Vector dir){
+    public void grapple(Vector dir) {
         sinceLastGrappled = System.currentTimeMillis();
         abilityStatus = AbilityStatus.GRAPPLE;
         this.dir = dir.clone();

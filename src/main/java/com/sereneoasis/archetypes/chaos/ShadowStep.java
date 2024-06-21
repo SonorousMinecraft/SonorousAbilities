@@ -5,7 +5,6 @@ import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.velocity.Teleport;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class ShadowStep extends MasterAbility {
@@ -13,10 +12,11 @@ public class ShadowStep extends MasterAbility {
     private static final String name = "ShadowStep";
 
     private int shots = 5;
+
     public ShadowStep(Player player) {
         super(player, name);
 
-        if (shouldStart()){
+        if (shouldStart()) {
             abilityStatus = AbilityStatus.TELEPORTING;
             setHasClicked();
             start();
@@ -29,7 +29,7 @@ public class ShadowStep extends MasterAbility {
 
         iterateHelpers(abilityStatus);
 
-        if (shots == 0 && getHelpers().keySet().stream().noneMatch(coreAbility -> coreAbility.getAbilityStatus() == AbilityStatus.TELEPORTING)){
+        if (shots == 0 && getHelpers().keySet().stream().noneMatch(coreAbility -> coreAbility.getAbilityStatus() == AbilityStatus.TELEPORTING)) {
             this.remove();
         }
 //        else {
@@ -40,10 +40,10 @@ public class ShadowStep extends MasterAbility {
 //            }
 //        }
 
-        AbilityUtils.showShots(this, 5 - shots, 5 );
+        AbilityUtils.showShots(this, 5 - shots, 5);
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         if (shots > 0) {
             Teleport teleport = new Teleport(player, name, range);
             getHelpers().put(teleport, (abilityStatus) -> {

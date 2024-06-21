@@ -1,7 +1,6 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
@@ -38,7 +37,7 @@ public class ShootBlocksFromLoc extends CoreAbility {
 
     private int amount;
 
-    private List<TempDisplayBlock>blocks = new ArrayList<>();
+    private List<TempDisplayBlock> blocks = new ArrayList<>();
 
     public ShootBlocksFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove, int amount) {
         super(player, user);
@@ -96,7 +95,7 @@ public class ShootBlocksFromLoc extends CoreAbility {
         }
 
 
-        for (int i = 0; i < amount; i++){
+        for (int i = 0; i < amount; i++) {
             if (!directable || locs.size() == amount) {
                 blocks.get(i).moveTo(locs.get(i).clone().add(Math.random(), Math.random(), Math.random()));
             }

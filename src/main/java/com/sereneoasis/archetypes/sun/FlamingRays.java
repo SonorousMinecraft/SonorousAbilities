@@ -54,12 +54,12 @@ public class FlamingRays extends MasterAbility {
         if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.SHOOTING;
         }
-        if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
+        if (abilityStatus == AbilityStatus.SHOOTING && currentShots < shots) {
             Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SunVisual(), true);
             helpers.put(blast, (abilityStatus) -> {
-                switch (abilityStatus){
+                switch (abilityStatus) {
                     case SHOOTING -> {
-                        if (Blocks.isSolid(blast.getLoc())){
+                        if (Blocks.isSolid(blast.getLoc())) {
                             SunUtils.blockExplode(player, name, blast.getLoc(), 3, 1);
                         }
                         if (blast.getAbilityStatus() == AbilityStatus.DAMAGED || blast.getAbilityStatus() == AbilityStatus.COMPLETE) {

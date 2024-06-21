@@ -2,17 +2,13 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -40,7 +36,7 @@ public class BlockLine extends CoreAbility {
         Block source = Blocks.getFacingBlock(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            this.origin = Blocks.getFacingBlockLoc(player, sourceRange).subtract(0,size,0);
+            this.origin = Blocks.getFacingBlockLoc(player, sourceRange).subtract(0, size, 0);
             glowingSource = Blocks.selectSourceAnimationManual(origin, color, size);
             this.loc = origin.clone();
             this.type = source.getType();
@@ -55,12 +51,12 @@ public class BlockLine extends CoreAbility {
             if (loc != null) {
                 new TempDisplayBlock(loc.clone(), type, 500, size);
 
-                boolean isFinished = AbilityDamage.damageOne(loc.clone().add(0,size/2,0), this, player, true, dir);
+                boolean isFinished = AbilityDamage.damageOne(loc.clone().add(0, size / 2, 0), this, player, true, dir);
 
-                if (isFinished){
+                if (isFinished) {
                     abilityStatus = AbilityStatus.COMPLETE;
                 }
-                if (loc.distanceSquared(origin) > range*range) {
+                if (loc.distanceSquared(origin) > range * range) {
                     abilityStatus = AbilityStatus.COMPLETE;
                 }
             } else {

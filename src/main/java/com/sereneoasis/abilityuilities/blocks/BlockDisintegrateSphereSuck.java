@@ -31,15 +31,8 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
     private Set<TempBlock> sourceTempBlocks = new HashSet<>();
 
     private Set<SourceBlockToLoc> sourceBlocksToLoc = new HashSet<>();
-
-    public Set<SourceBlockToLoc> getSourceBlocksToLoc() {
-        return sourceBlocksToLoc;
-    }
-
     private Set<Block> previousSourceBlocks = new HashSet<>();
-
     private Random random = new Random();
-
 
     public BlockDisintegrateSphereSuck(Player player, String name, Location startLoc, Location targetLoc, double currentRadius, double increment) {
         super(player, name);
@@ -52,6 +45,7 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
         this.increment = increment;
         start();
     }
+
 
     public BlockDisintegrateSphereSuck(Player player, String name, Location startLoc, Location targetLoc, double currentRadius, double endRadius, double increment) {
         super(player, name);
@@ -66,26 +60,29 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
         start();
     }
 
+    public Set<SourceBlockToLoc> getSourceBlocksToLoc() {
+        return sourceBlocksToLoc;
+    }
+
     @Override
     public void progress() {
         currentRadius += increment;
-        Particles.spawnParticle(Particle.SONIC_BOOM, centerLoc, 20, currentRadius/2 , 0);
+        Particles.spawnParticle(Particle.SONIC_BOOM, centerLoc, 20, currentRadius / 2, 0);
 
         Set<Block> sourceBlocks = Blocks.getBlocksAroundPoint(centerLoc, currentRadius);
 
         sourceBlocks.removeIf(block -> previousSourceBlocks.contains(block));
 
         for (Block b : sourceBlocks) {
-            if (b != null && !b.isPassable() ) {
+            if (b != null && !b.isPassable()) {
                 if (random.nextDouble() < 0.1) {
                     SourceBlockToLoc sourceBlockToLoc = new SourceBlockToLoc(player, name, 4, 1, b, targetLoc);
                     sourceBlockToLoc.setAbilityStatus(AbilityStatus.SOURCING);
                     sourceBlocksToLoc.add(sourceBlockToLoc);
                 }
 
-                    TempBlock tb = new TempBlock(b, Material.AIR, 60000);
-                    sourceTempBlocks.add(tb);
-
+                TempBlock tb = new TempBlock(b, Material.AIR, 60000);
+                sourceTempBlocks.add(tb);
 
 
             }
@@ -104,6 +101,7 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
         sourceBlocksToLoc.forEach(SourceBlockToLoc::remove);
 
     }
+
     @Override
     public String getName() {
         return name;

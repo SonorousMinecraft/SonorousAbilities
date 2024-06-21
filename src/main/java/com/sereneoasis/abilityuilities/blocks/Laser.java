@@ -36,12 +36,12 @@ public class Laser extends CoreAbility {
         start();
     }
 
-    public void setLoc(Location newLoc) {
-        this.loc = newLoc;
-    }
-
     public Location getLoc() {
         return loc;
+    }
+
+    public void setLoc(Location newLoc) {
+        this.loc = newLoc;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Laser extends CoreAbility {
                 distance = entity.getLocation().distance(loc);
             }
 
-            for (double d = size; d < distance; d+=size) {
+            for (double d = size; d < distance; d += size) {
                 new TempDisplayBlock(loc.clone().add(dir.clone().multiply(d)), displayBlock, 100, size);
                 if (!loc.clone().add(dir.clone().multiply(d)).getBlock().isPassable()) {
                     break;

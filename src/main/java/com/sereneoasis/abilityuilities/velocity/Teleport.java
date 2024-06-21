@@ -5,8 +5,6 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.Scheduler;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -33,9 +31,8 @@ public class Teleport extends CoreAbility {
             Vector dir = player.getEyeLocation().getDirection().clone();
 
             if (hitLoc == null) {
-                targetLoc = Locations.getFacingLocation(player.getEyeLocation(), dir, distance).subtract(0,1,0);
-            }
-            else {
+                targetLoc = Locations.getFacingLocation(player.getEyeLocation(), dir, distance).subtract(0, 1, 0);
+            } else {
                 targetLoc = hitLoc.clone().subtract(dir.clone());
             }
 //            Particles.spawnVibrationParticleEntity(targetLoc, 10, 0.2, 1, player, Math.round((float) chargeTime /50));
@@ -46,22 +43,22 @@ public class Teleport extends CoreAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
 
-            if (abilityStatus == AbilityStatus.TELEPORTING) {
-                if ( System.currentTimeMillis() > startTime + chargeTime) {
+        if (abilityStatus == AbilityStatus.TELEPORTING) {
+            if (System.currentTimeMillis() > startTime + chargeTime) {
 
-                    targetLoc.setDirection(player.getEyeLocation().getDirection());
-                    this.origin = player.getLocation().clone();
-                    player.teleport(targetLoc);
-                    Particles.spawnParticle(Particle.FLASH, targetLoc, 1, 0, 0);
+                targetLoc.setDirection(player.getEyeLocation().getDirection());
+                this.origin = player.getLocation().clone();
+                player.teleport(targetLoc);
+                Particles.spawnParticle(Particle.FLASH, targetLoc, 1, 0, 0);
 
-                    abilityStatus = AbilityStatus.COMPLETE;
-                } else {
-                    Particles.spawnParticleOffset(Particle.SCULK_SOUL, targetLoc, 10, 0.25, 1, 0.25, 0);
-                    Particles.spawnVibrationParticleBlock(player.getLocation(), 1, 0, 1, targetLoc.getBlock(), Math.round((float) (chargeTime - (System.currentTimeMillis() - startTime ) ) /50));
+                abilityStatus = AbilityStatus.COMPLETE;
+            } else {
+                Particles.spawnParticleOffset(Particle.SCULK_SOUL, targetLoc, 10, 0.25, 1, 0.25, 0);
+                Particles.spawnVibrationParticleBlock(player.getLocation(), 1, 0, 1, targetLoc.getBlock(), Math.round((float) (chargeTime - (System.currentTimeMillis() - startTime)) / 50));
 //                    Particles.spawnVibrationParticleEntity(targetLoc, 10, 0.2, 0, player, 20);
 
-                }
             }
+        }
 
 
     }

@@ -1,6 +1,6 @@
-package com.sereneoasis.gui;
-
-public class SerenityGUI {
-
-
-}
+//package com.sereneoasis.gui;
+//
+//public class SereneAbilitiesGUI {
+//
+//
+//}

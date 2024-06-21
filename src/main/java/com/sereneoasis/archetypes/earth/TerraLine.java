@@ -1,8 +1,6 @@
 package com.sereneoasis.archetypes.earth;
 
-import com.sereneoasis.Serenity;
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.BlockLine;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillarLine;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Scheduler;
@@ -23,7 +21,8 @@ public class TerraLine extends CoreAbility {
             if (blockLine.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
                 abilityStatus = AbilityStatus.SOURCE_SELECTED;
                 start();
-            }        }
+            }
+        }
 
 
     }
@@ -31,7 +30,7 @@ public class TerraLine extends CoreAbility {
     @Override
     public void progress() {
         if (blockLine.getAbilityStatus() == AbilityStatus.COMPLETE) {
-            Scheduler.performTaskLater(100L,()-> blockLine.remove());
+            Scheduler.performTaskLater(100L, () -> blockLine.remove());
             this.remove();
             sPlayer.addCooldown(name, cooldown);
         }

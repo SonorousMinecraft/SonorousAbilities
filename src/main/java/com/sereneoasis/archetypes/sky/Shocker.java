@@ -1,10 +1,9 @@
 package com.sereneoasis.archetypes.sky;
 
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.Arc;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.*;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
@@ -25,7 +24,7 @@ public class Shocker extends CoreAbility {
 
     private Entity e;
     private Player target;
-    private SerenityPlayer btarget;
+    private SereneAbilitiesPlayer btarget;
     private double distance;
 
     private Arc leftArc, rightArc;
@@ -40,7 +39,6 @@ public class Shocker extends CoreAbility {
             start();
             return;
         }
-
 
 
     }
@@ -97,7 +95,7 @@ public class Shocker extends CoreAbility {
 //            e = Entities.getAffected(loc, hitbox, player);
 //            if (e instanceof Player) {
 //                target = (Player) e;
-//                btarget = SerenityPlayer.getSerenityPlayer(target);
+//                btarget = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(target);
 //                if (btarget != null) {
 //                    if (btarget.getHeldAbility().equalsIgnoreCase(name) && target.isSneaking()) {
 ////                        Particles.spawnColoredParticle(target.getLocation(), 10, 1, 1, Color.fromRGB(1, 225, 255));

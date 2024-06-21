@@ -15,51 +15,48 @@ import java.util.UUID;
 @NTable(name = "player_data", schema = "", catalog = "")
 public class PlayerData extends NEntity<UUID> {
 
-    public PlayerData() {
-    }
-
     @JsonProperty("name")
     private String name;
+    @JsonProperty("abilities")
+    private HashMap<Integer, String> abilities;
+    @JsonProperty("archetype")
+    private String archetype;
+    @JsonProperty("presets")
+    private HashMap<String, HashMap<Integer, String>> presets;
 
-    public void setName(String name) {
-        this.name = name;
+    public PlayerData() {
     }
 
     public String getName() {
         return name;
     }
 
-    @JsonProperty("abilities")
-    private HashMap<Integer, String> abilities;
-
-    public void setAbilities(HashMap<Integer, String> abilities) {
-        this.abilities = abilities;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public HashMap<Integer, String> getAbilities() {
         return this.abilities;
     }
 
-    @JsonProperty("archetype")
-    private String archetype;
-
-    public void setArchetype(String archetype) {
-        this.archetype = archetype;
+    public void setAbilities(HashMap<Integer, String> abilities) {
+        this.abilities = abilities;
     }
 
     public String getArchetype() {
         return this.archetype;
     }
 
-    @JsonProperty("presets")
-    private HashMap<String, HashMap<Integer, String>> presets;
-
-    public void setPresets(HashMap<String, HashMap<Integer, String>> presets) {
-        this.presets = presets;
+    public void setArchetype(String archetype) {
+        this.archetype = archetype;
     }
 
     public HashMap<String, HashMap<Integer, String>> getPresets() {
         return presets;
+    }
+
+    public void setPresets(HashMap<String, HashMap<Integer, String>> presets) {
+        this.presets = presets;
     }
 
 

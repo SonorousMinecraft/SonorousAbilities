@@ -1,22 +1,15 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Sakrajin
@@ -42,7 +35,7 @@ public class BlockRingAroundPoint extends CoreAbility {
 
     private boolean clockwise;
 
-    private List<TempDisplayBlock>blocks = new ArrayList<>();
+    private List<TempDisplayBlock> blocks = new ArrayList<>();
 
     public BlockRingAroundPoint(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
@@ -55,12 +48,12 @@ public class BlockRingAroundPoint extends CoreAbility {
         this.clockwise = clockwise;
         loc = startLoc.clone();
 
-        this.dir = new Vector(0.5,0,0.5);
+        this.dir = new Vector(0.5, 0, 0.5);
 
         rotation = 0;
 
-        for (int i = 0; i < rotatePerTick; i++){
-            blocks.add(new TempDisplayBlock(startLoc, type, 60000,  size));
+        for (int i = 0; i < rotatePerTick; i++) {
+            blocks.add(new TempDisplayBlock(startLoc, type, 60000, size));
         }
 
         start();
@@ -68,15 +61,15 @@ public class BlockRingAroundPoint extends CoreAbility {
 
     @Override
     public void progress() {
-        int arcDegrees = (int) ( (rotatePerTick * size/3 * 360) / (2 * Math.PI * ringSize));
+        int arcDegrees = (int) ((rotatePerTick * size / 3 * 360) / (2 * Math.PI * ringSize));
 
         List<Location> locs = Locations.getArcFromTrig(loc, ringSize, rotatePerTick, dir, orientation,
                 rotation, rotation + arcDegrees, clockwise);
 
         //loc = locs.get(locs.size() - 1);
 
-        for (int i = 0; i < rotatePerTick; i++){
-            blocks.get(i).moveTo(locs.get(i).clone().add(Math.random(),Math.random(),Math.random()));
+        for (int i = 0; i < rotatePerTick; i++) {
+            blocks.get(i).moveTo(locs.get(i).clone().add(Math.random(), Math.random(), Math.random()));
         }
 
 

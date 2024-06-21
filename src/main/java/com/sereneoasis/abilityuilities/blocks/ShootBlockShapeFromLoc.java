@@ -2,15 +2,11 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -26,39 +22,8 @@ public class ShootBlockShapeFromLoc extends CoreAbility {
     private String user;
 
     private boolean directable, autoRemove;
-
-    public boolean isDirectable() {
-        return directable;
-    }
-
-    public void setDirectable(boolean directable) {
-        this.directable = directable;
-    }
-
     private Vector dir;
-
     private Set<TempDisplayBlock> blocks;
-
-
-
-    public void setRange(double newRange){
-        this.range = newRange;
-    }
-
-
-//    public ShootBlockShapeFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
-//        super(player, user);
-//        this.user = user;
-//        this.loc = startLoc;
-//        this.directable = directable;
-//        this.autoRemove = autoRemove;
-//        this.dir = player.getEyeLocation().getDirection().normalize();
-//        this.abilityStatus = AbilityStatus.SHOT;
-//
-//        block = new TempDisplayBlock(loc, type, 60000, size);
-//        abilityStatus = AbilityStatus.SHOT;
-//        start();
-//    }
 
     public ShootBlockShapeFromLoc(Player player, String user, Location loc, Set<TempDisplayBlock> blocks, double radius, boolean autoRemove, Vector dir) {
         super(player, user);
@@ -77,11 +42,38 @@ public class ShootBlockShapeFromLoc extends CoreAbility {
         start();
     }
 
-    public void setGlowing(Color color  ){
+    public boolean isDirectable() {
+        return directable;
+    }
+
+    public void setDirectable(boolean directable) {
+        this.directable = directable;
+    }
+
+
+//    public ShootBlockShapeFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
+//        super(player, user);
+//        this.user = user;
+//        this.loc = startLoc;
+//        this.directable = directable;
+//        this.autoRemove = autoRemove;
+//        this.dir = player.getEyeLocation().getDirection().normalize();
+//        this.abilityStatus = AbilityStatus.SHOT;
+//
+//        block = new TempDisplayBlock(loc, type, 60000, size);
+//        abilityStatus = AbilityStatus.SHOT;
+//        start();
+//    }
+
+    public void setRange(double newRange) {
+        this.range = newRange;
+    }
+
+    public void setGlowing(Color color) {
         blocks.forEach(block -> {
             block.getBlockDisplay().setGlowColorOverride(color);
             block.getBlockDisplay().setGlowing(true);
-        } );
+        });
 
     }
 
@@ -123,16 +115,12 @@ public class ShootBlockShapeFromLoc extends CoreAbility {
 
     }
 
-    public void setLoc(Location loc) {
-        this.loc = loc;
+    public Vector getDir() {
+        return dir;
     }
 
     public void setDir(Vector dir) {
         this.dir = dir;
-    }
-
-    public Vector getDir() {
-        return dir;
     }
 
     @Override
@@ -147,7 +135,9 @@ public class ShootBlockShapeFromLoc extends CoreAbility {
         return loc;
     }
 
-
+    public void setLoc(Location loc) {
+        this.loc = loc;
+    }
 
     @Override
     public String getName() {

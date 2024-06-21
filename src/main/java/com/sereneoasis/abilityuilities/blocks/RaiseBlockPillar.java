@@ -7,14 +7,12 @@ import com.sereneoasis.util.methods.Constants;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RaiseBlockPillar extends CoreAbility {
 
@@ -45,7 +43,7 @@ public class RaiseBlockPillar extends CoreAbility {
             this.loc = origin.clone();
 
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
-                TempDisplayBlock displayBlock = new TempDisplayBlock(loc.getBlock(), loc.getBlock().getType(), 60000, 1 );
+                TempDisplayBlock displayBlock = new TempDisplayBlock(loc.getBlock(), loc.getBlock().getType(), 60000, 1);
                 blocks.add(displayBlock);
                 currentHeight--;
                 loc.subtract(0, 1, 0);
@@ -69,10 +67,10 @@ public class RaiseBlockPillar extends CoreAbility {
         if (targetBlock != null && Blocks.getArchetypeBlocks(sPlayer).contains(targetBlock.getType())) {
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
             this.origin = targetBlock.getLocation();
-           // Blocks.selectSourceAnimationBlock(targetBlock, Color.GREEN);
+            // Blocks.selectSourceAnimationBlock(targetBlock, Color.GREEN);
             this.loc = origin.clone();
             while (Blocks.getArchetypeBlocks(sPlayer).contains(loc.getBlock().getType()) && currentHeight > 0) {
-                TempDisplayBlock displayBlock = new TempDisplayBlock(loc.getBlock(), loc.getBlock().getType(), 60000, 1 );
+                TempDisplayBlock displayBlock = new TempDisplayBlock(loc.getBlock(), loc.getBlock().getType(), 60000, 1);
                 blocks.add(displayBlock);
                 currentHeight--;
                 loc.subtract(0, 1, 0);
@@ -98,10 +96,10 @@ public class RaiseBlockPillar extends CoreAbility {
                     tdb.moveTo(tdb.getBlockDisplay().getLocation().add(0, Constants.BLOCK_RAISE_SPEED * speed, 0));
                 }
 
-                Block topBlock = origin.clone().add(0,currentHeight,0).getBlock();
-                if (! solidifiedBlocks.contains(topBlock)) {
+                Block topBlock = origin.clone().add(0, currentHeight, 0).getBlock();
+                if (!solidifiedBlocks.contains(topBlock)) {
                     if (currentHeight >= 1) {
-                        TempDisplayBlock tdb = blocks.get(((int) currentHeight) -1);
+                        TempDisplayBlock tdb = blocks.get(((int) currentHeight) - 1);
                         if (topBlock.isPassable()) {
                             solidBlocks.add(new TempBlock(topBlock, tdb.getBlockDisplay().getBlock().getMaterial(), duration));
                         }
@@ -112,22 +110,22 @@ public class RaiseBlockPillar extends CoreAbility {
 
                 currentHeight += Constants.BLOCK_RAISE_SPEED * speed;
 
-                Entities.getEntitiesAroundPoint(origin.clone().add(0,currentHeight,0), hitbox).forEach(entity -> entity.setVelocity(entity.getVelocity().add(new Vector(0, Constants.BLOCK_RAISE_SPEED * speed, 0))));
+                Entities.getEntitiesAroundPoint(origin.clone().add(0, currentHeight, 0), hitbox).forEach(entity -> entity.setVelocity(entity.getVelocity().add(new Vector(0, Constants.BLOCK_RAISE_SPEED * speed, 0))));
             }
         }
 
-        if (isFalling && currentHeight > 0 && abilityStatus !=AbilityStatus.DROPPED) {
+        if (isFalling && currentHeight > 0 && abilityStatus != AbilityStatus.DROPPED) {
             for (TempDisplayBlock tdb : blocks) {
                 tdb.moveTo(tdb.getBlockDisplay().getLocation().subtract(0, Constants.BLOCK_RAISE_SPEED * speed, 0));
             }
             currentHeight -= Constants.BLOCK_RAISE_SPEED * speed;
         }
-        if (isFalling && currentHeight <= 0){
+        if (isFalling && currentHeight <= 0) {
             abilityStatus = AbilityStatus.DROPPED;
         }
     }
 
-    public void drop(){
+    public void drop() {
         if (!isFalling) {
             isFalling = true;
             solidBlocks.removeIf(tempBlock -> tempBlock.getBlock() == null);
@@ -140,7 +138,7 @@ public class RaiseBlockPillar extends CoreAbility {
     }
 
 
-    public void revertAllTempDisplayBlocks(){
+    public void revertAllTempDisplayBlocks() {
         for (TempDisplayBlock tdb : blocks) {
             tdb.revert();
         }
@@ -150,11 +148,6 @@ public class RaiseBlockPillar extends CoreAbility {
     public void remove() {
         super.remove();
         revertAllTempDisplayBlocks();
-    }
-
-    @Override
-    public Player getPlayer() {
-        return player;
     }
 
     @Override

@@ -8,7 +8,7 @@ public enum LimboStates {
 
     private String name;
 
-    LimboStates(String name){
+    LimboStates(String name) {
         this.name = name;
     }
 

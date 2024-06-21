@@ -1,6 +1,5 @@
 package com.sereneoasis.abilityuilities.blocks;
 
-import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Blocks;
@@ -12,29 +11,30 @@ import org.bukkit.util.Vector;
 
 public class BlockAbilities {
 
-    public static void handleRaiseBlock(MasterAbility masterAbility, RaiseBlock raiseBlock){
+    public static void handleRaiseBlock(MasterAbility masterAbility, RaiseBlock raiseBlock) {
         masterAbility.getHelpers().put(raiseBlock, status -> {
-            switch (status){
+            switch (status) {
                 case SOURCE_SELECTED -> {
                     if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCED) {
                         masterAbility.setAbilityStatus(AbilityStatus.SOURCED);
                         raiseBlock.fall();
                     }
-                } case SOURCED -> {
-                    if (raiseBlock.getAbilityStatus() == AbilityStatus.COMPLETE){
+                }
+                case SOURCED -> {
+                    if (raiseBlock.getAbilityStatus() == AbilityStatus.COMPLETE) {
                         raiseBlock.remove();
                     }
-                } case SHOT -> {
+                }
+                case SHOT -> {
                     raiseBlock.remove();
                 }
             }
         });
     }
 
-    public static void handleBouncingShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc)
-    {
+    public static void handleBouncingShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc) {
         masterAbility.getHelpers().put(shootBlockFromLoc, status -> {
-            switch (status){
+            switch (status) {
                 case SHOT -> {
                     shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
                     Vector dir = shootBlockFromLoc.getDir().clone();
@@ -52,7 +52,7 @@ public class BlockAbilities {
                         if (blockFace != null) {
                             Vector normal = blockFace.getDirection();
                             Vector newVec = Vectors.getBounce(dir, normal);
-                            if (blockFace == BlockFace.UP || blockFace == BlockFace.DOWN){
+                            if (blockFace == BlockFace.UP || blockFace == BlockFace.DOWN) {
                                 newVec.rotateAroundY(Math.toRadians(180));
                             }
                             shootBlockFromLoc.setDir(newVec);
@@ -64,10 +64,9 @@ public class BlockAbilities {
         });
     }
 
-    public static void handleShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc)
-    {
+    public static void handleShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc) {
         masterAbility.getHelpers().put(shootBlockFromLoc, status -> {
-            switch (status){
+            switch (status) {
                 case SHOT -> {
                     shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
                     if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
@@ -78,10 +77,9 @@ public class BlockAbilities {
         });
     }
 
-    public static void handleGravityShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc)
-    {
+    public static void handleGravityShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc) {
         masterAbility.getHelpers().put(shootBlockFromLoc, status -> {
-            switch (status){
+            switch (status) {
                 case SHOT -> {
                     shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
                     Vector dir = shootBlockFromLoc.getDir().clone();

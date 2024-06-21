@@ -197,7 +197,7 @@ public class ConfigManager {
         saveConfigValuesAbility(earth, "EarthWall", EARTH.toString(), "description", "Left click an earth block to raise a wall",
                 0, 2000, 20000,
                 0, 1.5, 0, 6, 5, 10, 1);
-        
+
         ArrayList<ComboManager.AbilityInformation> bulwarkAbilities = new ArrayList<>();
         bulwarkAbilities.add(0, new ComboManager.AbilityInformation("EarthWall", ClickType.SHIFT_LEFT));
 
@@ -241,8 +241,6 @@ public class ConfigManager {
         saveArchetypeCosmetics(earth, EARTH, "#50C878");
         earth.options().copyDefaults(true);
         getConfig(EARTH).saveConfig();
-
-
 
 
         FileConfiguration chaos = getConfig(CHAOS).getConfig();
@@ -486,7 +484,6 @@ public class ConfigManager {
 
         ocean.options().copyDefaults(true);
         getConfig(Archetype.OCEAN).saveConfig();
-
 
 
     }

@@ -5,7 +5,6 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockRingAroundPlayer;
 import com.sereneoasis.abilityuilities.blocks.ShootBlocksFromLoc;
 import com.sereneoasis.abilityuilities.blocks.SourceBlockToPlayer;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -63,19 +62,13 @@ public class RockRing extends CoreAbility {
                         radius, 0, 30, true);
                 sourceBlockToPlayer.remove();
             }
-        }
-
-
-        else if (abilityStatus == AbilityStatus.SHOT) {
+        } else if (abilityStatus == AbilityStatus.SHOT) {
             if (shootBlocksFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE) {
                 shootBlocksFromLoc.remove();
 
                 this.remove();
             }
-        }
-
-        else if (abilityStatus == AbilityStatus.SOURCED && !player.isSneaking())
-        {
+        } else if (abilityStatus == AbilityStatus.SOURCED && !player.isSneaking()) {
             this.remove();
         }
     }

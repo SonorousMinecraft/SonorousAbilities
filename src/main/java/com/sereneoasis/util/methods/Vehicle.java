@@ -9,7 +9,7 @@ import org.bukkit.entity.Pig;
 
 public class Vehicle {
 
-    public static Boat createBoatVehicle(Location loc){
+    public static Boat createBoatVehicle(Location loc) {
         Boat boat = (Boat) loc.getWorld().spawn(loc, EntityType.BOAT.getEntityClass(), (entity -> {
             Boat boatEntity = (Boat) entity;
             boatEntity.setInvulnerable(true);
@@ -25,12 +25,12 @@ public class Vehicle {
     }
 
 
-    public static Pig createPigVehicle(Location loc){
+    public static Pig createPigVehicle(Location loc) {
         Pig pig = (Pig) loc.getWorld().spawn(loc, EntityType.PIG.getEntityClass(), (entity -> {
             Pig pigEntity = (Pig) entity;
             pigEntity.setInvulnerable(true);
-          //  pigEntity.setInvisible(true);
-           // pigEntity.setBaby();
+            //  pigEntity.setInvisible(true);
+            // pigEntity.setBaby();
             CraftPig craftPig = (CraftPig) pigEntity;
             craftPig.setSaddle(true);
             craftPig.setAware(false);

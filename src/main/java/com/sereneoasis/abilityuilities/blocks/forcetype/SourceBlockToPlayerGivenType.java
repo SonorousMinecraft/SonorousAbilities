@@ -42,7 +42,7 @@ public class SourceBlockToPlayerGivenType extends CoreAbility {
             this.type = type;
             this.distanceToStop = distanceToStop;
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
-            glowingSource = Blocks.selectSourceAnimationManual(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0,size/2,0), sPlayer.getColor(), size);
+            glowingSource = Blocks.selectSourceAnimationManual(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).clone().subtract(0, size / 2, 0), sPlayer.getColor(), size);
             loc = source.getLocation();
             start();
         }
@@ -71,11 +71,11 @@ public class SourceBlockToPlayerGivenType extends CoreAbility {
 
             Location targetLoc = player.getEyeLocation().clone().add(player.getEyeLocation().getDirection().multiply(radius));
 
-            Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc ).normalize();
+            Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
 
             loc.add(dir.clone().multiply(speed));
 
-            List<Location> locs = Locations.getShotLocations(loc, Math.round(Math.round(speed/ (size/3))), dir, speed);
+            List<Location> locs = Locations.getShotLocations(loc, Math.round(Math.round(speed / (size / 3))), dir, speed);
 
             for (Location point : locs) {
                 new TempDisplayBlock(point, type, 500, size);
@@ -89,8 +89,7 @@ public class SourceBlockToPlayerGivenType extends CoreAbility {
 
     public void setAbilityStatus(AbilityStatus abilityStatus) {
         this.abilityStatus = abilityStatus;
-        if (abilityStatus != AbilityStatus.SOURCE_SELECTED)
-        {
+        if (abilityStatus != AbilityStatus.SOURCE_SELECTED) {
             glowingSource.revert();
         }
     }

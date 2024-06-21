@@ -1,19 +1,17 @@
 package com.sereneoasis.ability;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.data.ComboData;
-
 import com.sereneoasis.archetypes.earth.Bulwark;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import oshi.util.tuples.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @author Sakrajin
@@ -52,7 +50,7 @@ public class ComboManager {
     }
 
     private void checkForCombo(Player player) {
-        SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
         for (Map.Entry<String, ComboData> ability : COMBO_ABILITIES.entrySet()) {
 
             ArrayListMultimap<String, ClickType> recentlyUsedPairList = ArrayListMultimap.create();
@@ -77,7 +75,6 @@ public class ComboManager {
             }
         }
     }
-
 
 
     public static class AbilityInformation {

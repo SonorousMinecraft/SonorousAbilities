@@ -1,10 +1,13 @@
 package com.sereneoasis.util.methods;
 
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.BlockDisplay;
@@ -22,29 +25,29 @@ import java.util.*;
 public class Blocks {
 
     public static void selectSourceAnimationShape(Collection<Location> locs, Color color, double size) {
-        for (Location loc : locs){
+        for (Location loc : locs) {
             selectSourceAnimation(loc, color, size);
         }
     }
 
     public static void selectSourceAnimationShapeGivenType(Collection<Location> locs, Color color, double size, DisplayBlock displayBlock) {
-        for (Location loc : locs){
+        for (Location loc : locs) {
             selectSourceAnimationGivenType(loc, color, size, displayBlock);
         }
     }
 
     public static void selectSourceAnimationGivenType(Location loc, Color color, double size, DisplayBlock displayBlock) {
-        Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
-        new TempDisplayBlock(tempLoc,displayBlock, 2000, size, true, color);
+        Location tempLoc = loc.clone().add(-size / 2, 0, -size / 2);
+        new TempDisplayBlock(tempLoc, displayBlock, 2000, size, true, color);
     }
 
     public static void selectSourceAnimation(Location loc, Color color, double size) {
         Material type = loc.getBlock().getRelative(BlockFace.DOWN).getType();
-        Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
+        Location tempLoc = loc.clone().add(-size / 2, 0, -size / 2);
         if (type == Material.WATER) {
             new TempDisplayBlock(tempLoc, Material.BLUE_STAINED_GLASS, 1000, size, true, color);
         } else {
-            new TempDisplayBlock(tempLoc,type, 1000, size, true, color);
+            new TempDisplayBlock(tempLoc, type, 1000, size, true, color);
         }
     }
 
@@ -53,17 +56,17 @@ public class Blocks {
         if (type == Material.WATER) {
             new TempDisplayBlock(block.getLocation(), Material.BLUE_STAINED_GLASS, 1000, 1, true, color);
         } else {
-            new TempDisplayBlock(block.getLocation(),type, 1000, 1, true, color);
+            new TempDisplayBlock(block.getLocation(), type, 1000, 1, true, color);
         }
     }
 
     public static TempDisplayBlock selectSourceAnimationManual(Location loc, Color color, double size) {
         Material type = loc.getBlock().getType();
-        Location tempLoc = loc.clone().add(-size/2, 0, -size/2);
+        Location tempLoc = loc.clone().add(-size / 2, 0, -size / 2);
         if (type == Material.WATER) {
             return new TempDisplayBlock(tempLoc, Material.BLUE_STAINED_GLASS, 30000, size, true, color);
         } else {
-            return new TempDisplayBlock(tempLoc,type, 30000, size, true, color);
+            return new TempDisplayBlock(tempLoc, type, 30000, size, true, color);
         }
     }
 
@@ -76,7 +79,7 @@ public class Blocks {
         return block;
     }
 
-    public static boolean isBelowArchetype(Block b, double distance, SerenityPlayer serenityPlayer) {
+    public static boolean isBelowArchetype(Block b, double distance, SereneAbilitiesPlayer serenityPlayer) {
         Location loc = b.getLocation();
         if (loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.ALWAYS) != null) {
             Block block = loc.getWorld().rayTraceBlocks(loc, new Vector(0, -1, 0), distance, FluidCollisionMode.ALWAYS).getHitBlock();
@@ -107,7 +110,7 @@ public class Blocks {
     public static Location getFacingBlockLoc(Player player, double distance) {
         Location loc = player.getEyeLocation().clone();
         if (loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER, true) != null) {
-            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER,true );
+            RayTraceResult rayTraceResult = loc.getWorld().rayTraceBlocks(loc, loc.getDirection(), distance, FluidCollisionMode.NEVER, true);
             Location hitLoc = new Location(loc.getWorld(), rayTraceResult.getHitPosition().getX(), rayTraceResult.getHitPosition().getY(), rayTraceResult.getHitPosition().getZ());
             return hitLoc;
         }
@@ -126,9 +129,9 @@ public class Blocks {
     public static boolean playerLookingAtBlockDisplay(Player player, BlockDisplay target, double maxDistance, double size) {
         Location loc = target.getLocation();
 
-        Location lowest = loc.clone().add(Vectors.getDown(loc, size/2 )).add(Vectors.getLeftSide(player, size/2)).subtract(loc.getDirection().multiply(size/2));
+        Location lowest = loc.clone().add(Vectors.getDown(loc, size / 2)).add(Vectors.getLeftSide(player, size / 2)).subtract(loc.getDirection().multiply(size / 2));
 //        Particles.spawnParticle(Particle.FLAME, lowest, 1, 0, 0);
-        Location highest = loc.clone().add(Vectors.getUp(loc, size/2)).add(Vectors.getRightSide(player, size/2)).add(loc.getDirection().multiply(size/2));
+        Location highest = loc.clone().add(Vectors.getUp(loc, size / 2)).add(Vectors.getRightSide(player, size / 2)).add(loc.getDirection().multiply(size / 2));
 //        Particles.spawnParticle(Particle.FLAME, highest, 1, 0, 0);
         BoundingBox boundingBox = new BoundingBox(lowest.getX(), lowest.getY(), lowest.getZ(), highest.getX(), highest.getY(), highest.getZ());
         boundingBox.expand(0.1, 0.1, 0.1);
@@ -198,7 +201,7 @@ public class Blocks {
     }
 
 
-        public static List<Block> getBlocksAroundPoint(Location loc, double radius, Material type) {
+    public static List<Block> getBlocksAroundPoint(Location loc, double radius, Material type) {
         List<Block> blocks = new ArrayList<Block>();
         for (double y = -radius; y < radius; y++) {
             for (double x = -radius; x < radius; x++) {
@@ -213,11 +216,11 @@ public class Blocks {
         return blocks;
     }
 
-    public static Set<Material> getArchetypeBlocks(SerenityPlayer serenityPlayer) {
+    public static Set<Material> getArchetypeBlocks(SereneAbilitiesPlayer serenityPlayer) {
         return ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getBlocks();
     }
 
-    public static Block getSourceBlock(Player player, SerenityPlayer sPlayer, double sourceRange) {
+    public static Block getSourceBlock(Player player, SereneAbilitiesPlayer sPlayer, double sourceRange) {
         Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
             return source;
@@ -232,11 +235,9 @@ public class Blocks {
         return true;
     }
 
-    public static boolean isSolid(Location loc){
+    public static boolean isSolid(Location loc) {
         return !loc.getBlock().isPassable();
     }
-
-
 
 
 }

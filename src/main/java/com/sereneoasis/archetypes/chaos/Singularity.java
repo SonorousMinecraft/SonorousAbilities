@@ -4,7 +4,6 @@ import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.abilityuilities.particles.ChargeSphere;
 import com.sereneoasis.abilityuilities.particles.SphereBlast;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempBlock;
@@ -41,7 +40,7 @@ public class Singularity extends MasterAbility {
         if (shouldStart()) {
             ChargeSphere chargeSphere = new ChargeSphere(player, name, 1, new ArchetypeVisuals.ChaosVisual());
             getHelpers().put(chargeSphere, (abilityStatus) -> {
-                switch (abilityStatus){
+                switch (abilityStatus) {
                     case CHARGING:
 
                         if (!player.isSneaking()) {
@@ -52,12 +51,12 @@ public class Singularity extends MasterAbility {
                         for (Block b : sourceBlocks) {
                             if (b != null && !b.isPassable() && b.getType() != Material.CRYING_OBSIDIAN) {
 
-                                    TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 2);
-                                    Vector offset = Vectors.getDirectionBetweenLocations(chargeSphere.getLoc(), b.getLocation());
-                                    displayBlocks.put(tdb, offset);
+                                TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 2);
+                                Vector offset = Vectors.getDirectionBetweenLocations(chargeSphere.getLoc(), b.getLocation());
+                                displayBlocks.put(tdb, offset);
 
-                                    TempBlock tb = new TempBlock(b, Material.AIR, 60000);
-                                    sourceTempBlocks.add(tb);
+                                TempBlock tb = new TempBlock(b, Material.AIR, 60000);
+                                sourceTempBlocks.add(tb);
 
                             }
                         }
@@ -93,21 +92,21 @@ public class Singularity extends MasterAbility {
             previousDir = newDir;
         }
 
-        if (abilityStatus == AbilityStatus.CHARGING){
+        if (abilityStatus == AbilityStatus.CHARGING) {
             if (System.currentTimeMillis() > startTime + chargeTime) {
                 abilityStatus = AbilityStatus.CHARGED;
 
                 List<TempDisplayBlock> blocks = null;
                 if (displayBlocks.keySet().size() > 100) {
                     blocks = displayBlocks.keySet().stream().collect(Collectors.toList()).subList(0, 100);
-                }else {
+                } else {
                     blocks = displayBlocks.keySet().stream().collect(Collectors.toList()).subList(0, displayBlocks.size());
 
                 }
 
                 List<TempDisplayBlock> finalBlocks = blocks;
                 displayBlocks.forEach((tempDisplayBlock, vector) -> {
-                    if (!finalBlocks.contains(tempDisplayBlock)){
+                    if (!finalBlocks.contains(tempDisplayBlock)) {
                         tempDisplayBlock.revert();
                     } else {
                         tempDisplayBlock.setSize(1);
@@ -118,28 +117,28 @@ public class Singularity extends MasterAbility {
                         .filter(tempDisplayBlock -> !finalBlocks.contains(tempDisplayBlock))
                         .toList();
 
-                absentBlocks.forEach(tempDisplayBlock -> displayBlocks.remove(tempDisplayBlock));;
-            }
-            else {
+                absentBlocks.forEach(tempDisplayBlock -> displayBlocks.remove(tempDisplayBlock));
+                ;
+            } else {
                 displayBlocks.forEach((tempDisplayBlock, vector) -> {
                     tempDisplayBlock.setScale(0.5);
                     vector.multiply(0.5);
                 });
             }
-        } else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.SHOT){
+        } else if (abilityStatus == AbilityStatus.CHARGED || abilityStatus == AbilityStatus.SHOT) {
             displayBlocks.forEach((tempDisplayBlock, vector) -> {
-                vector.normalize().multiply(RandomUtils.getRandomDouble(-radius*2, radius*2));
+                vector.normalize().multiply(RandomUtils.getRandomDouble(-radius * 2, radius * 2));
                 vector.rotateAroundX(Math.toRadians(RandomUtils.getRandomDouble(-180, 180)));
                 vector.rotateAroundY(Math.toRadians(RandomUtils.getRandomDouble(-180, 180)));
                 vector.rotateAroundZ(Math.toRadians(RandomUtils.getRandomDouble(-180, 180)));
-                tempDisplayBlock.setSize((float) (RandomUtils.getRandomDouble(0, 1) ));
-                tempDisplayBlock.rotate( (float) RandomUtils.getRandomDouble(0, 360), (float) RandomUtils.getRandomDouble(0, 360));
+                tempDisplayBlock.setSize((float) (RandomUtils.getRandomDouble(0, 1)));
+                tempDisplayBlock.rotate((float) RandomUtils.getRandomDouble(0, 360), (float) RandomUtils.getRandomDouble(0, 360));
             });
         }
 
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.SHOT;
 
@@ -150,7 +149,7 @@ public class Singularity extends MasterAbility {
                 switch (abilityStatus) {
                     case SHOT:
                         this.loc = sphereBlast.getLoc();
-                        if (  sphereBlast.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                        if (sphereBlast.getAbilityStatus() == AbilityStatus.COMPLETE) {
                             this.abilityStatus = AbilityStatus.COMPLETE;
 
                             Particles.spawnParticle(Particle.SONIC_BOOM, sphereBlast.getLoc(), 20, radius * 2, 1);
@@ -158,8 +157,8 @@ public class Singularity extends MasterAbility {
                                 tempDisplayBlock.setSize(1);
                             });
 //                            Scheduler.performTaskLater(100L, () -> {
-                                sphereBlast.remove();
-                                this.remove();
+                            sphereBlast.remove();
+                            this.remove();
 //                            });
 
                         } else {
@@ -167,8 +166,8 @@ public class Singularity extends MasterAbility {
 
                             for (Block b : sourceBlocks) {
                                 if (b != null && !b.isPassable()) {
-                                        TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000);
-                                        sourceTempBlocks.add(tb);
+                                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000);
+                                    sourceTempBlocks.add(tb);
 
                                 }
                             }
@@ -177,14 +176,14 @@ public class Singularity extends MasterAbility {
                     case COMPLETE:
                         displayBlocks.forEach((tempDisplayBlock, vector) -> {
                             tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().clone().add(vector.clone().normalize()));
-                            vector.subtract(new Vector(0, Constants.GRAVITY,0));
+                            vector.subtract(new Vector(0, Constants.GRAVITY, 0));
                         });
 
                         break;
                 }
             });
         }
-        }
+    }
 
     @Override
     public void remove() {

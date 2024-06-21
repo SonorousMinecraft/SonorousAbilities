@@ -2,10 +2,6 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityDamage;
-import com.sereneoasis.util.methods.Constants;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.temp.TempBlock;
-import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,13 +9,13 @@ import org.bukkit.util.Vector;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class RaiseBlockPillarDamage extends RaiseBlockPillar{
+public class RaiseBlockPillarDamage extends RaiseBlockPillar {
 
     private boolean hitOnce;
 
     private Set<LivingEntity> damagedSet = new HashSet<>();
+
     public RaiseBlockPillarDamage(Player player, String name, double height, boolean hitOnce) {
         super(player, name, height);
         this.hitOnce = hitOnce;

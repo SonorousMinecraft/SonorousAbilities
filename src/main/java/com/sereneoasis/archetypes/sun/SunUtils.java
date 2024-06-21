@@ -9,15 +9,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 
-
 public class SunUtils {
 
-    public static void blockExplode(Player player, String name, Location loc, double radius, double increment){
+    public static void blockExplode(Player player, String name, Location loc, double radius, double increment) {
         new BlockExplodeSphere(player, name, loc, radius, increment);
 
         Scheduler.performTaskLater(5, () -> {
-            Blocks.getBlocksAroundPoint(loc, radius+1).forEach(block -> {
-                if (!block.isPassable() ) {
+            Blocks.getBlocksAroundPoint(loc, radius + 1).forEach(block -> {
+                if (!block.isPassable()) {
                     new TempBlock(block, DisplayBlock.SUN, 60000);
 //                    new TB(block, 60000, DisplayBlock.SUN);
                 }

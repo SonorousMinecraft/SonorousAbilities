@@ -70,19 +70,19 @@ public class ShootBlocksFromLocGivenType extends CoreAbility {
                 lastCurveTime = System.currentTimeMillis();
             }
 //            locs = Locations.getBezierCurveLocations(loc, Math.round(Math.round(speed / (size/2))), directions, speed);
-            locs = Locations.getShotLocations(loc, Math.round(Math.round(speed/ (size))), dir, speed);
+            locs = Locations.getShotLocations(loc, Math.round(Math.round(speed / (size))), dir, speed);
 
 
         } else {
-            locs = Locations.getShotLocations(loc, Math.round(Math.round(speed/ (size))), dir, speed);
+            locs = Locations.getShotLocations(loc, Math.round(Math.round(speed / (size))), dir, speed);
         }
 
 
         for (Location point : locs) {
-            if (directable){
-                new TempDisplayBlock(point, type, 2000,  size);
+            if (directable) {
+                new TempDisplayBlock(point, type, 2000, size);
             } else {
-                new TempDisplayBlock(point, type, revertTime,  size);
+                new TempDisplayBlock(point, type, revertTime, size);
             }
 
         }

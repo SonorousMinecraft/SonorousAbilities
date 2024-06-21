@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
 public enum Archetype {
     NONE("none", 0),
 
-    EARTH("earth", 5, TrimMaterial.EMERALD, TrimPattern.HOST ),
+    EARTH("earth", 5, TrimMaterial.EMERALD, TrimPattern.HOST),
 
     CHAOS("chaos", 3, TrimMaterial.AMETHYST, TrimPattern.DUNE),
 

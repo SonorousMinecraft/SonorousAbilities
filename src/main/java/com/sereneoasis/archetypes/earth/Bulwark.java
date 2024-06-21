@@ -22,7 +22,7 @@ public class Bulwark extends CoreAbility {
         if (shouldStart()) {
             Set<Block> blocks = EnhancedBlocks.getTopHCircleBlocks(this);
 
-            if ( ! blocks.isEmpty()){
+            if (!blocks.isEmpty()) {
                 for (Block b : blocks) {
                     raiseBlockPillars.add(new RaiseBlockPillar(player, name, range, b));
                 }

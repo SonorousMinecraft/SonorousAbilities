@@ -3,12 +3,8 @@ package com.sereneoasis.archetypes.sky;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.SourcedBlast;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.equipment.ItemStackUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
-
-import java.util.List;
 
 public class SkyBlast extends CoreAbility {
 
@@ -29,8 +25,8 @@ public class SkyBlast extends CoreAbility {
     @Override
     public void progress() {
 
-        if (!sourcedBlast.getLoc().getBlock().isPassable()){
-            SkyUtils.lightningStrike(this,sourcedBlast.getLoc());
+        if (!sourcedBlast.getLoc().getBlock().isPassable()) {
+            SkyUtils.lightningStrike(this, sourcedBlast.getLoc());
             this.remove();
         }
 

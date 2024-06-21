@@ -33,7 +33,6 @@ public class Daybreak extends CoreAbility {
         }
 
 
-
     }
 
     @Override
@@ -42,9 +41,8 @@ public class Daybreak extends CoreAbility {
         if (!player.isSneaking() | jet.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
-        for (Location loc: Locations.getSeveralHelixes(player.getEyeLocation(), player.getEyeLocation().getDirection().multiply(-1), 5, 20, 5, 0, true, 3))
-        {
-            sunVisual.playVisual(loc, size, 0, 1 , 1 , 1);
+        for (Location loc : Locations.getSeveralHelixes(player.getEyeLocation(), player.getEyeLocation().getDirection().multiply(-1), 5, 20, 5, 0, true, 3)) {
+            sunVisual.playVisual(loc, size, 0, 1, 1, 1);
         }
 
         AbilityDamage.damageSeveral(player.getEyeLocation(), this, player, true, player.getVelocity());
@@ -58,7 +56,7 @@ public class Daybreak extends CoreAbility {
 
         Location facing = Locations.getFacingLocation(player.getEyeLocation(), player.getEyeLocation().getDirection(), speed);
 
-        if ( ! EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing ).isEmpty()) {
+        if (!EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing).isEmpty()) {
 //            new BlockExplodeSphere(player, name, facing, 1);
 
             SunUtils.blockExplode(player, name, facing, radius * 1.5, 1);
