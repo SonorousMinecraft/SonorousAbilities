@@ -5,7 +5,6 @@ import com.sereneoasis.abilityuilities.particles.Blast;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -55,12 +54,12 @@ public class SnowShuriken extends MasterAbility {
         if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.SHOOTING;
         }
-        if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
+        if (abilityStatus == AbilityStatus.SHOOTING && currentShots < shots) {
             Blast blast = new Blast(player, name, false, new ArchetypeVisuals.SnowVisual(), true);
             addHelper(blast, (abilityStatus) -> {
-                switch (abilityStatus){
+                switch (abilityStatus) {
                     case SHOOTING -> {
-                        if (blast.getLoc().getBlock().getType().equals(Material.WATER)){
+                        if (blast.getLoc().getBlock().getType().equals(Material.WATER)) {
                             OceanUtils.freeze(blast.getLoc(), 3, sPlayer);
                         }
                         if (blast.getAbilityStatus() == AbilityStatus.DAMAGED || blast.getAbilityStatus() == AbilityStatus.COMPLETE) {

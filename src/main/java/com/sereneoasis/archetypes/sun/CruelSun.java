@@ -16,11 +16,11 @@ import org.bukkit.entity.Player;
  */
 public class CruelSun extends CoreAbility {
 
+    private static final String name = "CruelSun";
     private ChargeSphere chargeSphere;
     private BlockSmash blockSmash;
-
     private double currentAngle = 0;
-    private static final String name = "CruelSun";
+    private ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
 
     public CruelSun(Player player) {
         super(player, name);
@@ -32,10 +32,7 @@ public class CruelSun extends CoreAbility {
         }
 
 
-
     }
-
-    private ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
 
     @Override
     public void progress() {
@@ -47,26 +44,23 @@ public class CruelSun extends CoreAbility {
                 abilityStatus = AbilityStatus.CHARGED;
 
             }
-        }
-        else if (abilityStatus == AbilityStatus.CHARGED) {
+        } else if (abilityStatus == AbilityStatus.CHARGED) {
             blockSmash = new BlockSmash(player, name,
                     DisplayBlock.SUN,
                     chargeSphere.getLoc());
             chargeSphere.remove();
             abilityStatus = AbilityStatus.NOT_SHOT;
-        }
-        else if (abilityStatus == AbilityStatus.NOT_SHOT){
+        } else if (abilityStatus == AbilityStatus.NOT_SHOT) {
             sunVisual.playVisual(blockSmash.getLoc(), size, radius, 0, 10, 10);
-        }
-        else if (abilityStatus == AbilityStatus.SHOT){
+        } else if (abilityStatus == AbilityStatus.SHOT) {
 
             sunVisual.playShotVisual(blockSmash.getLoc(), blockSmash.getDir(), currentAngle, size, radius, 0, 1, 1);
             currentAngle += 36;
             Location facing = Locations.getFacingLocation(blockSmash.getLoc(), blockSmash.getDir(), speed * radius);
 
-            if ( ! EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing ).isEmpty()) {
+            if (!EnhancedBlocksArchetypeLess.getFacingSphereBlocks(this, facing).isEmpty()) {
 //                new BlockExplodeSphere(player, name, facing, radius * 2, 0.25);
-                SunUtils.blockExplode(player, name, facing, radius*2, 0.5);
+                SunUtils.blockExplode(player, name, facing, radius * 2, 0.5);
             }
 
             if (blockSmash.getAbilityStatus() == AbilityStatus.COMPLETE) {

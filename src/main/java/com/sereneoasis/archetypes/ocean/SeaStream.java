@@ -12,20 +12,18 @@ import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.methods.collections.CollectionUtils;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class SeaStream extends MasterAbility {
 
     public static final String name = "SeaStream";
 
-    private Set<TempBlock>sources = new HashSet<>();
+    private Set<TempBlock> sources = new HashSet<>();
 
     private Set<TempDisplayBlock> stream = new HashSet<>();
 
@@ -35,7 +33,7 @@ public class SeaStream extends MasterAbility {
     public SeaStream(Player player) {
         super(player, name);
 
-        if (shouldStart()){
+        if (shouldStart()) {
             Block facing = Blocks.getFacingBlockOrLiquid(player, sourceRange);
             if (facing != null && Blocks.getArchetypeBlocks(sPlayer).contains(facing.getType())) {
                 abilityStatus = AbilityStatus.CHARGING;
@@ -48,13 +46,13 @@ public class SeaStream extends MasterAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        switch (abilityStatus){
+        switch (abilityStatus) {
             case CHARGING -> {
                 if (System.currentTimeMillis() - startTime > chargeTime) {
                     sources.forEach(tempBlock -> {
 
 //                        if (tempBlock!= null && tempBlock.getBlock() != null) {
-                        if (tempBlock.getBlock()!= null){
+                        if (tempBlock.getBlock() != null) {
                             tempBlock.revert();
                         }
 
@@ -62,9 +60,8 @@ public class SeaStream extends MasterAbility {
                     abilityStatus = AbilityStatus.CHARGED;
 //                    Bukkit.broadcastMessage("charged");
 
-                }
-                else {
-                    if (! player.isSneaking()) {
+                } else {
+                    if (!player.isSneaking()) {
 //                        Bukkit.broadcastMessage("removed for not sneaking");
                         this.remove();
                     } else {
@@ -93,7 +90,7 @@ public class SeaStream extends MasterAbility {
                     stream.forEach(tempDisplayBlock -> {
                         Location sourceTo = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius * 3));
                         if (tempDisplayBlock.getLoc().distanceSquared(sourceTo) > radius * radius) {
-                            tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), sourceTo.clone().add(Vectors.getRandom().multiply(radius *3))).normalize()));
+                            tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), sourceTo.clone().add(Vectors.getRandom().multiply(radius * 3))).normalize()));
                         }
                     });
                 }
@@ -103,20 +100,20 @@ public class SeaStream extends MasterAbility {
 //                Bukkit.broadcastMessage("stream has " + stream.size());
 //                this.remove();
                 stream.forEach(tempDisplayBlock -> {
-                    tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), streamShot.getLoc().clone().add(Vectors.getRandom().multiply(radius ))).normalize()));
+                    tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), streamShot.getLoc().clone().add(Vectors.getRandom().multiply(radius))).normalize()));
                 });
                 Entities.getEntitiesAroundPoint(streamShot.getLoc(), radius).forEach(entity -> entity.setVelocity(streamShot.getDir()));
 
 
                 Location sourceTo = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius * 3));
 
-                if (player.isSneaking()){
+                if (player.isSneaking()) {
                     streamShot.setDir(Vectors.getDirectionBetweenLocations(streamShot.getLoc(), sourceTo).normalize());
                 } else {
                     streamShot.setDir(player.getEyeLocation().getDirection());
                 }
                 streamShot.setAbilityStatus(AbilityStatus.SHOT);
-                if (streamShot.getLoc().distance(player.getEyeLocation()) > range){
+                if (streamShot.getLoc().distance(player.getEyeLocation()) > range) {
                     this.remove();
                 }
 
@@ -128,15 +125,15 @@ public class SeaStream extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        sources.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
-        stream.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
+        sources.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
+        stream.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
     }
 
 
-    public void setHasClicked(){
-        if (abilityStatus == AbilityStatus.CHARGED){
-            if (player.isSneaking()){
-                streamShot = new ShootBlockShapeFromLoc(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius)), stream, radius , false, player.getEyeLocation().getDirection());
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.CHARGED) {
+            if (player.isSneaking()) {
+                streamShot = new ShootBlockShapeFromLoc(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(radius)), stream, radius, false, player.getEyeLocation().getDirection());
 
                 abilityStatus = AbilityStatus.SHOT;
             } else {

@@ -1,16 +1,11 @@
 package com.sereneoasis.archetypes.chaos;
 
 import com.sereneoasis.ability.superclasses.MasterAbility;
-import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphere;
-import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphereSuck;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
 import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedSchedulerEffects;
 import com.sereneoasis.util.methods.*;
-import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
@@ -18,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import javax.swing.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,8 +30,8 @@ public class AbyssalFall extends MasterAbility {
     public AbyssalFall(Player player) {
         super(player, name);
 
-        if (shouldStart()){
-            player.setVelocity(new Vector(0,3 * speed, 0));
+        if (shouldStart()) {
+            player.setVelocity(new Vector(0, 3 * speed, 0));
             Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 5, 3, 0);
 
             Entities.applyPotionPlayer(player, PotionEffectType.SLOW_FALLING, 60000);
@@ -48,10 +42,10 @@ public class AbyssalFall extends MasterAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (abilityStatus == AbilityStatus.MOVING){
+        if (abilityStatus == AbilityStatus.MOVING) {
             PacketUtils.playRiptide(player, 20);
             player.setVelocity(dir.subtract(new Vector(0, Constants.GRAVITY * speed * 2, 0)).clone().multiply(speed));
-            if (Blocks.isSolid(player.getLocation().subtract(0,1,0))) {
+            if (Blocks.isSolid(player.getLocation().subtract(0, 1, 0))) {
 
 //                Blocks.getBlocksAroundPoint(player.getLocation(), radius).forEach(b -> {
 //                    TempBlock tb = new TempBlock(b, Material.AIR, duration, true);
@@ -61,19 +55,19 @@ public class AbyssalFall extends MasterAbility {
 
                 tempDisplayBlocks = EnhancedDisplayBlocks.createTopCircleTempBlocks(this, Material.BLACK_CONCRETE);
                 List<Entity> targets = Entities.getEntitiesAroundPoint(player.getLocation(), radius).stream().filter(entity -> entity != player).collect(Collectors.toList());
-                targets.forEach(entity -> entity.teleport(entity.getLocation().add(0, radius*2, 0)));
+                targets.forEach(entity -> entity.teleport(entity.getLocation().add(0, radius * 2, 0)));
                 Scheduler.performTaskLater(20, () -> {
-                            targets.stream().filter(entity -> entity != player).collect(Collectors.toSet())
-                                    .forEach(entity -> {
-                                        Particles.spawnParticle(Particle.SONIC_BOOM, entity.getLocation(), 5, 3, 0);
-                                        entity.setVelocity(new Vector(0, - speed, 0));
+                    targets.stream().filter(entity -> entity != player).collect(Collectors.toSet())
+                            .forEach(entity -> {
+                                Particles.spawnParticle(Particle.SONIC_BOOM, entity.getLocation(), 5, 3, 0);
+                                entity.setVelocity(new Vector(0, -speed, 0));
 //                                        new BlockDisintegrateSphereSuck(player, name, entity.getLocation().subtract(0, radius * 2, 0), entity.getLocation(), 0, radius / 8, 1);
 
-                                    });
-                        });
+                            });
+                });
 
                 EnhancedSchedulerEffects.raiseTDBs(tempDisplayBlocks, 50, 1);
-                    abilityStatus = AbilityStatus.SHOT;
+                abilityStatus = AbilityStatus.SHOT;
                 player.removePotionEffect(PotionEffectType.SLOW_FALLING);
                 this.remove();
             }
@@ -81,7 +75,7 @@ public class AbyssalFall extends MasterAbility {
 
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.MOVING;
             this.dir = player.getEyeLocation().getDirection();

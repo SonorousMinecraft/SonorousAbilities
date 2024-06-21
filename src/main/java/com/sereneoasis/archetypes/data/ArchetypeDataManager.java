@@ -26,10 +26,6 @@ public class ArchetypeDataManager {
 
     private static final Map<Archetype, ArchetypeData> ARCHETYPE_DATA_MAP = new ConcurrentHashMap<>();
 
-    public static ArchetypeData getArchetypeData(Archetype archetype) {
-        return ARCHETYPE_DATA_MAP.get(archetype);
-    }
-
     public ArchetypeDataManager() {
         for (Archetype archetype : Archetype.values()) {
             FileConfiguration config = ConfigManager.getConfig(archetype).getConfig();
@@ -57,5 +53,9 @@ public class ArchetypeDataManager {
             ARCHETYPE_DATA_MAP.put(archetype, archetypeData);
 
         }
+    }
+
+    public static ArchetypeData getArchetypeData(Archetype archetype) {
+        return ARCHETYPE_DATA_MAP.get(archetype);
     }
 }

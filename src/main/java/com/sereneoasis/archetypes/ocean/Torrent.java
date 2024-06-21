@@ -7,7 +7,6 @@ import com.sereneoasis.abilityuilities.blocks.forcetype.ShootBlocksFromLocGivenT
 import com.sereneoasis.abilityuilities.blocks.forcetype.SourceBlockToPlayerGivenType;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -60,15 +59,12 @@ public class Torrent extends CoreAbility {
                         radius, 0, 45, true);
                 sourceBlockToPlayerGivenType.remove();
             }
-        }
-
-
-        else if (abilityStatus == AbilityStatus.SHOT) {
+        } else if (abilityStatus == AbilityStatus.SHOT) {
             if (shootBlocksFromLocGivenType == null) {
 //                Bukkit.broadcastMessage("shit" + blockRingAroundPlayerGivenType.getLocation().distance(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(4))));
 //                if (blockRingAroundPlayerGivenType.getLocation().distanceSquared(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(4))) < 1) {
                 if (blockRingAroundPlayerGivenType.isReadyToShoot()) {
-                    shootBlocksFromLocGivenType = new ShootBlocksFromLocGivenType(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(blockRingAroundPlayerGivenType.getRingSize() /2)), DisplayBlock.WATER, true, true);
+                    shootBlocksFromLocGivenType = new ShootBlocksFromLocGivenType(player, name, player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(blockRingAroundPlayerGivenType.getRingSize() / 2)), DisplayBlock.WATER, true, true);
                     blockRingAroundPlayerGivenType.remove();
                 }
             } else {
@@ -79,10 +75,7 @@ public class Torrent extends CoreAbility {
                     this.remove();
                 }
             }
-        }
-
-        else if (abilityStatus == AbilityStatus.SOURCED && !player.isSneaking())
-        {
+        } else if (abilityStatus == AbilityStatus.SOURCED && !player.isSneaking()) {
             this.remove();
         }
     }

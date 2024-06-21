@@ -1,7 +1,7 @@
 package com.sereneoasis.ability.superclasses;
 
-import com.sereneoasis.Serenity;
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilities;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
@@ -14,7 +14,6 @@ import oshi.util.tuples.Pair;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -27,181 +26,37 @@ public abstract class CoreAbility implements Ability {
 
     private static final Set<CoreAbility> INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private static final Set<CoreAbility> REDIRECT_INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    public void setRedirectable(){
-        REDIRECT_INSTANCES.add(this);
-    }
     private static final Set<CoreAbility> COLLISION_INSTANCES = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    public void setCollideable(){
-        COLLISION_INSTANCES.add(this);
-    }
-
     private static final Map<Class<? extends CoreAbility>, Map<UUID, Map<Integer, CoreAbility>>> INSTANCES_BY_PLAYER = new ConcurrentHashMap<>();
-
     private static final Map<Class<? extends CoreAbility>, Set<CoreAbility>> INSTANCES_BY_CLASS = new ConcurrentHashMap<>();
-
-    protected Player player;
-
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
-
-    protected SerenityPlayer sPlayer;
-
-    public SerenityPlayer getsPlayer() {
-        return sPlayer;
-    }
-
-    protected Archetype archetype;
-
-    protected long startTime, chargeTime, cooldown, duration;
-
-    protected AbilityStatus abilityStatus;
-
-    public AbilityStatus getAbilityStatus() {
-        return abilityStatus;
-    }
-
-    public void setAbilityStatus(AbilityStatus abilityStatus) {
-        this.abilityStatus = abilityStatus;
-    }
-
-    protected double damage, hitbox, radius, range, speed, sourceRange, size;
-
-    public Archetype getArchetype() {
-        return archetype;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public long getChargeTime() {
-        return chargeTime;
-    }
-
-    public long getCooldown() {
-        return cooldown;
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public double getDamage() {
-        return damage;
-    }
-
-    public double getHitbox() {
-        return hitbox;
-    }
-
-    public double getRadius() {
-        return radius;
-    }
-
-    public double getRange() {
-        return range;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public double getSourceRange() {
-        return sourceRange;
-    }
-
-    public double getSize() {
-        return size;
-    }
-
-    private int id;
-
     private static int idCounter = Integer.MIN_VALUE;
-
-//    public CoreAbility(final Player player) {
-//        this.player = player;
-//        this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
-//
-//        initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
-//    }
+    protected Player player;
+    protected SereneAbilitiesPlayer sPlayer;
+    protected Archetype archetype;
+    protected long startTime, chargeTime, cooldown, duration;
+    protected AbilityStatus abilityStatus;
+    protected double damage, hitbox, radius, range, speed, sourceRange, size;
+    private int id;
 
     public CoreAbility(final Player player, String name) {
 
         this.player = player;
-        this.sPlayer = SerenityPlayer.getSerenityPlayerMap().get(player.getUniqueId());
+        this.sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().get(player.getUniqueId());
 
 
         initialiseConfigVariables(AbilityDataManager.getAbilityData(name));
 
     }
 
-    protected boolean shouldStart(){
-        return Serenity.getWorldGuardManager().canBend(player) && !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
-    }
-
-    protected boolean shouldStartCanHaveMultiple(){
-        return Serenity.getWorldGuardManager().canBend(player) && !sPlayer.isOnCooldown(this.getName());
-    }
-
-    private void initialiseConfigVariables(AbilityData abilityData) {
-
-        this.archetype = abilityData.getArchetype();
-        this.startTime = System.currentTimeMillis();
-
-        this.chargeTime = abilityData.getChargetime();
-        this.cooldown = abilityData.getCooldown();
-        this.duration = abilityData.getDuration();
-
-        this.damage = abilityData.getDamage();
-        this.hitbox = abilityData.getHitbox();
-        this.radius = abilityData.getRadius();
-        this.range = abilityData.getRange();
-        this.speed = abilityData.getSpeed();
-        this.sourceRange = abilityData.getSourceRange();
-        this.size = abilityData.getSize();
-    }
-
-
-    public void start() {
-
-        INSTANCES.add(this);
-
-        final Class<? extends CoreAbility> clazz = this.getClass();
-        final UUID uuid = this.player.getUniqueId();
-        if (!INSTANCES_BY_PLAYER.containsKey(clazz)) {
-            INSTANCES_BY_PLAYER.put(clazz, new ConcurrentHashMap<>());
-        }
-        if (!INSTANCES_BY_PLAYER.get(clazz).containsKey(uuid)) {
-            INSTANCES_BY_PLAYER.get(clazz).put(uuid, new ConcurrentHashMap<>());
-        }
-        if (!INSTANCES_BY_CLASS.containsKey(clazz)) {
-            INSTANCES_BY_CLASS.put(clazz, Collections.newSetFromMap(new ConcurrentHashMap<>()));
-        }
-
-        this.id = CoreAbility.idCounter;
-
-        if (idCounter == Integer.MAX_VALUE) {
-            idCounter = Integer.MIN_VALUE;
-        } else {
-            idCounter++;
-        }
-
-        INSTANCES_BY_PLAYER.get(clazz).get(uuid).put(this.id, this);
-        INSTANCES_BY_CLASS.get(clazz).add(this);
-
-    }
-
-    public static Stream<Pair<CoreAbility, Stream<BoundingBox>>>getAllRedirectInstances(){
+    public static Stream<Pair<CoreAbility, Stream<BoundingBox>>> getAllRedirectInstances() {
         Stream<CoreAbility> redirectAbilities = REDIRECT_INSTANCES.stream()
                 .filter(coreAbility -> coreAbility instanceof RedirectAbility);
 
 
-        Stream<Pair<CoreAbility, Stream<BoundingBox>>> abilityToBoundingBoxes =  redirectAbilities.map(coreAbility -> new Pair<CoreAbility, RedirectAbility>(coreAbility, (RedirectAbility) coreAbility))
-                .map( pair -> new Pair<CoreAbility, Set<Map.Entry<Location, Double>>>(pair.getA(), pair.getB().getLocs().entrySet()))
+        Stream<Pair<CoreAbility, Stream<BoundingBox>>> abilityToBoundingBoxes = redirectAbilities.map(coreAbility -> new Pair<CoreAbility, RedirectAbility>(coreAbility, (RedirectAbility) coreAbility))
+                .map(pair -> new Pair<CoreAbility, Set<Map.Entry<Location, Double>>>(pair.getA(), pair.getB().getLocs().entrySet()))
                 .map(pair -> {
-                    return new Pair<CoreAbility, Stream<BoundingBox>> (pair.getA(), pair.getB().stream().map(locationDoubleEntry -> {
+                    return new Pair<CoreAbility, Stream<BoundingBox>>(pair.getA(), pair.getB().stream().map(locationDoubleEntry -> {
                         Location center = locationDoubleEntry.getKey();
                         double radius = locationDoubleEntry.getValue();
                         Location bottom = center.clone().subtract(radius, radius, radius);
@@ -221,36 +76,12 @@ public abstract class CoreAbility implements Ability {
 
         }
         for (CoreAbility abil : INSTANCES) {
-            if (abil.player.isOnline()){
+            if (abil.player.isOnline()) {
                 abil.progress();
-            }
-            else{
+            } else {
                 abil.remove();
             }
         }
-    }
-
-    @Override
-    public void remove() {
-        final Map<UUID, Map<Integer, CoreAbility>> classMap = INSTANCES_BY_PLAYER.get(this.getClass());
-        if (classMap != null) {
-            final Map<Integer, CoreAbility> playerMap = classMap.get(this.player.getUniqueId());
-            if (playerMap != null) {
-                playerMap.remove(this.id);
-                if (playerMap.isEmpty()) {
-                    classMap.remove(this.player.getUniqueId());
-                }
-            }
-
-            if (classMap.isEmpty()) {
-                INSTANCES_BY_PLAYER.remove(this.getClass());
-            }
-        }
-        if (INSTANCES_BY_CLASS.containsKey(this.getClass())) {
-            INSTANCES_BY_CLASS.get(this.getClass()).remove(this);
-        }
-
-        INSTANCES.remove(this);
     }
 
     public static void removeAll() {
@@ -314,6 +145,164 @@ public abstract class CoreAbility implements Ability {
      */
     public static <T extends CoreAbility> boolean hasAbility(final Player player, final Class<T> clazz) {
         return getAbility(player, clazz) != null;
+    }
+
+    public void setRedirectable() {
+        REDIRECT_INSTANCES.add(this);
+    }
+
+    public void setCollideable() {
+        COLLISION_INSTANCES.add(this);
+    }
+
+    @Override
+    public Player getPlayer() {
+        return player;
+    }
+
+    public SereneAbilitiesPlayer getsPlayer() {
+        return sPlayer;
+    }
+
+    public AbilityStatus getAbilityStatus() {
+        return abilityStatus;
+    }
+
+    public void setAbilityStatus(AbilityStatus abilityStatus) {
+        this.abilityStatus = abilityStatus;
+    }
+
+    public Archetype getArchetype() {
+        return archetype;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getChargeTime() {
+        return chargeTime;
+    }
+
+//    public CoreAbility(final Player player) {
+//        this.player = player;
+//        this.sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().get(player.getUniqueId());
+//
+//        initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
+//    }
+
+    public long getCooldown() {
+        return cooldown;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public double getHitbox() {
+        return hitbox;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public double getRange() {
+        return range;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public double getSourceRange() {
+        return sourceRange;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    protected boolean shouldStart() {
+        return SereneAbilities.getWorldGuardManager().canBend(player) && !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
+    }
+
+    protected boolean shouldStartCanHaveMultiple() {
+        return SereneAbilities.getWorldGuardManager().canBend(player) && !sPlayer.isOnCooldown(this.getName());
+    }
+
+    private void initialiseConfigVariables(AbilityData abilityData) {
+
+        this.archetype = abilityData.getArchetype();
+        this.startTime = System.currentTimeMillis();
+
+        this.chargeTime = abilityData.getChargetime();
+        this.cooldown = abilityData.getCooldown();
+        this.duration = abilityData.getDuration();
+
+        this.damage = abilityData.getDamage();
+        this.hitbox = abilityData.getHitbox();
+        this.radius = abilityData.getRadius();
+        this.range = abilityData.getRange();
+        this.speed = abilityData.getSpeed();
+        this.sourceRange = abilityData.getSourceRange();
+        this.size = abilityData.getSize();
+    }
+
+    public void start() {
+
+        INSTANCES.add(this);
+
+        final Class<? extends CoreAbility> clazz = this.getClass();
+        final UUID uuid = this.player.getUniqueId();
+        if (!INSTANCES_BY_PLAYER.containsKey(clazz)) {
+            INSTANCES_BY_PLAYER.put(clazz, new ConcurrentHashMap<>());
+        }
+        if (!INSTANCES_BY_PLAYER.get(clazz).containsKey(uuid)) {
+            INSTANCES_BY_PLAYER.get(clazz).put(uuid, new ConcurrentHashMap<>());
+        }
+        if (!INSTANCES_BY_CLASS.containsKey(clazz)) {
+            INSTANCES_BY_CLASS.put(clazz, Collections.newSetFromMap(new ConcurrentHashMap<>()));
+        }
+
+        this.id = CoreAbility.idCounter;
+
+        if (idCounter == Integer.MAX_VALUE) {
+            idCounter = Integer.MIN_VALUE;
+        } else {
+            idCounter++;
+        }
+
+        INSTANCES_BY_PLAYER.get(clazz).get(uuid).put(this.id, this);
+        INSTANCES_BY_CLASS.get(clazz).add(this);
+
+    }
+
+    @Override
+    public void remove() {
+        final Map<UUID, Map<Integer, CoreAbility>> classMap = INSTANCES_BY_PLAYER.get(this.getClass());
+        if (classMap != null) {
+            final Map<Integer, CoreAbility> playerMap = classMap.get(this.player.getUniqueId());
+            if (playerMap != null) {
+                playerMap.remove(this.id);
+                if (playerMap.isEmpty()) {
+                    classMap.remove(this.player.getUniqueId());
+                }
+            }
+
+            if (classMap.isEmpty()) {
+                INSTANCES_BY_PLAYER.remove(this.getClass());
+            }
+        }
+        if (INSTANCES_BY_CLASS.containsKey(this.getClass())) {
+            INSTANCES_BY_CLASS.get(this.getClass()).remove(this);
+        }
+
+        INSTANCES.remove(this);
     }
 
 

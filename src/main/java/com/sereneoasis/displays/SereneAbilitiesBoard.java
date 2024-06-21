@@ -1,6 +1,6 @@
 package com.sereneoasis.displays;
 
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.util.methods.Colors;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -15,32 +15,18 @@ import java.util.UUID;
  * Handles scoreboards for serenity.
  * Used to store, create, and modify them.
  */
-public class SerenityBoard {
+public class SereneAbilitiesBoard {
 
-    private static HashMap<UUID, SerenityBoard> players = new HashMap<>();
-
-    public static SerenityBoard createScore(Player player, SerenityPlayer sPlayer) {
-        return new SerenityBoard(player, sPlayer);
-    }
-
-    public static SerenityBoard getByPlayer(Player player) {
-        return players.get(player.getUniqueId());
-    }
-
-    public static SerenityBoard removeScore(Player player) {
-        return players.remove(player.getUniqueId());
-    }
-
+    private static HashMap<UUID, SereneAbilitiesBoard> players = new HashMap<>();
     private ChatColor color;
-    private SerenityPlayer sPlayer;
+    private SereneAbilitiesPlayer sPlayer;
     private Scoreboard scoreboard;
     private Objective sidebar;
-
-    private SerenityBoard(Player player, SerenityPlayer sPlayer) {
+    private SereneAbilitiesBoard(Player player, SereneAbilitiesPlayer sPlayer) {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        sidebar = scoreboard.registerNewObjective("Serenity", Criteria.DUMMY, "Serenity");
+        sidebar = scoreboard.registerNewObjective("SereneAbilities", Criteria.DUMMY, "SereneAbilities");
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
-        sidebar.setDisplayName(Colors.hexToString("#d99856 Serenity"));
+        sidebar.setDisplayName(Colors.hexToString("#d99856 SereneAbilities"));
 
         this.sPlayer = sPlayer;
         color = ChatColor.of(sPlayer.getStringColor());
@@ -64,6 +50,18 @@ public class SerenityBoard {
         }
         player.setScoreboard(scoreboard);
         players.put(player.getUniqueId(), this);
+    }
+
+    public static SereneAbilitiesBoard createScore(Player player, SereneAbilitiesPlayer sPlayer) {
+        return new SereneAbilitiesBoard(player, sPlayer);
+    }
+
+    public static SereneAbilitiesBoard getByPlayer(Player player) {
+        return players.get(player.getUniqueId());
+    }
+
+    public static SereneAbilitiesBoard removeScore(Player player) {
+        return players.remove(player.getUniqueId());
     }
 
 //    public void setTitle(String title) {
@@ -117,10 +115,8 @@ public class SerenityBoard {
         }
 
 
-
         String pre = color + getFirstSplit(text);
         String suf = color + getSecondSplit(text);
-
 
 
         team.setPrefix(pre);
@@ -141,7 +137,6 @@ public class SerenityBoard {
 
         String pre = color + getFirstSplit(text);
         String suf = color + getSecondSplit(text);
-
 
 
         team.setPrefix(pre);

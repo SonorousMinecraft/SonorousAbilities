@@ -6,70 +6,57 @@ import com.sereneoasis.ability.BendingManager;
 import com.sereneoasis.ability.ComboManager;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
-import com.sereneoasis.command.SerenityCommand;
+import com.sereneoasis.command.SereneCommand;
 import com.sereneoasis.command.TabAutoCompletion;
 import com.sereneoasis.config.ConfigManager;
-import com.sereneoasis.displays.SerenityBoard;
-import com.sereneoasis.listeners.SerenityListener;
+import com.sereneoasis.listeners.SereneAbilitiesListener;
 import com.sereneoasis.storage.PlayerData;
-import com.sk89q.worldguard.WorldGuard;
-import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static com.sereneoasis.SerenityPlayer.removeAttributePlayer;
-
 /**
  * @author Sakrajin
  * Main class used to create singletons and instantiate the plugin functionalities
  */
-public class Serenity extends JavaPlugin {
+public class SereneAbilities extends JavaPlugin {
 
-    private static Serenity plugin;
+    private static SereneAbilities plugin;
+    private static Logger log;
+    private static Repository<UUID, PlayerData> repository;
+    private static AbilityDataManager abilityDataManager;
+    private static ArchetypeDataManager archetypeDataManager;
+    private static ScoreboardManager scoreBoardManager;
+    private static ComboManager comboManager;
+    private static ConfigManager configManager;
+    private static WorldGuardManager worldGuardManager;
+    private static boolean isFlagRegistered = false;
 
-    public static Serenity getPlugin() {
+    public static SereneAbilities getPlugin() {
         return plugin;
     }
-
-    private static Logger log;
-
-    private static Repository<UUID, PlayerData> repository;
 
     public static Repository<UUID, PlayerData> getRepository() {
         return repository;
     }
 
-    private static AbilityDataManager abilityDataManager;
-
     public static AbilityDataManager getAbilityDataManager() {
         return abilityDataManager;
     }
-
-    private static ArchetypeDataManager archetypeDataManager;
 
     public static ArchetypeDataManager getArchetypeDataManager() {
         return archetypeDataManager;
     }
 
-    private static ScoreboardManager scoreBoardManager;
-
     public static ScoreboardManager getScoreBoardManager() {
         return scoreBoardManager;
     }
 
-    private static ComboManager comboManager;
-
     public static ComboManager getComboManager() {
         return comboManager;
     }
-
-    private static ConfigManager configManager;
-
-    private static WorldGuardManager worldGuardManager;
 
     public static WorldGuardManager getWorldGuardManager() {
         return worldGuardManager;
@@ -82,7 +69,10 @@ public class Serenity extends JavaPlugin {
     @Override
     public void onLoad() {
         super.onLoad();
-        WorldGuardManager.registerFlag();
+        if (!isFlagRegistered) {
+            WorldGuardManager.registerFlag();
+            isFlagRegistered = true;
+        }
 
     }
 
@@ -90,9 +80,9 @@ public class Serenity extends JavaPlugin {
     public void onEnable() {
         super.onEnable();
         plugin = this;
-        Serenity.log = this.getLogger();
+        SereneAbilities.log = this.getLogger();
 
-        this.getServer().getPluginManager().registerEvents(new SerenityListener(), this);
+        this.getServer().getPluginManager().registerEvents(new SereneAbilitiesListener(), this);
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BendingManager(), 0, 1);
 
         configManager = new ConfigManager();
@@ -100,7 +90,7 @@ public class Serenity extends JavaPlugin {
         archetypeDataManager = new ArchetypeDataManager();
         comboManager = new ComboManager();
         repository = NDatabase.api().getOrCreateRepository(PlayerData.class);
-        this.getCommand("serenity").setExecutor(new SerenityCommand());
+        this.getCommand("serenity").setExecutor(new SereneCommand());
         this.getCommand("serenity").setTabCompleter(new TabAutoCompletion());
 
         worldGuardManager = new WorldGuardManager();
@@ -111,18 +101,18 @@ public class Serenity extends JavaPlugin {
     public void onDisable() {
         super.onDisable();
 //        Bukkit.getOnlinePlayers().forEach(player -> {
-//            SerenityBoard.removeScore(player);
+//            SereneAbilitiesBoard.removeScore(player);
 //
-//            SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+//            SereneAbilitiesPlayer serenityPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
 //
-//            Serenity.getComboManager().removePlayer(player);
+//            SereneAbilities.getComboManager().removePlayer(player);
 //
-//            SerenityPlayer.upsertPlayer(serenityPlayer);
+//            SereneAbilitiesPlayer.upsertPlayer(serenityPlayer);
 //
 //            removeAttributePlayer(player, serenityPlayer);
 //
 //
-//            SerenityPlayer.removePlayerFromMap(player);
+//            SereneAbilitiesPlayer.removePlayerFromMap(player);
 //        });
 
 

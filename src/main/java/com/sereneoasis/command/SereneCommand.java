@@ -1,47 +1,31 @@
 package com.sereneoasis.command;
 
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.ability.data.AbilityData;
 import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.archetypes.Archetype;
-import com.sereneoasis.displays.SerenityBoard;
+import com.sereneoasis.displays.SereneAbilitiesBoard;
 import com.sereneoasis.util.methods.ChatMessage;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.PacketUtils;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerPlayerConnection;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.WalkAnimationState;
-import net.minecraft.world.entity.monster.Spider;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftSpider;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
-import static com.sereneoasis.SerenityPlayer.initialisePlayer;
+import static com.sereneoasis.SereneAbilitiesPlayer.initialisePlayer;
 
 
 /**
  * @author Sakrajin
  * Handles all serenity commands
  */
-public class SerenityCommand implements CommandExecutor {
+public class SereneCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player player) {
-            SerenityPlayer sPlayer = SerenityPlayer.getSerenityPlayer(player);
+            SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
             if (sPlayer != null) {
                 switch (strings[0]) {
 //                    case "test":
@@ -62,20 +46,20 @@ public class SerenityCommand implements CommandExecutor {
 //                        CraftPlayer craftPlayer = (CraftPlayer) player;
 //                        ServerPlayerConnection playerConnection = craftPlayer.getHandle().connection;
 
-                        //ClientboundAnimatePacket clientboundAnimatePacket = new ClientboundAnimatePacket(craftPlayer.getHandle(),0 );
+                    //ClientboundAnimatePacket clientboundAnimatePacket = new ClientboundAnimatePacket(craftPlayer.getHandle(),0 );
 //                        ClientboundAnimatePacket clientboundAnimatePacket2 = new ClientboundAnimatePacket(craftPlayer.getHandle(),3 );
 //
 //                        //playerConnection.send(clientboundAnimatePacket);
 //                        playerConnection.send(clientboundAnimatePacket2);
 
-                        //craftPlayer.playEffect(player.getEyeLocation().add(player.getEyeLocation().getDirection()), Effect.END_PORTAL_FRAME_FILL, null );
+                    //craftPlayer.playEffect(player.getEyeLocation().add(player.getEyeLocation().getDirection()), Effect.END_PORTAL_FRAME_FILL, null );
 //                        ServerPlayer nmsPlayer = craftPlayer.getHandle();
-                        //nmsPlayer.setMainArm(HumanoidArm.LEFT);
-                        //nmsPlayer.setDiscardFriction(true);
-                        //nmsPlayer.startAutoSpinAttack(100);
-                        //nmsPlayer.swing(InteractionHand.OFF_HAND, true);
-                        //nmsPlayer.startSleeping(BlockPos.containing(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
-                        //player.swingOffHand();
+                    //nmsPlayer.setMainArm(HumanoidArm.LEFT);
+                    //nmsPlayer.setDiscardFriction(true);
+                    //nmsPlayer.startAutoSpinAttack(100);
+                    //nmsPlayer.swing(InteractionHand.OFF_HAND, true);
+                    //nmsPlayer.startSleeping(BlockPos.containing(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
+                    //player.swingOffHand();
 //                        return true;
                     case "choose", "ch" -> {
                         if (strings.length == 1) {
@@ -187,7 +171,7 @@ public class SerenityCommand implements CommandExecutor {
                             }
                             String nullAbility = ChatColor.DARK_GRAY + "=-=-Slot" + "_" + slot + "-=-=";
                             sPlayer.setAbility(slot, nullAbility);
-                            SerenityBoard.getByPlayer(player).setAbilitySlot(slot, nullAbility);
+                            SereneAbilitiesBoard.getByPlayer(player).setAbilitySlot(slot, nullAbility);
                             return true;
                         }
                     }

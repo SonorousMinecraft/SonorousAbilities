@@ -27,7 +27,7 @@ public class SphereBlast extends CoreAbility {
 
     private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    private boolean shouldDamage ;
+    private boolean shouldDamage;
 
 
     public SphereBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean shoulDamage) {
@@ -56,26 +56,25 @@ public class SphereBlast extends CoreAbility {
         loc.add(dir.clone().multiply(speed));
 
 
-        for (Location loc : Locations.getSphere(loc, radius, 12))
-        {
+        for (Location loc : Locations.getSphere(loc, radius, 12)) {
             archetypeVisual.playVisual(loc, size, 0, 1, 1, 1);
         }
 
         if (shouldDamage) {
             DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage);
-            if (! Entities.getAffected(loc, hitbox, player).isEmpty() ){
+            if (!Entities.getAffected(loc, hitbox, player).isEmpty()) {
                 Bukkit.broadcastMessage("should be damaging");
             }
         }
 
     }
 
-    public void setLoc(Location loc) {
-        this.loc = loc;
-    }
-
     public Location getLoc() {
         return loc;
+    }
+
+    public void setLoc(Location loc) {
+        this.loc = loc;
     }
 
     @Override

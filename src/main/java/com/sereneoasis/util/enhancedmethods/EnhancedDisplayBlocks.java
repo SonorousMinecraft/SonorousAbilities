@@ -1,11 +1,9 @@
 package com.sereneoasis.util.enhancedmethods;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.RaiseBlockPillar;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Scheduler;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
@@ -23,27 +21,27 @@ import java.util.Set;
 
 public class EnhancedDisplayBlocks {
 
-    public static void selectSphereDBs(CoreAbility coreAbility, Location loc, long revertTime, Vector moveVector){
+    public static void selectSphereDBs(CoreAbility coreAbility, Location loc, long revertTime, Vector moveVector) {
         EnhancedBlocks.getFacingSphereBlocks(coreAbility, loc).forEach(block -> {
 
-                TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
-                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
+            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
+            tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
 
 
         });
     }
 
-    public static void selectCylinderDBs(CoreAbility coreAbility, double height, long revertTime, Vector moveVector){
+    public static void selectCylinderDBs(CoreAbility coreAbility, double height, long revertTime, Vector moveVector) {
         EnhancedBlocks.getTopCylinderBlocks(coreAbility, height).forEach(block -> {
 
-                TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
-                tdb.getBlockDisplay().setGlowing(true);
-                tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
+            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), revertTime, 1);
+            tdb.getBlockDisplay().setGlowing(true);
+            tdb.moveToAndMaintainFacing(tdb.getLoc().add(moveVector));
 
         });
     }
 
-    public static void orientOrganisedDBs(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, double displayBlockDistance){
+    public static void orientOrganisedDBs(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, double displayBlockDistance) {
         Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
 
         for (Map.Entry<TempDisplayBlock, Vector> entry : displayBlocks.entrySet()) {
@@ -57,7 +55,7 @@ public class EnhancedDisplayBlocks {
         }
     }
 
-    public static void orientOrganisedDBsGivenCenter(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, Location center){
+    public static void orientOrganisedDBsGivenCenter(HashMap<TempDisplayBlock, Vector> displayBlocks, Vector previousDir, Vector newDir, Player player, Location center) {
         for (Map.Entry<TempDisplayBlock, Vector> entry : displayBlocks.entrySet()) {
             double pitchDiff = Vectors.getPitchDiff(previousDir, newDir, player);
             double yawDiff = Vectors.getYawDiff(previousDir, newDir, player);
@@ -75,18 +73,18 @@ public class EnhancedDisplayBlocks {
             Location currentLoc = tempDisplayBlock.getBlockDisplay().getLocation();
             //entry.getValue().add(player.getEyeLocation().getDirection().add(Vector.getRandom().multiply(0.1)).multiply(0.1)).normalize();
             Entity target = Entities.getAffected(currentLoc, coreAbility.getHitbox(), player);
-            if (target instanceof LivingEntity livingEntity){
+            if (target instanceof LivingEntity livingEntity) {
                 DamageHandler.damageEntity(livingEntity, player, coreAbility, coreAbility.getDamage());
                 coreAbility.remove();
             }
-            if (coreAbility.getPlayer().getLocation().distance(currentLoc) > coreAbility.getRange()){
+            if (coreAbility.getPlayer().getLocation().distance(currentLoc) > coreAbility.getRange()) {
                 coreAbility.remove();
             }
             entry.getKey().moveToAndMaintainFacing(currentLoc.add(entry.getValue().clone().multiply(coreAbility.getSpeed())));
         }
     }
 
-    public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, Material material){
+    public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, Material material) {
         Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
         EnhancedBlocksArchetypeLess.getTopCircleBlocks(coreAbility).forEach(b -> {
             TempBlock tb = new TempBlock(b, material, coreAbility.getDuration());
@@ -97,7 +95,7 @@ public class EnhancedDisplayBlocks {
         return tempDisplayBlocks;
     }
 
-    public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, DisplayBlock displayBlock){
+    public static Set<TempDisplayBlock> createTopCircleTempBlocks(CoreAbility coreAbility, DisplayBlock displayBlock) {
         Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
         EnhancedBlocksArchetypeLess.getTopCircleBlocks(coreAbility).forEach(b -> {
             TempBlock tb = new TempBlock(b, displayBlock, coreAbility.getDuration());

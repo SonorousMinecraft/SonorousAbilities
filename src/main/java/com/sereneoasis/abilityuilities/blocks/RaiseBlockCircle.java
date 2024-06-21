@@ -29,7 +29,7 @@ public class RaiseBlockCircle extends CoreAbility {
         this.height = height;
         this.shouldFall = shouldFall;
         block = new ArrayList<>();
-        Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, size  + 0.001).stream()
+        Locations.getOutsideSphereLocs(player.getLocation(), currentRadius, size + 0.001).stream()
                 .filter(l -> Blocks.getArchetypeBlocks(sPlayer).contains(l.getBlock().getType()))
                 .filter(l -> Blocks.isTopBlock(l.getBlock()))
                 .forEach(l -> {
@@ -63,7 +63,7 @@ public class RaiseBlockCircle extends CoreAbility {
         this.height = height;
         this.shouldFall = shouldFall;
         block = new ArrayList<>();
-        Locations.getOutsideSphereLocs(loc, currentRadius, size  + 0.001).stream()
+        Locations.getOutsideSphereLocs(loc, currentRadius, size + 0.001).stream()
                 .filter(l -> Blocks.getArchetypeBlocks(sPlayer).contains(l.getBlock().getType()))
                 .filter(l -> Blocks.isTopBlock(l.getBlock()))
                 .forEach(l -> {

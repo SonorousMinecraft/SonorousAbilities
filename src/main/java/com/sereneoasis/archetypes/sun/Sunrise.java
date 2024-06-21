@@ -27,7 +27,7 @@ public class Sunrise extends CoreAbility {
 
             Particles.spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 0.5, 0);
             sinceLastDashed = System.currentTimeMillis();
-            player.setVelocity(new Vector(0,speed,0));
+            player.setVelocity(new Vector(0, speed, 0));
 
             start();
         }
@@ -39,18 +39,18 @@ public class Sunrise extends CoreAbility {
     public void progress() {
 
         new ArchetypeVisuals.SunVisual().playVisual(player.getEyeLocation().subtract(0, radius, 0), size, radius, 10, 5, 1);
-        if ( (player.isSneaking() && sPlayer.getHeldAbility().equals(name)) ||  levitate.getAbilityStatus() == AbilityStatus.COMPLETE) {
+        if ((player.isSneaking() && sPlayer.getHeldAbility().equals(name)) || levitate.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         }
 
-        if (System.currentTimeMillis() -sinceLastDashed > chargeTime && sPlayer.getHeldAbility().equals(name)) {
+        if (System.currentTimeMillis() - sinceLastDashed > chargeTime && sPlayer.getHeldAbility().equals(name)) {
             AbilityUtils.sendActionBar(player, "READY", ChatColor.RED);
         }
 
-        }
+    }
 
-    public void setHasClicked(){
-        if (System.currentTimeMillis() -sinceLastDashed > chargeTime) {
+    public void setHasClicked() {
+        if (System.currentTimeMillis() - sinceLastDashed > chargeTime) {
             Particles.spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 10, 1, 0);
             sinceLastDashed = System.currentTimeMillis();
             player.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(speed));

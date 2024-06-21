@@ -28,7 +28,7 @@ public class RaiseBlock extends CoreAbility {
 
     private boolean isFalling = false;
 
-    private double speedChange ;
+    private double speedChange;
 
     public RaiseBlock(Player player, String name, double height, boolean mustLook, boolean playGlowing) {
         super(player, name);
@@ -81,15 +81,15 @@ public class RaiseBlock extends CoreAbility {
                     loc.add(new Vector(0, speedChange, 0));
                     block.moveToAndMaintainFacing(loc.clone());
                     speedChange -= Constants.GRAVITY;
-                    if (speedChange < Constants.GRAVITY){
+                    if (speedChange < Constants.GRAVITY) {
                         speedChange = Constants.GRAVITY;
                     }
                 } else {
                     abilityStatus = AbilityStatus.SOURCED;
                 }
             } else {
-                if (loc.getY() - origin.getY() > size/2) {
-                    loc.subtract(new Vector(0, speedChange , 0));
+                if (loc.getY() - origin.getY() > size / 2) {
+                    loc.subtract(new Vector(0, speedChange, 0));
                     block.moveToAndMaintainFacing(loc.clone());
                     speedChange += Constants.GRAVITY;
                 } else {
@@ -99,7 +99,7 @@ public class RaiseBlock extends CoreAbility {
         }
     }
 
-    public void stop(){
+    public void stop() {
         speed = 0;
         isFalling = false;
         abilityStatus = AbilityStatus.COMPLETE;
@@ -113,7 +113,7 @@ public class RaiseBlock extends CoreAbility {
         return block;
     }
 
-    public void fall(){
+    public void fall() {
         isFalling = true;
         speedChange = 0;
     }

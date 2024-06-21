@@ -6,13 +6,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.Set;
 
 public interface RedirectAbility {
-
-    interface RedirectHandler{
-        void handleRedirect(Location loc);
-    }
 
     boolean hasCustomRedirect();
 
@@ -23,5 +18,9 @@ public interface RedirectAbility {
     Vector getDir();
 
     void setDir(Vector dir);
+
+    interface RedirectHandler {
+        void handleRedirect(Location loc);
+    }
 
 }

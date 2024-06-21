@@ -3,7 +3,9 @@ package com.sereneoasis.abilityuilities.particles;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
+import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -55,7 +57,7 @@ public class SourcedBlast extends CoreAbility {
             }
 
             if (shouldDamage) {
-                if (DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage)){
+                if (DamageHandler.damageEntity(Entities.getAffected(loc, hitbox, player), player, this, damage)) {
                     abilityStatus = AbilityStatus.DAMAGED;
                 }
             }
@@ -76,7 +78,7 @@ public class SourcedBlast extends CoreAbility {
         return loc;
     }
 
-    public void setDir(){
+    public void setDir() {
         dir = player.getEyeLocation().getDirection().normalize();
     }
 

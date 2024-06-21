@@ -153,7 +153,7 @@ public abstract class Laser {
     /**
      * Gets laser status.
      *
-     * @return    <code>true</code> if the laser is currently running
+     * @return <code>true</code> if the laser is currently running
      * (i.e. {@link #start} has been called and the duration is not over)
      */
     public boolean isStarted() {
@@ -283,9 +283,57 @@ public abstract class Laser {
                 getEnd().distanceSquared(location) <= distanceSquared;
     }
 
+    public enum LaserType {
+        /**
+         * Represents a laser from a Guardian entity.
+         * <p>
+         * It can be pointed to precise locations and
+         * can track entities smoothly using {@link GuardianLaser#attachEndEntity(LivingEntity)}
+         */
+        GUARDIAN,
+
+        /**
+         * Represents a laser from an Ender Crystal entity.
+         * <p>
+         * Start and end locations are automatically rounded to integers (block locations).
+         */
+        ENDER_CRYSTAL;
+
+        /**
+         * Creates a new Laser instance, {@link GuardianLaser} or {@link CrystalLaser} depending on this enum value.
+         *
+         * @param start    Location where laser will starts
+         * @param end      Location where laser will ends
+         * @param duration Duration of laser in seconds (<i>-1 if infinite</i>)
+         * @param distance Distance where laser will be visible
+         * @throws ReflectiveOperationException if a reflection exception occurred during Laser creation
+         * @see Laser#start(Plugin) to start the laser
+         * @see Laser#durationInTicks() to make the duration in ticks
+         * @see Laser#executeEnd(Runnable) to add Runnable-s to execute when the laser will stop
+         */
+        public Laser create(Location start, Location end, int duration, int distance) throws ReflectiveOperationException {
+            switch (this) {
+                case ENDER_CRYSTAL:
+                    return new CrystalLaser(start, end, duration, distance);
+                case GUARDIAN:
+                    return new GuardianLaser(start, end, duration, distance);
+            }
+            throw new IllegalStateException();
+        }
+    }
+
+    @FunctionalInterface
+    public static interface ReflectiveConsumer<T> {
+        abstract void accept(T t) throws ReflectiveOperationException;
+    }
+
     public static class GuardianLaser extends Laser {
         private static AtomicInteger teamID = new AtomicInteger(ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE));
-
+        private final UUID squidUUID = UUID.randomUUID();
+        private final UUID guardianUUID = UUID.randomUUID();
+        private final int squidID = Packets.generateEID();
+        private final int guardianID = Packets.generateEID();
+        protected LivingEntity endEntity;
         private Object createGuardianPacket;
         private Object createSquidPacket;
         private Object teamCreatePacket;
@@ -293,19 +341,10 @@ public abstract class Laser {
         private Object metadataPacketGuardian;
         private Object metadataPacketSquid;
         private Object fakeGuardianDataWatcher;
-
-        private final UUID squidUUID = UUID.randomUUID();
-        private final UUID guardianUUID = UUID.randomUUID();
-        private final int squidID = Packets.generateEID();
-        private final int guardianID = Packets.generateEID();
         private Object squid;
         private Object guardian;
-
         private int targetID;
         private UUID targetUUID;
-
-        protected LivingEntity endEntity;
-
         private Location correctStart;
         private Location correctEnd;
 
@@ -540,13 +579,12 @@ public abstract class Laser {
 
     public static class CrystalLessLaser extends Laser {
 
+        private final Object crystal;
+        private final int crystalID = Packets.generateEID();
         private Object createCrystalPacket;
         private Object metadataPacketCrystal;
         private Object[] destroyPackets;
         private Object fakeCrystalDataWatcher;
-
-        private final Object crystal;
-        private final int crystalID = Packets.generateEID();
 
         /**
          * Creates a new Ender Crystal Laser instance
@@ -630,17 +668,14 @@ public abstract class Laser {
 
     }
 
-
-
     public static class CrystalLaser extends Laser {
 
+        private final Object crystal;
+        private final int crystalID = Packets.generateEID();
         private Object createCrystalPacket;
         private Object metadataPacketCrystal;
         private Object[] destroyPackets;
         private Object fakeCrystalDataWatcher;
-
-        private final Object crystal;
-        private final int crystalID = Packets.generateEID();
 
         /**
          * Creates a new Ender Crystal Laser instance
@@ -723,52 +758,9 @@ public abstract class Laser {
 
     }
 
-    public enum LaserType {
-        /**
-         * Represents a laser from a Guardian entity.
-         * <p>
-         * It can be pointed to precise locations and
-         * can track entities smoothly using {@link GuardianLaser#attachEndEntity(LivingEntity)}
-         */
-        GUARDIAN,
-
-        /**
-         * Represents a laser from an Ender Crystal entity.
-         * <p>
-         * Start and end locations are automatically rounded to integers (block locations).
-         */
-        ENDER_CRYSTAL;
-
-        /**
-         * Creates a new Laser instance, {@link GuardianLaser} or {@link CrystalLaser} depending on this enum value.
-         *
-         * @param start    Location where laser will starts
-         * @param end      Location where laser will ends
-         * @param duration Duration of laser in seconds (<i>-1 if infinite</i>)
-         * @param distance Distance where laser will be visible
-         * @throws ReflectiveOperationException if a reflection exception occurred during Laser creation
-         * @see Laser#start(Plugin) to start the laser
-         * @see Laser#durationInTicks() to make the duration in ticks
-         * @see Laser#executeEnd(Runnable) to add Runnable-s to execute when the laser will stop
-         */
-        public Laser create(Location start, Location end, int duration, int distance) throws ReflectiveOperationException {
-            switch (this) {
-                case ENDER_CRYSTAL:
-                    return new CrystalLaser(start, end, duration, distance);
-                case GUARDIAN:
-                    return new GuardianLaser(start, end, duration, distance);
-            }
-            throw new IllegalStateException();
-        }
-    }
-
     private static class Packets {
+        public static boolean enabled = false;
         private static AtomicInteger lastIssuedEID = new AtomicInteger(2000000000);
-
-        static int generateEID() {
-            return lastIssuedEID.getAndIncrement();
-        }
-
         private static Logger logger;
         private static int version;
         private static int versionMinor;
@@ -825,8 +817,6 @@ public abstract class Laser {
         private static Object fakeSquidWatcher;
 
         private static Object nmsWorld;
-
-        public static boolean enabled = false;
 
         static {
             try {
@@ -948,6 +938,10 @@ public abstract class Laser {
                 else
                     logger.severe(errorMsg);
             }
+        }
+
+        static int generateEID() {
+            return lastIssuedEID.getAndIncrement();
         }
 
         public static void sendPackets(Player p, Object... packets) throws ReflectiveOperationException {
@@ -1242,6 +1236,13 @@ public abstract class Laser {
                 this.teamGetPlayers = teamGetPlayers;
             }
 
+            public static ProtocolMappings getMappings(int major) {
+                for (ProtocolMappings map : values()) {
+                    if (major == map.getMajor()) return map;
+                }
+                return null;
+            }
+
             public int getMajor() {
                 return major;
             }
@@ -1293,19 +1294,7 @@ public abstract class Laser {
             public String getTeamGetPlayers() {
                 return teamGetPlayers;
             }
-
-            public static ProtocolMappings getMappings(int major) {
-                for (ProtocolMappings map : values()) {
-                    if (major == map.getMajor()) return map;
-                }
-                return null;
-            }
         }
-    }
-
-    @FunctionalInterface
-    public static interface ReflectiveConsumer<T> {
-        abstract void accept(T t) throws ReflectiveOperationException;
     }
 
 }

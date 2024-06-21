@@ -20,6 +20,13 @@ public class AbilityDamageEntityEvent extends Event implements Cancellable {
 
     private double damage;
 
+    public AbilityDamageEntityEvent(Player attacker, LivingEntity target, CoreAbility coreAbility, double damage) {
+        this.attacker = attacker;
+        this.target = target;
+        this.coreAbility = coreAbility;
+        this.damage = damage;
+    }
+
     @Override
     public boolean isCancelled() {
         return false;
@@ -32,13 +39,6 @@ public class AbilityDamageEntityEvent extends Event implements Cancellable {
     @Override
     public HandlerList getHandlers() {
         return null;
-    }
-
-    public AbilityDamageEntityEvent(Player attacker, LivingEntity target, CoreAbility coreAbility, double damage) {
-        this.attacker = attacker;
-        this.target = target;
-        this.coreAbility = coreAbility;
-        this.damage = damage;
     }
 
     public Player getAttacker() {

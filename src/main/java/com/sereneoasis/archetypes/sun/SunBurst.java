@@ -7,7 +7,9 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
 import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedSchedulerEffects;
-import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -50,7 +52,7 @@ public class SunBurst extends CoreAbility {
 
                 EnhancedSchedulerEffects.raiseTDBs(EnhancedDisplayBlocks.createTopCircleTempBlocks(this, DisplayBlock.SUN), 50, 1);
 
-                player.setVelocity(new Vector(0,3,0));
+                player.setVelocity(new Vector(0, 3, 0));
             }
         }
 
@@ -78,7 +80,7 @@ public class SunBurst extends CoreAbility {
 
             }
         }
-        if (abilityStatus == AbilityStatus.SHOT){
+        if (abilityStatus == AbilityStatus.SHOT) {
             if (sun.getAbilityStatus() == AbilityStatus.DAMAGED || sun.getAbilityStatus() == AbilityStatus.COMPLETE || sun.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
 
                 Location facing = Locations.getFacingLocation(sun.getLoc().clone(), sun.getDir().clone(), radius);

@@ -12,12 +12,12 @@ import java.util.List;
 
 public class ItemStackUtils {
 
-    public static void createSerenityEquipment(Player player, Material material, String displayName, List<String>lore, int data, EquipmentSlot equipmentSlot, ArmorTrim trim){
+    public static void createSereneAbilitiesEquipment(Player player, Material material, String displayName, List<String> lore, int data, EquipmentSlot equipmentSlot, ArmorTrim trim) {
         ItemStack itemStack = createItem(material, displayName, lore);
-        ItemMeta meta =  itemStack.getItemMeta();
+        ItemMeta meta = itemStack.getItemMeta();
         meta.setCustomModelData(data);
         itemStack.setItemMeta(meta);
-        if (itemStack.getItemMeta() instanceof ArmorMeta armorMeta){
+        if (itemStack.getItemMeta() instanceof ArmorMeta armorMeta) {
             armorMeta.setTrim(trim);
             itemStack.setItemMeta(armorMeta);
         }
@@ -25,12 +25,12 @@ public class ItemStackUtils {
         player.getEquipment().setItem(equipmentSlot, itemStack);
     }
 
-    public static void createEquipmentSetPlayerSlot(Player player, Material material, String displayName, List<String>lore, EquipmentSlot equipmentSlot){
+    public static void createEquipmentSetPlayerSlot(Player player, Material material, String displayName, List<String> lore, EquipmentSlot equipmentSlot) {
         player.getEquipment().setItem(equipmentSlot, createItem(material, displayName, lore));
     }
 
 
-    public static ItemStack createItem(Material material, String displayName, List<String>lore){
+    public static ItemStack createItem(Material material, String displayName, List<String> lore) {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(displayName);

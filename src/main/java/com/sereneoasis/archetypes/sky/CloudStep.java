@@ -6,29 +6,18 @@ import com.sereneoasis.abilityuilities.velocity.Levitate;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
-import com.sereneoasis.util.enhancedmethods.EnhancedTempBlocks;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Scheduler;
 import com.sereneoasis.util.temp.TempBlock;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class CloudStep extends CoreAbility {
 
+    private static final String name = "CloudStep";
     private Jump jump;
     private Levitate levitate;
-
-    private static final String name = "CloudStep";
-
     private state CloudStepState = state.LEVITATE;
-
-    private enum state {
-        LEVITATE,
-        STEP
-    }
 
     public CloudStep(Player player) {
         super(player, name);
@@ -58,14 +47,14 @@ public class CloudStep extends CoreAbility {
 
                 abilityStatus = AbilityStatus.FLOATING;
             }
-        } else if (abilityStatus == AbilityStatus.MOVING){
+        } else if (abilityStatus == AbilityStatus.MOVING) {
 
-            Vector dir = player.getEyeLocation().getDirection().setY(0).normalize().multiply(radius );
+            Vector dir = player.getEyeLocation().getDirection().setY(0).normalize().multiply(radius);
 //            if (dir.getY() > 1) {
 //                dir.setY(1);
 //                player.setVelocity(new Vector(0,1,0));
 //            }
-            Location floorLoc = player.getLocation().subtract(0,1,0).add(dir);
+            Location floorLoc = player.getLocation().subtract(0, 1, 0).add(dir);
 
             if (sPlayer.getHeldAbility().equals(name)) {
                 EnhancedBlocksArchetypeLess.getCircleAtYBlocks(this, floorLoc, floorLoc.getBlockY())
@@ -87,7 +76,7 @@ public class CloudStep extends CoreAbility {
         }
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
 //        Block block = Blocks.getFacingBlock(player, speed * 20);
         if (jump == null || jump.getAbilityStatus() == AbilityStatus.COMPLETE) {
 
@@ -101,7 +90,7 @@ public class CloudStep extends CoreAbility {
             levitate.toggle();
         }
 
-        if (player.isSneaking()){
+        if (player.isSneaking()) {
             this.remove();
         }
     }
@@ -126,5 +115,10 @@ public class CloudStep extends CoreAbility {
     @Override
     public String getName() {
         return name;
+    }
+
+    private enum state {
+        LEVITATE,
+        STEP
     }
 }

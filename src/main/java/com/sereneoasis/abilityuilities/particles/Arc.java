@@ -1,9 +1,10 @@
 package com.sereneoasis.abilityuilities.particles;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.sky.SkyUtils;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.methods.AbilityDamage;
+import com.sereneoasis.util.methods.ArchetypeVisuals;
+import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -27,13 +28,8 @@ public class Arc extends CoreAbility {
     private long sinceLastDirChange = System.currentTimeMillis();
 
     private OutputLocation outputLocation;
-    public enum OutputLocation {
-        MAINHAND,
-        OFFHAND,
-        MIDDLE
-    }
 
-    public Arc(Player player, String name, Particle particle, OutputLocation outputLocation ) {
+    public Arc(Player player, String name, Particle particle, OutputLocation outputLocation) {
         super(player, name);
         this.name = name;
         this.particle = particle;
@@ -57,12 +53,12 @@ public class Arc extends CoreAbility {
 //            SkyUtils.lightningStrike(this,Blocks.getFacingBlock(startLoc, dir, range).getLocation() );
 //        }
 
-            Location endLoc = player.getEyeLocation().add(dir.clone().multiply(range));
+        Location endLoc = player.getEyeLocation().add(dir.clone().multiply(range));
 
-        if (outputLocation == OutputLocation.MAINHAND){
+        if (outputLocation == OutputLocation.MAINHAND) {
             startLoc.add(Vectors.getVectorToMainHand(player));
             endLoc.add(Vectors.getVectorToMainHand(player));
-        } else if (outputLocation == OutputLocation.OFFHAND){
+        } else if (outputLocation == OutputLocation.OFFHAND) {
             startLoc.add(Vectors.getVectorToOffHand(player));
             endLoc.add(Vectors.getVectorToOffHand(player));
         }
@@ -70,7 +66,7 @@ public class Arc extends CoreAbility {
         if (locs.size() < 20) {
             for (int i = 0; i < 1; i++) {
                 Location location = startLoc.clone();
-                Vector newDir = Vectors.getDirectionBetweenLocations(location, randomMidwayVertex(endLoc,location)).normalize();
+                Vector newDir = Vectors.getDirectionBetweenLocations(location, randomMidwayVertex(endLoc, location)).normalize();
                 location.setDirection(newDir);
                 locs.add(location);
 
@@ -78,17 +74,17 @@ public class Arc extends CoreAbility {
             }
         }
 
-        if ((System.currentTimeMillis() - sinceLastDirChange) > 100 ) {
+        if ((System.currentTimeMillis() - sinceLastDirChange) > 100) {
             locs.forEach(location -> {
                 Vector newDir = Vectors.getDirectionBetweenLocations(location, randomMidwayVertex(location, endLoc)).normalize();
-                location.setDirection( (location.getDirection().add(newDir.clone().multiply(1.2))).normalize());
+                location.setDirection((location.getDirection().add(newDir.clone().multiply(1.2))).normalize());
             });
 
             sinceLastDirChange = System.currentTimeMillis();
 
         }
 
-        for (double d = 0; d < range; d+=hitbox) {
+        for (double d = 0; d < range; d += hitbox) {
 
             AbilityDamage.damageOne(startLoc.clone().add(dir.clone().multiply(d)), this, player, true, dir);
         }
@@ -97,8 +93,8 @@ public class Arc extends CoreAbility {
         locs.forEach(location -> {
 //            location.setDirection(dir.clone());
 
-                playParticlesBetweenPoints(location, location.clone().add(location.getDirection().clone().multiply(2)));
-                location.add(location.getDirection());
+            playParticlesBetweenPoints(location, location.clone().add(location.getDirection().clone().multiply(2)));
+            location.add(location.getDirection());
 //            location.add(location.getDirection().normalize());
 //            Particles.spawnParticle(particle, location, 1, 0, 0);
 
@@ -109,7 +105,7 @@ public class Arc extends CoreAbility {
     }
 
     public void playParticlesBetweenPoints(Location start, Location end) {
-        Vector difference = Vectors.getDirectionBetweenLocations(start,end);
+        Vector difference = Vectors.getDirectionBetweenLocations(start, end);
         double distance = difference.length();
         Vector normalised = difference.clone().normalize();
 
@@ -118,44 +114,46 @@ public class Arc extends CoreAbility {
             //Particles.spawnColoredParticle(temploc, 1, 0.05, 1, Color.fromRGB(1, 225, 255));
 //            TDBs.playTDBs(temploc, DisplayBlock.LIGHTNING, 1, size, 0);
 //            Particles.spawnParticle(particle, temploc, 1, 0, 0);
-            new ArchetypeVisuals.LightningVisual().playVisual(temploc, size, size/2, 0, 1, 0);
+            new ArchetypeVisuals.LightningVisual().playVisual(temploc, size, size / 2, 0, 1, 0);
 
 
         }
-            //Particles.spawnColoredParticle(temploc, 11, 1, 1, Color.fromRGB(1, 225, 255));
+        //Particles.spawnColoredParticle(temploc, 11, 1, 1, Color.fromRGB(1, 225, 255));
 
 //            Vector random = Vector.getRandom().normalize().add(new Vector(-0.5,-0.5,-0.5)).normalize().add(dir.clone().multiply(0.2)).normalize().multiply(0.4);
 //
 //            Particles.spawnParticleOffset(Particle.END_ROD, temploc, 0, random.getX(), random.getY(), random.getZ(), 0.15);
 //            Particles.spawnColoredParticle(temploc, 1, Math.log(d+1), size*3, Color.fromRGB(1, 225, 255));
 //            Particles.spawnParticle(Particle.ELECTRIC_SPARK, temploc, 1,Math.log(d+1),0);
-        }
-
-
+    }
 
     public Location randomMidwayVertex(Location start, Location end) {
         Vector midpoint = end.clone().subtract(start.clone()).toVector().multiply(0.5);
 
         Vector random = getRandomOffset();
-        if (start.distanceSquared(end) > 1){
+        if (start.distanceSquared(end) > 1) {
             random.multiply(Math.log(start.distance(end)) * Math.log(start.distance(end)));
         }
         return (start.clone().add(midpoint).add(random));
     }
 
-
-
     public Set<Location> getLocs() {
         return locs;
     }
 
-    private Vector getRandomOffset(){
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble()-0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
+    private Vector getRandomOffset() {
+        Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
         return randomiser;
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    public enum OutputLocation {
+        MAINHAND,
+        OFFHAND,
+        MIDDLE
     }
 }

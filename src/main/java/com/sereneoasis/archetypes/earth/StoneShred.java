@@ -2,26 +2,20 @@ package com.sereneoasis.archetypes.earth;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class StoneShred extends CoreAbility {
@@ -53,8 +47,8 @@ public class StoneShred extends CoreAbility {
                         TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
                         Vector offset = Vectors.getDirectionBetweenLocations(center, b.getLocation());
                         displayBlocks.put(tdb, offset);
-                            TempBlock tb = new TempBlock(b, Material.AIR, 60000);
-                            sourceTempBlocks.add(tb);
+                        TempBlock tb = new TempBlock(b, Material.AIR, 60000);
+                        sourceTempBlocks.add(tb);
 
                     }
                 }
@@ -70,23 +64,21 @@ public class StoneShred extends CoreAbility {
     public void progress() throws ReflectiveOperationException {
 
 
-
-        if (abilityStatus == AbilityStatus.CHARGED){
+        if (abilityStatus == AbilityStatus.CHARGED) {
             if (player.isSneaking()) {
                 Vector newDir = player.getEyeLocation().getDirection();
                 EnhancedDisplayBlocks.orientOrganisedDBs(displayBlocks, previousDir, newDir, player, displayBlockDistance);
                 previousDir = newDir;
-            } else{
+            } else {
                 this.remove();
             }
-        }
-        else if (abilityStatus == AbilityStatus.SHOT){
+        } else if (abilityStatus == AbilityStatus.SHOT) {
             EnhancedDisplayBlocks.handleMoveOrganisedDBsAndHit(displayBlocks, player, this);
         }
     }
 
-    public void setHasClicked(){
-        if (abilityStatus == AbilityStatus.CHARGED){
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.CHARGED) {
             abilityStatus = AbilityStatus.SHOT;
             shotDir = player.getEyeLocation().getDirection();
             origin = player.getLocation();
@@ -100,7 +92,7 @@ public class StoneShred extends CoreAbility {
         displayBlocks.forEach((tempDisplayBlock, vector) -> tempDisplayBlock.revert());
 
         sourceTempBlocks.forEach(tempBlock -> tempBlock.revert());
-        sPlayer.addCooldown(name,cooldown);
+        sPlayer.addCooldown(name, cooldown);
     }
 
     @Override

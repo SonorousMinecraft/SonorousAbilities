@@ -7,16 +7,16 @@ import com.sereneoasis.util.methods.BossBarUtils;
 import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Particles;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 import java.awt.*;
-import java.awt.Color;
 
 public class Limbo extends MasterAbility {
 
@@ -32,18 +32,18 @@ public class Limbo extends MasterAbility {
     public Limbo(Player player) {
         super(player, name);
 
-        if (shouldStart()){
+        if (shouldStart()) {
 
             bar = BossBarUtils.initBar(player, name, BarColor.PURPLE);
 
             state = LimboStates.LIMBO;
-            AbilityUtils.sendActionBar(player, "ENABLED", ChatColor.of(Color.MAGENTA) );
+            AbilityUtils.sendActionBar(player, "ENABLED", ChatColor.of(Color.MAGENTA));
             applyPotionEffects();
             start();
         }
     }
 
-    private void applyPotionEffects(){
+    private void applyPotionEffects() {
         Entities.applyPotionPlayerAmplifier(player, PotionEffectType.SPEED, 4, (int) duration);
         Entities.applyPotionPlayer(player, PotionEffectType.JUMP, (int) duration);
         Entities.applyPotionPlayer(player, PotionEffectType.INVISIBILITY, (int) duration);
@@ -53,7 +53,7 @@ public class Limbo extends MasterAbility {
 
     }
 
-    private void removePotionEffects(){
+    private void removePotionEffects() {
         player.removePotionEffect(PotionEffectType.SPEED);
         player.removePotionEffect(PotionEffectType.JUMP);
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -70,18 +70,18 @@ public class Limbo extends MasterAbility {
             this.remove();
         }
 
-        if (state == LimboStates.LIMBO){
-            Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation().subtract(0,1,0), 1, 0, 0);
+        if (state == LimboStates.LIMBO) {
+            Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation().subtract(0, 1, 0), 1, 0, 0);
 
 //            if (isAgainstWall()){
 //                player.setVelocity(player.getEyeLocation().getDirection().clone().multiply( speed));
 //            }
 
-            if (player.getLocation().getBlock().getType() == Material.AIR && player.getLocation().getBlock().getLocation().subtract(0,1,0).getBlock().isLiquid()){
-                player.setVelocity(player.getEyeLocation().getDirection().setY(0.1).normalize().clone().multiply( speed));
+            if (player.getLocation().getBlock().getType() == Material.AIR && player.getLocation().getBlock().getLocation().subtract(0, 1, 0).getBlock().isLiquid()) {
+                player.setVelocity(player.getEyeLocation().getDirection().setY(0.1).normalize().clone().multiply(speed));
             }
 
-            if (sPlayer.getHeldAbility().equals(name)){
+            if (sPlayer.getHeldAbility().equals(name)) {
                 if (player.isSneaking()) {
                     if (abilityStatus == AbilityStatus.MOVING) {
                         abilityStatus = AbilityStatus.CHARGING;
@@ -91,35 +91,34 @@ public class Limbo extends MasterAbility {
                         long chargedFor = System.currentTimeMillis() - sinceStartedChargingJump;
                         if (chargedFor > chargeTime) {
                             abilityStatus = AbilityStatus.CHARGED;
-                            AbilityUtils.sendActionBar(player, "READY", ChatColor.of(Color.MAGENTA) );
+                            AbilityUtils.sendActionBar(player, "READY", ChatColor.of(Color.MAGENTA));
                         } else {
-                            AbilityUtils.sendActionBar(player, "CHARGING", ChatColor.of(Color.MAGENTA) );
+                            AbilityUtils.sendActionBar(player, "CHARGING", ChatColor.of(Color.MAGENTA));
 
                         }
                     }
-                }
-                else {
+                } else {
                     if (abilityStatus == AbilityStatus.CHARGED) {
-                            Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 20, 2, 1);
-                            player.setVelocity(player.getEyeLocation().getDirection().multiply(speed * 5));
-                            abilityStatus = AbilityStatus.MOVING;
-                        }
+                        Particles.spawnParticle(Particle.SONIC_BOOM, player.getLocation(), 20, 2, 1);
+                        player.setVelocity(player.getEyeLocation().getDirection().multiply(speed * 5));
+                        abilityStatus = AbilityStatus.MOVING;
                     }
+                }
             }
         }
     }
 
-    public void setHasClicked(){
-        if (state == LimboStates.LIMBO){
+    public void setHasClicked() {
+        if (state == LimboStates.LIMBO) {
             state = LimboStates.NORMAL;
             removePotionEffects();
-            AbilityUtils.sendActionBar(player, "DISABLED", ChatColor.of(Color.MAGENTA) );
+            AbilityUtils.sendActionBar(player, "DISABLED", ChatColor.of(Color.MAGENTA));
 
         } else {
             state = LimboStates.LIMBO;
             applyPotionEffects();
 
-            AbilityUtils.sendActionBar(player, "ENABLED", ChatColor.of(Color.MAGENTA) );
+            AbilityUtils.sendActionBar(player, "ENABLED", ChatColor.of(Color.MAGENTA));
 
         }
     }

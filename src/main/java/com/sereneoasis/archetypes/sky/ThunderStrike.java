@@ -1,19 +1,12 @@
 package com.sereneoasis.archetypes.sky;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
-import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Particles;
-import com.sereneoasis.util.methods.TDBs;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -53,7 +46,7 @@ public class ThunderStrike extends CoreAbility {
                 this.remove();
             }
 
-            if (Blocks.isSolid(loc)){
+            if (Blocks.isSolid(loc)) {
                 SkyUtils.lightningStrikeFloorCircle(this, loc, 8);
                 this.remove();
             }

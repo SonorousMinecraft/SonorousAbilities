@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.Set;
 
 public class Blade extends CoreAbility {
 
@@ -61,7 +60,7 @@ public class Blade extends CoreAbility {
         }
     }
 
-    public List<Location> getLocs(){
+    public List<Location> getLocs() {
         return Locations.getPointsAlongLine(loc1, loc2, size);
     }
 

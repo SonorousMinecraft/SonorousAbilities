@@ -3,8 +3,9 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.methods.AbilityDamage;
+import com.sereneoasis.util.methods.Entities;
+import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -47,7 +48,7 @@ public class BlockSphereBlast extends CoreAbility {
     @Override
     public void progress() {
 
-        if (abilityStatus == AbilityStatus.CHARGED){
+        if (abilityStatus == AbilityStatus.CHARGED) {
             dir = player.getEyeLocation().getDirection().clone();
         }
         if (abilityStatus == AbilityStatus.SHOT) {
@@ -66,13 +67,13 @@ public class BlockSphereBlast extends CoreAbility {
 
             boolean isFinished = AbilityDamage.damageSeveral(loc, this, player, true, player.getEyeLocation().getDirection());
 
-            if (isFinished){
+            if (isFinished) {
                 this.abilityStatus = AbilityStatus.COMPLETE;
             }
         }
     }
 
-    public void moveToLoc(Location targetLoc){
+    public void moveToLoc(Location targetLoc) {
         if (loc.distanceSquared(targetLoc) > 1.0) {
 //            Vector dir = Vectors.getDirectionBetweenLocations(loc, targetLoc).normalize();
 //            loc.add(dir.clone().multiply(speed));
@@ -91,7 +92,7 @@ public class BlockSphereBlast extends CoreAbility {
         revert();
     }
 
-    public void revert(){
+    public void revert() {
         for (TempDisplayBlock tb : spike.values()) {
             tb.revert();
         }

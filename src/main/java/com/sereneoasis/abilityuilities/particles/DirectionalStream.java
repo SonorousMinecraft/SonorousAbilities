@@ -3,7 +3,6 @@ package com.sereneoasis.abilityuilities.particles;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
-import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -19,10 +18,8 @@ public class DirectionalStream extends CoreAbility {
     private final String name;
 
     protected Set<Location> locs = new HashSet<>();
-
-    private Random random = new Random();
     protected Particle particle;
-
+    private Random random = new Random();
     private Vector dir;
 
     public DirectionalStream(Player player, String name, Particle particle, Vector dir) {
@@ -70,15 +67,15 @@ public class DirectionalStream extends CoreAbility {
         });
 
         locs.removeIf(location -> {
-            return ((location.distanceSquared(player.getLocation()) > range * range) );
+            return ((location.distanceSquared(player.getLocation()) > range * range));
         });
     }
 
     public Location randomVertex(Location start, Location end) {
         Vector diff = end.clone().subtract(start.clone()).toVector();
         Vector random = getRandomOffset();
-        if (start.distanceSquared(end) > 1){
-            random.multiply(Math.sqrt(Math.log(diff.length() ) * Math.log(diff.length())) / 10);
+        if (start.distanceSquared(end) > 1) {
+            random.multiply(Math.sqrt(Math.log(diff.length()) * Math.log(diff.length())) / 10);
         }
         return (start.clone().add(random));
     }
@@ -91,8 +88,8 @@ public class DirectionalStream extends CoreAbility {
         return locs;
     }
 
-    private Vector getRandomOffset(){
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble()-0.5).add(Vectors.getUp(player.getLocation(),random.nextDouble()-0.5));
+    private Vector getRandomOffset() {
+        Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(Vectors.getUp(player.getLocation(), random.nextDouble() - 0.5));
         return randomiser;
     }
 

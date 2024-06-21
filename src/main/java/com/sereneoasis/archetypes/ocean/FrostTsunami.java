@@ -1,26 +1,23 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.ability.superclasses.MasterAbility;
-import com.sereneoasis.abilityuilities.blocks.forcetype.BlockCreateSphereGivenType;
 import com.sereneoasis.abilityuilities.blocks.forcetype.BlockSweepGivenType;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Constants;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class FrostTsunami extends CoreAbility {
 
     private final String name = "FrostTsunami";
 
     private BlockSweepGivenType sweep;
+
     public FrostTsunami(Player player) {
         super(player, "FrostTsunami");
 
-        if (shouldStart()){
+        if (shouldStart()) {
             sweep = new BlockSweepGivenType(player, name, Color.BLUE, DisplayBlock.ICE);
             if (sweep.getAbilityStatus() == AbilityStatus.SOURCE_SELECTED) {
                 abilityStatus = AbilityStatus.SOURCE_SELECTED;
@@ -51,7 +48,7 @@ public class FrostTsunami extends CoreAbility {
         }
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
 
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
             sweep.setHasClicked();

@@ -7,8 +7,6 @@ import com.sereneoasis.util.methods.AbilityUtils;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Entities;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class LightningBolts extends MasterAbility {
@@ -30,7 +28,7 @@ public class LightningBolts extends MasterAbility {
     @Override
     public void progress() {
         iterateHelpers(abilityStatus);
-        
+
         AbilityUtils.showShots(this, currentShots, shots);
 
         if (completeShots == shots) {
@@ -49,16 +47,16 @@ public class LightningBolts extends MasterAbility {
         iterateHelpers(AbilityStatus.SHOT);
     }
 
-    public void setHasSneaked(){
-        if (abilityStatus == AbilityStatus.SHOOTING && currentShots<shots){
+    public void setHasSneaked() {
+        if (abilityStatus == AbilityStatus.SHOOTING && currentShots < shots) {
             SourcedBlast sourcedBlast = new SourcedBlast(player, name, false, new ArchetypeVisuals.LightningVisual(), false, true);
             helpers.put(sourcedBlast, (abilityStatus) -> {
-                switch (abilityStatus){
+                switch (abilityStatus) {
                     case SHOT -> {
                         sourcedBlast.setHasClicked();
                     }
                     case SHOOTING -> {
-                        if (Blocks.isSolid(sourcedBlast.getLoc())){
+                        if (Blocks.isSolid(sourcedBlast.getLoc())) {
                             SkyUtils.lightningStrikeFloorCircle(this, sourcedBlast.getLoc(), 3);
                             sourcedBlast.remove();
                             removeHelper(sourcedBlast);
@@ -83,7 +81,7 @@ public class LightningBolts extends MasterAbility {
             });
             currentShots++;
         }
-        
+
     }
 
     @Override

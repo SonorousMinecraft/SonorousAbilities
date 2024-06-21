@@ -12,13 +12,6 @@ public class Levitate extends CoreAbility {
 
     private state levitateState = state.ON;
 
-    private enum state {
-        OFF,
-        ON
-
-    }
-
-
     public Levitate(Player player, String name) {
         super(player, name);
 
@@ -27,6 +20,7 @@ public class Levitate extends CoreAbility {
         abilityStatus = AbilityStatus.MOVING;
         start();
     }
+
 
     public Levitate(Player player, String name, long duration) {
         super(player, name);
@@ -46,7 +40,7 @@ public class Levitate extends CoreAbility {
 
     }
 
-    public void toggle(){
+    public void toggle() {
         if (levitateState == state.ON) {
             levitateState = state.OFF;
             player.removePotionEffect(PotionEffectType.LEVITATION);
@@ -56,9 +50,9 @@ public class Levitate extends CoreAbility {
         }
     }
 
-    public boolean isLevitating(){
+    public boolean isLevitating() {
         if (levitateState == state.ON) {
-            return  true;
+            return true;
         } else {
             return false;
         }
@@ -78,5 +72,11 @@ public class Levitate extends CoreAbility {
     @Override
     public String getName() {
         return name;
+    }
+
+    private enum state {
+        OFF,
+        ON
+
     }
 }

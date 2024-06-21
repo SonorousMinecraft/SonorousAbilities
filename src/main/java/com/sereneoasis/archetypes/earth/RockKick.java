@@ -1,22 +1,14 @@
 package com.sereneoasis.archetypes.earth;
 
-import com.sereneoasis.ability.superclasses.CollisionAbility;
-import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.ability.superclasses.MasterAbility;
 import com.sereneoasis.ability.superclasses.RedirectAbility;
 import com.sereneoasis.abilityuilities.blocks.BlockAbilities;
 import com.sereneoasis.abilityuilities.blocks.RaiseBlock;
 import com.sereneoasis.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.BlockDisplay;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Constants;
-import com.sereneoasis.util.methods.Vectors;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.util.Vector;
@@ -25,13 +17,9 @@ import java.util.HashMap;
 
 public class RockKick extends MasterAbility implements RedirectAbility {
 
-    private RaiseBlock raiseBlock;
-
-    private ShootBlockFromLoc shootBlockFromLoc;
-
-
     private static final String name = "RockKick";
-
+    private RaiseBlock raiseBlock;
+    private ShootBlockFromLoc shootBlockFromLoc;
     private Location loc;
 
     private boolean isLooking = false;
@@ -72,7 +60,7 @@ public class RockKick extends MasterAbility implements RedirectAbility {
                 raiseBlock.getBlockEntity().setGlowing(true);
                 isLooking = true;
                 sinceLastLooked = System.currentTimeMillis();
-            } else if (System.currentTimeMillis() - sinceLastLooked > 200){
+            } else if (System.currentTimeMillis() - sinceLastLooked > 200) {
                 raiseBlock.getBlockEntity().setGlowing(false);
                 isLooking = false;
             }
@@ -91,10 +79,10 @@ public class RockKick extends MasterAbility implements RedirectAbility {
 
     public void setHasClicked() {
         if (abilityStatus != AbilityStatus.SHOT && isLooking) {
-                shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
-                BlockAbilities.handleBouncingShootBlockFromLoc(this, shootBlockFromLoc);
+            shootBlockFromLoc = new ShootBlockFromLoc(player, name, raiseBlock.getBlockEntity().getLocation(), raiseBlock.getBlockEntity().getBlock().getMaterial(), false, false);
+            BlockAbilities.handleBouncingShootBlockFromLoc(this, shootBlockFromLoc);
 
-                abilityStatus = AbilityStatus.SHOT;
+            abilityStatus = AbilityStatus.SHOT;
 
         }
     }
@@ -119,7 +107,7 @@ public class RockKick extends MasterAbility implements RedirectAbility {
     @Override
     public HashMap<Location, Double> getLocs() {
         HashMap<Location, Double> locs = new HashMap<>();
-        locs.put(loc, size/2);
+        locs.put(loc, size / 2);
         return locs;
     }
 
@@ -137,7 +125,7 @@ public class RockKick extends MasterAbility implements RedirectAbility {
     public void setDir(Vector dir) {
 
         if (shootBlockFromLoc != null) {
-            if (shootBlockFromLoc.isDirectable()){
+            if (shootBlockFromLoc.isDirectable()) {
                 shootBlockFromLoc.setDirectable(false);
             }
             shootBlockFromLoc.setDir(dir.clone().multiply(speed));

@@ -1,9 +1,7 @@
 package com.sereneoasis.util.methods;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.DamageHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -16,7 +14,7 @@ import java.util.Set;
 
 public class AbilityDamage {
 
-    public static boolean damageOne(Location loc, CoreAbility coreAbility, Player player, boolean kb, @Nullable Vector dir){
+    public static boolean damageOne(Location loc, CoreAbility coreAbility, Player player, boolean kb, @Nullable Vector dir) {
         Entity target = Entities.getAffected(loc, coreAbility.getHitbox(), player);
 
         if (target != null) {
@@ -29,7 +27,7 @@ public class AbilityDamage {
         return false;
     }
 
-    public static boolean damageSeveral(Location loc, CoreAbility coreAbility, Player player, boolean kb, @Nullable Vector dir){
+    public static boolean damageSeveral(Location loc, CoreAbility coreAbility, Player player, boolean kb, @Nullable Vector dir) {
         List<LivingEntity> livingEntities = Entities.getAffectedList(loc, coreAbility.getHitbox(), player);
         livingEntities.forEach(target -> {
             DamageHandler.damageEntity(target, player, coreAbility, coreAbility.getDamage());
@@ -40,7 +38,7 @@ public class AbilityDamage {
         return !livingEntities.isEmpty();
     }
 
-    public static List<LivingEntity> damageSeveralReturnHit(Location loc, CoreAbility coreAbility, Player player, boolean kb, @Nullable Vector dir){
+    public static List<LivingEntity> damageSeveralReturnHit(Location loc, CoreAbility coreAbility, Player player, boolean kb, @Nullable Vector dir) {
         List<LivingEntity> livingEntities = Entities.getAffectedList(loc, coreAbility.getHitbox(), player);
         livingEntities.forEach(target -> {
             DamageHandler.damageEntity(target, player, coreAbility, coreAbility.getDamage());
@@ -51,7 +49,7 @@ public class AbilityDamage {
         return livingEntities;
     }
 
-    public static List<LivingEntity> damageSeveralExceptReturnHit(Location loc, CoreAbility coreAbility, Player player, Set<LivingEntity> except, boolean kb, @Nullable Vector dir){
+    public static List<LivingEntity> damageSeveralExceptReturnHit(Location loc, CoreAbility coreAbility, Player player, Set<LivingEntity> except, boolean kb, @Nullable Vector dir) {
         List<LivingEntity> livingEntities = Entities.getAffectedList(loc, coreAbility.getHitbox(), player);
 
         livingEntities.stream().filter(livingEntity -> except == null || !except.contains(livingEntity)).forEach(target -> {
@@ -63,7 +61,7 @@ public class AbilityDamage {
         return livingEntities;
     }
 
-    public static boolean damageSeveralExcept(Location loc, CoreAbility coreAbility, Player player, Set<LivingEntity> except, boolean kb, @Nullable Vector dir){
+    public static boolean damageSeveralExcept(Location loc, CoreAbility coreAbility, Player player, Set<LivingEntity> except, boolean kb, @Nullable Vector dir) {
         List<LivingEntity> livingEntities = Entities.getAffectedList(loc, coreAbility.getHitbox(), player);
         if (except != null) {
             livingEntities.removeIf(except::contains);

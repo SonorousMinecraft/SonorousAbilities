@@ -2,12 +2,9 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.AbilityDamage;
 import com.sereneoasis.util.methods.Blocks;
-import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,23 +21,8 @@ public class ShootBlockFromLoc extends CoreAbility {
     private String user;
 
     private boolean directable, autoRemove;
-
-    public boolean isDirectable() {
-        return directable;
-    }
-
-    public void setDirectable(boolean directable) {
-        this.directable = directable;
-    }
-
     private Vector dir;
-
     private TempDisplayBlock block;
-
-    public void setRange(double newRange){
-        this.range = newRange;
-    }
-
 
     public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
         super(player, user);
@@ -55,7 +37,6 @@ public class ShootBlockFromLoc extends CoreAbility {
         abilityStatus = AbilityStatus.SHOT;
         start();
     }
-
 
     public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove, double size) {
         super(player, user);
@@ -85,7 +66,19 @@ public class ShootBlockFromLoc extends CoreAbility {
         start();
     }
 
-    public void setGlowing(Color color  ){
+    public boolean isDirectable() {
+        return directable;
+    }
+
+    public void setDirectable(boolean directable) {
+        this.directable = directable;
+    }
+
+    public void setRange(double newRange) {
+        this.range = newRange;
+    }
+
+    public void setGlowing(Color color) {
         block.getBlockDisplay().setGlowColorOverride(color);
         block.getBlockDisplay().setGlowing(true);
     }
@@ -125,16 +118,12 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     }
 
-    public void setLoc(Location loc) {
-        this.loc = loc;
+    public Vector getDir() {
+        return dir;
     }
 
     public void setDir(Vector dir) {
         this.dir = dir;
-    }
-
-    public Vector getDir() {
-        return dir;
     }
 
     @Override
@@ -145,6 +134,10 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     public Location getLoc() {
         return loc;
+    }
+
+    public void setLoc(Location loc) {
+        this.loc = loc;
     }
 
     @Override

@@ -2,7 +2,10 @@ package com.sereneoasis.util.methods;
 
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.*;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
@@ -18,6 +21,8 @@ import java.util.*;
  * Methods which are related to entities
  */
 public class Entities {
+    private static final Random random = new Random();
+
     public static void applyPotion(Entity e, PotionEffectType effect, int durationinms) {
         PotionEffect ef = new PotionEffect(effect, durationinms / 1000 * 20, 1, false, false, false);
         ((LivingEntity) e).addPotionEffect(ef);
@@ -32,6 +37,10 @@ public class Entities {
         PotionEffect ef = new PotionEffect(effect, durationinms / 1000 * 20, amplifier, false, false, false);
         player.addPotionEffect(ef);
     }
+
+//    public static Collection<Entity>getNearbyEntities(Location loc, double radius){
+//        return loc.getWorld().getNearbyEntities(loc, radius, radius, radius).stream().filter(entity -> !(entity instanceof ArmorStand)).collect(Collectors.toSet());
+//    }
 
     /*
      * Used to set the velocity of a player.
@@ -49,10 +58,6 @@ public class Entities {
         }
         target.setVelocity(direction);
     }
-
-//    public static Collection<Entity>getNearbyEntities(Location loc, double radius){
-//        return loc.getWorld().getNearbyEntities(loc, radius, radius, radius).stream().filter(entity -> !(entity instanceof ArmorStand)).collect(Collectors.toSet());
-//    }
 
     public static Entity getAffected(Location loc, double radius) {
         Entity target = null;
@@ -85,7 +90,7 @@ public class Entities {
     }
 
     public static List<LivingEntity> getAffectedList(Location loc, double radius, Player player) {
-        return getEntitiesAroundPoint(loc,radius).stream().filter(entity -> entity != player).filter(entity -> entity instanceof LivingEntity).map(entity -> (LivingEntity)entity).toList();
+        return getEntitiesAroundPoint(loc, radius).stream().filter(entity -> entity != player).filter(entity -> entity instanceof LivingEntity).map(entity -> (LivingEntity) entity).toList();
     }
 
     public static List<Entity> getEntitiesAroundPoint(Location loc, double rad) {
@@ -94,8 +99,6 @@ public class Entities {
                         || entity instanceof ArmorStand || entity instanceof ItemDisplay || entity instanceof BlockDisplay || !(entity instanceof LivingEntity))));
     }
 
-    private static final Random random = new Random();
-
     public static HashMap<Integer, TempDisplayBlock> handleDisplayBlockEntities(HashMap<Integer, TempDisplayBlock> spike, Set<Location> locs, DisplayBlock type, double size) {
 
         int i = 0;
@@ -103,7 +106,7 @@ public class Entities {
             l.setDirection(l.getBlock().getLocation().getDirection().clone());
 
             if (!spike.containsKey(i)) {
-                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size + random.nextDouble()/10 );
+                TempDisplayBlock tempDisplayBlock = new TempDisplayBlock(l, type, 50000, size + random.nextDouble() / 10);
                 spike.put(i, tempDisplayBlock);
             } else {
                 spike.get(i).moveTo(l);
@@ -174,7 +177,7 @@ public class Entities {
         Location loc = player.getEyeLocation().clone();
         Vector dir = player.getEyeLocation().getDirection().clone().normalize();
         RayTraceResult rayTraceResult = (loc.getWorld().rayTraceEntities(loc, dir, distance, hitbox, entity -> {
-            if (entity instanceof LivingEntity && entity != player && ! (entity instanceof ArmorStand)) {
+            if (entity instanceof LivingEntity && entity != player && !(entity instanceof ArmorStand)) {
                 return true;
             }
             return false;
@@ -198,7 +201,7 @@ public class Entities {
 
     public static LivingEntity getFacingEntity(Location loc, Vector dir, double distance) {
         if (loc.getWorld().rayTraceEntities(loc, dir, distance) != null) {
-            if (loc.getWorld().rayTraceEntities(loc, dir, distance).getHitEntity() instanceof LivingEntity entity  && ! (entity instanceof ArmorStand)) {
+            if (loc.getWorld().rayTraceEntities(loc, dir, distance).getHitEntity() instanceof LivingEntity entity && !(entity instanceof ArmorStand)) {
                 return entity;
             }
         }

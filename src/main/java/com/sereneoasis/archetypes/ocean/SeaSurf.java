@@ -4,7 +4,8 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Skate;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.*;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Constants;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,7 +14,6 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SeaSurf extends CoreAbility {
@@ -28,7 +28,7 @@ public class SeaSurf extends CoreAbility {
         super(player, name);
 
         if (shouldStart()) {
-            this.skate = new Skate(player, name, 10,3, false);
+            this.skate = new Skate(player, name, 10, 3, false);
             start();
         }
 
@@ -66,7 +66,7 @@ public class SeaSurf extends CoreAbility {
         this.remove();
     }
 
-    public ArmorStand getArmorStand(){
+    public ArmorStand getArmorStand() {
         return skate.getArmorStand();
     }
 

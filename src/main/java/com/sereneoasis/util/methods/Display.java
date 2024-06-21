@@ -66,7 +66,8 @@ public class Display {
         });
         return itemDisplay;
     }
-// Positive x is left, positive y is up, positive z is forward
+
+    // Positive x is left, positive y is up, positive z is forward
     public static ItemDisplay createItemDisplayOffset(Location loc, Material material, double width, double height, double length, boolean diagonal, double x, double y, double z) {
         ItemDisplay itemDisplay = (ItemDisplay) loc.getWorld().spawn(loc, EntityType.ITEM_DISPLAY.getEntityClass(), (entity) ->
         {
@@ -76,9 +77,9 @@ public class Display {
             iDisplay.setBillboard(org.bukkit.entity.Display.Billboard.FIXED);
             Transformation transformation = iDisplay.getTransformation();
             // first one is height, second length, third width
-            transformation.getScale().set(height , length , width);
-            
-            transformation.getTranslation().set(-width/2, 0, 0);
+            transformation.getScale().set(height, length, width);
+
+            transformation.getTranslation().set(-width / 2, 0, 0);
             Quaternionf quaternionf = transformation.getLeftRotation();
 
             double faceForward;
@@ -88,13 +89,14 @@ public class Display {
                 faceForward = 90;
             }
             quaternionf.rotateXYZ(0, (float) -Math.toRadians(90), (float) -Math.toRadians(faceForward));
-            
+
             transformation.getLeftRotation().set(quaternionf);
-            transformation.getTranslation().set(new Vector3d( x, y , z));
+            transformation.getTranslation().set(new Vector3d(x, y, z));
             iDisplay.setTransformation(transformation);
         });
         return itemDisplay;
     }
+
     public static ItemDisplay createItemDisplayOffset(Location loc, Material material, double width, double height, double length, boolean diagonal, Vector offset) {
         double x = offset.getX();
         double y = offset.getY();
@@ -107,9 +109,9 @@ public class Display {
             iDisplay.setBillboard(org.bukkit.entity.Display.Billboard.FIXED);
             Transformation transformation = iDisplay.getTransformation();
             // first one is height, second length, third width
-            transformation.getScale().set(height , length , width);
+            transformation.getScale().set(height, length, width);
 
-            transformation.getTranslation().set(-width/2, 0, 0);
+            transformation.getTranslation().set(-width / 2, 0, 0);
             Quaternionf quaternionf = transformation.getLeftRotation();
 
             double faceForward;
@@ -121,7 +123,7 @@ public class Display {
             quaternionf.rotateXYZ(0, (float) -Math.toRadians(90), (float) -Math.toRadians(faceForward));
 
             transformation.getLeftRotation().set(quaternionf);
-            transformation.getTranslation().set(new Vector3d( x, y , z));
+            transformation.getTranslation().set(new Vector3d(x, y, z));
             iDisplay.setTransformation(transformation);
         });
         return itemDisplay;
@@ -144,47 +146,48 @@ public class Display {
     }
 
     public static void rotateItemDisplayProperly(ItemDisplay itemDisplay, double width,
-                                                 float xRads, float yRads, float zRads ) {
+                                                 float xRads, float yRads, float zRads) {
         Transformation oldDisplayTransformation = itemDisplay.getTransformation();
         Vector3f oldDisplayTranslation = new Vector3f(oldDisplayTransformation.getTranslation());
-        oldDisplayTransformation.getTranslation().set(-width/2, 0 ,0 );
+        oldDisplayTransformation.getTranslation().set(-width / 2, 0, 0);
         oldDisplayTransformation.getLeftRotation().rotateXYZ(xRads, yRads, zRads);
         oldDisplayTransformation.getTranslation().set(oldDisplayTranslation);
         itemDisplay.setTransformation(oldDisplayTransformation);
     }
 
     public static void rotateItemDisplayProperlyDegs(ItemDisplay itemDisplay, double width,
-                                                     float xDegs, float yDegs, float zDegs ) {
+                                                     float xDegs, float yDegs, float zDegs) {
         Transformation oldDisplayTransformation = itemDisplay.getTransformation();
         Vector3f oldDisplayTranslation = new Vector3f(oldDisplayTransformation.getTranslation());
-        oldDisplayTransformation.getTranslation().set(-width/2, 0 ,0 );
+        oldDisplayTransformation.getTranslation().set(-width / 2, 0, 0);
         oldDisplayTransformation.getLeftRotation().rotateXYZ((float) Math.toRadians(xDegs), (float) Math.toRadians(yDegs), (float) Math.toRadians(zDegs));
         oldDisplayTransformation.getTranslation().set(oldDisplayTranslation);
         itemDisplay.setTransformation(oldDisplayTransformation);
     }
+
     public static void rotateItemDisplayProperlyWithOffset(ItemDisplay itemDisplay, double width,
-                                                           double x, double y, double z ,
-                                                 float xRads, float yRads, float zRads ) {
+                                                           double x, double y, double z,
+                                                           float xRads, float yRads, float zRads) {
         Transformation oldDisplayTransformation = itemDisplay.getTransformation();
         Vector3f oldDisplayTranslation = new Vector3f(oldDisplayTransformation.getTranslation());
-        oldDisplayTransformation.getTranslation().set(-width/2 - x, -y ,-z );
+        oldDisplayTransformation.getTranslation().set(-width / 2 - x, -y, -z);
         oldDisplayTransformation.getLeftRotation().rotateXYZ(xRads, yRads, zRads);
         oldDisplayTransformation.getTranslation().set(oldDisplayTranslation);
         itemDisplay.setTransformation(oldDisplayTransformation);
     }
 
     public static void rotateItemDisplayProperlyWithOffsetDegs(ItemDisplay itemDisplay, double width,
-                                                           double x, double y, double z ,
-                                                 float xDegs, float yDegs, float zDegs ) {
+                                                               double x, double y, double z,
+                                                               float xDegs, float yDegs, float zDegs) {
         Transformation oldDisplayTransformation = itemDisplay.getTransformation();
         Vector3f oldDisplayTranslation = new Vector3f(oldDisplayTransformation.getTranslation());
-        oldDisplayTransformation.getTranslation().set(-width/2 - x, -y ,-z );
+        oldDisplayTransformation.getTranslation().set(-width / 2 - x, -y, -z);
         oldDisplayTransformation.getLeftRotation().rotateXYZ((float) Math.toRadians(xDegs), (float) Math.toRadians(yDegs), (float) Math.toRadians(zDegs));
         oldDisplayTransformation.getTranslation().set(oldDisplayTranslation);
         itemDisplay.setTransformation(oldDisplayTransformation);
     }
-    
-    
+
+
     public static ArmorStand createArmorStand(Location loc) {
 
         ArmorStand armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
@@ -194,10 +197,12 @@ public class Display {
             aStand.setSmall(true);
             aStand.setVisible(false);
         }));
-        Entity nmsStand = ((CraftArmorStand)armorStand).getHandle();
+        Entity nmsStand = ((CraftArmorStand) armorStand).getHandle();
         nmsStand.noPhysics = true;
         return armorStand;
-    }public static ArmorStand createArmorStandNoGrav(Location loc) {
+    }
+
+    public static ArmorStand createArmorStandNoGrav(Location loc) {
 
         ArmorStand armorStand = (ArmorStand) loc.getWorld().spawn(loc, EntityType.ARMOR_STAND.getEntityClass(), ((entity) ->
         {
@@ -206,7 +211,7 @@ public class Display {
             aStand.setSmall(true);
             aStand.setVisible(false);
         }));
-        Entity nmsStand = ((CraftArmorStand)armorStand).getHandle();
+        Entity nmsStand = ((CraftArmorStand) armorStand).getHandle();
         nmsStand.setNoGravity(true);
         nmsStand.noPhysics = true;
         return armorStand;
@@ -234,7 +239,7 @@ public class Display {
         return armorStand;
     }
 
-    public static Location getItemDisplaySpawnLoc(Location loc, double size){
+    public static Location getItemDisplaySpawnLoc(Location loc, double size) {
         Vector offsetFix = new Vector(size / 2, 0, size / 2).rotateAroundY(-Math.toRadians(loc.getYaw()));
         return loc.clone().add(offsetFix);
     }
@@ -247,7 +252,7 @@ public class Display {
     }
 
     // positive x is left, positive y is up, positive z is forward
-    public static void translateItemDisplay(ItemDisplay display, float x, float y, float z){
+    public static void translateItemDisplay(ItemDisplay display, float x, float y, float z) {
         Transformation transformation = display.getTransformation();
         transformation.getTranslation().add(x, y, z);
         display.setTransformation(transformation);

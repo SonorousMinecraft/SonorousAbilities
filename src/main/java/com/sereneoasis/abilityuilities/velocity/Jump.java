@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 public class Jump extends CoreAbility {
 
-    private boolean charged;
     private final String name;
+    private boolean charged;
 
     public Jump(Player player, String name, boolean charged) {
         super(player, name);
@@ -34,7 +34,7 @@ public class Jump extends CoreAbility {
                 }
 
                 abilityStatus = AbilityStatus.COMPLETE;
-            } else if (System.currentTimeMillis() > startTime + chargeTime){
+            } else if (System.currentTimeMillis() > startTime + chargeTime) {
                 abilityStatus = AbilityStatus.CHARGED;
                 AbilityUtils.showCharged(this);
             }

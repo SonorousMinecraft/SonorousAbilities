@@ -8,16 +8,13 @@ import com.sereneoasis.util.methods.Entities;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Geyser extends MasterAbility {
 
@@ -27,9 +24,9 @@ public class Geyser extends MasterAbility {
 
     private Location loc, origin;
 
-    private Set<TempBlock>sources = new HashSet<>();
+    private Set<TempBlock> sources = new HashSet<>();
 
-    private Set<TempDisplayBlock>geyser = new HashSet<>();
+    private Set<TempDisplayBlock> geyser = new HashSet<>();
 
 
     public Geyser(Player player) {
@@ -48,7 +45,7 @@ public class Geyser extends MasterAbility {
             if (sources.isEmpty()) {
                 this.loc = player.getLocation();
                 this.origin = loc.clone();
-                sources = OceanUtils.freeze(player.getLocation().add(0,radius/2,0), radius, sPlayer);
+                sources = OceanUtils.freeze(player.getLocation().add(0, radius / 2, 0), radius, sPlayer);
             }
 
             if (!sources.isEmpty()) {
@@ -65,28 +62,28 @@ public class Geyser extends MasterAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        switch (abilityStatus){
+        switch (abilityStatus) {
             case SOURCE_SELECTED -> {
-                if (!player.isSneaking()){
+                if (!player.isSneaking()) {
                     setHasClicked();
-                    dir = new Vector(0,1,0);
+                    dir = new Vector(0, 1, 0);
                 }
             }
-            case SHOT ->{
+            case SHOT -> {
                 loc.add(dir.clone().multiply(speed));
                 Entities.getEntitiesAroundPoint(loc, radius).forEach(entity -> entity.setVelocity(dir));
                 geyser.forEach(tempDisplayBlock -> {
                     tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().add(Vectors.getDirectionBetweenLocations(tempDisplayBlock.getLoc(), loc.clone().add(Vectors.getRandom().clone().multiply(radius))).normalize()));
                 });
-                if (loc.distanceSquared(origin) > range*range){
+                if (loc.distanceSquared(origin) > range * range) {
                     this.remove();
                 }
             }
         }
     }
 
-    public void setHasClicked(){
-        if (abilityStatus == AbilityStatus.SOURCE_SELECTED){
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
             dir = player.getEyeLocation().getDirection();
 
             abilityStatus = AbilityStatus.SHOT;
@@ -97,8 +94,8 @@ public class Geyser extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        sources.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
-        geyser.stream().filter(tempBlock -> tempBlock !=null).forEach(tempBlock -> tempBlock.revert());
+        sources.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
+        geyser.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
     }
 
     @Override

@@ -4,13 +4,11 @@ import com.sereneoasis.ability.data.AbilityDataManager;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
-import com.sereneoasis.displays.SerenityBoard;
+import com.sereneoasis.displays.SereneAbilitiesBoard;
 import com.sereneoasis.storage.PlayerData;
-import com.sereneoasis.util.SerenityPlayerEquipment;
 import com.sereneoasis.util.equipment.ItemStackUtils;
 import com.sereneoasis.util.methods.Colors;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -28,40 +26,132 @@ import java.util.concurrent.ConcurrentHashMap;
  * Used to create/retrieve and update a players data from the database.
  * Handles everything related to abilities and a player.
  */
-public class SerenityPlayer {
+public class SereneAbilitiesPlayer {
 
-    private static final Map<UUID, SerenityPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
-
+    private static final Map<UUID, SereneAbilitiesPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
+    protected final Map<String, Long> cooldowns = new HashMap<>();
     private boolean isOn = false;
+    private HashMap<String, HashMap<Integer, String>> presets;
+    private Set<CoreAbility> flyAbilities = new HashSet<>();
+    private HashMap<Integer, String> abilities;
+    private String name;
+    private Archetype archetype;
+    private Player player;
+
+    public SereneAbilitiesPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player, HashMap<String, HashMap<Integer, String>> presets) {
+        this.name = name;
+        this.abilities = abilities;
+        this.archetype = archetype;
+        this.player = player;
+        this.presets = presets;
+//        this.serenityPlayerEquipment = new SereneAbilitiesPlayerEquipment(this, player);
+    }
+
+    public static Map<UUID, SereneAbilitiesPlayer> getSereneAbilitiesPlayerMap() {
+        return SERENITY_PLAYER_MAP;
+    }
+
+    public static SereneAbilitiesPlayer getSereneAbilitiesPlayer(Player player) {
+        return SERENITY_PLAYER_MAP.get(player.getUniqueId());
+    }
+
+    public static void initialisePlayer(Player player) {
+        SereneAbilitiesPlayer serenityPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SereneAbilitiesBoard board = SereneAbilitiesBoard.createScore(player, serenityPlayer);
+
+        board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
+        board.setAboveSlot(2, "Abilities:");
+        board.setBelowSlot(1, "Combos:");
+        int slot = 2;
+
+        for (String abil : AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype())) {
+            if (AbilityDataManager.getComboDataMap().containsKey(abil)) {
+                board.setBelowSlot(slot, abil);
+                slot++;
+            }
+        }
+        for (int i : serenityPlayer.getAbilities().keySet()) {
+            board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
+        }
+        initialiseAttributePlayer(player, serenityPlayer);
+//        serenityPlayer.createEquipment();
+    }
+
+    public static void initialiseAttributePlayer(Player player, SereneAbilitiesPlayer serenityPlayer) {
+        removeAttributePlayer(player, serenityPlayer);
+        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
+        {
+            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), "SereneAbilities." + attribute.toString(), value,
+                    AttributeModifier.Operation.ADD_NUMBER);
+
+            player.getAttribute(attribute).addModifier(attributeModifier);
+        });
+    }
+
+    public static void removeAttributePlayer(Player player, SereneAbilitiesPlayer serenityPlayer) {
+        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
+        {
+            player.getAttribute(attribute).getModifiers().forEach(attributeModifier -> {
+                player.getAttribute(attribute).removeModifier(attributeModifier);
+            });
+        });
+    }
+
+    public static void loadPlayer(UUID uuid, Player player) {
+        if (SERENITY_PLAYER_MAP.containsKey(uuid)) {
+            return;
+        }
+        HashMap<Integer, String> abilities = new HashMap<>();
+
+        if (SereneAbilities.getRepository().get(uuid) == null) {
+            for (int i = 1; i <= 9; i++) {
+                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
+            }
+
+            SereneAbilitiesPlayer serenityPlayer = new SereneAbilitiesPlayer(player.getName(), abilities, Archetype.NONE, player, new HashMap<>());
+            getSereneAbilitiesPlayerMap().put(uuid, serenityPlayer);
+            upsertPlayer(serenityPlayer);
+
+        } else {
+            SereneAbilities.getRepository().getAsync(uuid).thenAsync((PlayerData) -> {
+                SereneAbilitiesPlayer serenityPlayer = new SereneAbilitiesPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype().toUpperCase()), player, PlayerData.getPresets());
+                getSereneAbilitiesPlayerMap().put(uuid, serenityPlayer);
+            });
+        }
+    }
+
+    public static void removePlayerFromMap(Player player) {
+        SERENITY_PLAYER_MAP.remove(player.getUniqueId());
+    }
+
+    public static void upsertPlayer(SereneAbilitiesPlayer serenityPlayer) {
+
+        PlayerData playerData = new PlayerData();
+        playerData.setKey(serenityPlayer.getPlayer().getUniqueId());
+        playerData.setName(serenityPlayer.getName());
+
+        playerData.setAbilities(serenityPlayer.getAbilities());
+
+        playerData.setArchetype(serenityPlayer.getArchetype().toString());
+
+        playerData.setPresets(serenityPlayer.getPresets());
+        SereneAbilities.getRepository().upsertAsync(playerData);
+    }
 
     public boolean isOn() {
         return isOn;
     }
 
     public void setOn(boolean on) {
-        if (on){
-            serenityPlayerEquipment.switchToSerenity();
-        } else {
-            serenityPlayerEquipment.switchToNormal();
-        }
+//        if (on){
+//            serenityPlayerEquipment.switchToSereneAbilities();
+//        } else {
+//            serenityPlayerEquipment.switchToNormal();
+//        }
         isOn = on;
     }
 
-
-    public static Map<UUID, SerenityPlayer> getSerenityPlayerMap() {
-        return SERENITY_PLAYER_MAP;
-    }
-
-    public static SerenityPlayer getSerenityPlayer(Player player) {
-        return SERENITY_PLAYER_MAP.get(player.getUniqueId());
-    }
-
-
-    private HashMap<String, HashMap<Integer, String>> presets;
-
-    private Set<CoreAbility>flyAbilities = new HashSet<>();
-
-    public void setFly(CoreAbility coreAbility){
+    public void setFly(CoreAbility coreAbility) {
         player.setFlySpeed(0.1F);
         flyAbilities.add(coreAbility);
         player.setAllowFlight(true);
@@ -80,7 +170,6 @@ public class SerenityPlayer {
         flyAbilities.remove(coreAbility);
 
     }
-
 
     public void setPreset(String name, HashMap<Integer, String> abilities) {
         HashMap<Integer, String> clonedAbilities = new HashMap<>();
@@ -116,27 +205,25 @@ public class SerenityPlayer {
         presets.remove(name);
     }
 
-    private HashMap<Integer, String> abilities;
-
     public HashMap<Integer, String> getAbilities() {
         return abilities;
     }
 
     public void setAbilities(HashMap<Integer, String> abilities) {
         this.abilities = abilities;
-        SerenityBoard.getByPlayer(player).setAllAbilitySlots(abilities);
+        SereneAbilitiesBoard.getByPlayer(player).setAllAbilitySlots(abilities);
     }
 
     public void setAbility(int slot, String ability) {
-        SerenityBoard.getByPlayer(player).setAbilitySlot(slot, ability);
+        SereneAbilitiesBoard.getByPlayer(player).setAbilitySlot(slot, ability);
         this.getAbilities().put(slot, ability);
     }
+
+//    private SereneAbilitiesPlayerEquipment serenityPlayerEquipment;
 
     public String getHeldAbility() {
         return getAbilities().get(player.getInventory().getHeldItemSlot() + 1);
     }
-
-    private String name;
 
     public String getName() {
         return name;
@@ -146,13 +233,23 @@ public class SerenityPlayer {
         this.name = name;
     }
 
-    private Archetype archetype;
-
     public Archetype getArchetype() {
         return archetype;
     }
 
-    public void createEquipment(){
+    public void setArchetype(Archetype archetype) {
+        if (this.archetype != archetype) {
+            for (int i = 1; i <= 9; i++) {
+                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
+                SereneAbilitiesBoard.getByPlayer(player).setAbilitySlot(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
+            }
+        }
+
+        this.archetype = archetype;
+        createEquipment();
+    }
+
+    public void createEquipment() {
         Set<Pair<EquipmentSlot, Material>> equipment = new HashSet<>();
         equipment.add(new Pair<>(EquipmentSlot.HEAD, Material.IRON_HELMET));
         equipment.add(new Pair<>(EquipmentSlot.CHEST, Material.IRON_CHESTPLATE));
@@ -162,20 +259,8 @@ public class SerenityPlayer {
 //        equipment.add(new Pair<>(EquipmentSlot.OFF_HAND, Material.SHIELD));
 
         equipment.forEach(equipmentSlotMaterialPair -> {
-            ItemStackUtils.createSerenityEquipment(player, equipmentSlotMaterialPair.getB(), archetype + " " +  equipmentSlotMaterialPair.getB().toString(), List.of("test"), archetype.getValue(), equipmentSlotMaterialPair.getA(), archetype.getTrim());
+            ItemStackUtils.createSereneAbilitiesEquipment(player, equipmentSlotMaterialPair.getB(), archetype + " " + equipmentSlotMaterialPair.getB().toString(), List.of("test"), archetype.getValue(), equipmentSlotMaterialPair.getA(), archetype.getTrim());
         });
-    }
-
-    public void setArchetype(Archetype archetype) {
-        if (this.archetype != archetype){
-            for (int i = 1; i <= 9; i++) {
-                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
-                SerenityBoard.getByPlayer(player).setAbilitySlot(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
-            }
-        }
-
-        this.archetype = archetype;
-        createEquipment();
     }
 
     public Player getPlayer() {
@@ -186,108 +271,6 @@ public class SerenityPlayer {
         this.player = player;
     }
 
-
-
-    private Player player;
-
-    private SerenityPlayerEquipment serenityPlayerEquipment;
-
-    public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player, HashMap<String, HashMap<Integer, String>> presets) {
-        this.name = name;
-        this.abilities = abilities;
-        this.archetype = archetype;
-        this.player = player;
-        this.presets = presets;
-        this.serenityPlayerEquipment = new SerenityPlayerEquipment(this, player);
-    }
-
-    public static void initialisePlayer(Player player) {
-        SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
-        SerenityBoard board = SerenityBoard.createScore(player, serenityPlayer);
-
-        board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
-        board.setAboveSlot(2, "Abilities:");
-        board.setBelowSlot(1, "Combos:");
-        int slot = 2;
-
-        for (String abil : AbilityDataManager.getArchetypeAbilities(serenityPlayer.getArchetype())) {
-            if (AbilityDataManager.getComboDataMap().containsKey(abil)) {
-                board.setBelowSlot(slot, abil);
-                slot++;
-            }
-        }
-        for (int i : serenityPlayer.getAbilities().keySet()) {
-            board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
-        }
-        initialiseAttributePlayer(player, serenityPlayer);
-//        serenityPlayer.createEquipment();
-    }
-
-    public static void initialiseAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
-        removeAttributePlayer(player, serenityPlayer);
-        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
-        {
-            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), "Serenity." + attribute.toString(), value,
-                    AttributeModifier.Operation.ADD_NUMBER);
-
-            player.getAttribute(attribute).addModifier(attributeModifier);
-        });
-    }
-
-    public static void removeAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
-        ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
-        {
-            player.getAttribute(attribute).getModifiers().forEach(attributeModifier -> {
-                player.getAttribute(attribute).removeModifier(attributeModifier);
-            });
-        });
-    }
-
-    public static void loadPlayer(UUID uuid, Player player) {
-        if (SERENITY_PLAYER_MAP.containsKey(uuid)) {
-            return;
-        }
-        HashMap<Integer, String> abilities = new HashMap<>();
-
-        if (Serenity.getRepository().get(uuid) == null) {
-            for (int i = 1; i <= 9; i++) {
-                abilities.put(i, ChatColor.DARK_GRAY + "=-=-Slot" + "_" + i + "-=-=");
-            }
-
-            SerenityPlayer serenityPlayer = new SerenityPlayer(player.getName(), abilities, Archetype.NONE, player, new HashMap<>());
-            getSerenityPlayerMap().put(uuid, serenityPlayer);
-            upsertPlayer(serenityPlayer);
-
-        } else {
-            Serenity.getRepository().getAsync(uuid).thenAsync((PlayerData) -> {
-                SerenityPlayer serenityPlayer = new SerenityPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype().toUpperCase()), player, PlayerData.getPresets());
-                getSerenityPlayerMap().put(uuid, serenityPlayer);
-            });
-        }
-    }
-
-    public static void removePlayerFromMap(Player player){
-        SERENITY_PLAYER_MAP.remove(player.getUniqueId());
-    }
-
-
-    public static void upsertPlayer(SerenityPlayer serenityPlayer) {
-
-        PlayerData playerData = new PlayerData();
-        playerData.setKey(serenityPlayer.getPlayer().getUniqueId());
-        playerData.setName(serenityPlayer.getName());
-
-        playerData.setAbilities(serenityPlayer.getAbilities());
-
-        playerData.setArchetype(serenityPlayer.getArchetype().toString());
-
-        playerData.setPresets(serenityPlayer.getPresets());
-        Serenity.getRepository().upsertAsync(playerData);
-    }
-
-
-    protected final Map<String, Long> cooldowns = new HashMap<>();
-
     public void removeOldCooldowns() {
         Iterator<Map.Entry<String, Long>> iterator = this.cooldowns.entrySet().iterator();
 
@@ -295,7 +278,7 @@ public class SerenityPlayer {
             while (iterator.hasNext()) {
                 Map.Entry<String, Long> entry = iterator.next();
                 if (System.currentTimeMillis() >= entry.getValue()) {
-                    SerenityBoard board = SerenityBoard.getByPlayer(player);
+                    SereneAbilitiesBoard board = SereneAbilitiesBoard.getByPlayer(player);
                     if (board == null) {
                         return;
                     }
@@ -322,7 +305,7 @@ public class SerenityPlayer {
         if (cooldown <= 0) {
             return;
         }
-        SerenityBoard board = SerenityBoard.getByPlayer(player);
+        SereneAbilitiesBoard board = SereneAbilitiesBoard.getByPlayer(player);
         if (board == null) {
             return;
         }

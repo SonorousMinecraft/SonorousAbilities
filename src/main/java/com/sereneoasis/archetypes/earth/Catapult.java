@@ -5,20 +5,11 @@ import com.sereneoasis.abilityuilities.blocks.RaiseBlockCircle;
 import com.sereneoasis.abilityuilities.velocity.Jump;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
-import com.sereneoasis.util.enhancedmethods.EnhancedDisplayBlocks;
-import com.sereneoasis.util.methods.AbilityUtils;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.temp.TempBlock;
-import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Catapult extends CoreAbility {
 
@@ -48,7 +39,7 @@ public class Catapult extends CoreAbility {
 
     @Override
     public void progress() throws ReflectiveOperationException {
-        if (jump.getAbilityStatus() == AbilityStatus.COMPLETE){
+        if (jump.getAbilityStatus() == AbilityStatus.COMPLETE) {
 
             if (!hasCooldownApplied) {
                 sPlayer.addCooldown(name, cooldown);
@@ -61,7 +52,7 @@ public class Catapult extends CoreAbility {
                 this.remove();
             }
             currentRadius += size;
-            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc,1, currentRadius, true);
+            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc, 1, currentRadius, true);
             quakes.add(shockwaveRing);
 
         }

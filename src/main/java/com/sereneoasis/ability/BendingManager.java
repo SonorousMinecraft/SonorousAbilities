@@ -1,6 +1,6 @@
 package com.sereneoasis.ability;
 
-import com.sereneoasis.SerenityPlayer;
+import com.sereneoasis.SereneAbilitiesPlayer;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.ability.superclasses.RedirectAbility;
 import com.sereneoasis.util.methods.RayTracing;
@@ -23,13 +23,7 @@ import java.util.stream.Stream;
 public class BendingManager implements Runnable {
 
     private static BendingManager instance;
-
-    public static BendingManager getInstance() {
-        return instance;
-    }
-
     private static Stream<Pair<CoreAbility, Stream<BoundingBox>>> redirectBoundingBoxes;
-
     private long time;
 
     public BendingManager() {
@@ -37,8 +31,12 @@ public class BendingManager implements Runnable {
 
     }
 
+    public static BendingManager getInstance() {
+        return instance;
+    }
+
     public void handleRedirections(Player player, ClickType clickType) {
-        SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
+        SereneAbilitiesPlayer serenityPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
         CoreAbility.getAllRedirectInstances()
                 .filter(coreAbilityStreamPair -> {
                     CoreAbility abil = coreAbilityStreamPair.getA();
@@ -52,10 +50,9 @@ public class BendingManager implements Runnable {
                     Stream<BoundingBox> boxes = coreAbilityStreamPair.getB();
                     double redirectRange = abil.getSourceRange();
                     boxes.forEach(boundingBox -> {
-                        if (player.getLocation().distanceSquared(boundingBox.getCenter().toLocation(player.getWorld())) < redirectRange * redirectRange)
-                        {
+                        if (player.getLocation().distanceSquared(boundingBox.getCenter().toLocation(player.getWorld())) < redirectRange * redirectRange) {
 
-                            if (RayTracing.playerLookingAt(player, boundingBox, redirectRange)){
+                            if (RayTracing.playerLookingAt(player, boundingBox, redirectRange)) {
                                 if (!redirectAbility.hasCustomRedirect()) {
                                     redirectAbility.setDir(player.getEyeLocation().getDirection());
                                 } else {
@@ -110,8 +107,8 @@ public class BendingManager implements Runnable {
     }
 
     public void handleCooldowns() {
-        for (Map.Entry<UUID, SerenityPlayer> entry : SerenityPlayer.getSerenityPlayerMap().entrySet()) {
-            SerenityPlayer sPlayer = entry.getValue();
+        for (Map.Entry<UUID, SereneAbilitiesPlayer> entry : SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().entrySet()) {
+            SereneAbilitiesPlayer sPlayer = entry.getValue();
 
             sPlayer.removeOldCooldowns();
         }

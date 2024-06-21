@@ -24,7 +24,8 @@ public class EarthQuake extends CoreAbility {
         if (shouldStart()) {
             abilityStatus = AbilityStatus.CHARGING;
             quakes = new ArrayList<>();
-            start();        }
+            start();
+        }
 
 
     }
@@ -54,7 +55,7 @@ public class EarthQuake extends CoreAbility {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
             currentRadius += size;
-            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc,3, currentRadius, true);
+            RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, loc, 3, currentRadius, true);
             quakes.add(shockwaveRing);
 
 
@@ -77,9 +78,8 @@ public class EarthQuake extends CoreAbility {
         }
     }
 
-    public void setCharged(){
-        if (this.abilityStatus == AbilityStatus.CHARGING)
-        {
+    public void setCharged() {
+        if (this.abilityStatus == AbilityStatus.CHARGING) {
             abilityStatus = AbilityStatus.CHARGED;
         }
     }

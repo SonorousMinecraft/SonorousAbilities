@@ -6,10 +6,7 @@ import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.ArchetypeVisuals;
 import com.sereneoasis.util.methods.Locations;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
-import java.util.stream.Collectors;
 
 public class SkyRipper extends CoreAbility {
 
@@ -48,11 +45,11 @@ public class SkyRipper extends CoreAbility {
             }
         }
 
-        if (abilityStatus == AbilityStatus.SHOT ) {
+        if (abilityStatus == AbilityStatus.SHOT) {
 //            blade.getLocs().stream().map(Location::getBlock).collect(Collectors.toSet())
 //                    .stream().filter(block -> !block.isPassable())
 //                    .forEach(block -> SkyUtils.lightningStrike(this,block.getLocation()));
-            if (blade.getAbilityStatus() == AbilityStatus.COMPLETE){
+            if (blade.getAbilityStatus() == AbilityStatus.COMPLETE) {
                 this.remove();
             }
         }

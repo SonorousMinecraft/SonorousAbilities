@@ -2,12 +2,11 @@ package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
-import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
-import com.sereneoasis.util.methods.*;
-import com.sereneoasis.util.temp.TempBlock;
+import com.sereneoasis.util.methods.AbilityDamage;
+import com.sereneoasis.util.methods.Blocks;
+import com.sereneoasis.util.methods.Locations;
+import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -15,26 +14,20 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BlockSweep extends CoreAbility {
 
     private final String name;
-
-    private Location origin, loc1, loc2;
-
-    private Vector dir1, dir2, dir;
-
-
     protected TempDisplayBlock glowingSource;
-
-    private Set<Location>oldLocs = new HashSet<>();
+    private Location origin, loc1, loc2;
+    private Vector dir1, dir2, dir;
+    private Set<Location> oldLocs = new HashSet<>();
 
     private Set<LivingEntity> damagedSet = new HashSet<>();
 
-    private Set<TempDisplayBlock>tempDisplayBlocks = new HashSet<>();
-
+    private Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
 
 
     public BlockSweep(Player player, String name, Color color) {
@@ -45,7 +38,7 @@ public class BlockSweep extends CoreAbility {
         abilityStatus = AbilityStatus.NO_SOURCE;
         Block source = Blocks.getFacingBlock(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
-            this.origin = Blocks.getFacingBlockLoc(player, sourceRange).subtract(0,size,0);
+            this.origin = Blocks.getFacingBlockLoc(player, sourceRange).subtract(0, size, 0);
 
             glowingSource = Blocks.selectSourceAnimationManual(origin, color, size);
 
@@ -63,12 +56,11 @@ public class BlockSweep extends CoreAbility {
             Set<Location> newLocs = new HashSet<>(oldLocs);
             oldLocs.forEach(location -> {
                 Location newLoc = Locations.getNextLoc(location, dir, speed);
-                if (newLoc != null)
-                {
+                if (newLoc != null) {
 
                     newLocs.add(newLoc);
                 }
-                    });
+            });
 
             loc1.add(dir.clone().multiply(speed).add(dir1));
             newLocs.add(loc1);
@@ -79,7 +71,7 @@ public class BlockSweep extends CoreAbility {
                     .filter(location -> !oldLocs.contains(location))
                     .map(Location::getBlock)
                     .forEach(block -> {
-                            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 500, 1);
+                        TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 500, 1);
 //                            tdb.getBlockDisplay().setGlowing(true);
                         tempDisplayBlocks.add(tdb);
 //                            tdb.moveToAndMaintainFacing(tdb.getLoc().add(0, 10, 0));
@@ -101,21 +93,19 @@ public class BlockSweep extends CoreAbility {
 //                    });
 
 
-
             if (origin.distance(Locations.getMidpoint(loc1, loc2)) > range) {
                 abilityStatus = AbilityStatus.COMPLETE;
             }
         }
     }
 
-    public Set<TempDisplayBlock>getTempDisplayBlocks(){
+    public Set<TempDisplayBlock> getTempDisplayBlocks() {
         return this.tempDisplayBlocks;
     }
 
 
-    public void setHasClicked(){
-        if (abilityStatus == AbilityStatus.SOURCE_SELECTED)
-        {
+    public void setHasClicked() {
+        if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
             abilityStatus = AbilityStatus.SHOT;
 
 //            this.loc1 = origin.clone().add(Vectors.getLeftSide(player, radius/2));
@@ -128,7 +118,7 @@ public class BlockSweep extends CoreAbility {
 
             this.dir = player.getEyeLocation().getDirection().setY(0).normalize();
 
-            oldLocs.add(origin.clone().add(0,size,0));
+            oldLocs.add(origin.clone().add(0, size, 0));
             glowingSource.revert();
         }
     }

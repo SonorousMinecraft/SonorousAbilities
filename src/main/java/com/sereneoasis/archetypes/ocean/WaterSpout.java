@@ -7,7 +7,6 @@ import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Locations;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.Set;
 
 public class WaterSpout extends MasterAbility {
     public static final String name = "WaterSpout";
@@ -31,9 +29,9 @@ public class WaterSpout extends MasterAbility {
     public WaterSpout(Player player) {
         super(player, name);
 
-        if (shouldStart()){
-            Block floor = Blocks.getFacingBlockOrLiquid(player.getEyeLocation(), new Vector(0,-1,0), range);
-            if (floor !=null && floor.getType().equals(Material.WATER)) {
+        if (shouldStart()) {
+            Block floor = Blocks.getFacingBlockOrLiquid(player.getEyeLocation(), new Vector(0, -1, 0), range);
+            if (floor != null && floor.getType().equals(Material.WATER)) {
                 isAllowedToFly = player.getAllowFlight();
                 sPlayer.setFly(this);
                 abilityStatus = AbilityStatus.MOVING;
@@ -50,36 +48,35 @@ public class WaterSpout extends MasterAbility {
             this.remove();
         }
 
-        switch (abilityStatus){
+        switch (abilityStatus) {
             case MOVING -> {
-                Block floor = Blocks.getFacingBlockOrLiquid(player.getEyeLocation(), new Vector(0,-1,0), range);
-                if (floor !=null && (floor.getType().equals(Material.WATER) || floor.getType().equals(Material.KELP_PLANT) || floor.getType().equals(Material.TALL_SEAGRASS) || floor.getType().equals(Material.SEAGRASS))){
+                Block floor = Blocks.getFacingBlockOrLiquid(player.getEyeLocation(), new Vector(0, -1, 0), range);
+                if (floor != null && (floor.getType().equals(Material.WATER) || floor.getType().equals(Material.KELP_PLANT) || floor.getType().equals(Material.TALL_SEAGRASS) || floor.getType().equals(Material.SEAGRASS))) {
                     double distance = player.getLocation().getBlockY() - floor.getY();
-                    List<Location> spoutLocs = Locations.getPointsAlongLine(player.getLocation(), player.getLocation().subtract(0, distance , 0), size/2);
+                    List<Location> spoutLocs = Locations.getPointsAlongLine(player.getLocation(), player.getLocation().subtract(0, distance, 0), size / 2);
 
 //                        Vector flyVelocity = Vectors.getDirectionBetweenLocations(previousSpoutFloor.getLocation(), floor.getLocation());
                     Vector flyVelocity = Vectors.getDirectionBetweenLocations(previousPlayerLoc, player.getLocation());
                     spoutLocs.stream()
-                                .map(location -> location.clone().subtract(flyVelocity.clone().multiply(Math.log(Math.max(1,player.getLocation().getY() - location.getY())))))
+                            .map(location -> location.clone().subtract(flyVelocity.clone().multiply(Math.log(Math.max(1, player.getLocation().getY() - location.getY())))))
                             .forEach(location -> new TempDisplayBlock(location, DisplayBlock.WATER, 100, size));
 
 
                     sinceLastSourced = System.currentTimeMillis();
 
-                    if (System.currentTimeMillis() - sinceLastSetPlayerLoc > intervalBetweenPlayerLocSet){
+                    if (System.currentTimeMillis() - sinceLastSetPlayerLoc > intervalBetweenPlayerLocSet) {
                         previousPlayerLoc = player.getLocation();
                         sinceLastSetPlayerLoc = System.currentTimeMillis();
                     }
 
-                }
-                else if (System.currentTimeMillis() - sinceLastSourced > 500) {
+                } else if (System.currentTimeMillis() - sinceLastSourced > 500) {
                     this.remove();
                 }
             }
         }
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         switch (abilityStatus) {
             case MOVING -> {
                 abilityStatus = AbilityStatus.NOT_MOVING;

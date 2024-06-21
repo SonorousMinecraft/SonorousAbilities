@@ -21,7 +21,6 @@ public class HeavenSlash extends CoreAbility {
         }
 
 
-
     }
 
     @Override

@@ -21,13 +21,7 @@ public class AbilityDataManager {
     private static final Map<String, AbilityData> abilityDataMap = new ConcurrentHashMap<>();
 
     private static final Map<String, ComboData> comboDataMap = new ConcurrentHashMap<>();
-
-    public static Map<String, ComboData> getComboDataMap() {
-        return comboDataMap;
-    }
-
     private FileConfiguration config;
-
 
     public AbilityDataManager() {
 
@@ -45,7 +39,7 @@ public class AbilityDataManager {
                 }
             }
         }
-        
+
         for (Archetype archetype : Archetype.values()) {
             config = ConfigManager.getConfig(archetype).getConfig();
 
@@ -69,6 +63,9 @@ public class AbilityDataManager {
         }
     }
 
+    public static Map<String, ComboData> getComboDataMap() {
+        return comboDataMap;
+    }
 
     public static AbilityData getAbilityData(String ability) {
         return abilityDataMap.get(ability);

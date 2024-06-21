@@ -3,7 +3,6 @@ package com.sereneoasis.abilityuilities.blocks;
 import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.archetypes.DisplayBlock;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.DamageHandler;
 import com.sereneoasis.util.methods.*;
 import com.sereneoasis.util.temp.TempDisplayBlock;
 import org.bukkit.Location;
@@ -45,7 +44,7 @@ public class BlockSmashSourced extends CoreAbility {
         super(player, name);
 
         this.name = name;
-        if (displayBlock != null){
+        if (displayBlock != null) {
             preselectedType = true;
         }
         this.displayBlock = displayBlock;
@@ -58,8 +57,7 @@ public class BlockSmashSourced extends CoreAbility {
             if (!preselectedType) {
                 type = source.getType();
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
-            }
-            else {
+            } else {
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
             }
             abilityStatus = AbilityStatus.SOURCE_SELECTED;
@@ -78,8 +76,7 @@ public class BlockSmashSourced extends CoreAbility {
                 loc.add(dir.clone().multiply(speed));
                 if (preselectedType) {
                     smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
-                }
-                else{
+                } else {
                     smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
                 }
             }
@@ -92,8 +89,7 @@ public class BlockSmashSourced extends CoreAbility {
             loc.add(dir.clone().multiply(speed));
             if (preselectedType) {
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), type, size);
-            }
-            else{
+            } else {
                 smash = Entities.handleDisplayBlockEntities(smash, Locations.getOutsideSphereLocs(loc, radius, size), displayBlock, size);
             }
             damagedSet.addAll(AbilityDamage.damageSeveralExceptReturnHit(loc, this, player, damagedSet, true, player.getEyeLocation().getDirection()));

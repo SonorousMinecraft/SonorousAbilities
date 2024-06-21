@@ -36,22 +36,13 @@ public class OctopusForm extends MasterAbility {
     private double previousYaw = player.getEyeLocation().getYaw(), previousPitch = player.getEyeLocation().getPitch();
 
 
-
     private OctopusFormState state = OctopusFormState.MOVING;
-
-    private enum OctopusFormState {
-        MOVING,
-        SHOOT_TENDRIL,
-        ICE_ATTACK,
-        GRAB,
-        GRAPPLE
-    }
 
     public OctopusForm(Player player) {
         super(player, name);
 
-        if (shouldStart()){
-            for (int i = 0; i < 16 ; i++) {
+        if (shouldStart()) {
+            for (int i = 0; i < 16; i++) {
                 Tendril tendril = new Tendril(player, name, sourceRange);
                 tendrils.put(tendril, getRandomOffset().normalize());
             }
@@ -60,8 +51,8 @@ public class OctopusForm extends MasterAbility {
         }
     }
 
-    private Vector getRandomOffset(){
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble(-5, 5)).add(new Vector(0, random.nextDouble(-2,2), 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
+    private Vector getRandomOffset() {
+        Vector randomiser = Vectors.getRightSide(player, random.nextDouble(-5, 5)).add(new Vector(0, random.nextDouble(-2, 2), 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
         return randomiser;
     }
 
@@ -70,29 +61,29 @@ public class OctopusForm extends MasterAbility {
 
 //        if (System.currentTimeMillis() - sinceLastMoved > 50) {
 //            sinceLastMoved = System.currentTimeMillis();
-            double currentYaw = player.getEyeLocation().getYaw();
-            double currentPitch = player.getEyeLocation().getPitch();
+        double currentYaw = player.getEyeLocation().getYaw();
+        double currentPitch = player.getEyeLocation().getPitch();
 
-            double yawDiff = currentYaw - previousYaw;
-            double pitchDiff = currentPitch - previousPitch;
-            tendrils.forEach((tendril, vector) -> {
+        double yawDiff = currentYaw - previousYaw;
+        double pitchDiff = currentPitch - previousPitch;
+        tendrils.forEach((tendril, vector) -> {
 
-                if (tendril.getAbilityStatus().equals(AbilityStatus.MOVING)) {
-                    vector.rotateAroundY(-Math.toRadians(yawDiff));
-                    vector.rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), -Math.toRadians(pitchDiff));
-                    vector.multiply(sourceRange).add(getRandomOffset()).normalize();
+            if (tendril.getAbilityStatus().equals(AbilityStatus.MOVING)) {
+                vector.rotateAroundY(-Math.toRadians(yawDiff));
+                vector.rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), -Math.toRadians(pitchDiff));
+                vector.multiply(sourceRange).add(getRandomOffset()).normalize();
 
-                    previousYaw = currentYaw;
-                    previousPitch = currentPitch;
-                    if (state == OctopusFormState.GRAB || state == OctopusFormState.GRAPPLE) {
-                        tendril.animateMovement(vector);
-                    } else if (state == OctopusFormState.ICE_ATTACK || state == OctopusFormState.SHOOT_TENDRIL){
-                        tendril.animateCurveTowardsPlayerDir(vector);
+                previousYaw = currentYaw;
+                previousPitch = currentPitch;
+                if (state == OctopusFormState.GRAB || state == OctopusFormState.GRAPPLE) {
+                    tendril.animateMovement(vector);
+                } else if (state == OctopusFormState.ICE_ATTACK || state == OctopusFormState.SHOOT_TENDRIL) {
+                    tendril.animateCurveTowardsPlayerDir(vector);
 
-                    }
                 }
+            }
 
-            });
+        });
 //        }
 
         switch (state) {
@@ -110,13 +101,13 @@ public class OctopusForm extends MasterAbility {
                         }
                     });
 
-                    if (potentialTendrilLocations.isEmpty()){
+                    if (potentialTendrilLocations.isEmpty()) {
                         setNotMoving();
                     } else {
                         setMoving();
                     }
                 }
-                    AbilityUtils.sendActionBar(player, "MOVING", ChatColor.BLUE);
+                AbilityUtils.sendActionBar(player, "MOVING", ChatColor.BLUE);
             }
             case GRAB -> {
                 AbilityUtils.sendActionBar(player, "GRAB", ChatColor.BLUE);
@@ -138,13 +129,12 @@ public class OctopusForm extends MasterAbility {
             }
         }
 
-        if (player.isSneaking()){
+        if (player.isSneaking()) {
             if (!hasBeenHoldingSneak) {
                 sinceLastHeldSneak = System.currentTimeMillis();
                 hasBeenHoldingSneak = true;
             }
         }
-
 
 
         if (tendrils.keySet().stream().allMatch(tendril -> tendril.getAbilityStatus() == AbilityStatus.COMPLETE)) {
@@ -155,18 +145,16 @@ public class OctopusForm extends MasterAbility {
         }
     }
 
-
-
-    private void setMoving(){
+    private void setMoving() {
         sPlayer.setFly(this);
     }
 
-    public void setNotMoving(){
+    public void setNotMoving() {
         sPlayer.removeFly(this);
     }
 
-    public void setHasClicked(){
-        if (player.isSneaking()){
+    public void setHasClicked() {
+        if (player.isSneaking()) {
             if (System.currentTimeMillis() - sinceLastHeldSneak > chargeTime) {
                 hasBeenHoldingSneak = false;
                 switch (state) {
@@ -180,14 +168,14 @@ public class OctopusForm extends MasterAbility {
                     }
                     case GRAPPLE -> {
                         state = OctopusFormState.ICE_ATTACK;
-                        tendrils.keySet().forEach(tendril ->tendril.setTendrilBlock(DisplayBlock.ICE) );
+                        tendrils.keySet().forEach(tendril -> tendril.setTendrilBlock(DisplayBlock.ICE));
                         tendrils.keySet().stream().filter(tendril -> tendril.getAbilityStatus() == AbilityStatus.GRAPPLE).forEach(Tendril::endGrapple);
 
                     }
 
                     case ICE_ATTACK -> {
                         state = OctopusFormState.SHOOT_TENDRIL;
-                        tendrils.keySet().forEach(tendril ->tendril.setTendrilBlock(DisplayBlock.WATER) );
+                        tendrils.keySet().forEach(tendril -> tendril.setTendrilBlock(DisplayBlock.WATER));
                     }
 
                     case SHOOT_TENDRIL -> {
@@ -201,8 +189,7 @@ public class OctopusForm extends MasterAbility {
                 case MOVING -> {
                 }
                 case GRAB -> {
-                    if (tendrils.keySet().stream().anyMatch(tendril -> tendril.getGrabTarget() != null))
-                    {
+                    if (tendrils.keySet().stream().anyMatch(tendril -> tendril.getGrabTarget() != null)) {
                         tendrils.keySet().stream().filter(tendril -> tendril.getGrabTarget() != null).findAny().ifPresent(tendril -> {
                             tendril.getGrabTarget().setVelocity(player.getEyeLocation().getDirection().multiply(speed * 2));
                             tendril.endGrab();
@@ -250,5 +237,13 @@ public class OctopusForm extends MasterAbility {
     @Override
     public String getName() {
         return name;
+    }
+
+    private enum OctopusFormState {
+        MOVING,
+        SHOOT_TENDRIL,
+        ICE_ATTACK,
+        GRAB,
+        GRAPPLE
     }
 }

@@ -4,8 +4,6 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.particles.DirectionalStream;
 import com.sereneoasis.abilityuilities.velocity.Jet;
 import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.methods.ArchetypeVisuals;
-import com.sereneoasis.util.methods.Vectors;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -23,7 +21,7 @@ public class Nimbus extends CoreAbility {
     public Nimbus(Player player) {
         super(player, name);
 
-        if (shouldStart()){
+        if (shouldStart()) {
             jet = new Jet(player, name);
             streamDir = player.getEyeLocation().getDirection().multiply(-1);
             directionalStream = new DirectionalStream(player, name, Particle.ELECTRIC_SPARK, streamDir);
@@ -57,7 +55,7 @@ public class Nimbus extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    public void setHasClicked(){
+    public void setHasClicked() {
         if (player.isSneaking()) {
             this.remove();
         }

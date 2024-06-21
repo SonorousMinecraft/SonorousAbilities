@@ -1,7 +1,6 @@
 package com.sereneoasis.archetypes.ocean;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-
 import com.sereneoasis.abilityuilities.blocks.forcetype.BlockRingAroundPlayerGivenType;
 import com.sereneoasis.abilityuilities.blocks.forcetype.ShootBlocksFromLocGivenType;
 import com.sereneoasis.abilityuilities.blocks.forcetype.SourceBlockToPlayerGivenType;
@@ -85,7 +84,7 @@ public class Gimbal extends CoreAbility {
 
             if (!hasShot1) {
                 hasShot1 = true;
-                shootBlocksFromLocGivenType1 = new ShootBlocksFromLocGivenType(player, name,player.getEyeLocation(), DisplayBlock.WATER, true, false);
+                shootBlocksFromLocGivenType1 = new ShootBlocksFromLocGivenType(player, name, player.getEyeLocation(), DisplayBlock.WATER, true, false);
                 blockRingAroundPlayerGivenType1.remove();
             } else {
                 if (!hasShot2) {

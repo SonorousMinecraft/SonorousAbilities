@@ -13,8 +13,8 @@ import org.bukkit.util.Vector;
  */
 public class Vectors {
 
-    public static Vector getRandom(){
-        return Vector.getRandom().subtract(new Vector(0.5,0.5,0.5)).normalize();
+    public static Vector getRandom() {
+        return Vector.getRandom().subtract(new Vector(0.5, 0.5, 0.5)).normalize();
     }
 
     public static Vector getDirectionBetweenLocations(Location start, Location end) {
@@ -75,71 +75,70 @@ public class Vectors {
         return rotate.multiply(Math.cos(angle)).add(thirdaxis.multiply(Math.sin(angle)));
     }
 
-    public static Vector getVectorToMainHand(Player player){
+    public static Vector getVectorToMainHand(Player player) {
         double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
-        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getMainHandLocation(player));
+        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0, y, 0), Locations.getMainHandLocation(player));
     }
 
 
-
-    public static Vector getVectorToOffHand(Player player){
+    public static Vector getVectorToOffHand(Player player) {
         double y = 1.2 - (player.isSneaking() ? 0.4 : 0);
-        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0,y,0), Locations.getOffHandLocation(player));
+        return Vectors.getDirectionBetweenLocations(player.getLocation().add(0, y, 0), Locations.getOffHandLocation(player));
     }
 
-    public static Vector getLeftSideNormalisedVector(Player player){
+    public static Vector getLeftSideNormalisedVector(Player player) {
         return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getLeftSide(player.getEyeLocation(), 1));
     }
 
-    public static Vector getRightSideNormalisedVector(Player player){
+    public static Vector getRightSideNormalisedVector(Player player) {
         return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getRightSide(player.getEyeLocation(), 1));
     }
 
-    public static Vector getLeftSide(Player player,  double length){
+    public static Vector getLeftSide(Player player, double length) {
         return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getLeftSide(player.getEyeLocation(), length));
     }
 
-    public static Vector getRightSide(Player player,  double length){
+    public static Vector getRightSide(Player player, double length) {
         return Vectors.getDirectionBetweenLocations(player.getEyeLocation(), Locations.getRightSide(player.getEyeLocation(), length));
     }
 
-    public static Vector getUp(Location loc, double length){
-        return new Vector(0,1,0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(loc), - Math.toRadians(loc.getPitch())).normalize().multiply(length);
+    public static Vector getUp(Location loc, double length) {
+        return new Vector(0, 1, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(loc), -Math.toRadians(loc.getPitch())).normalize().multiply(length);
     }
 
-    public static Vector getDown(Location loc,  double length){
-        return new Vector(0,-1,0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(loc), - Math.toRadians(loc.getPitch())).normalize().multiply(length);
+    public static Vector getDown(Location loc, double length) {
+        return new Vector(0, -1, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(loc), -Math.toRadians(loc.getPitch())).normalize().multiply(length);
     }
 
-    public static Vector getLeftSideNormalisedVector(Location loc){
+    public static Vector getLeftSideNormalisedVector(Location loc) {
         return Vectors.getDirectionBetweenLocations(loc, Locations.getLeftSide(loc, 1));
     }
 
-    public static Vector getRightSideNormalisedVector(Location loc){
+    public static Vector getRightSideNormalisedVector(Location loc) {
         return Vectors.getDirectionBetweenLocations(loc, Locations.getRightSide(loc, 1));
     }
 
     public static Vec3 getVec3FromVector(Vector vector) {
         return new Vec3(vector.getX(), vector.getY(), vector.getZ());
     }
-    
-    public static double getPitchDiff(Vector previousVec, Vector newVec, Player player){
+
+    public static double getPitchDiff(Vector previousVec, Vector newVec, Player player) {
         return Math.toRadians(player.getLocation().setDirection(newVec).getPitch() - player.getLocation().setDirection(previousVec).getPitch());
     }
-    
-    public static double getYawDiff(Vector previousVec, Vector newVec, Player player){
+
+    public static double getYawDiff(Vector previousVec, Vector newVec, Player player) {
         return Math.toRadians(player.getLocation().setDirection(newVec).getYaw() - player.getLocation().setDirection(previousVec).getYaw());
     }
 
-    public static float getYaw(Vector vec, Player player){
+    public static float getYaw(Vector vec, Player player) {
         return player.getLocation().setDirection(vec).getYaw();
     }
 
-    public static float getPitch(Vector vec, Player player){
+    public static float getPitch(Vector vec, Player player) {
         return player.getLocation().setDirection(vec).getPitch();
     }
 
-    public static Vector getBounce(Vector dir, Vector normal){
+    public static Vector getBounce(Vector dir, Vector normal) {
         double dotProduct = normal.dot(dir);
         return normal.clone().subtract(dir.clone()).multiply(-2 * dotProduct).normalize().multiply(dir.length());
     }

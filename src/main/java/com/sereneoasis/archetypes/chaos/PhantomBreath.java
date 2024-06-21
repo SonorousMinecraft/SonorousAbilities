@@ -7,7 +7,6 @@ import com.sereneoasis.abilityuilities.particles.Breath;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -28,14 +27,14 @@ public class PhantomBreath extends MasterAbility {
     private Random random = new Random();
 
     private int currentShots = 0, shots = 100;
+
     public PhantomBreath(Player player) {
         super(player, name);
 
-        if (shouldStart())
-        {
+        if (shouldStart()) {
             Breath breath = new Breath(player, name, Particle.SCULK_SOUL);
             helpers.put(breath, (abilityStatus) -> {
-                switch (abilityStatus){
+                switch (abilityStatus) {
                     case SHOT -> {
                         if (breath.getAbilityStatus() == AbilityStatus.COMPLETE) {
                             breath.remove();
@@ -65,7 +64,7 @@ public class PhantomBreath extends MasterAbility {
     @Override
     public void progress() throws ReflectiveOperationException {
         iterateHelpers(abilityStatus);
-        if (currentShots == shots || !player.isSneaking()){
+        if (currentShots == shots || !player.isSneaking()) {
             iterateHelpers(AbilityStatus.COMPLETE);
             this.remove();
         }
@@ -76,17 +75,17 @@ public class PhantomBreath extends MasterAbility {
             abilityStatus = AbilityStatus.SOURCING;
 
             sourceBlocks.forEach(block -> {
-                SourceBlockToPlayer sourceBlockToPlayer = new SourceBlockToPlayer(player, name, 4, 1, block );
+                SourceBlockToPlayer sourceBlockToPlayer = new SourceBlockToPlayer(player, name, 4, 1, block);
                 sourceBlockToPlayer.setAbilityStatus(AbilityStatus.SOURCING);
 
                 helpers.put(sourceBlockToPlayer, (abilityStatus) -> {
-                    switch (abilityStatus){
+                    switch (abilityStatus) {
                         case SOURCING -> {
                             if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED) {
-                                if (currentShots < shots && random.nextDouble() < (double) (shots - currentShots) /(shots) ) {
-                                    Vector randomiser = Vectors.getRightSide(player, random.nextDouble()-0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
+                                if (currentShots < shots && random.nextDouble() < (double) (shots - currentShots) / (shots)) {
+                                    Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
                                     ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, player.getEyeLocation().add(randomiser.multiply(range)), Material.BLACK_CONCRETE, true, true);
-                                    shootBlockFromLoc.setRange(range*4);
+                                    shootBlockFromLoc.setRange(range * 4);
                                     shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);
                                     currentShots++;
                                 }
@@ -98,8 +97,8 @@ public class PhantomBreath extends MasterAbility {
                         }
                     }
                 });
-                    TempBlock tb = new TempBlock(block, Material.AIR, duration);
-                    sourceTempBlocks.add(tb);
+                TempBlock tb = new TempBlock(block, Material.AIR, duration);
+                sourceTempBlocks.add(tb);
 
             });
 

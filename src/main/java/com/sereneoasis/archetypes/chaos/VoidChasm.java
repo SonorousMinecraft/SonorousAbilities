@@ -1,6 +1,6 @@
 //package com.sereneoasis.archetypes.chaos;
 //
-//import com.sereneoasis.Serenity;
+//import com.sereneoasis.SereneAbilities;
 //import com.sereneoasis.ability.superclasses.MasterAbility;
 //import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphere;
 //import com.sereneoasis.abilityuilities.blocks.BlockDisintegrateSphereSuck;
@@ -98,7 +98,7 @@
 //                    Block b = (Block) outerArray[new Random().nextInt(outer.size())];
 //                    try {
 //                        Laser.CrystalLaser crystalLaser = new Laser.CrystalLaser(b.getLocation(), player.getLocation().subtract(0,1,0), -1, (int) b.getLocation().distance(player.getLocation().subtract(0,1,0)));
-//                        crystalLaser.start(Serenity.getPlugin());
+//                        crystalLaser.start(SereneAbilities.getPlugin());
 //
 //                        crystalLasers.put(crystalLaser, b);
 //                    } catch (ReflectiveOperationException e) {

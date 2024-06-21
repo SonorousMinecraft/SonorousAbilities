@@ -1,26 +1,18 @@
 package com.sereneoasis.abilityuilities.blocks;
 
 import com.sereneoasis.ability.superclasses.CoreAbility;
-import com.sereneoasis.abilityuilities.blocks.SourceBlockToLoc;
-import com.sereneoasis.util.AbilityStatus;
-import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocksArchetypeLess;
-import com.sereneoasis.util.methods.Blocks;
 import com.sereneoasis.util.methods.Constants;
-import com.sereneoasis.util.methods.Particles;
 import com.sereneoasis.util.methods.Vectors;
 import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -73,16 +65,15 @@ public class BlockExplodeSphere extends CoreAbility {
         Set<Block> sourceBlocks = EnhancedBlocksArchetypeLess.getOutsideSphereBlocks(this, centerLoc);
 
         for (Block b : sourceBlocks) {
-            if (b != null && !b.isPassable() ) {
+            if (b != null && !b.isPassable()) {
 
 
                 TempDisplayBlock tdb = new TempDisplayBlock(b, b.getType(), 60000, 1);
-                Vector offset = Vectors.getDirectionBetweenLocations(centerLoc, b.getLocation()).add(new Vector(0,radius,0)).normalize();
+                Vector offset = Vectors.getDirectionBetweenLocations(centerLoc, b.getLocation()).add(new Vector(0, radius, 0)).normalize();
                 displayBlocks.put(tdb, offset);
 
 
-
-                    TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000);
+                TempBlock tb = new TempBlock(b.getLocation().getBlock(), Material.AIR, 60000);
 
 
 //                sourceTempBlocks.add(tb);
@@ -91,12 +82,11 @@ public class BlockExplodeSphere extends CoreAbility {
 
         displayBlocks.forEach((tempDisplayBlock, vector) -> {
             tempDisplayBlock.moveTo(tempDisplayBlock.getLoc().clone().add(vector.clone().normalize()));
-            vector.subtract(new Vector(0, Constants.GRAVITY,0));
+            vector.subtract(new Vector(0, Constants.GRAVITY, 0));
         });
 
 
-
-        if (radius-increment <= 0) {
+        if (radius - increment <= 0) {
             this.remove();
         }
     }
@@ -108,6 +98,7 @@ public class BlockExplodeSphere extends CoreAbility {
 
 
     }
+
     @Override
     public String getName() {
         return name;

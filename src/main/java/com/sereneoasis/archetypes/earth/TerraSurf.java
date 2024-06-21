@@ -4,18 +4,12 @@ import com.sereneoasis.ability.superclasses.CoreAbility;
 import com.sereneoasis.abilityuilities.velocity.Skate;
 import com.sereneoasis.util.AbilityStatus;
 import com.sereneoasis.util.enhancedmethods.EnhancedBlocks;
-import com.sereneoasis.util.methods.Entities;
-import com.sereneoasis.util.methods.Locations;
-import com.sereneoasis.util.temp.TempBlock;
 import com.sereneoasis.util.temp.TempDisplayBlock;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class TerraSurf extends CoreAbility {
 
@@ -59,13 +53,13 @@ public class TerraSurf extends CoreAbility {
 //        });
 
         EnhancedBlocks.getFacingSphereBlocks(this, player.getEyeLocation().subtract(dir.clone().multiply(speed * 2)).subtract(0, 4, 0)).forEach(block -> {
-                TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 200, 1);
-                tdb.moveToAndMaintainFacing(tdb.getLoc().add(0,0.5,0));
+            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 200, 1);
+            tdb.moveToAndMaintainFacing(tdb.getLoc().add(0, 0.5, 0));
 
 
         });
 
-        if (skate.getFloorBlock() != null){
+        if (skate.getFloorBlock() != null) {
             type = skate.getFloorBlock().getType();
         }
 
