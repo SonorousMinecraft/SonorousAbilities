@@ -268,9 +268,9 @@ public class ConfigManager {
                 5000, 30000, 60000,
                 0, 0, 0, 0, 1, 0, 0);
 
-        saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "Left click to create a sphere of darkness \n which you can rip the walls out from to launch at entities",
-                0, 30000, 30000,
-                2, 0.5, 20, 20, 1, 0, 1.0);
+//        saveConfigValuesAbility(chaos, "VoidChasm", CHAOS.toString(), "description", "Left click to create a sphere of darkness \n which you can rip the walls out from to launch at entities",
+//                0, 30000, 30000,
+//                2, 0.5, 20, 20, 1, 0, 1.0);
 
         saveConfigValuesAbility(chaos, "SoulSlash", CHAOS.toString(), "description", "Left click to create a blade which cuts through terrain \n and causes blocks to circle you, hold sneak to fire the blocks",
                 0, 3000, 0,

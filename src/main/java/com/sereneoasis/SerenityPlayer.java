@@ -6,13 +6,18 @@ import com.sereneoasis.archetypes.Archetype;
 import com.sereneoasis.archetypes.data.ArchetypeDataManager;
 import com.sereneoasis.displays.SerenityBoard;
 import com.sereneoasis.storage.PlayerData;
+import com.sereneoasis.util.SerenityPlayerEquipment;
+import com.sereneoasis.util.equipment.ItemStackUtils;
 import com.sereneoasis.util.methods.Colors;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
+import oshi.util.tuples.Pair;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,6 +31,22 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SerenityPlayer {
 
     private static final Map<UUID, SerenityPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
+
+    private boolean isOn = false;
+
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public void setOn(boolean on) {
+        if (on){
+            serenityPlayerEquipment.switchToSerenity();
+        } else {
+            serenityPlayerEquipment.switchToNormal();
+        }
+        isOn = on;
+    }
+
 
     public static Map<UUID, SerenityPlayer> getSerenityPlayerMap() {
         return SERENITY_PLAYER_MAP;
@@ -131,6 +152,20 @@ public class SerenityPlayer {
         return archetype;
     }
 
+    public void createEquipment(){
+        Set<Pair<EquipmentSlot, Material>> equipment = new HashSet<>();
+        equipment.add(new Pair<>(EquipmentSlot.HEAD, Material.IRON_HELMET));
+        equipment.add(new Pair<>(EquipmentSlot.CHEST, Material.IRON_CHESTPLATE));
+        equipment.add(new Pair<>(EquipmentSlot.LEGS, Material.IRON_LEGGINGS));
+        equipment.add(new Pair<>(EquipmentSlot.FEET, Material.IRON_BOOTS));
+        equipment.add(new Pair<>(EquipmentSlot.HAND, Material.IRON_SWORD));
+//        equipment.add(new Pair<>(EquipmentSlot.OFF_HAND, Material.SHIELD));
+
+        equipment.forEach(equipmentSlotMaterialPair -> {
+            ItemStackUtils.createSerenityEquipment(player, equipmentSlotMaterialPair.getB(), archetype + " " +  equipmentSlotMaterialPair.getB().toString(), List.of("test"), archetype.getValue(), equipmentSlotMaterialPair.getA(), archetype.getTrim());
+        });
+    }
+
     public void setArchetype(Archetype archetype) {
         if (this.archetype != archetype){
             for (int i = 1; i <= 9; i++) {
@@ -140,6 +175,7 @@ public class SerenityPlayer {
         }
 
         this.archetype = archetype;
+        createEquipment();
     }
 
     public Player getPlayer() {
@@ -151,7 +187,10 @@ public class SerenityPlayer {
     }
 
 
+
     private Player player;
+
+    private SerenityPlayerEquipment serenityPlayerEquipment;
 
     public SerenityPlayer(String name, HashMap<Integer, String> abilities, Archetype archetype, Player player, HashMap<String, HashMap<Integer, String>> presets) {
         this.name = name;
@@ -159,11 +198,13 @@ public class SerenityPlayer {
         this.archetype = archetype;
         this.player = player;
         this.presets = presets;
+        this.serenityPlayerEquipment = new SerenityPlayerEquipment(this, player);
     }
 
     public static void initialisePlayer(Player player) {
         SerenityPlayer serenityPlayer = SerenityPlayer.getSerenityPlayer(player);
         SerenityBoard board = SerenityBoard.createScore(player, serenityPlayer);
+
         board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
         board.setAboveSlot(2, "Abilities:");
         board.setBelowSlot(1, "Combos:");
@@ -179,6 +220,7 @@ public class SerenityPlayer {
             board.setAbilitySlot(i, serenityPlayer.getAbilities().get(i));
         }
         initialiseAttributePlayer(player, serenityPlayer);
+//        serenityPlayer.createEquipment();
     }
 
     public static void initialiseAttributePlayer(Player player, SerenityPlayer serenityPlayer) {
@@ -249,27 +291,29 @@ public class SerenityPlayer {
     public void removeOldCooldowns() {
         Iterator<Map.Entry<String, Long>> iterator = this.cooldowns.entrySet().iterator();
 
-        while (iterator.hasNext()) {
-            Map.Entry<String, Long> entry = iterator.next();
-            if (System.currentTimeMillis() >= entry.getValue()) {
-                SerenityBoard board = SerenityBoard.getByPlayer(player);
-                if (board == null) {
-                    return;
-                }
-                String ability = entry.getKey();
-
-                for (int i = 2; i <= 5; i++) {
-                    if (ChatColor.stripColor(board.getBelowComboSlot(i)).equalsIgnoreCase(ability)) {
-                        board.setBelowSlot(i, ability);
+        if (isOn) {
+            while (iterator.hasNext()) {
+                Map.Entry<String, Long> entry = iterator.next();
+                if (System.currentTimeMillis() >= entry.getValue()) {
+                    SerenityBoard board = SerenityBoard.getByPlayer(player);
+                    if (board == null) {
+                        return;
                     }
-                }
+                    String ability = entry.getKey();
 
-                for (int i = 1; i <= 9; i++) {
-                    if (abilities.get(i).equals(ability)) {
-                        board.setAbilitySlot(i, ability);
+                    for (int i = 2; i <= 5; i++) {
+                        if (ChatColor.stripColor(board.getBelowComboSlot(i)).equalsIgnoreCase(ability)) {
+                            board.setBelowSlot(i, ability);
+                        }
                     }
+
+                    for (int i = 1; i <= 9; i++) {
+                        if (abilities.get(i).equals(ability)) {
+                            board.setAbilitySlot(i, ability);
+                        }
+                    }
+                    iterator.remove();
                 }
-                iterator.remove();
             }
         }
     }
