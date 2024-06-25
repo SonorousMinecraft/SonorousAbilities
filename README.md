@@ -6,7 +6,7 @@ It contains ground-breaking features for Minecraft that really push the limits o
 In short, players can join a server and select an archetype (my chosen word for their class), and view a list of abilities using commands.
 Players can then bind abilities to their hotbar slots which can have extremely complicated functionality - the sky really is the limit.
 
-## Examples of how I have used it (These are still in development)
+## Video examples (These are still in development)
 
 [![Sun Archetype](http://img.youtube.com/vi/4Hu9mVgaE3o/0.jpg)](http://www.youtube.com/watch?v=4Hu9mVgaE3o "Sun Showcase")
 
