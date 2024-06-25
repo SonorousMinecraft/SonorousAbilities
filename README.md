@@ -7,9 +7,18 @@ In short, players can join a server and select an archetype (my chosen word for 
 Players can then bind abilities to their hotbar slots which can have extremely complicated functionality - the sky really is the limit.
 
 ## Examples of how I have used it (These are still in development)
-[Sun Archetype](https://www.youtube.com/watch?v=aD2KAmf4mvc)
 
-[Chaos Archetype](https://www.youtube.com/watch?v=9eR5o-34O9U)
+[![Sun Archetype](http://img.youtube.com/vi/4Hu9mVgaE3o/0.jpg)](http://www.youtube.com/watch?v=4Hu9mVgaE3o "Sun Showcase")
+
+[![Ocean Archetype](http://img.youtube.com/vi/VmwyGPwsBB8/0.jpg)](http://www.youtube.com/watch?v=VmwyGPwsBB8 "Ocean Showcase")
+
+[![Chaos Archetype](http://img.youtube.com/vi/lKpeZGzrS1M/0.jpg)](http://www.youtube.com/watch?v=lKpeZGzrS1M "Chaos Showcase")
+
+[![Earth Archetype](http://img.youtube.com/vi/EdgEjp3V6v0/0.jpg)](http://www.youtube.com/watch?v=EdgEjp3V6v0 "Earth Showcase")
+
+[![Sky Archetype](http://img.youtube.com/vi/UFL23zGe_1A/0.jpg)](http://www.youtube.com/watch?v=UFL23zGe_1A "Sky Showcase")
+
+### Some cool pictures
 
 ![Screenshot_20240622_174502](https://github.com/Sujan-Naik/MinecraftAbilities/assets/125016948/9da84abc-bb06-45cb-835b-cd96b20329a8)
 ![Screenshot_20240622_172808](https://github.com/Sujan-Naik/MinecraftAbilities/assets/125016948/6283c4cb-c396-42f5-8631-4feb66ace923)
