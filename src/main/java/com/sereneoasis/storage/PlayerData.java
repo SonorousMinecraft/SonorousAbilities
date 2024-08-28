@@ -13,7 +13,7 @@ import java.util.UUID;
  * Used by NDatabase API to represent players data within the database
  */
 @NTable(name = "player_data", schema = "", catalog = "")
-public class PlayerData extends NEntity<UUID> {
+public class PlayerData extends NEntity<String> {
 
     @JsonProperty("name")
     private String name;

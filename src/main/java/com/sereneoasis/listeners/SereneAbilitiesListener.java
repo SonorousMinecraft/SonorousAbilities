@@ -42,7 +42,7 @@ public class SereneAbilitiesListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
 
         Player player = e.getPlayer();
-        SereneAbilitiesPlayer.loadPlayer(player.getUniqueId(), player);
+        SereneAbilitiesPlayer.loadPlayer(player.getUniqueId().toString(), player);
 
         Bukkit.getScheduler().runTaskLater(SereneAbilities.getPlugin(), () -> {
             SereneAbilitiesPlayer.initialisePlayer(player);

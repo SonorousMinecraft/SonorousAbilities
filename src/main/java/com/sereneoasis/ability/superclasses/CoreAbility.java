@@ -41,7 +41,7 @@ public abstract class CoreAbility implements Ability {
     public CoreAbility(final Player player, String name) {
 
         this.player = player;
-        this.sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().get(player.getUniqueId());
+        this.sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().get(player.getUniqueId().toString());
 
 
         initialiseConfigVariables(AbilityDataManager.getAbilityData(name));

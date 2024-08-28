@@ -25,7 +25,7 @@ public class SereneAbilities extends JavaPlugin {
 
     private static SereneAbilities plugin;
     private static Logger log;
-    private static Repository<UUID, PlayerData> repository;
+    private static Repository<String, PlayerData> repository;
     private static AbilityDataManager abilityDataManager;
     private static ArchetypeDataManager archetypeDataManager;
     private static ScoreboardManager scoreBoardManager;
@@ -38,7 +38,7 @@ public class SereneAbilities extends JavaPlugin {
         return plugin;
     }
 
-    public static Repository<UUID, PlayerData> getRepository() {
+    public static Repository<String, PlayerData> getRepository() {
         return repository;
     }
 
