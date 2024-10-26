@@ -107,7 +107,7 @@ public class BendingManager implements Runnable {
     }
 
     public void handleCooldowns() {
-        for (Map.Entry<UUID, SereneAbilitiesPlayer> entry : SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().entrySet()) {
+        for (Map.Entry<String, SereneAbilitiesPlayer> entry : SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().entrySet()) {
             SereneAbilitiesPlayer sPlayer = entry.getValue();
 
             sPlayer.removeOldCooldowns();

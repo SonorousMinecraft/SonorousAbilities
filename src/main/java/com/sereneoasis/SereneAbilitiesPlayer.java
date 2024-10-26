@@ -9,6 +9,7 @@ import com.sereneoasis.storage.PlayerData;
 import com.sereneoasis.util.equipment.ItemStackUtils;
 import com.sereneoasis.util.methods.Colors;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -28,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SereneAbilitiesPlayer {
 
-    private static final Map<UUID, SereneAbilitiesPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, SereneAbilitiesPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
     protected final Map<String, Long> cooldowns = new HashMap<>();
     private boolean isOn = false;
     private HashMap<String, HashMap<Integer, String>> presets;
@@ -47,16 +48,17 @@ public class SereneAbilitiesPlayer {
 //        this.serenityPlayerEquipment = new SereneAbilitiesPlayerEquipment(this, player);
     }
 
-    public static Map<UUID, SereneAbilitiesPlayer> getSereneAbilitiesPlayerMap() {
+    public static Map<String, SereneAbilitiesPlayer> getSereneAbilitiesPlayerMap() {
         return SERENITY_PLAYER_MAP;
     }
 
     public static SereneAbilitiesPlayer getSereneAbilitiesPlayer(Player player) {
-        return SERENITY_PLAYER_MAP.get(player.getUniqueId());
+        return SERENITY_PLAYER_MAP.get(player.getUniqueId().toString());
     }
 
     public static void initialisePlayer(Player player) {
         SereneAbilitiesPlayer serenityPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+
         SereneAbilitiesBoard board = SereneAbilitiesBoard.createScore(player, serenityPlayer);
 
         board.setAboveSlot(1, serenityPlayer.getArchetype().toString());
@@ -97,8 +99,9 @@ public class SereneAbilitiesPlayer {
         });
     }
 
-    public static void loadPlayer(UUID uuid, Player player) {
-        if (SERENITY_PLAYER_MAP.containsKey(uuid)) {
+    public static void loadPlayer(String uuid, Player player) {
+        if (SERENITY_PLAYER_MAP.keySet().stream().anyMatch(s -> s.equals(uuid))) {
+            SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player).setPlayer(player);
             return;
         }
         HashMap<Integer, String> abilities = new HashMap<>();
@@ -127,7 +130,7 @@ public class SereneAbilitiesPlayer {
     public static void upsertPlayer(SereneAbilitiesPlayer serenityPlayer) {
 
         PlayerData playerData = new PlayerData();
-        playerData.setKey(serenityPlayer.getPlayer().getUniqueId());
+        playerData.setKey(serenityPlayer.getPlayer().getUniqueId().toString());
         playerData.setName(serenityPlayer.getName());
 
         playerData.setAbilities(serenityPlayer.getAbilities());
@@ -222,6 +225,7 @@ public class SereneAbilitiesPlayer {
 //    private SereneAbilitiesPlayerEquipment serenityPlayerEquipment;
 
     public String getHeldAbility() {
+
         return getAbilities().get(player.getInventory().getHeldItemSlot() + 1);
     }
 
