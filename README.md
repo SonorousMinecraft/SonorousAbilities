@@ -1,4 +1,4 @@
-# SereneAbilities (For paper 1.20.4)
+# SereneAbilities 
 This is an ability plugin I have been developing for my Minecraft server.
 
 It contains ground-breaking features for Minecraft that really push the limits of what is possible server-side.
