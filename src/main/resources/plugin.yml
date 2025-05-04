@@ -1,12 +1,12 @@
-main: com.sereneoasis.SereneAbilities
-name: SereneAbilities
-author: Sakrajin
+main: com.sonorous.SonorousAbilities
+name: SonorousAbilities
+author: SonorousMC
 version: 1.0.0
 api-version: '1.20'
 depend: [ NDatabase, WorldGuard ]
 commands:
-  serenity:
+  sonorous:
     description: Your description
     usage: /<command>
-    permission: serenity.command
+    permission: sonorous.command
     aliases: [ s, so ]

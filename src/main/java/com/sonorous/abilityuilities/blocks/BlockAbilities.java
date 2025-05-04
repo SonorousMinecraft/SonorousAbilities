@@ -1,0 +1,97 @@
+package com.sonorous.abilityuilities.blocks;
+
+import com.sonorous.ability.superclasses.MasterAbility;
+import com.sonorous.util.AbilityStatus;
+import com.sonorous.util.methods.Blocks;
+import com.sonorous.util.methods.Constants;
+import com.sonorous.util.methods.Vectors;
+import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
+import org.bukkit.util.Vector;
+
+public class BlockAbilities {
+
+    public static void handleRaiseBlock(MasterAbility masterAbility, RaiseBlock raiseBlock) {
+        masterAbility.getHelpers().put(raiseBlock, status -> {
+            switch (status) {
+                case SOURCE_SELECTED -> {
+                    if (raiseBlock.getAbilityStatus() == AbilityStatus.SOURCED) {
+                        masterAbility.setAbilityStatus(AbilityStatus.SOURCED);
+                        raiseBlock.fall();
+                    }
+                }
+                case SOURCED -> {
+                    if (raiseBlock.getAbilityStatus() == AbilityStatus.COMPLETE) {
+                        raiseBlock.remove();
+                    }
+                }
+                case SHOT -> {
+                    raiseBlock.remove();
+                }
+            }
+        });
+    }
+
+    public static void handleBouncingShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc) {
+        masterAbility.getHelpers().put(shootBlockFromLoc, status -> {
+            switch (status) {
+                case SHOT -> {
+                    shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
+                    Vector dir = shootBlockFromLoc.getDir().clone();
+                    double y = dir.getY();
+                    y -= Constants.GRAVITY;
+                    dir.setY(y);
+                    shootBlockFromLoc.setDir(dir);
+                    if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED) {
+                        masterAbility.remove();
+                        shootBlockFromLoc.remove();
+//                        masterAbility.getsPlayer().addCooldown(masterAbility.getName(), masterAbility.getCooldown());
+                    } else if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
+                        Location oldLoc = shootBlockFromLoc.getLoc().clone().subtract(dir);
+                        BlockFace blockFace = Blocks.getFacingBlockFace(oldLoc, dir, masterAbility.getSpeed() + 1);
+                        if (blockFace != null) {
+                            Vector normal = blockFace.getDirection();
+                            Vector newVec = Vectors.getBounce(dir, normal);
+                            if (blockFace == BlockFace.UP || blockFace == BlockFace.DOWN) {
+                                newVec.rotateAroundY(Math.toRadians(180));
+                            }
+                            shootBlockFromLoc.setDir(newVec);
+                            shootBlockFromLoc.setAbilityStatus(AbilityStatus.SHOT);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public static void handleShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc) {
+        masterAbility.getHelpers().put(shootBlockFromLoc, status -> {
+            switch (status) {
+                case SHOT -> {
+                    shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
+                    if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
+                        shootBlockFromLoc.remove();
+                    }
+                }
+            }
+        });
+    }
+
+    public static void handleGravityShootBlockFromLoc(MasterAbility masterAbility, ShootBlockFromLoc shootBlockFromLoc) {
+        masterAbility.getHelpers().put(shootBlockFromLoc, status -> {
+            switch (status) {
+                case SHOT -> {
+                    shootBlockFromLoc.getBlock().rotate(Vectors.getYaw(shootBlockFromLoc.getDir(), masterAbility.getPlayer()), Vectors.getPitch(shootBlockFromLoc.getDir(), masterAbility.getPlayer()));
+                    Vector dir = shootBlockFromLoc.getDir().clone();
+                    double y = dir.getY();
+                    y -= Constants.GRAVITY;
+                    dir.setY(y);
+                    shootBlockFromLoc.setDir(dir);
+                    if (shootBlockFromLoc.getAbilityStatus() == AbilityStatus.COMPLETE || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.DAMAGED || shootBlockFromLoc.getAbilityStatus() == AbilityStatus.HIT_SOLID) {
+                        shootBlockFromLoc.remove();
+                    }
+                }
+            }
+        });
+    }
+}
