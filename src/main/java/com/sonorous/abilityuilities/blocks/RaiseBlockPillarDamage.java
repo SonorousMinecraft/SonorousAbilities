@@ -12,9 +12,9 @@ import java.util.Set;
 
 public class RaiseBlockPillarDamage extends RaiseBlockPillar {
 
-    private boolean hitOnce;
+    private final boolean hitOnce;
 
-    private Set<LivingEntity> damagedSet = new HashSet<>();
+    private final Set<LivingEntity> damagedSet = new HashSet<>();
 
     public RaiseBlockPillarDamage(Player player, String name, double height, boolean hitOnce) {
         super(player, name, height);

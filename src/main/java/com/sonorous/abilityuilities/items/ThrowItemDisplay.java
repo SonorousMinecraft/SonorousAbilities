@@ -21,15 +21,15 @@ public class ThrowItemDisplay extends CoreAbility {
 
     private final String name;
 
-    private ArmorStand armorStand;
+    private final ArmorStand armorStand;
 
-    private Location origin;
+    private final Location origin;
 
     private Vector dir;
 
-    private boolean stick;
+    private final boolean stick;
 
-    private Set<ItemDisplay> displays = new HashSet<>();
+    private final Set<ItemDisplay> displays = new HashSet<>();
 
     private double height;
 

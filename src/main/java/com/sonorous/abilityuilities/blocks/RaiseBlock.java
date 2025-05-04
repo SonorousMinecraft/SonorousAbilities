@@ -23,7 +23,7 @@ public class RaiseBlock extends CoreAbility {
     private final String name;
     private Location origin, loc;
 
-    private double height;
+    private final double height;
     private TempDisplayBlock block;
 
     private boolean isFalling = false;
@@ -44,6 +44,8 @@ public class RaiseBlock extends CoreAbility {
                 abilityStatus = AbilityStatus.SOURCE_SELECTED;
 
                 this.origin = Blocks.getFacingBlockLoc(player, sourceRange);
+                assert origin != null;
+
                 if (playGlowing) {
                     Blocks.selectSourceAnimation(origin.clone().subtract(0, size, 0), Color.GREEN, size);
                 }
@@ -124,10 +126,6 @@ public class RaiseBlock extends CoreAbility {
         block.revert();
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

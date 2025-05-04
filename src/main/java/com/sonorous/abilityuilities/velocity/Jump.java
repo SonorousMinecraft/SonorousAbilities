@@ -42,10 +42,6 @@ public class Jump extends CoreAbility {
 
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

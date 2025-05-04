@@ -10,7 +10,6 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 /**
- * @author Sakrajin
  * Causes a spherical shaped blast to be shot from the player
  */
 public class BlockDisintegrateSphere extends CoreAbility {

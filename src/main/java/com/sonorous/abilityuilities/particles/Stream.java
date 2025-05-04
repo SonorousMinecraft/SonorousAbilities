@@ -4,6 +4,7 @@ import com.sonorous.ability.superclasses.CoreAbility;
 import com.sonorous.util.AbilityStatus;
 import com.sonorous.util.methods.AbilityDamage;
 import com.sonorous.util.methods.Particles;
+import com.sonorous.util.methods.RandomUtils;
 import com.sonorous.util.methods.Vectors;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class Stream extends CoreAbility {
@@ -20,8 +20,6 @@ public class Stream extends CoreAbility {
 
     protected Set<Location> locs = new HashSet<>();
     protected Particle particle;
-    private Random random = new Random();
-    private Vector offset = null;
 
     public Stream(Player player, String name, Particle particle) {
         super(player, name);
@@ -87,8 +85,7 @@ public class Stream extends CoreAbility {
     }
 
     private Vector getRandomOffset() {
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
-        return randomiser;
+        return Vectors.getRightSide(player, RandomUtils.getRandomDouble(0,1) - 0.5).add(new Vector(0, RandomUtils.getRandomDouble(0,1) - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
     }
 
     @Override

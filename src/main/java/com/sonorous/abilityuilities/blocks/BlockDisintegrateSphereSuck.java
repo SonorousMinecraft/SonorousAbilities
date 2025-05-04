@@ -4,6 +4,7 @@ import com.sonorous.ability.superclasses.CoreAbility;
 import com.sonorous.util.AbilityStatus;
 import com.sonorous.util.methods.Blocks;
 import com.sonorous.util.methods.Particles;
+import com.sonorous.util.methods.RandomUtils;
 import com.sonorous.util.temp.TempBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,23 +17,23 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * @author Sakrajin
  * Causes a spherical shaped blast to be shot from the player
  */
 public class BlockDisintegrateSphereSuck extends CoreAbility {
 
-    private Location centerLoc, targetLoc;
+    private final Location centerLoc;
+    private final Location targetLoc;
 
-    private String name;
+    private final String name;
 
-    private double currentRadius, increment;
+    private double currentRadius;
+    private final double increment;
 
 
-    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
+    private final Set<TempBlock> sourceTempBlocks = new HashSet<>();
 
-    private Set<SourceBlockToLoc> sourceBlocksToLoc = new HashSet<>();
-    private Set<Block> previousSourceBlocks = new HashSet<>();
-    private Random random = new Random();
+    private final Set<SourceBlockToLoc> sourceBlocksToLoc = new HashSet<>();
+    private final Set<Block> previousSourceBlocks = new HashSet<>();
 
     public BlockDisintegrateSphereSuck(Player player, String name, Location startLoc, Location targetLoc, double currentRadius, double increment) {
         super(player, name);
@@ -71,11 +72,11 @@ public class BlockDisintegrateSphereSuck extends CoreAbility {
 
         Set<Block> sourceBlocks = Blocks.getBlocksAroundPoint(centerLoc, currentRadius);
 
-        sourceBlocks.removeIf(block -> previousSourceBlocks.contains(block));
+        sourceBlocks.removeIf(previousSourceBlocks::contains);
 
         for (Block b : sourceBlocks) {
             if (b != null && !b.isPassable()) {
-                if (random.nextDouble() < 0.1) {
+                if (RandomUtils.getRandomDouble(0, 1) < 0.1) {
                     SourceBlockToLoc sourceBlockToLoc = new SourceBlockToLoc(player, name, 4, 1, b, targetLoc);
                     sourceBlockToLoc.setAbilityStatus(AbilityStatus.SOURCING);
                     sourceBlocksToLoc.add(sourceBlockToLoc);

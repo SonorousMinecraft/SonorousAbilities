@@ -99,10 +99,6 @@ public class BlockLine extends CoreAbility {
         }
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

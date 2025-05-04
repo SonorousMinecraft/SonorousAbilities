@@ -12,17 +12,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * @author Sakrajin
  * Allows the shooting of a block from a player
  */
 public class ShootBlockFromLoc extends CoreAbility {
 
     private Location loc;
-    private String user;
+    private final String user;
 
-    private boolean directable, autoRemove;
+    private boolean directable;
+    private final boolean autoRemove;
     private Vector dir;
-    private TempDisplayBlock block;
+    private final TempDisplayBlock block;
 
     public ShootBlockFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove) {
         super(player, user);
@@ -138,11 +138,6 @@ public class ShootBlockFromLoc extends CoreAbility {
 
     public void setLoc(Location loc) {
         this.loc = loc;
-    }
-
-    @Override
-    public Player getPlayer() {
-        return player;
     }
 
     @Override

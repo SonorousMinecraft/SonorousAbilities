@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Sakrajin
  * Allows a player to source a block and have it travel towards them
  */
 public class SourceBlockToPlayer extends CoreAbility {
@@ -35,7 +34,7 @@ public class SourceBlockToPlayer extends CoreAbility {
 
     private int amount;
 
-    private List<TempDisplayBlock> blocks = new ArrayList<>();
+    private final List<TempDisplayBlock> blocks = new ArrayList<>();
 
     private boolean shouldSneak = true;
 
@@ -147,10 +146,6 @@ public class SourceBlockToPlayer extends CoreAbility {
         return type;
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

@@ -16,7 +16,6 @@ import org.bukkit.util.Vector;
 import java.util.List;
 
 /**
- * @author Sakrajin
  * Allows a player to source a block and have it travel towards them
  */
 public class SourceBlockToPlayerGivenType extends CoreAbility {
@@ -59,10 +58,6 @@ public class SourceBlockToPlayerGivenType extends CoreAbility {
     @Override
     public void progress() {
 
-        //new TempBlock(loc.getBlock(), type.createBlockData(), 500);
-        //loc.getBlock().setBlockData(Material.DIRT.createBlockData());
-        //loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5);
-
 
         if (abilityStatus == AbilityStatus.SOURCING) {
             if (!player.isSneaking()) {
@@ -94,10 +89,6 @@ public class SourceBlockToPlayerGivenType extends CoreAbility {
         }
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

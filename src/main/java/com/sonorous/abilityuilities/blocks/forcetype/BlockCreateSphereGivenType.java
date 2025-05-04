@@ -17,26 +17,21 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * @author Sakrajin
  * Causes a spherical shaped blast to be shot from the player
  */
 public class BlockCreateSphereGivenType extends CoreAbility {
 
-    private Location centerLoc;
+    private final Location centerLoc;
 
-    private String name;
+    private final String name;
 
-    private double increment;
-
-
-//    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
-
-    private HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
+    private final double increment;
 
 
-    private Random random = new Random();
+    private final HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
 
-    private DisplayBlock displayBlock;
+
+    private final DisplayBlock displayBlock;
 
 
     public BlockCreateSphereGivenType(Player player, String name, Location startLoc, double increment, DisplayBlock displayBlock) {
@@ -77,12 +72,8 @@ public class BlockCreateSphereGivenType extends CoreAbility {
                 Vector offset = Vectors.getDirectionBetweenLocations(centerLoc, b.getLocation()).add(new Vector(0, radius, 0)).normalize();
                 displayBlocks.put(tdb, offset);
 
-
-//                if (TempBlock.isTempBlock(b) && !sourceTempBlocks.contains(TempBlock.getTempBlock(b))) {
                 TempBlock tb = new TempBlock(b, displayBlock, 60000);
 
-
-//                sourceTempBlocks.add(tb);
             }
         }
 

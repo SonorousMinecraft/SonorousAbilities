@@ -12,18 +12,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * @author Sakrajin
  * Basic particle based Laser ability
  */
 public class Laser extends CoreAbility {
 
 
     private Location loc;
-    private Vector dir;
 
-    private String name;
+    private final String name;
 
-    private DisplayBlock displayBlock;
+    private final DisplayBlock displayBlock;
 
 
     public Laser(Player player, Location startLoc, String name, DisplayBlock displayBlock) {
@@ -51,7 +49,7 @@ public class Laser extends CoreAbility {
         }
         if (abilityStatus == AbilityStatus.SHOT) {
 
-            dir = player.getEyeLocation().getDirection().normalize();
+            Vector dir = player.getEyeLocation().getDirection().normalize();
 
             double distance = range;
             LivingEntity entity = Entities.getFacingEntity(player, range, hitbox);
@@ -71,10 +69,6 @@ public class Laser extends CoreAbility {
 
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

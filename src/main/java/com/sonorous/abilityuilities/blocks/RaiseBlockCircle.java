@@ -16,8 +16,8 @@ public class RaiseBlockCircle extends CoreAbility {
     private final String name;
 
     private double currentHeight = 0;
-    private double height;
-    private List<TempDisplayBlock> block;
+    private final double height;
+    private final List<TempDisplayBlock> block;
 
     private boolean shouldFall;
 

@@ -16,11 +16,11 @@ public class Blade extends CoreAbility {
 
     private final String name;
 
-    private Location origin, loc1, loc2;
+    private final Location origin, loc1, loc2;
 
-    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
+    private final ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    private Vector dir;
+    private final Vector dir;
 
     public Blade(Player player, String name, ArchetypeVisuals.ArchetypeVisual archetypeVisual, Location loc1, Location loc2) {
         super(player, name);

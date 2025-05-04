@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class BlockSweepGivenType extends CoreAbility {
@@ -26,11 +27,11 @@ public class BlockSweepGivenType extends CoreAbility {
     private Vector dir1, dir2, dir;
     private Set<Location> oldLocs = new HashSet<>();
 
-    private Set<LivingEntity> damagedSet = new HashSet<>();
+    private final Set<LivingEntity> damagedSet = new HashSet<>();
 
-    private Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
+    private final Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
 
-    private DisplayBlock displayBlock;
+    private final DisplayBlock displayBlock;
 
 
     public BlockSweepGivenType(Player player, String name, Color color, DisplayBlock displayBlock) {
@@ -41,7 +42,7 @@ public class BlockSweepGivenType extends CoreAbility {
         abilityStatus = AbilityStatus.NO_SOURCE;
         Block source = Blocks.getFacingBlockOrLiquid(player, sourceRange);
         if (source != null && Blocks.getArchetypeBlocks(sPlayer).contains(source.getType())) {
-            this.origin = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
+            this.origin = Objects.requireNonNull(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange)).subtract(0, size, 0);
 
             glowingSource = Blocks.selectSourceAnimationManual(origin, color, size);
 
@@ -75,25 +76,13 @@ public class BlockSweepGivenType extends CoreAbility {
                     .map(Location::getBlock)
                     .forEach(block -> {
                         TempDisplayBlock tdb = new TempDisplayBlock(block, displayBlock, 1000, 1);
-//                            tdb.getBlockDisplay().setGlowing(true);
                         tempDisplayBlocks.add(tdb);
-//                            tdb.moveToAndMaintainFacing(tdb.getLoc().add(0, 10, 0));
                         damagedSet.addAll(AbilityDamage.damageSeveralExceptReturnHit(tdb.getLoc(), this, player, damagedSet, true, player.getEyeLocation().getDirection()));
 
-//                        DamageHandler.damageEntity(Entities.getAffected(tdb.getLoc(), hitbox, player), player, this, damage);
                     });
 
 
             oldLocs = newLocs;
-
-//            Locations.getArc(loc1, loc2, origin.clone(), 0.5).stream()
-//                    .map(Location::getBlock)
-//                    .forEach(block -> {
-//                            TempDisplayBlock tdb = new TempDisplayBlock(block, block.getType(), 2000, 1);
-//                            tdb.getBlockDisplay().setGlowing(true);
-//                            tdb.moveToAndMaintainFacing(tdb.getLoc().add(0, 1, 0));
-//                            DamageHandler.damageEntity(Entities.getAffected(tdb.getLoc(), hitbox, player), player, this, damage);
-//                    });
 
 
             if (origin.distance(Locations.getMidpoint(loc1, loc2)) > range) {
@@ -111,9 +100,7 @@ public class BlockSweepGivenType extends CoreAbility {
         if (abilityStatus == AbilityStatus.SOURCE_SELECTED) {
             abilityStatus = AbilityStatus.SHOT;
 
-//            this.loc1 = origin.clone().add(Vectors.getLeftSide(player, radius/2));
             this.loc1 = origin.clone();
-//            this.loc2 = origin.clone().add(Vectors.getRightSide(player, radius/2));
             this.loc2 = origin.clone();
 
             this.dir1 = Vectors.getLeftSide(player, 1);
@@ -124,11 +111,6 @@ public class BlockSweepGivenType extends CoreAbility {
             oldLocs.add(origin.clone().add(0, size, 0));
             glowingSource.revert();
         }
-    }
-
-    @Override
-    public Player getPlayer() {
-        return player;
     }
 
     @Override

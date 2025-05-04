@@ -10,24 +10,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * @author Sakrajin
  * Basic particle based blast ability
  */
 public class Blast extends CoreAbility {
 
-    private boolean directable;
+    private final boolean directable;
 
-    private Location loc, origin;
+    private final Location loc, origin;
     private Vector dir;
 
 
-    private String name;
+    private final String name;
 
-    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
+    private final ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
     private double angle = 0;
 
-    private boolean shouldDamage;
+    private final boolean shouldDamage;
 
 
     public Blast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean shouldDamage) {
@@ -63,7 +62,6 @@ public class Blast extends CoreAbility {
             }
 
             loc.add(dir.clone().multiply(speed));
-//        archetypeVisual.playVisual(loc, size, radius, 10, 1, 5);
             archetypeVisual.playShotVisual(loc, dir, angle, size, radius, 10, 1, 5);
             angle += 36 * speed;
         }

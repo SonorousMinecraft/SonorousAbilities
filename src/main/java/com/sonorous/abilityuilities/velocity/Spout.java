@@ -18,10 +18,6 @@ public class Spout extends CoreAbility {
 
     }
 
-    @Override
-    public Player getPlayer() {
-        return this.player;
-    }
 
     @Override
     public String getName() {

@@ -16,28 +16,29 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @author Sakrajin
  * Allows the shooting of a block from a player
  */
 public class ShootBlocksFromLoc extends CoreAbility {
 
-    private Location loc;
-    private String user;
+    private final Location loc;
+    private final String user;
 
     private Material type;
 
-    private boolean directable, autoRemove;
+    private final boolean directable;
+    private final boolean autoRemove;
 
 
     private Vector dir;
 
-    private LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
+    private final LinkedHashMap<Vector, Double> directions = new LinkedHashMap<>();
 
-    private long timeBetweenCurves = 150, lastCurveTime = System.currentTimeMillis();
+    private final long timeBetweenCurves = 150;
+    private long lastCurveTime = System.currentTimeMillis();
 
-    private int amount;
+    private final int amount;
 
-    private List<TempDisplayBlock> blocks = new ArrayList<>();
+    private final List<TempDisplayBlock> blocks = new ArrayList<>();
 
     public ShootBlocksFromLoc(Player player, String user, Location startLoc, Material type, boolean directable, boolean autoRemove, int amount) {
         super(player, user);

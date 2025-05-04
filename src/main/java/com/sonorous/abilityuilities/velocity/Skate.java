@@ -18,12 +18,12 @@ import org.bukkit.util.Vector;
 
 public class Skate extends CoreAbility {
 
-    private String user;
+    private final String user;
     private ArmorStand armorStand;
 
-    private int maxHeightFromGround;
+    private final int maxHeightFromGround;
 
-    private int preferredHeightFromGround;
+    private final int preferredHeightFromGround;
 
     private Block floorBlock;
 
@@ -31,7 +31,7 @@ public class Skate extends CoreAbility {
 
     private long sinceLastNullFloor;
 
-    private boolean any;
+    private final boolean any;
 
 
     public Skate(Player player, String user, int maxHeightFromGround, int preferredHeightFromGround, boolean anyFloor) {

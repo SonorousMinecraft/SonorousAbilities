@@ -12,21 +12,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * @author Sakrajin
  * Basic particle based blast ability
  */
 public class SourcedBlast extends CoreAbility {
 
-    private boolean shot, directable, selfPush;
+    private boolean shot;
+    private final boolean directable;
+    private final boolean selfPush;
 
-    private Location loc, origin;
+    private final Location loc;
+    private Location origin;
     private Vector dir;
 
-    private String name;
+    private final String name;
 
-    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
+    private final ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    private boolean shouldDamage;
+    private final boolean shouldDamage;
 
     public SourcedBlast(Player player, String name, boolean directable, ArchetypeVisuals.ArchetypeVisual archetypeVisual, boolean selfPush, boolean shouldDamage) {
         super(player, name);
@@ -90,10 +92,6 @@ public class SourcedBlast extends CoreAbility {
         }
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {
