@@ -3,7 +3,6 @@ package com.sonorous.ability.data;
 import com.sonorous.archetypes.Archetype;
 
 /**
- * @author Sakrajin
  * Stores all the data for a specific ability.
  */
 public class AbilityData {
