@@ -6,12 +6,11 @@ import com.sonorous.archetypes.Archetype;
 import java.util.ArrayList;
 
 /**
- * @author Sakrajin
  * Adds additional functionality to {@link AbilityData}.
  */
 public class ComboData extends AbilityData {
 
-    private ArrayList<ComboManager.AbilityInformation> abilities;
+    private final ArrayList<ComboManager.AbilityInformation> abilities;
 
     public ComboData(Archetype archetype, String description, String instructions,
                      long chargetime, long cooldown, long duration,
