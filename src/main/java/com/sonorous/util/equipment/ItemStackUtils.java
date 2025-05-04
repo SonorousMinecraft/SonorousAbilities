@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ItemStackUtils {
 
-    public static void createSereneAbilitiesEquipment(Player player, Material material, String displayName, List<String> lore, int data, EquipmentSlot equipmentSlot, ArmorTrim trim) {
+    public static void createSonorousAbilitiesEquipment(Player player, Material material, String displayName, List<String> lore, int data, EquipmentSlot equipmentSlot, ArmorTrim trim) {
         ItemStack itemStack = createItem(material, displayName, lore);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setCustomModelData(data);

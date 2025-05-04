@@ -95,7 +95,7 @@ public class Shocker extends CoreAbility {
 //            e = Entities.getAffected(loc, hitbox, player);
 //            if (e instanceof Player) {
 //                target = (Player) e;
-//                btarget = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(target);
+//                btarget = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(target);
 //                if (btarget != null) {
 //                    if (btarget.getHeldAbility().equalsIgnoreCase(name) && target.isSneaking()) {
 ////                        Particles.spawnColoredParticle(target.getLocation(), 10, 1, 1, Color.fromRGB(1, 225, 255));

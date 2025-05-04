@@ -44,19 +44,19 @@ public class SonorousAbilitiesPlayer {
         this.archetype = archetype;
         this.player = player;
         this.presets = presets;
-//        this.serenityPlayerEquipment = new SereneAbilitiesPlayerEquipment(this, player);
+//        this.serenityPlayerEquipment = new SonorousAbilitiesPlayerEquipment(this, player);
     }
 
-    public static Map<String, SonorousAbilitiesPlayer> getSereneAbilitiesPlayerMap() {
+    public static Map<String, SonorousAbilitiesPlayer> getSonorousAbilitiesPlayerMap() {
         return SERENITY_PLAYER_MAP;
     }
 
-    public static SonorousAbilitiesPlayer getSereneAbilitiesPlayer(Player player) {
+    public static SonorousAbilitiesPlayer getSonorousAbilitiesPlayer(Player player) {
         return SERENITY_PLAYER_MAP.get(player.getUniqueId().toString());
     }
 
     public static void initialisePlayer(Player player) {
-        SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
 
         SonorousAbilitiesBoard board = SonorousAbilitiesBoard.createScore(player, serenityPlayer);
 
@@ -82,7 +82,7 @@ public class SonorousAbilitiesPlayer {
         removeAttributePlayer(player, serenityPlayer);
         ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
         {
-            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), "SereneAbilities." + attribute.toString(), value,
+            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), "SonorousAbilities." + attribute.toString(), value,
                     AttributeModifier.Operation.ADD_NUMBER);
 
             player.getAttribute(attribute).addModifier(attributeModifier);
@@ -100,7 +100,7 @@ public class SonorousAbilitiesPlayer {
 
     public static void loadPlayer(String uuid, Player player) {
         if (SERENITY_PLAYER_MAP.keySet().stream().anyMatch(s -> s.equals(uuid))) {
-            SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player).setPlayer(player);
+            SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player).setPlayer(player);
             return;
         }
         HashMap<Integer, String> abilities = new HashMap<>();
@@ -111,13 +111,13 @@ public class SonorousAbilitiesPlayer {
             }
 
             SonorousAbilitiesPlayer serenityPlayer = new SonorousAbilitiesPlayer(player.getName(), abilities, Archetype.NONE, player, new HashMap<>());
-            getSereneAbilitiesPlayerMap().put(uuid, serenityPlayer);
+            getSonorousAbilitiesPlayerMap().put(uuid, serenityPlayer);
             upsertPlayer(serenityPlayer);
 
         } else {
             SonorousAbilities.getRepository().getAsync(uuid).thenAsync((PlayerData) -> {
                 SonorousAbilitiesPlayer serenityPlayer = new SonorousAbilitiesPlayer(PlayerData.getName(), PlayerData.getAbilities(), Archetype.valueOf(PlayerData.getArchetype().toUpperCase()), player, PlayerData.getPresets());
-                getSereneAbilitiesPlayerMap().put(uuid, serenityPlayer);
+                getSonorousAbilitiesPlayerMap().put(uuid, serenityPlayer);
             });
         }
     }
@@ -146,7 +146,7 @@ public class SonorousAbilitiesPlayer {
 
     public void setOn(boolean on) {
 //        if (on){
-//            serenityPlayerEquipment.switchToSereneAbilities();
+//            serenityPlayerEquipment.switchToSonorousAbilities();
 //        } else {
 //            serenityPlayerEquipment.switchToNormal();
 //        }
@@ -221,7 +221,7 @@ public class SonorousAbilitiesPlayer {
         this.getAbilities().put(slot, ability);
     }
 
-//    private SereneAbilitiesPlayerEquipment serenityPlayerEquipment;
+//    private SonorousAbilitiesPlayerEquipment serenityPlayerEquipment;
 
     public String getHeldAbility() {
 
@@ -262,7 +262,7 @@ public class SonorousAbilitiesPlayer {
 //        equipment.add(new Pair<>(EquipmentSlot.OFF_HAND, Material.SHIELD));
 
         equipment.forEach(equipmentSlotMaterialPair -> {
-            ItemStackUtils.createSereneAbilitiesEquipment(player, equipmentSlotMaterialPair.getB(), archetype + " " + equipmentSlotMaterialPair.getB().toString(), List.of("test"), archetype.getValue(), equipmentSlotMaterialPair.getA(), archetype.getTrim());
+            ItemStackUtils.createSonorousAbilitiesEquipment(player, equipmentSlotMaterialPair.getB(), archetype + " " + equipmentSlotMaterialPair.getB().toString(), List.of("test"), archetype.getValue(), equipmentSlotMaterialPair.getA(), archetype.getTrim());
         });
     }
 

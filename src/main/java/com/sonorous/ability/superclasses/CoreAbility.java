@@ -41,7 +41,7 @@ public abstract class CoreAbility implements Ability {
     public CoreAbility(final Player player, String name) {
 
         this.player = player;
-        this.sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayerMap().get(player.getUniqueId().toString());
+        this.sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayerMap().get(player.getUniqueId().toString());
 
 
         initialiseConfigVariables(AbilityDataManager.getAbilityData(name));
@@ -186,7 +186,7 @@ public abstract class CoreAbility implements Ability {
 
 //    public CoreAbility(final Player player) {
 //        this.player = player;
-//        this.sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayerMap().get(player.getUniqueId());
+//        this.sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayerMap().get(player.getUniqueId());
 //
 //        initialiseConfigVariables(AbilityDataManager.getAbilityData(this.getName()));
 //    }

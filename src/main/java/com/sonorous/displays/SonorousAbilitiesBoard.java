@@ -24,9 +24,9 @@ public class SonorousAbilitiesBoard {
     private Objective sidebar;
     private SonorousAbilitiesBoard(Player player, SonorousAbilitiesPlayer sPlayer) {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        sidebar = scoreboard.registerNewObjective("SereneAbilities", Criteria.DUMMY, "SereneAbilities");
+        sidebar = scoreboard.registerNewObjective("SonorousAbilities", Criteria.DUMMY, "SonorousAbilities");
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
-        sidebar.setDisplayName(Colors.hexToString("#d99856 SereneAbilities"));
+        sidebar.setDisplayName(Colors.hexToString("#d99856 SonorousAbilities"));
 
         this.sPlayer = sPlayer;
         color = ChatColor.of(sPlayer.getStringColor());

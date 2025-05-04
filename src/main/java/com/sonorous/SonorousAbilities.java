@@ -100,18 +100,18 @@ public class SonorousAbilities extends JavaPlugin {
     public void onDisable() {
         super.onDisable();
 //        Bukkit.getOnlinePlayers().forEach(player -> {
-//            SereneAbilitiesBoard.removeScore(player);
+//            SonorousAbilitiesBoard.removeScore(player);
 //
-//            SereneAbilitiesPlayer serenityPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+//            SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
 //
-//            SereneAbilities.getComboManager().removePlayer(player);
+//            SonorousAbilities.getComboManager().removePlayer(player);
 //
-//            SereneAbilitiesPlayer.upsertPlayer(serenityPlayer);
+//            SonorousAbilitiesPlayer.upsertPlayer(serenityPlayer);
 //
 //            removeAttributePlayer(player, serenityPlayer);
 //
 //
-//            SereneAbilitiesPlayer.removePlayerFromMap(player);
+//            SonorousAbilitiesPlayer.removePlayerFromMap(player);
 //        });
 
 

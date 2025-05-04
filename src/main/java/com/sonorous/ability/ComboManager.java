@@ -50,7 +50,7 @@ public class ComboManager {
     }
 
     private void checkForCombo(Player player) {
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         for (Map.Entry<String, ComboData> ability : COMBO_ABILITIES.entrySet()) {
 
             ArrayListMultimap<String, ClickType> recentlyUsedPairList = ArrayListMultimap.create();

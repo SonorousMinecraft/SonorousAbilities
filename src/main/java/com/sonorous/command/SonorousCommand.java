@@ -22,7 +22,7 @@ public class SonorousCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player player) {
-            SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+            SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
             if (sPlayer != null) {
                 switch (strings[0]) {
 //                    case "test":

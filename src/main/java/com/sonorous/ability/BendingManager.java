@@ -35,7 +35,7 @@ public class BendingManager implements Runnable {
     }
 
     public void handleRedirections(Player player, ClickType clickType) {
-        SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         CoreAbility.getAllRedirectInstances()
                 .filter(coreAbilityStreamPair -> {
                     CoreAbility abil = coreAbilityStreamPair.getA();
@@ -106,7 +106,7 @@ public class BendingManager implements Runnable {
     }
 
     public void handleCooldowns() {
-        for (Map.Entry<String, SonorousAbilitiesPlayer> entry : SonorousAbilitiesPlayer.getSereneAbilitiesPlayerMap().entrySet()) {
+        for (Map.Entry<String, SonorousAbilitiesPlayer> entry : SonorousAbilitiesPlayer.getSonorousAbilitiesPlayerMap().entrySet()) {
             SonorousAbilitiesPlayer sPlayer = entry.getValue();
 
             sPlayer.removeOldCooldowns();

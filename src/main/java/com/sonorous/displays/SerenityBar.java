@@ -13,11 +13,11 @@
 // * @author Sakrajin
 // * To-do bar to show health of opponents you are fighting
 // */
-//public class SereneAbilitiesBar {
+//public class SonorousAbilitiesBar {
 //
 //    private final static Map<Player, BossBar> combatBar = new ConcurrentHashMap<>();
 //
-//    public SereneAbilitiesBar() {
+//    public SonorousAbilitiesBar() {
 //        BossBar bossBar = Bukkit.getServer().createBossBar("Combat", BarColor.RED, BarStyle.SOLID);
 //    }
 //

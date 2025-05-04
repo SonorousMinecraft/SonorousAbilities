@@ -18,7 +18,7 @@ public class AbilityUtils {
         AbilityStatus abilityStatus = coreAbility.getAbilityStatus();
         Player player = coreAbility.getPlayer();
         String name = coreAbility.getName();
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         String heldAbilityName = sPlayer.getHeldAbility();
         if (abilityStatus == AbilityStatus.CHARGED && name.equals(heldAbilityName)) {
             sendActionBar(player, "READY", ChatColor.GREEN);
@@ -29,7 +29,7 @@ public class AbilityUtils {
         AbilityStatus abilityStatus = coreAbility.getAbilityStatus();
         Player player = coreAbility.getPlayer();
         String name = coreAbility.getName();
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         String heldAbilityName = sPlayer.getHeldAbility();
         if (abilityStatus == AbilityStatus.SHOOTING && name.equals(heldAbilityName)) {
             sendActionBar(player, current + "/" + total, ChatColor.WHITE);

@@ -47,7 +47,7 @@
 //    public ChaoticVoid(Player player) {
 //        super(player, name);
 //
-////        Bukkit.broadcastMessage(SereneAbilities.getPlugin().getServer().getStructureManager().getStructures().toString());
+////        Bukkit.broadcastMessage(SonorousAbilities.getPlugin().getServer().getStructureManager().getStructures().toString());
 ////    Bukkit.getStructureManager().loadStructure(NamespacedKey.minecraft("shipwreck")).place(player.getLocation(), false, StructureRotation.NONE, Mirror.NONE, 1, 0, new Random());
 //
 //

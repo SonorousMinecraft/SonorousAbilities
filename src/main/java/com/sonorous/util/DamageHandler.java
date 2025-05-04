@@ -23,7 +23,7 @@ public class DamageHandler {
             if (entity instanceof LivingEntity livingEntity) {
                 // needd to add some damage cooldown
                 livingEntity.damage(damage, source);
-                if (SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(source).getArchetype().equals(Archetype.SUN)) {
+                if (SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(source).getArchetype().equals(Archetype.SUN)) {
                     livingEntity.setFireTicks(20);
                 }
                 return true;

@@ -22,7 +22,7 @@ public class TabAutoCompletion implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] strings) {
         if (commandSender instanceof Player player) {
-            SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+            SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
 
             if (strings.length == 1 || strings.length == 2) {
                 switch (strings[0]) {

@@ -28,7 +28,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffectType;
 
-import static com.sonorous.SonorousAbilitiesPlayer.getSereneAbilitiesPlayer;
+import static com.sonorous.SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer;
 import static com.sonorous.SonorousAbilitiesPlayer.removeAttributePlayer;
 
 /**
@@ -58,7 +58,7 @@ public class SonorousAbilitiesListener implements Listener {
 
         SonorousAbilitiesBoard.removeScore(player);
 
-        SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer serenityPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
 
         SonorousAbilities.getComboManager().removePlayer(player);
 
@@ -79,7 +79,7 @@ public class SonorousAbilitiesListener implements Listener {
 
         Player player = (Player) e.getDamager();
 
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
@@ -110,7 +110,7 @@ public class SonorousAbilitiesListener implements Listener {
 //        }
 //
 //        if (isValidAttack) {
-//            SereneAbilities.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
+//            SonorousAbilities.getComboManager().addRecentlyUsed(player, ability, ClickType.LEFT);
 //            e.setCancelled(true);
 //        }
         // Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(player, Action.LEFT_CLICK_AIR, player.getInventory().getItemInMainHand(), null, null, EquipmentSlot.HAND));
@@ -125,7 +125,7 @@ public class SonorousAbilitiesListener implements Listener {
         }
 
 
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
@@ -150,7 +150,7 @@ public class SonorousAbilitiesListener implements Listener {
             return;
         }
 
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
@@ -397,7 +397,7 @@ public class SonorousAbilitiesListener implements Listener {
         if (player.isSneaking()) {
             return;
         }
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         if (sPlayer == null || !sPlayer.isOn()) {
             return;
         }
@@ -525,7 +525,7 @@ public class SonorousAbilitiesListener implements Listener {
     @EventHandler
     public void noFallDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
-            SonorousAbilitiesPlayer sPlayer = getSereneAbilitiesPlayer(player);
+            SonorousAbilitiesPlayer sPlayer = getSonorousAbilitiesPlayer(player);
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
 
                 if (sPlayer.getArchetype() == Archetype.EARTH && sPlayer.getHeldAbility().equals("EarthQuake")) {
@@ -548,7 +548,7 @@ public class SonorousAbilitiesListener implements Listener {
     @EventHandler
     public void onSwim(EntityToggleSwimEvent event) {
         if (event.getEntity() instanceof Player player) {
-            SonorousAbilitiesPlayer sPlayer = getSereneAbilitiesPlayer(player);
+            SonorousAbilitiesPlayer sPlayer = getSonorousAbilitiesPlayer(player);
             if (sPlayer.getArchetype() == Archetype.OCEAN) {
                 Entities.applyPotionPlayerAmplifier(player, PotionEffectType.DOLPHINS_GRACE, 2, 2000);
                 event.setCancelled(true);
@@ -563,7 +563,7 @@ public class SonorousAbilitiesListener implements Listener {
             return;
         }
 
-        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
         if (sPlayer == null) {
             return;
         }
@@ -616,7 +616,7 @@ public class SonorousAbilitiesListener implements Listener {
 //    public void onPlayerPortal(PlayerPortalEvent event){
 //        Player player = event.getPlayer();
 //
-//        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+//        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
 //        if (sPlayer == null) {
 //            return;
 //        }
@@ -640,7 +640,7 @@ public class SonorousAbilitiesListener implements Listener {
 //            event.setCancelled(true);
 //        }
 }
-//        SereneAbilitiesPlayer sPlayer = SereneAbilitiesPlayer.getSereneAbilitiesPlayer(player);
+//        SonorousAbilitiesPlayer sPlayer = SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer(player);
 //        if (sPlayer == null) {
 //            return;
 //        }
