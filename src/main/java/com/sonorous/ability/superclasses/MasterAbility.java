@@ -7,10 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+/***
+ * Provides an optional easy to use interface for helper abilities
+ */
 public abstract class MasterAbility extends CoreAbility {
 
     protected final WeakHashMap<CoreAbility, HelperTick> helpers = new WeakHashMap<>();
-    private Set<CoreAbility> helpersToRemove = new HashSet<>();
+    private final Set<CoreAbility> helpersToRemove = new HashSet<>();
 
     public MasterAbility(Player player, String name) {
         super(player, name);
@@ -37,7 +40,7 @@ public abstract class MasterAbility extends CoreAbility {
             }
         });
 
-        helpersToRemove.forEach(coreAbility -> helpers.remove(coreAbility));
+        helpersToRemove.forEach(helpers::remove);
 
     }
 
