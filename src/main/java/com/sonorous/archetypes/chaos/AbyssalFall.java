@@ -47,22 +47,14 @@ public class AbyssalFall extends MasterAbility {
             player.setVelocity(dir.subtract(new Vector(0, Constants.GRAVITY * speed * 2, 0)).clone().multiply(speed));
             if (Blocks.isSolid(player.getLocation().subtract(0, 1, 0))) {
 
-//                Blocks.getBlocksAroundPoint(player.getLocation(), radius).forEach(b -> {
-//                    TempBlock tb = new TempBlock(b, Material.AIR, duration, true);
-//                });
-
-//                new BlockDisintegrateSphereSuck(player, name, player.getLocation(), player.getLocation().add(0,radius, 0), 0, speed);
-
                 tempDisplayBlocks = EnhancedDisplayBlocks.createTopCircleTempBlocks(this, Material.BLACK_CONCRETE);
-                List<Entity> targets = Entities.getEntitiesAroundPoint(player.getLocation(), radius).stream().filter(entity -> entity != player).collect(Collectors.toList());
+                List<Entity> targets = Entities.getEntitiesAroundPoint(player.getLocation(), radius).stream().filter(entity -> entity != player).toList();
                 targets.forEach(entity -> entity.teleport(entity.getLocation().add(0, radius * 2, 0)));
                 Scheduler.performTaskLater(20, () -> {
                     targets.stream().filter(entity -> entity != player).collect(Collectors.toSet())
                             .forEach(entity -> {
                                 Particles.spawnParticle(Particle.SONIC_BOOM, entity.getLocation(), 5, 3, 0);
                                 entity.setVelocity(new Vector(0, -speed, 0));
-//                                        new BlockDisintegrateSphereSuck(player, name, entity.getLocation().subtract(0, radius * 2, 0), entity.getLocation(), 0, radius / 8, 1);
-
                             });
                 });
 

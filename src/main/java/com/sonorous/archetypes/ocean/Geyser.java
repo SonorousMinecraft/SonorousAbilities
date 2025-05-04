@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Geyser extends MasterAbility {
@@ -26,7 +27,7 @@ public class Geyser extends MasterAbility {
 
     private Set<TempBlock> sources = new HashSet<>();
 
-    private Set<TempDisplayBlock> geyser = new HashSet<>();
+    private final Set<TempDisplayBlock> geyser = new HashSet<>();
 
 
     public Geyser(Player player) {
@@ -94,8 +95,8 @@ public class Geyser extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        sources.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
-        geyser.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
+        sources.stream().filter(Objects::nonNull).forEach(TempBlock::revert);
+        geyser.stream().filter(Objects::nonNull).forEach(TempDisplayBlock::revert);
     }
 
     @Override

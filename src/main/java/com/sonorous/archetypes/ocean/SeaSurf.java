@@ -21,7 +21,7 @@ public class SeaSurf extends CoreAbility {
     private static final String name = "SeaSurf";
     private Skate skate;
 
-    private Set<TempDisplayBlock> surf = new HashSet<>();
+    private final Set<TempDisplayBlock> surf = new HashSet<>();
 
 
     public SeaSurf(Player player) {
@@ -54,12 +54,11 @@ public class SeaSurf extends CoreAbility {
                     });
         }
 
-        surf.stream().forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * Constants.BLOCK_RAISE_SPEED * speed * 5, 0)));
+        surf.forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * Constants.BLOCK_RAISE_SPEED * speed * 5, 0)));
 
         if (!sPlayer.getHeldAbility().equals(name)) {
             this.remove();
         }
-        //Particles.playLocParticles(locs, Particle.SPELL, 1, 0, 0);
     }
 
     public void setHasClicked() {
@@ -79,10 +78,6 @@ public class SeaSurf extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

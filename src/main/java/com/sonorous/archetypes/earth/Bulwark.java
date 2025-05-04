@@ -14,7 +14,7 @@ public class Bulwark extends CoreAbility {
 
     private static final String name = "Bulwark";
 
-    private Set<RaiseBlockPillar> raiseBlockPillars = new HashSet<>();
+    private final Set<RaiseBlockPillar> raiseBlockPillars = new HashSet<>();
 
     public Bulwark(Player player) {
         super(player, name);
@@ -31,11 +31,6 @@ public class Bulwark extends CoreAbility {
             }
         }
 
-//        if (!player.isSneaking()){
-//            return;
-//        }
-
-
     }
 
     @Override
@@ -46,7 +41,6 @@ public class Bulwark extends CoreAbility {
                 this.remove();
             } else {
                 raiseBlockPillars.forEach(RaiseBlockPillar::drop);
-
             }
         }
     }
@@ -55,8 +49,6 @@ public class Bulwark extends CoreAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-
-//        sPlayer.addCooldown(name, cooldown);
     }
 
     @Override

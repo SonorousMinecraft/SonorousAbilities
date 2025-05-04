@@ -18,7 +18,7 @@ import java.util.Iterator;
 public class SolarBarrage extends CoreAbility {
     private static final String name = "SolarBarrage";
 
-    private HashMap<BlockSphereBlast, Vector> suns = new HashMap<>();
+    private final HashMap<BlockSphereBlast, Vector> suns = new HashMap<>();
 
     private int sunAmount = 10;
 

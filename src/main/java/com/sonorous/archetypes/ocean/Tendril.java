@@ -5,6 +5,7 @@ import com.sonorous.archetypes.DisplayBlock;
 import com.sonorous.util.AbilityStatus;
 import com.sonorous.util.methods.Blocks;
 import com.sonorous.util.methods.Entities;
+import com.sonorous.util.methods.RandomUtils;
 import com.sonorous.util.methods.Vectors;
 import com.sonorous.util.temp.TempDisplayBlock;
 import net.minecraft.world.phys.Vec3;
@@ -17,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Set;
 
 public class Tendril extends CoreAbility {
@@ -27,12 +27,11 @@ public class Tendril extends CoreAbility {
     private TempDisplayBlock end;
     private Vector dir;
     private double grabDistance, grappleDistance;
-    private double length;
+    private final double length;
     private Entity grabTarget;
     private Block grappleBlock;
     private long sinceLastGrappled = System.currentTimeMillis();
     private Location oldPlayerLoc = player.getEyeLocation();
-    private Random random = new Random();
 
     public Tendril(Player player, String name, double length) {
         super(player, name);
@@ -221,7 +220,7 @@ public class Tendril extends CoreAbility {
 
     public void setTendrilBlock(DisplayBlock block) {
         tendrils.keySet().forEach(tempDisplayBlock -> {
-            Material type = block.getBlocks().get(random.nextInt(block.getBlocks().size()));
+            Material type = block.getBlocks().get(RandomUtils.getRandomInt(block.getBlocks().size()));
 
             tempDisplayBlock.getBlockDisplay().setBlock(type.createBlockData());
         });
@@ -327,7 +326,7 @@ public class Tendril extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        tendrils.keySet().forEach(tempDisplayBlock -> tempDisplayBlock.revert());
+        tendrils.keySet().forEach(TempDisplayBlock::revert);
     }
 
     @Override

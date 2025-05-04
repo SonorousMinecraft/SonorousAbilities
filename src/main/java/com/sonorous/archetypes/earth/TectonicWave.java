@@ -29,7 +29,7 @@ public class TectonicWave extends CoreAbility {
         if (sweep.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         } else {
-            sweep.getTempDisplayBlocks().stream().forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * Constants.BLOCK_RAISE_SPEED * speed, 0)));
+            sweep.getTempDisplayBlocks().forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * Constants.BLOCK_RAISE_SPEED * speed, 0)));
         }
     }
 

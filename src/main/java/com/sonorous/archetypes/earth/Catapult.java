@@ -18,7 +18,7 @@ public class Catapult extends CoreAbility {
     private Jump jump;
 
 
-    private List<RaiseBlockCircle> quakes = new ArrayList<>();
+    private final List<RaiseBlockCircle> quakes = new ArrayList<>();
 
     private double currentRadius = 0.5;
 

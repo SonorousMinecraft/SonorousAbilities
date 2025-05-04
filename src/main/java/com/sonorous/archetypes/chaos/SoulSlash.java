@@ -9,6 +9,7 @@ import com.sonorous.util.AbilityStatus;
 import com.sonorous.util.methods.ArchetypeVisuals;
 import com.sonorous.util.methods.Blocks;
 import com.sonorous.util.methods.Particles;
+import com.sonorous.util.methods.RandomUtils;
 import com.sonorous.util.temp.TempBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -26,13 +27,12 @@ public class SoulSlash extends MasterAbility {
 
     private static final String name = "SoulSlash";
 
-    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
+    private final Set<TempBlock> sourceTempBlocks = new HashSet<>();
 
-    private Set<SourceBlockToPlayer> sourceBlocksToPlayer = new HashSet<>();
+    private final Set<SourceBlockToPlayer> sourceBlocksToPlayer = new HashSet<>();
 
-    private Set<BlockRingAroundPlayer> rings = new HashSet<>();
+    private final Set<BlockRingAroundPlayer> rings = new HashSet<>();
 
-    private Random random = new Random();
 
     public SoulSlash(Player player) {
         super(player, name);
@@ -89,7 +89,7 @@ public class SoulSlash extends MasterAbility {
                 sourceBlockToPlayer.remove();
                 if (rings.size() < 20) {
                     BlockRingAroundPlayer blockRingAroundPlayer = new BlockRingAroundPlayer(player, name, sourceBlockToPlayer.getLocation(), sourceBlockToPlayer.getType(),
-                            radius, (int) Math.round(Math.random() * 360), 10, random.nextBoolean());
+                            radius, (int) Math.round(Math.random() * 360), 10, RandomUtils.getBoolean());
                     rings.add(blockRingAroundPlayer);
                 }
             }

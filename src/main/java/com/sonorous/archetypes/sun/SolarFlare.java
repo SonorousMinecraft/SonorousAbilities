@@ -14,16 +14,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author Sakrajin
- */
+
 public class SolarFlare extends CoreAbility {
 
     private static final String name = "SolarFlare";
-    private long startTime = System.currentTimeMillis();
+    private final long startTime = System.currentTimeMillis();
     private boolean started = false;
     private Block target;
     private Location flareLoc;
@@ -36,7 +35,7 @@ public class SolarFlare extends CoreAbility {
             abilityStatus = AbilityStatus.NO_SOURCE;
             target = Blocks.getFacingBlockOrLiquid(player, sourceRange);
             if (target != null && target.getType().isSolid()) {
-                Location sourceLoc = Blocks.getFacingBlockOrLiquidLoc(player, sourceRange).subtract(0, size, 0);
+                Location sourceLoc = Objects.requireNonNull(Blocks.getFacingBlockOrLiquidLoc(player, sourceRange)).subtract(0, size, 0);
 
 
 //                Blocks.selectSourceAnimationShapeGivenType( Locations.getCircleLocsAroundPoint(sourceLoc.clone().add(0,speed,0), radius, size), sPlayer.getColor(), size, DisplayBlock.SUN);
@@ -101,14 +100,10 @@ public class SolarFlare extends CoreAbility {
     @Override
     public void remove() {
         super.remove();
-        flares.forEach(tempDisplayBlock -> tempDisplayBlock.revert());
+        flares.forEach(TempDisplayBlock::revert);
         sPlayer.addCooldown("SolarFlare", cooldown);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

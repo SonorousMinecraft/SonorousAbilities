@@ -18,11 +18,11 @@ public class Daybreak extends CoreAbility {
     private final static String name = "Daybreak";
 
 
-    private HashMap<Integer, TempDisplayBlock> trail = new HashMap<>();
+    private final HashMap<Integer, TempDisplayBlock> trail = new HashMap<>();
 
     private Jet jet;
 
-    private ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
+    private final ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
 
     public Daybreak(Player player) {
         super(player, name);

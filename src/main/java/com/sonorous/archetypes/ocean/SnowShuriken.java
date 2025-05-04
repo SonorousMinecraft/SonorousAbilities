@@ -12,7 +12,9 @@ public class SnowShuriken extends MasterAbility {
 
     private static final String name = "SnowShuriken";
 
-    private int currentShots = 0, shots = 8, completeShots = 0;
+    private int currentShots = 0;
+    private final int shots = 8;
+    private int completeShots = 0;
 
     public SnowShuriken(Player player) {
         super(player, name);

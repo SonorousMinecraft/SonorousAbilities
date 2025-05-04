@@ -13,7 +13,9 @@ public class LightningBolts extends MasterAbility {
 
     private static final String name = "LightningBolts";
 
-    private int currentShots = 0, shots = 5, completeShots = 0;
+    private int currentShots = 0;
+    private final int shots = 5;
+    private int completeShots = 0;
 
     public LightningBolts(Player player) {
         super(player, name);

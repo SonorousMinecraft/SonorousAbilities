@@ -22,7 +22,8 @@ public class WaterSpout extends MasterAbility {
 
     private long sinceLastSourced = System.currentTimeMillis();
 
-    private long sinceLastSetPlayerLoc = System.currentTimeMillis(), intervalBetweenPlayerLocSet = 200;
+    private long sinceLastSetPlayerLoc = System.currentTimeMillis();
+    private final long intervalBetweenPlayerLocSet = 200;
     private Location previousPlayerLoc;
 
 

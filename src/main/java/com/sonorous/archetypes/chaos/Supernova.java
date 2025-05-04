@@ -32,11 +32,10 @@ public class Supernova extends MasterAbility {
 
     private BlockDisintegrateSphereSuck blockDisintegrateSphereSuck;
 
-    private Random random = new Random();
 
-    private Set<BlockRingAroundPoint> rings = new HashSet<>();
+    private final Set<BlockRingAroundPoint> rings = new HashSet<>();
 
-    private HashMap<Laser.CrystalLaser, Block> crystalLasers = new HashMap<>();
+    private final HashMap<Laser.CrystalLaser, Block> crystalLasers = new HashMap<>();
 
     private long sinceLastCrystalLaser = System.currentTimeMillis();
 
@@ -83,7 +82,7 @@ public class Supernova extends MasterAbility {
                     if (rings.size() < 100) {
 
                         BlockRingAroundPoint blockRingAroundPoint = new BlockRingAroundPoint(player, name, loc, sourceBlockToLoc.getType(),
-                                radius / 4, (int) Math.round(Math.random() * 360), 10, random.nextBoolean());
+                                radius / 4, (int) Math.round(Math.random() * 360), 10, RandomUtils.getBoolean());
                         rings.add(blockRingAroundPoint);
                     }
                     sourceBlockToLoc.remove();

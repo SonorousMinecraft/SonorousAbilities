@@ -25,9 +25,9 @@ public class Singularity extends MasterAbility {
 
     private static final String name = "Singularity";
 
-    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
+    private final Set<TempBlock> sourceTempBlocks = new HashSet<>();
 
-    private HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
+    private final HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
 
 
     private Vector previousDir;

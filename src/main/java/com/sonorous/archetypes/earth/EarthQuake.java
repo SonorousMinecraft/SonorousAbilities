@@ -59,12 +59,6 @@ public class EarthQuake extends CoreAbility {
             quakes.add(shockwaveRing);
 
 
-//            for (double radiusIncrement = currentRadius; radiusIncrement < currentRadius + speed ; radiusIncrement += size) {
-//                RaiseBlockCircle shockwaveRing = new RaiseBlockCircle(player, name, 3, radiusIncrement, true);
-//                quakes.add(shockwaveRing);
-//            }
-//            currentRadius += speed;
-
         }
         if (abilityStatus == AbilityStatus.COMPLETE) {
             for (RaiseBlockCircle shockwaveRing : quakes) {
@@ -88,11 +82,6 @@ public class EarthQuake extends CoreAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-    }
-
-    @Override
-    public Player getPlayer() {
-        return player;
     }
 
     @Override
