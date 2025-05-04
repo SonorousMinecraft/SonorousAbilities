@@ -17,7 +17,6 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import java.util.logging.Logger;
 
 /**
- * @author Sakrajin
  * Main class used to create singletons and instantiate the plugin functionalities
  */
 public class SonorousAbilities extends JavaPlugin {

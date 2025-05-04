@@ -21,8 +21,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author Sakrajin
- * Represents a player within the context of serenity.
+ * Represents a player's ability data
  * Used to create/retrieve and update a players data from the database.
  * Handles everything related to abilities and a player.
  */
@@ -31,8 +30,8 @@ public class SonorousAbilitiesPlayer {
     private static final Map<String, SonorousAbilitiesPlayer> SERENITY_PLAYER_MAP = new ConcurrentHashMap<>();
     protected final Map<String, Long> cooldowns = new HashMap<>();
     private boolean isOn = false;
-    private HashMap<String, HashMap<Integer, String>> presets;
-    private Set<CoreAbility> flyAbilities = new HashSet<>();
+    private final HashMap<String, HashMap<Integer, String>> presets;
+    private final Set<CoreAbility> flyAbilities = new HashSet<>();
     private HashMap<Integer, String> abilities;
     private String name;
     private Archetype archetype;
@@ -44,7 +43,6 @@ public class SonorousAbilitiesPlayer {
         this.archetype = archetype;
         this.player = player;
         this.presets = presets;
-//        this.serenityPlayerEquipment = new SonorousAbilitiesPlayerEquipment(this, player);
     }
 
     public static Map<String, SonorousAbilitiesPlayer> getSonorousAbilitiesPlayerMap() {
@@ -85,17 +83,13 @@ public class SonorousAbilitiesPlayer {
             AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), "SonorousAbilities." + attribute.toString(), value,
                     AttributeModifier.Operation.ADD_NUMBER);
 
-            player.getAttribute(attribute).addModifier(attributeModifier);
+            Objects.requireNonNull(player.getAttribute(attribute)).addModifier(attributeModifier);
         });
     }
 
     public static void removeAttributePlayer(Player player, SonorousAbilitiesPlayer serenityPlayer) {
         ArchetypeDataManager.getArchetypeData(serenityPlayer.getArchetype()).getArchetypeAttributes().forEach((attribute, value) ->
-        {
-            player.getAttribute(attribute).getModifiers().forEach(attributeModifier -> {
-                player.getAttribute(attribute).removeModifier(attributeModifier);
-            });
-        });
+                Objects.requireNonNull(player.getAttribute(attribute)).getModifiers().forEach(attributeModifier -> Objects.requireNonNull(player.getAttribute(attribute)).removeModifier(attributeModifier)));
     }
 
     public static void loadPlayer(String uuid, Player player) {
@@ -123,7 +117,7 @@ public class SonorousAbilitiesPlayer {
     }
 
     public static void removePlayerFromMap(Player player) {
-        SERENITY_PLAYER_MAP.remove(player.getUniqueId());
+        SERENITY_PLAYER_MAP.remove(player.getUniqueId().toString());
     }
 
     public static void upsertPlayer(SonorousAbilitiesPlayer serenityPlayer) {
@@ -145,11 +139,6 @@ public class SonorousAbilitiesPlayer {
     }
 
     public void setOn(boolean on) {
-//        if (on){
-//            serenityPlayerEquipment.switchToSonorousAbilities();
-//        } else {
-//            serenityPlayerEquipment.switchToNormal();
-//        }
         isOn = on;
     }
 
@@ -162,11 +151,7 @@ public class SonorousAbilitiesPlayer {
 
     public void removeFly(CoreAbility coreAbility) {
         if (flyAbilities.contains(coreAbility) && flyAbilities.size() == 1) {
-            if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
-                player.setAllowFlight(true);
-            } else {
-                player.setAllowFlight(false);
-            }
+            player.setAllowFlight(player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR));
             player.setFlying(false);
         }
         flyAbilities.remove(coreAbility);
@@ -174,25 +159,17 @@ public class SonorousAbilitiesPlayer {
     }
 
     public void setPreset(String name, HashMap<Integer, String> abilities) {
-        HashMap<Integer, String> clonedAbilities = new HashMap<>();
-        abilities.forEach((slot, abil) ->
-        {
-            String tempString = abil;
-            clonedAbilities.put(slot, tempString);
-        });
+        HashMap<Integer, String> clonedAbilities = new HashMap<>(abilities);
         presets.put(name, clonedAbilities);
     }
 
     public boolean existsPreset(String name) {
 
-        if (presets.containsKey(name)) {
-            return true;
-        }
-        return false;
+        return presets.containsKey(name);
     }
 
     public HashMap<Integer, String> getPreset(String name) {
-        return (HashMap<Integer, String>) presets.get(name).clone();
+        return new HashMap<>(presets.get(name));
     }
 
     public Set<String> getPresetNames() {
@@ -221,7 +198,6 @@ public class SonorousAbilitiesPlayer {
         this.getAbilities().put(slot, ability);
     }
 
-//    private SonorousAbilitiesPlayerEquipment serenityPlayerEquipment;
 
     public String getHeldAbility() {
 
@@ -259,11 +235,8 @@ public class SonorousAbilitiesPlayer {
         equipment.add(new Pair<>(EquipmentSlot.LEGS, Material.IRON_LEGGINGS));
         equipment.add(new Pair<>(EquipmentSlot.FEET, Material.IRON_BOOTS));
         equipment.add(new Pair<>(EquipmentSlot.HAND, Material.IRON_SWORD));
-//        equipment.add(new Pair<>(EquipmentSlot.OFF_HAND, Material.SHIELD));
 
-        equipment.forEach(equipmentSlotMaterialPair -> {
-            ItemStackUtils.createSonorousAbilitiesEquipment(player, equipmentSlotMaterialPair.getB(), archetype + " " + equipmentSlotMaterialPair.getB().toString(), List.of("test"), archetype.getValue(), equipmentSlotMaterialPair.getA(), archetype.getTrim());
-        });
+        equipment.forEach(equipmentSlotMaterialPair -> ItemStackUtils.createSonorousAbilitiesEquipment(player, equipmentSlotMaterialPair.getB(), archetype + " " + equipmentSlotMaterialPair.getB().toString(), List.of("test"), archetype.getValue(), equipmentSlotMaterialPair.getA(), archetype.getTrim()));
     }
 
     public Player getPlayer() {
@@ -314,7 +287,6 @@ public class SonorousAbilitiesPlayer {
         }
         if (AbilityDataManager.isCombo(ability)) {
             for (int i = 2; i <= 5; i++) {
-//                Bukkit.broadcastMessage(i+ "\n" + board.getBelowComboSlot(i) + " != " + ability);
                 if (ChatColor.stripColor(board.getBelowComboSlot(i)).equalsIgnoreCase(ability)) {
                     board.setBelowSlot(i, ChatColor.STRIKETHROUGH + ability);
                 }
@@ -330,20 +302,14 @@ public class SonorousAbilitiesPlayer {
         this.cooldowns.put(ability, cooldown + System.currentTimeMillis());
     }
 
-    public boolean isOnCooldown(final String ability) {
+    public boolean isOffCooldown(final String ability) {
         if (this.cooldowns.containsKey(ability)) {
-            return System.currentTimeMillis() < this.cooldowns.get(ability);
+            return System.currentTimeMillis() >= this.cooldowns.get(ability);
         }
 
-        return false;
-    }
-
-    public boolean canBend(CoreAbility ability) {
-        if (this.isOnCooldown(ability.getName())) {
-            return false;
-        }
         return true;
     }
+
 
     public String getStringColor() {
         return ArchetypeDataManager.getArchetypeData(this.getArchetype()).getColor();

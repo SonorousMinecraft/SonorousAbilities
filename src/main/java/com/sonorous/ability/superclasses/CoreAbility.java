@@ -228,11 +228,11 @@ public abstract class CoreAbility implements Ability {
     }
 
     protected boolean shouldStart() {
-        return SonorousAbilities.getWorldGuardManager().canBend(player) && !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
+        return SonorousAbilities.getWorldGuardManager().canBend(player) && !CoreAbility.hasAbility(player, this.getClass()) && sPlayer.isOffCooldown(this.getName());
     }
 
     protected boolean shouldStartCanHaveMultiple() {
-        return SonorousAbilities.getWorldGuardManager().canBend(player) && !sPlayer.isOnCooldown(this.getName());
+        return SonorousAbilities.getWorldGuardManager().canBend(player) && sPlayer.isOffCooldown(this.getName());
     }
 
     private void initialiseConfigVariables(AbilityData abilityData) {
