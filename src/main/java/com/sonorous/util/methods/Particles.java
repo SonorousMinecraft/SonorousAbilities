@@ -9,10 +9,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.List;
 
-/**
- * @author Sakrajin
- * Methods which are related to particles
- */
+
 public class Particles {
 
     public static void playParticlesBetweenPoints(Particle particle, Location loc1, Location loc2, double difference, int count, double offset, double extra) {

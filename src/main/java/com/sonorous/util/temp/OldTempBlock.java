@@ -11,10 +11,7 @@
 //import java.util.concurrent.ConcurrentHashMap;
 //import java.util.concurrent.ThreadLocalRandom;
 //
-///**
-// * @author Sakrajin
-// * Represents temporary block instances and handles reverting
-// */
+//
 //public class TempBlock {
 //
 //

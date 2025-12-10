@@ -12,10 +12,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Set;
 
-/**
- * @author Sakrajin
- * Allows the shooting of a block from a player
- */
+
 public class ShootBlockShapeFromLoc extends CoreAbility {
 
     private Location loc;

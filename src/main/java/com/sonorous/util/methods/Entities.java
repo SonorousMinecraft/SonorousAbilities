@@ -16,10 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-/**
- * @author Sakrajin
- * Methods which are related to entities
- */
+
 public class Entities {
     private static final Random random = new Random();
 

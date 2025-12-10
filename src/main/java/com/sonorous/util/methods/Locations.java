@@ -8,10 +8,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-/**
- * @author Sakrajin
- * Methods which are related to locations
- */
+
 public class Locations {
 
     public static double PI = Math.PI;

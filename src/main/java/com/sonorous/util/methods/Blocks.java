@@ -18,10 +18,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-/**
- * @author Sakrajin
- * Methods which are related to blocks
- */
+
 public class Blocks {
 
     public static void selectSourceAnimationShape(Collection<Location> locs, Color color, double size) {

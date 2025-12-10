@@ -10,10 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author Sakrajin
- * Represents all configuration data for a specific archetype
- */
+
 public class ArchetypeData {
 
     private Map<Attribute, Double> ARCHETYPE_ATTRIBUTES = new HashMap<>();

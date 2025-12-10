@@ -20,10 +20,7 @@ import org.joml.Vector3f;
 
 import java.util.*;
 
-/**
- * @author Sakrajin
- * Represents temporary display blocks (which are entiites) and handles reverting
- */
+
 public class TempDisplayBlock {
     private static final PriorityQueue<TempDisplayBlock> REVERT_QUEUE = new PriorityQueue<>(100, (t1, t2) -> (int) (t1.revertTime - t2.revertTime));
 

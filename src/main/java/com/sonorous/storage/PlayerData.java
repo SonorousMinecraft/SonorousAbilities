@@ -7,10 +7,7 @@ import com.nivixx.ndatabase.api.model.NEntity;
 
 import java.util.HashMap;
 
-/**
- * @author Sakrajin
- * Used by NDatabase API to represent players data within the database
- */
+
 @NTable(name = "player_data", schema = "", catalog = "")
 public class PlayerData extends NEntity<String> {
 
