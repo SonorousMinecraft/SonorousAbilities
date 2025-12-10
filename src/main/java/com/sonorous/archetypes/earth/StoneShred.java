@@ -16,14 +16,15 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class StoneShred extends CoreAbility {
 
     private final String name = "StoneShred";
 
-    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
-    private HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
+    private final Set<TempBlock> sourceTempBlocks = new HashSet<>();
+    private final HashMap<TempDisplayBlock, Vector> displayBlocks = new HashMap<>();
 
     private Vector previousDir, shotDir;
 
@@ -39,7 +40,7 @@ public class StoneShred extends CoreAbility {
             Set<Block> sourceBlocks = EnhancedBlocks.getFacingSphereBlocks(this);
 
             if (!sourceBlocks.isEmpty()) {
-                displayBlockDistance = Blocks.getFacingBlockLoc(player, sourceRange).distance(player.getEyeLocation());
+                displayBlockDistance = Objects.requireNonNull(Blocks.getFacingBlockLoc(player, sourceRange)).distance(player.getEyeLocation());
                 previousDir = player.getEyeLocation().getDirection();
                 Location center = player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(displayBlockDistance));
                 for (Block b : sourceBlocks) {
@@ -91,7 +92,7 @@ public class StoneShred extends CoreAbility {
         super.remove();
         displayBlocks.forEach((tempDisplayBlock, vector) -> tempDisplayBlock.revert());
 
-        sourceTempBlocks.forEach(tempBlock -> tempBlock.revert());
+        sourceTempBlocks.forEach(TempBlock::revert);
         sPlayer.addCooldown(name, cooldown);
     }
 

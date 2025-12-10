@@ -9,10 +9,7 @@
 //import java.util.Map;
 //import java.util.concurrent.ConcurrentHashMap;
 //
-///**
-// * @author Sakrajin
-// * To-do bar to show health of opponents you are fighting
-// */
+//
 //public class SonorousAbilitiesBar {
 //
 //    private final static Map<Player, BossBar> combatBar = new ConcurrentHashMap<>();

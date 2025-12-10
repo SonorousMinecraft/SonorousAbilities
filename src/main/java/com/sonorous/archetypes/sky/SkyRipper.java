@@ -24,7 +24,6 @@ public class SkyRipper extends CoreAbility {
 
         if (shouldStart()) {
             start();
-            return;
         }
 
 
@@ -77,10 +76,7 @@ public class SkyRipper extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
+
 
     @Override
     public String getName() {

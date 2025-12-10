@@ -2,10 +2,7 @@ package com.sonorous.abilityuilities.particles;
 
 import com.sonorous.ability.superclasses.CoreAbility;
 import com.sonorous.util.AbilityStatus;
-import com.sonorous.util.methods.AbilityDamage;
-import com.sonorous.util.methods.Blocks;
-import com.sonorous.util.methods.Particles;
-import com.sonorous.util.methods.Vectors;
+import com.sonorous.util.methods.*;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -21,8 +18,7 @@ public class Breath extends CoreAbility {
 
     private Set<Location> locs = new HashSet<>();
 
-    private Random random = new Random();
-    private Particle particle;
+    private final Particle particle;
 
 
     public Breath(Player player, String name, Particle particle) {
@@ -52,7 +48,7 @@ public class Breath extends CoreAbility {
         }
 
         locs.forEach(location -> {
-            location.add(dir.clone().multiply(random.nextDouble() * speed).add(getRandomOffset().multiply(Math.log(location.distance(startLoc) + 2))));
+            location.add(dir.clone().multiply(RandomUtils.getRandomDouble(0,1) * speed).add(getRandomOffset().multiply(Math.log(location.distance(startLoc) + 2))));
             Particles.spawnParticle(particle, location, 1, 0, 0);
 
             AbilityDamage.damageOne(location, this, player, true, dir);
@@ -71,7 +67,7 @@ public class Breath extends CoreAbility {
     }
 
     private Vector getRandomOffset() {
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
+        Vector randomiser = Vectors.getRightSide(player, RandomUtils.getRandomDouble(0,1) - 0.5).add(new Vector(0, RandomUtils.getRandomDouble(0,1) - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
         return randomiser;
     }
 

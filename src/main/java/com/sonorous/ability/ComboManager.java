@@ -14,12 +14,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author Sakrajin
  * Handles all combo instantiation by keeping track of recently used abilities using {@link ComboData combo data}
  */
 public class ComboManager {
 
-    private static Map<Player, ArrayList<AbilityInformation>> RECENTLY_USED = new ConcurrentHashMap<>();
+    private static final Map<Player, ArrayList<AbilityInformation>> RECENTLY_USED = new ConcurrentHashMap<>();
 
     private static Map<String, ComboData> COMBO_ABILITIES = new HashMap<>();
 
@@ -54,20 +53,17 @@ public class ComboManager {
         for (Map.Entry<String, ComboData> ability : COMBO_ABILITIES.entrySet()) {
 
             ArrayListMultimap<String, ClickType> recentlyUsedPairList = ArrayListMultimap.create();
-            RECENTLY_USED.get(player).stream().forEach(abilityInformation -> recentlyUsedPairList.put(abilityInformation.getName(), abilityInformation.getClickType()));
+            RECENTLY_USED.get(player).forEach(abilityInformation -> recentlyUsedPairList.put(abilityInformation.getName(), abilityInformation.getClickType()));
             ArrayListMultimap<String, ClickType> abilityPairList = ArrayListMultimap.create();
-            ability.getValue().getAbilities().stream().forEach(abilityInformation -> abilityPairList.put(abilityInformation.getName(), abilityInformation.getClickType()));
+            ability.getValue().getAbilities().forEach(abilityInformation -> abilityPairList.put(abilityInformation.getName(), abilityInformation.getClickType()));
 
 
             if (recentlyUsedPairList.entries().containsAll(abilityPairList.entries())) {
                 boolean hasDoneAbility = true;
-                switch (ability.getKey()) {
-                    case "Bulwark":
-                        new Bulwark(player);
-                        break;
-                    default:
-                        hasDoneAbility = false;
-                        break;
+                if (ability.getKey().equals("Bulwark")) {
+                    new Bulwark(player);
+                } else {
+                    hasDoneAbility = false;
                 }
                 if (hasDoneAbility) {
                     RECENTLY_USED.replace(player, new ArrayList<>());

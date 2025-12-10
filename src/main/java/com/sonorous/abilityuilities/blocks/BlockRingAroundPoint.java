@@ -12,30 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Sakrajin
  * Creates a ring of blocks around a player
  */
 public class BlockRingAroundPoint extends CoreAbility {
 
     private Location loc;
 
-    private String user;
+    private final String user;
 
     private double ringSize;
 
-    private Material type;
+    private final Material type;
 
     private int orientation;
 
-    private Vector dir;
+    private final Vector dir;
 
     private int rotation;
 
-    private int rotatePerTick;
+    private final int rotatePerTick;
 
-    private boolean clockwise;
+    private final boolean clockwise;
 
-    private List<TempDisplayBlock> blocks = new ArrayList<>();
+    private final List<TempDisplayBlock> blocks = new ArrayList<>();
 
     public BlockRingAroundPoint(Player player, String user, Location startLoc, Material type, double ringSize, int orientation, int rotatePerTick, boolean clockwise) {
         super(player, user);
@@ -117,10 +116,7 @@ public class BlockRingAroundPoint extends CoreAbility {
         return loc;
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
+
 
     @Override
     public String getName() {

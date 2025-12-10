@@ -13,10 +13,7 @@ import java.util.*;
 
 import static com.sonorous.archetypes.Archetype.*;
 
-/**
- * @author Sakrajin
- * Used to create the configs for Archetypes and initialise defaults
- */
+
 public class ConfigManager {
 
     private static final Map<Archetype, ConfigFile> configs = new HashMap<>();

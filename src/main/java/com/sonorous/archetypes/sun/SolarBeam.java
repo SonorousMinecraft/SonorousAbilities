@@ -73,10 +73,6 @@ public class SolarBeam extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

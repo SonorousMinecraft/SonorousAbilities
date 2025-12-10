@@ -17,11 +17,11 @@ public class Sweep extends CoreAbility {
 
     private final String name;
 
-    private Location origin, loc1, loc2;
+    private final Location origin, loc1, loc2;
 
-    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
+    private final ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
-    private Vector dir1, dir2;
+    private final Vector dir1, dir2;
 
     public Sweep(Player player, String name, ArchetypeVisuals.ArchetypeVisual archetypeVisual, Location loc1, Location loc2) {
         super(player, name);

@@ -18,14 +18,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author Sakrajin
- */
+
 public class BlockSmash extends CoreAbility {
 
     private final String name;
 
-    private Location loc, shotOrigin;
+    private final Location loc;
+    private Location shotOrigin;
 
     private HashMap<Integer, TempDisplayBlock> smash;
 
@@ -36,7 +35,7 @@ public class BlockSmash extends CoreAbility {
 
     private Material type;
 
-    private Set<LivingEntity> damagedSet = new HashSet<>();
+    private final Set<LivingEntity> damagedSet = new HashSet<>();
 
     private Vector dir;
     private boolean directional = false;
@@ -137,11 +136,6 @@ public class BlockSmash extends CoreAbility {
         }
     }
 
-
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

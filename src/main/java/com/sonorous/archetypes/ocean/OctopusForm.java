@@ -5,10 +5,7 @@ import com.sonorous.abilityuilities.blocks.forcetype.ShootBlocksFromLocGivenType
 import com.sonorous.abilityuilities.particles.Blast;
 import com.sonorous.archetypes.DisplayBlock;
 import com.sonorous.util.AbilityStatus;
-import com.sonorous.util.methods.AbilityUtils;
-import com.sonorous.util.methods.ArchetypeVisuals;
-import com.sonorous.util.methods.Blocks;
-import com.sonorous.util.methods.Vectors;
+import com.sonorous.util.methods.*;
 import com.sonorous.util.methods.collections.CollectionUtils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.block.Block;
@@ -16,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,14 +20,13 @@ public class OctopusForm extends MasterAbility {
 
     private static final String name = "OctopusForm";
 
-    private HashMap<Tendril, Vector> tendrils = new HashMap<>();
+    private final HashMap<Tendril, Vector> tendrils = new HashMap<>();
 
     private long sinceLastMoved = System.currentTimeMillis();
 
     private boolean hasBeenHoldingSneak;
     private long sinceLastHeldSneak;
 
-    private Random random = new Random();
 
     private double previousYaw = player.getEyeLocation().getYaw(), previousPitch = player.getEyeLocation().getPitch();
 
@@ -52,7 +47,7 @@ public class OctopusForm extends MasterAbility {
     }
 
     private Vector getRandomOffset() {
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble(-5, 5)).add(new Vector(0, random.nextDouble(-2, 2), 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
+        Vector randomiser = Vectors.getRightSide(player, RandomUtils.getRandomDouble(-5, 5)).add(new Vector(0, RandomUtils.getRandomDouble(-2, 2), 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
         return randomiser;
     }
 

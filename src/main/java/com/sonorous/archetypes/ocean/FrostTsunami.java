@@ -31,19 +31,7 @@ public class FrostTsunami extends CoreAbility {
         if (sweep.getAbilityStatus() == AbilityStatus.COMPLETE) {
             this.remove();
         } else {
-            sweep.getTempDisplayBlocks().stream().forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * Constants.BLOCK_RAISE_SPEED * speed * 5, 0)));
-//            if (abilityStatus == AbilityStatus.SHOT){
-//                if (player.isSneaking()) {
-//                    sweep.getTempDisplayBlocks().stream()
-//                        .filter(tempDisplayBlock -> tempDisplayBlock.getBlockDisplay() != null)
-//                            .forEach(tempDisplayBlock -> {
-//
-//                        new BlockCreateSphereGivenType(player, name, tempDisplayBlock.getLoc(), 2, 1, DisplayBlock.ICE);
-////                        AbilityDamage.damageOne(tempDisplayBlock.getLoc(), this, player,true,  new Vector(0,speed, 0));
-//                    });
-//                    this.remove();
-//                }
-//            }
+            sweep.getTempDisplayBlocks().forEach(tempDisplayBlock -> tempDisplayBlock.moveToAndMaintainFacing(tempDisplayBlock.getLoc().add(0, Math.random() * Constants.BLOCK_RAISE_SPEED * speed * 5, 0)));
 
         }
     }

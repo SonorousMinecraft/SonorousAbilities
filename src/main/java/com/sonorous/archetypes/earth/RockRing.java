@@ -9,9 +9,6 @@ import com.sonorous.util.AbilityStatus;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-/**
- * @author Sakrajin
- */
 public class RockRing extends CoreAbility {
 
     private final String name = "RockRing";
@@ -97,10 +94,6 @@ public class RockRing extends CoreAbility {
         }
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

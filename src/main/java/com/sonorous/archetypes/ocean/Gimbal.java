@@ -8,9 +8,7 @@ import com.sonorous.archetypes.DisplayBlock;
 import com.sonorous.util.AbilityStatus;
 import org.bukkit.entity.Player;
 
-/**
- * @author Sakrajin
- */
+
 public class Gimbal extends CoreAbility {
 
     private static final String name = "Gimbal";
@@ -108,10 +106,6 @@ public class Gimbal extends CoreAbility {
         sPlayer.addCooldown(this.getName(), cooldown);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

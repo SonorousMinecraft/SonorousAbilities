@@ -9,17 +9,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
-import java.util.Random;
+import java.util.Objects;
+
 import java.util.Set;
 
 public class Beam extends CoreAbility {
 
     private final String name;
 
-    private Set<Location> locs = new HashSet<>();
+    private final Set<Location> locs = new HashSet<>();
 
-    private Random random = new Random();
-    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
+    private final ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
 
     private Location beamOrigin;
@@ -45,7 +45,7 @@ public class Beam extends CoreAbility {
         Location beamTarget = Locations.getFacingLocationObstructed(player.getEyeLocation(), player.getEyeLocation().getDirection(), range);
 
         if (Entities.getFacingEntity(player, range, hitbox) != null) {
-            beamTarget = Entities.getFacingEntity(player, range, hitbox).getLocation();
+            beamTarget = Objects.requireNonNull(Entities.getFacingEntity(player, range, hitbox)).getLocation();
         }
 
         if (!beamTarget.getBlock().isPassable()) {
@@ -65,9 +65,9 @@ public class Beam extends CoreAbility {
 //                locs.add(startLoc.clone().add(getRandomOffset()));
             }
         }
-
+        
         locs.forEach(location -> {
-            location.add(dir.clone().multiply(random.nextDouble() * speed).add(getRandomOffset().multiply(Math.log(location.distance(startLoc) / 2 + 2))));
+            location.add(dir.clone().multiply(RandomUtils.getRandomDouble(0,1) * speed).add(getRandomOffset().multiply(Math.log(location.distance(startLoc) / 2 + 2))));
 //            Particles.spawnParticle(particle, location, 1, 0, 0);
             archetypeVisual.playVisual(location, 0.5, radius / 2, 1, 10, 5);
             AbilityDamage.damageOne(location, this, player, true, dir);
@@ -92,8 +92,7 @@ public class Beam extends CoreAbility {
     }
 
     private Vector getRandomOffset() {
-        Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
-        return randomiser;
+        return Vectors.getRightSide(player, RandomUtils.getRandomDouble(0,1) - 0.5).add(new Vector(0, RandomUtils.getRandomDouble(0,1) - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
     }
 
     @Override

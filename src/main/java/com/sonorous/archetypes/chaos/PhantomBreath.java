@@ -5,6 +5,7 @@ import com.sonorous.abilityuilities.blocks.ShootBlockFromLoc;
 import com.sonorous.abilityuilities.blocks.SourceBlockToPlayer;
 import com.sonorous.abilityuilities.particles.Breath;
 import com.sonorous.util.AbilityStatus;
+import com.sonorous.util.methods.RandomUtils;
 import com.sonorous.util.methods.Vectors;
 import com.sonorous.util.temp.TempBlock;
 import org.bukkit.Material;
@@ -21,12 +22,12 @@ public class PhantomBreath extends MasterAbility {
 
     private static final String name = "PhantomBreath";
 
-    private Set<Block> sourceBlocks = new HashSet<>();
-    private Set<TempBlock> sourceTempBlocks = new HashSet<>();
+    private final Set<Block> sourceBlocks = new HashSet<>();
+    private final Set<TempBlock> sourceTempBlocks = new HashSet<>();
 
-    private Random random = new Random();
 
-    private int currentShots = 0, shots = 100;
+    private int currentShots = 0;
+    private final int shots = 100;
 
     public PhantomBreath(Player player) {
         super(player, name);
@@ -82,8 +83,8 @@ public class PhantomBreath extends MasterAbility {
                     switch (abilityStatus) {
                         case SOURCING -> {
                             if (sourceBlockToPlayer.getSourceStatus() == AbilityStatus.SOURCED) {
-                                if (currentShots < shots && random.nextDouble() < (double) (shots - currentShots) / (shots)) {
-                                    Vector randomiser = Vectors.getRightSide(player, random.nextDouble() - 0.5).add(new Vector(0, random.nextDouble() - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
+                                if (currentShots < shots && RandomUtils.getRandomDouble(0,1) < (double) (shots - currentShots) / (shots)) {
+                                    Vector randomiser = Vectors.getRightSide(player, RandomUtils.getRandomDouble(0,1) - 0.5).add(new Vector(0, RandomUtils.getRandomDouble(0,1) - 0.5, 0).rotateAroundAxis(Vectors.getRightSideNormalisedVector(player), Math.toRadians(-player.getEyeLocation().getPitch())));
                                     ShootBlockFromLoc shootBlockFromLoc = new ShootBlockFromLoc(player, name, player.getEyeLocation().add(randomiser.multiply(range)), Material.BLACK_CONCRETE, true, true);
                                     shootBlockFromLoc.setRange(range * 4);
                                     shootBlockFromLoc.setGlowing(org.bukkit.Color.PURPLE);

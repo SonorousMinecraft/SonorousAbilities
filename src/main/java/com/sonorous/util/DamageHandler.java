@@ -11,10 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-/**
- * @author Sakrajin
- * Handles where abilities damage entities
- */
+
 public class DamageHandler {
     static ResourceKey<DamageType> EATING_SHIT = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("eating_shit"));
 

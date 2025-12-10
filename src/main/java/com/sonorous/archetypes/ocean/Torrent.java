@@ -9,9 +9,7 @@ import com.sonorous.archetypes.DisplayBlock;
 import com.sonorous.util.AbilityStatus;
 import org.bukkit.entity.Player;
 
-/**
- * @author Sakrajin
- */
+
 public class Torrent extends CoreAbility {
 
     private static final String name = "Torrent";

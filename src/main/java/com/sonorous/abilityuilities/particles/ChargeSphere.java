@@ -8,18 +8,18 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 /**
- * @author Sakrajin
  * Allows a player to charge a sphere that grows in size as time passes.
  */
 public class ChargeSphere extends CoreAbility {
 
-    private String name;
+    private final String name;
 
 
-    private long startTime;
+    private final long startTime;
 
-    private double startRadius, increment;
-    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
+    private double startRadius;
+    private final double increment;
+    private final ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
     private Location loc;
 
@@ -65,10 +65,7 @@ public class ChargeSphere extends CoreAbility {
         return loc.clone();
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
+
 
     @Override
     public String getName() {

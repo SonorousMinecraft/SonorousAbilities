@@ -12,20 +12,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
- * @author Sakrajin
  * Causes a spherical shaped blast to be shot from the player
  */
 public class SphereBlast extends CoreAbility {
 
-    private boolean directable;
+    private final boolean directable;
 
-    private Location loc, origin;
+    private Location loc;
+    private final Location origin;
     private Vector dir;
 
 
-    private String name;
+    private final String name;
 
-    private ArchetypeVisuals.ArchetypeVisual archetypeVisual;
+    private final ArchetypeVisuals.ArchetypeVisual archetypeVisual;
 
     private boolean shouldDamage;
 
@@ -77,10 +77,6 @@ public class SphereBlast extends CoreAbility {
         this.loc = loc;
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

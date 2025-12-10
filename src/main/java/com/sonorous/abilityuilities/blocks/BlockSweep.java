@@ -25,9 +25,9 @@ public class BlockSweep extends CoreAbility {
     private Vector dir1, dir2, dir;
     private Set<Location> oldLocs = new HashSet<>();
 
-    private Set<LivingEntity> damagedSet = new HashSet<>();
+    private final Set<LivingEntity> damagedSet = new HashSet<>();
 
-    private Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
+    private final Set<TempDisplayBlock> tempDisplayBlocks = new HashSet<>();
 
 
     public BlockSweep(Player player, String name, Color color) {

@@ -6,10 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-/**
- * @author Sakrajin
- * Used to create configuration files.
- */
+
 public class ConfigFile {
 
     public FileConfiguration config;

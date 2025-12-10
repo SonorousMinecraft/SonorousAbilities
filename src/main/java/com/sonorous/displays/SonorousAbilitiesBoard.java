@@ -10,11 +10,7 @@ import org.bukkit.scoreboard.*;
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * @author Sakrajin
- * Handles scoreboards for serenity.
- * Used to store, create, and modify them.
- */
+
 public class SonorousAbilitiesBoard {
 
     private static HashMap<UUID, SonorousAbilitiesBoard> players = new HashMap<>();

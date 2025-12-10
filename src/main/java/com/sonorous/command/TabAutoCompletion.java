@@ -12,11 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author Sakrajin
- * Tab auto completion for {@link SonorousCommand commands}
- * Does not work yet (change this if you fix it)
- */
+
 public class TabAutoCompletion implements TabCompleter {
 
     @Override

@@ -32,11 +32,6 @@ public class EarthWall extends CoreAbility {
     }
 
     @Override
-    public Player getPlayer() {
-        return player;
-    }
-
-    @Override
     public String getName() {
         return name;
     }

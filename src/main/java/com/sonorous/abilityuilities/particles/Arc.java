@@ -18,16 +18,16 @@ public class Arc extends CoreAbility {
 
     private final String name;
 
-    private Set<Location> locs = new HashSet<>();
+    private final Set<Location> locs = new HashSet<>();
 
-    private Random random = new Random();
+    private final Random random = new Random();
     private Particle particle;
 
     private Vector offset = null;
 
     private long sinceLastDirChange = System.currentTimeMillis();
 
-    private OutputLocation outputLocation;
+    private final OutputLocation outputLocation;
 
     public Arc(Player player, String name, Particle particle, OutputLocation outputLocation) {
         super(player, name);

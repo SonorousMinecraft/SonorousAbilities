@@ -21,17 +21,17 @@ public class ShootItemDisplay extends CoreAbility {
 
     private final String name;
 
-    private ArmorStand armorStand;
+    private final ArmorStand armorStand;
 
-    private Location origin;
+    private final Location origin;
 
     private Vector dir;
 
-    private boolean stick;
+    private final boolean stick;
 
     private double height;
 
-    private Set<ItemDisplay> displays = new HashSet<>();
+    private final Set<ItemDisplay> displays = new HashSet<>();
 
     public ShootItemDisplay(Player player, String name, Location loc, Vector dir, Material material, double width, double length, boolean stick, boolean diagonal, boolean sphere) {
         super(player, name);
@@ -155,10 +155,6 @@ public class ShootItemDisplay extends CoreAbility {
         displays.forEach(Entity::remove);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

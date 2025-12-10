@@ -64,10 +64,6 @@ public class Levitate extends CoreAbility {
         player.removePotionEffect(PotionEffectType.LEVITATION);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

@@ -14,17 +14,17 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 
 /**
- * @author Sakrajin
  * Causes a spherical shaped blast to be shot from the player
  */
 public class BlockSphereBlast extends CoreAbility {
 
-    private boolean gravity;
+    private final boolean gravity;
 
-    private Location loc, origin;
+    private Location loc;
+    private final Location origin;
     private Vector dir;
 
-    private String name;
+    private final String name;
 
 
     private HashMap<Integer, TempDisplayBlock> spike = new HashMap<>();

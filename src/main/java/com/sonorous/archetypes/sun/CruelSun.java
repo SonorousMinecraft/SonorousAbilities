@@ -11,16 +11,14 @@ import com.sonorous.util.methods.Locations;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-/**
- * @author Sakrajin
- */
+
 public class CruelSun extends CoreAbility {
 
     private static final String name = "CruelSun";
     private ChargeSphere chargeSphere;
     private BlockSmash blockSmash;
     private double currentAngle = 0;
-    private ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
+    private final ArchetypeVisuals.SunVisual sunVisual = new ArchetypeVisuals.SunVisual();
 
     public CruelSun(Player player) {
         super(player, name);
@@ -90,10 +88,6 @@ public class CruelSun extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

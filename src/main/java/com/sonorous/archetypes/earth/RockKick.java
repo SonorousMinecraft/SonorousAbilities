@@ -89,11 +89,6 @@ public class RockKick extends MasterAbility implements RedirectAbility {
 
 
     @Override
-    public Player getPlayer() {
-        return player;
-    }
-
-    @Override
     public String getName() {
         return name;
     }

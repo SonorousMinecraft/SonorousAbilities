@@ -17,15 +17,16 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class SeaStream extends MasterAbility {
 
     public static final String name = "SeaStream";
 
-    private Set<TempBlock> sources = new HashSet<>();
+    private final Set<TempBlock> sources = new HashSet<>();
 
-    private Set<TempDisplayBlock> stream = new HashSet<>();
+    private final Set<TempDisplayBlock> stream = new HashSet<>();
 
     private ShootBlockShapeFromLoc streamShot;
 
@@ -37,7 +38,6 @@ public class SeaStream extends MasterAbility {
             Block facing = Blocks.getFacingBlockOrLiquid(player, sourceRange);
             if (facing != null && Blocks.getArchetypeBlocks(sPlayer).contains(facing.getType())) {
                 abilityStatus = AbilityStatus.CHARGING;
-//            Bukkit.broadcastMessage("started");
                 start();
             }
 
@@ -125,8 +125,8 @@ public class SeaStream extends MasterAbility {
     public void remove() {
         super.remove();
         sPlayer.addCooldown(name, cooldown);
-        sources.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
-        stream.stream().filter(tempBlock -> tempBlock != null).forEach(tempBlock -> tempBlock.revert());
+        sources.stream().filter(Objects::nonNull).forEach(TempBlock::revert);
+        stream.stream().filter(Objects::nonNull).forEach(TempDisplayBlock::revert);
     }
 
 

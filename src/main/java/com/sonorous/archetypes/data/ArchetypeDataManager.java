@@ -17,11 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-/**
- * @author Sakrajin
- * Used to instantiate configuration data from archetypes and create a {@link ArchetypeData archetype data structure}.
- * Keeps track of all data structures to represent archetypes.
- */
+
 public class ArchetypeDataManager {
 
     private static final Map<Archetype, ArchetypeData> ARCHETYPE_DATA_MAP = new ConcurrentHashMap<>();

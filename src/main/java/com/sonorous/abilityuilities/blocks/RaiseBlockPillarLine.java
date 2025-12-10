@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class RaiseBlockPillarLine extends BlockLine {
 
-    private Set<RaiseBlockPillar> pillars = new HashSet<>();
+    private final Set<RaiseBlockPillar> pillars = new HashSet<>();
 
     public RaiseBlockPillarLine(Player player, String name, Color color, boolean directable) {
         super(player, name, color, directable);

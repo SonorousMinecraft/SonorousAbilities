@@ -12,10 +12,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Sakrajin
- * Creates a ring of blocks around a player
- */
+
 public class BlockRingAroundPlayerGivenType extends CoreAbility {
 
     private Location loc;

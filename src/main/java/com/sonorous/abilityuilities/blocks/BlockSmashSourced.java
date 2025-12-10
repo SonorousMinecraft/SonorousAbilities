@@ -16,9 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author Sakrajin
- */
+
 public class BlockSmashSourced extends CoreAbility {
 
     private final String name;
@@ -30,7 +28,7 @@ public class BlockSmashSourced extends CoreAbility {
 
     private boolean hasShot = false;
 
-    private DisplayBlock displayBlock;
+    private final DisplayBlock displayBlock;
 
     private Material type;
 
@@ -38,7 +36,7 @@ public class BlockSmashSourced extends CoreAbility {
 
     private Vector dir;
 
-    private Set<LivingEntity> damagedSet = new HashSet<>();
+    private final Set<LivingEntity> damagedSet = new HashSet<>();
 
     public BlockSmashSourced(Player player, String name, DisplayBlock displayBlock) {
         super(player, name);
@@ -117,11 +115,6 @@ public class BlockSmashSourced extends CoreAbility {
         }
     }
 
-
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {

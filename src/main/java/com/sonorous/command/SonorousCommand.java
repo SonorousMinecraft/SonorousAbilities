@@ -95,7 +95,7 @@ public class SonorousCommand implements CommandExecutor {
                             return true;
                         } else {
                             String ability = strings[1];
-                            if (!AbilityDataManager.isAbility(ability)) {
+                            if (AbilityDataManager.isNotAbility(ability)) {
                                 ChatMessage.sendPlayerMessage(player, "This isn't an ability.");
                                 return true;
                             } else if (AbilityDataManager.isCombo(ability)) {
@@ -140,7 +140,7 @@ public class SonorousCommand implements CommandExecutor {
                             return true;
                         } else {
                             String ability = strings[1];
-                            if (!AbilityDataManager.isAbility(ability)) {
+                            if (AbilityDataManager.isNotAbility(ability)) {
                                 ChatMessage.sendPlayerMessage(player, "This isn't an ability.");
                                 return true;
                             }

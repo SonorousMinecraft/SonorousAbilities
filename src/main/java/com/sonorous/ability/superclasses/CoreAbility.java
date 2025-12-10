@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 /**
- * @author Sakrajin
  * Serves as a blueprint for abilities.
  * Handles config values, so they are automatically available in subclasses.
  * Used to handle all ability progression, removal and cooldowns.
@@ -53,20 +52,15 @@ public abstract class CoreAbility implements Ability {
                 .filter(coreAbility -> coreAbility instanceof RedirectAbility);
 
 
-        Stream<Pair<CoreAbility, Stream<BoundingBox>>> abilityToBoundingBoxes = redirectAbilities.map(coreAbility -> new Pair<CoreAbility, RedirectAbility>(coreAbility, (RedirectAbility) coreAbility))
-                .map(pair -> new Pair<CoreAbility, Set<Map.Entry<Location, Double>>>(pair.getA(), pair.getB().getLocs().entrySet()))
-                .map(pair -> {
-                    return new Pair<CoreAbility, Stream<BoundingBox>>(pair.getA(), pair.getB().stream().map(locationDoubleEntry -> {
-                        Location center = locationDoubleEntry.getKey();
-                        double radius = locationDoubleEntry.getValue();
-                        Location bottom = center.clone().subtract(radius, radius, radius);
-                        Location top = center.clone().add(radius, radius, radius);
-                        return BoundingBox.of(bottom, top);
-                    }));
-                });
-
-
-        return abilityToBoundingBoxes;
+        return redirectAbilities.map(coreAbility -> new Pair<>(coreAbility, (RedirectAbility) coreAbility))
+                .map(pair -> new Pair<>(pair.getA(), pair.getB().getLocs().entrySet()))
+                .map(pair -> new Pair<>(pair.getA(), pair.getB().stream().map(locationDoubleEntry -> {
+                    Location center = locationDoubleEntry.getKey();
+                    double radius1 = locationDoubleEntry.getValue();
+                    Location bottom = center.clone().subtract(radius1, radius1, radius1);
+                    Location top = center.clone().add(radius1, radius1, radius1);
+                    return BoundingBox.of(bottom, top);
+                })));
     }
 
     public static void progressAll() throws ReflectiveOperationException {
@@ -228,11 +222,11 @@ public abstract class CoreAbility implements Ability {
     }
 
     protected boolean shouldStart() {
-        return SonorousAbilities.getWorldGuardManager().canBend(player) && !CoreAbility.hasAbility(player, this.getClass()) && !sPlayer.isOnCooldown(this.getName());
+        return SonorousAbilities.getWorldGuardManager().canBend(player) && !CoreAbility.hasAbility(player, this.getClass()) && sPlayer.isOffCooldown(this.getName());
     }
 
     protected boolean shouldStartCanHaveMultiple() {
-        return SonorousAbilities.getWorldGuardManager().canBend(player) && !sPlayer.isOnCooldown(this.getName());
+        return SonorousAbilities.getWorldGuardManager().canBend(player) && sPlayer.isOffCooldown(this.getName());
     }
 
     private void initialiseConfigVariables(AbilityData abilityData) {

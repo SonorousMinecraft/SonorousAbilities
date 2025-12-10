@@ -4,10 +4,7 @@ import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 
-/**
- * @author Sakrajin
- * Enums to represent different archetypes
- */
+
 public enum Archetype {
     NONE("none", 0),
 

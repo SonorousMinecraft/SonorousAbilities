@@ -31,10 +31,7 @@ import org.bukkit.potion.PotionEffectType;
 import static com.sonorous.SonorousAbilitiesPlayer.getSonorousAbilitiesPlayer;
 import static com.sonorous.SonorousAbilitiesPlayer.removeAttributePlayer;
 
-/**
- * @author Sakrajin
- * Main listener for all serenity events
- */
+
 public class SonorousAbilitiesListener implements Listener {
 
 

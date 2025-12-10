@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class SunBurst extends CoreAbility {
@@ -76,7 +77,7 @@ public class SunBurst extends CoreAbility {
                     tb.getBlockDisplay().setGlowColorOverride(Color.YELLOW);
                     tb.getBlockDisplay().setGlowing(true);
                 }
-                sun = new ShootBlockShapeFromLoc(player, name, player.getEyeLocation(), explosion.values().stream().collect(Collectors.toSet()), radius, false, player.getEyeLocation().getDirection());
+                sun = new ShootBlockShapeFromLoc(player, name, player.getEyeLocation(), new HashSet<>(explosion.values()), radius, false, player.getEyeLocation().getDirection());
 
             }
         }
@@ -121,10 +122,6 @@ public class SunBurst extends CoreAbility {
         sPlayer.addCooldown(name, cooldown);
     }
 
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
 
     @Override
     public String getName() {
